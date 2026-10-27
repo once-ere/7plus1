@@ -1439,7 +1439,7 @@ VERDICT: ALL CHECKS PASSED
 | `tools/cayley_dickson_match.py` | `73f2cc584bbe1a3620c50890ffe5fb299857b04a14bc34fed2f9eaefd2e36c4e` |
 | `tools/classify_clifford.py` | `42291276f46b046183fdbb7b62be7c5cedfd695fe9da96ac256afa23580930a9` |
 | `tools/doc_common.py` | `eb63a44f3da35fc75dae8420186867f85fecfa15415eefa108b5b0f23c646385` |
-| `tools/doc_dirac16.py` | `16d40212d371ba0228dcb991cb40a18d89556902068798d515f9167bf8975463` |
+| `tools/doc_dirac16.py` | `7916c204596a471015e9408616aaca1b7b89575adc774b808c468f337e8418de` |
 | `tools/doc_dirac16_common.py` | `9324b4fae59e51019125ebe09157f3c8c9489560e1383a697fe6c22a3a93e208` |
 | `tools/doc_dirac16_provenance.py` | `9ac843eac503c8f3d1417a67e82765c0f896422171a897a3200b67f80d420dfe` |
 | `tools/doc_dirac16_symbols.py` | `70cee4b84501c0f7a7a02105e39acfa6e21c61835a667eca28e43e6ad65cf674` |
@@ -1450,7 +1450,7 @@ VERDICT: ALL CHECKS PASSED
 | `tools/doc_ks_gravity_provenance.py` | `1a97d4be904ff2921c426ae92dee4ef3a3eb9dde20f2f9ef55babb5a9923e4f1` |
 | `tools/doc_ks_gravity_symbols.py` | `afa9b5b30b13e5ab90a2cf74bd6ae5ef8a5dbaa34c25ce33a1ce6011033f9fbd` |
 | `tools/doc_provenance.py` | `49e7b60c6ce31ad7869b3b9c3eaefd28517e8b4ffd7e4d8c0e9651d461bb56a1` |
-| `tools/doc_readme.py` | `fedaf1a244401aa021b2b1b08411cc069db0d8d0c31f8f3cb1b7363385dbad63` |
+| `tools/doc_readme.py` | `1b99079a18c39f9ba7a73465982787c9b9139079d3a4af98e65a261bb5eaacff` |
 | `tools/doc_readme_stage3.py` | `8076bbaf4f0c8854a9411f95cd1637fc1dcfeae1fc45f2701d88ff7f356a67d6` |
 | `tools/doc_sm.py` | `faa244fed5ec09465f576661ad601def9e815e56389361e037e98fd5b45553c0` |
 | `tools/doc_sm_provenance.py` | `ab0f9d1cce27f2250bfa278ff72670bd40339cfa8ca0ecc025c3e099a2d4118a` |

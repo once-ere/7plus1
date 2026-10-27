@@ -687,9 +687,9 @@ def sec12(d, D):
         'excluded from the repository by .gitignore. Section 6 summarizes the checks of sections 1–5 (it is evaluated before sections 7–9); '
         'section 10 summarizes all checks.')
     d.p('**To re-evaluate.** Open 7+1.nb in Wolfram 15.0.1, start from a fresh kernel (Evaluation ▸ Quit Kernel ▸ Local, if the kernel has been '
-        'used) and choose Evaluation ▸ Evaluate Notebook (about %s seconds), or evaluate the following line in any notebook of Wolfram 15.0.1; it '
+        'used) and choose Evaluation ▸ Evaluate Notebook%s, or evaluate the following line in any notebook of Wolfram 15.0.1; it '
         'evaluates 7+1.nb in place in a fresh kernel, saves it and writes build/eval_log.txt:'
-        % ('%.0f' % float(D['log'].get('seconds', '0') or 0)))
+        % (' (about %.0f seconds)' % float(D['log']['seconds']) if D['log'].get('seconds') else ''))
     d.code('Get["D:/Developer/github/7+1/tools/run_eval.wl"]')
     d.p('The Wolfram front end used is')
     d.code('C:\\Program Files\\Wolfram Research\\Wolfram\\15.0.1\\WolframNB.exe')
