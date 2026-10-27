@@ -32,7 +32,7 @@ This is a self-contained dictionary. For each symbol it gives the mathematical n
 \item $1_n$ is the $n\times n$ identity matrix (\texttt{IdentityMatrix[n]}, named \texttt{ID4}, \texttt{ID8}, \texttt{ID16}, \texttt{ID32}); $0$ in a block matrix is a zero block; $M^{\mathsf T}$ is the transpose, $\overline M$ the complex conjugate, $M^\dagger$ the conjugate transpose; $\delta_{AB}$ is the Kronecker delta; $\lbrace X,Y\rbrace=XY+YX$, $[X,Y]=XY-YX$.
 \item $\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)$ is a block matrix (Mathematica \texttt{ArrayFlatten[\{\{a, b\}, \{c, d\}\}]}); $M\otimes N$ is the Kronecker product (\texttt{KroneckerProduct[M, N]}).
 \item An index 8 on a family of eight Clifford generators $G_0,\dots,G_7$ means the ordered product $G_8=G_0G_1\cdots G_7$ (the convention of 4+4.nb).
-\item $Cl(p,q)$: $p$ generators square to $+1$ and $q$ to $-1$ ($v^2=Q(v)$, $Q$ of signature $(p,q)$).
+\item $Cl(p,q)$: $p$ generators square to $+1$ and $q$ to $-1$ ($v^2=Q(v)$, $Q$ of signature $(p,q)$). This label is not the xAct list $\{7,1,0\}$, which declares seven space-like dimensions and one time-like dimension (section 2).
 \end{itemize}
 \Needspace{12\baselineskip}\section*{2. Coordinates and metrics}\addcontentsline{toc}{section}{2. Coordinates and metrics}
 {\small
@@ -51,13 +51,20 @@ $x_1,x_2,x_3$ & \texttt{x1, x2, x3} & — & ordinary 3-space (both notebooks); o
 $x_4$ & \texttt{x4} & — & 7+1.nb: auxiliary space-like, $e_4=\ell$. 4+4.nb: ordinary time \\
 $x_5,x_6,x_7$ & \texttt{x5, x6, x7} & — & 7+1.nb: auxiliary space-like, $e_5,e_6,e_7$. 4+4.nb: auxiliary time-like ("superluminal deflating time") \\
 $\eta^{(4,4)}$ & \texttt{η4488} & $\mathrm{diag}(1,1,1,1,-1,-1,-1,-1)$ & metric of 4+4.nb (space-like $+1$, time-like $-1$); split-octonion norm \\
-$\eta^{(7,1)}$ & \texttt{η71} & $\mathrm{diag}(-1,1,1,1,1,1,1,1)$ & 7+1 metric in the sign convention of 4+4.nb; signature (7,1) \\
-$\eta^{(1,7)}$ & \texttt{η17} & $-\eta^{(7,1)}=\mathrm{diag}(1,-1,-1,-1,-1,-1,-1,-1)$ & 7+1 metric, octonionic convention: $x^{\mathsf T}\eta^{(1,7)}x=\mathrm{Re}(xx)$ \\
+$\eta^{(7,1)}$ & \texttt{η71} & $\mathrm{diag}(-1,1,1,1,1,1,1,1)$ & 7+1 metric in the sign convention of 4+4.nb (space-like $+1$): seven space-like and one time-like dimension, the xAct declaration $\{7,1,0\}$; generates $Cl(7,1)$ \\
+$\eta^{(1,7)}$ & \texttt{η17} & $-\eta^{(7,1)}=\mathrm{diag}(1,-1,-1,-1,-1,-1,-1,-1)$ & simply the squares of the octonion basis: $\eta^{(1,7)}_{AB}=\mathrm{Re}(e_Ae_B)$, $e_0^2=+1$, $e_i^2=-1$; $x^{\mathsf T}\eta^{(1,7)}x=\mathrm{Re}(xx)$; generates $Cl(1,7)$ \\
+$\{7,1,0\}$ & \texttt{DefMetric[\{7, 1, 0\}, g71[-a, -b], CD, …]} & xAct signature list (section 12 of 7+1.nb, as in Einstein-Lovelock-7+1-Nash.nb) & seven space-like dimensions, one time-like dimension, none degenerate \\
 $\eta_{(1,7)}^{AB}$ & \texttt{η17inv} & $(\eta^{(1,7)})^{-1}=\eta^{(1,7)}$ & inverse metric, raises indices \\
 $g^{O}$ & \texttt{gO} & $1_8$ & norm metric of the octonions, $N(x)=x^{\mathsf T}g^{O}x$ \\
 $g$ & \texttt{gAB44} & $\eta^{(4,4)}$ & norm metric of the split octonions (4+4.nb: \texttt{g\_AB}) \\
 $\eta^{(5,3)}$ & \texttt{η53} & $\mathrm{diag}(1,-1,-1,-1,1,1,1,1)$ & $\mathrm{Re}(xx)$ of the split octonions \\*
 \end{longtable}}
+\textbf{The signature: $\{7,1,0\}$ and $\mathrm{diag}(+1,-1,\dots,-1)$.} The 7+1 spacetime has one time-like dimension ($x_0$, the direction of the octonion unit $e_0=1$) and seven space-like dimensions ($x_1,x_2,x_3$ ordinary space, $x_4,\dots,x_7$ auxiliary space). Two different objects describe this, and neither may be replaced by the other. (i) The tensor package xAct, used in section 12 of 7+1.nb exactly as in the author’s notebook Einstein-Lovelock-7+1-Nash.nb, declares the metric with \texttt{DefMetric[\{7, 1, 0\}, g71[-a, -b], CD, …]}: the list $\{7,1,0\}$ declares seven space-like dimensions, one time-like dimension and no degenerate dimension — the numbers of entries $+1$ and $-1$ of $\eta^{(7,1)}=\mathrm{diag}(-1,+1,\dots,+1)$ (\texttt{η71}), the same spacetime written in the sign convention of 4+4.nb (space-like $=+1$, time-like $=-1$). (ii) The matrix $\eta^{(1,7)}=-\eta^{(7,1)}=\mathrm{diag}(+1,-1,\dots,-1)$ (\texttt{η17}) is simply the squares of the octonion basis: $e_0^2=+1$ for the unit $e_0=1$ (time) and $e_i^2=-1$ for the seven imaginary units $e_1,\dots,e_7$ (space); more generally it is the real part of the product of two basis units, and it gives the quadratic form of the octonions:
+\begin{gather*}
+\eta^{(1,7)}_{AB}=\mathrm{Re}(e_Ae_B),\qquad e_0^2=+1,\qquad e_i^2=-1\ \ (i=1,\dots,7),\\ \mathrm{Re}(x\,x)=x_0^2-x_1^2-\cdots-x_7^2=\eta^{(1,7)}_{AB}\,x^Ax^B\qquad (x=x^Ae_A\in\mathbb O).
+\end{gather*}
+$\eta^{(1,7)}$ gives the signs of the Clifford relation $\Gamma^{(1,7)}_A\Gamma^{(1,7)}_B+\Gamma^{(1,7)}_B\Gamma^{(1,7)}_A=2\,\eta^{(1,7)}_{AB}\,1_{16}$ of the real 16×16 Dirac matrices: time squares to $+1_{16}$ and each of the seven space directions to $-1_{16}$, exactly like the octonion units (in the notation $Cl(p,q)$, with $p$ generators squaring to $+1$ and $q$ to $-1$, the algebra $Cl(1,7)\cong\mathbb R(16)$). It also gives the signs of the metric components: $g_{00}>0$ along the time-like direction, negative squares along the space-like directions. Every component computed by 7+1.nb follows from the component matrix of the metric; the declared list fixes for xAct the sign of the determinant of the metric, \texttt{SignDetOfMetric[g71]} $=-1$, which is the same in both sign conventions, since $\det \eta^{(1,7)}=\det \eta^{(7,1)}=-1$. 7+1.nb checks \texttt{SignatureOfMetric[g71]} $=\{7,1,0\}$, \texttt{SignDetOfMetric[g71]} $=-1$, $\mathrm{Re}(e_Ae_B)=\eta^{(1,7)}_{AB}$ and $\mathrm{Re}(x\,x)=\eta^{(1,7)}_{AB}x^Ax^B$.
+
 \Needspace{12\baselineskip}\section*{3. Objects reproduced from 4+4.nb}\addcontentsline{toc}{section}{3. Objects reproduced from 4+4.nb}
 {\footnotesize
 \begin{longtable}{>{\raggedright\arraybackslash}p{\dimexpr 0.1277\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.1915\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.3830\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.2979\linewidth-2\tabcolsep\relax}}
@@ -333,7 +340,7 @@ The symbols of the third stage of the project (sections 11–19 of 7+1.nb). Here
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-$g_{\mu\nu}$, $g^{\mu\nu}$ & \texttt{cv["g"]}, \texttt{cv["ginv"]} & signature $(+,-,\dots,-)$ & metric of 7+1 spacetime and its inverse \\
+$g_{\mu\nu}$, $g^{\mu\nu}$ & \texttt{cv["g"]}, \texttt{cv["ginv"]} & one time-like, seven space-like dimensions: xAct signature $\{7,1,0\}$; components with the signs of $\eta$ ($g_{00}>0$) & metric of 7+1 spacetime and its inverse \\
 $\{{}^{\lambda}_{\mu\nu}\}$ & \texttt{cv["chr"]} & (10.1) & Christoffel symbols \\
 $R^\rho{}_{\sigma\mu\nu}$ & \texttt{cv["riem"]} & (10.1) & Riemann tensor \\
 $R_{\sigma\nu}$, $R$, $G^\mu{}_\nu$ & \texttt{cv["ric"]}, \texttt{cv["R"]}, \texttt{cv["G"]} & (10.1) & Ricci tensor, scalar curvature, Einstein tensor \\

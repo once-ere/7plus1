@@ -37,7 +37,11 @@ text([('Summary. ', B),
       'multiplication table is produced by exactly the same vielbein formula as the split-octonion table of 4+4.nb; '
       '(ii) the Clifford algebra of 7+1 spacetime (x0 = time = the octonion unit, x1 … x7 = space) as REAL 16×16 '
       'matrices Γ17[A] built from T16; this is possible because the octonions’ own quadratic form '
-      'Re(x x) = x0² − x1² − … − x7² has signature (1,7) and Cl(1,7) ≅ ℝ(16); '
+      'Re(x x) = x0² − x1² − … − x7² has the signs η17 = diag(+1, −1, …, −1), which are simply the squares of the octonion '
+      'basis (e[0]² = +1, e[i]² = −1), so the generators square to +1 once and to −1 seven times: Cl(1,7) ≅ ℝ(16). '
+      '(The spacetime has one time-like and seven space-like dimensions; the tensor package xAct, used in section 12, '
+      'declares it, as the author’s notebook Einstein-Lovelock-7+1-Nash.nb does, with the signature list {7, 1, 0}: seven '
+      'space-like dimensions, one time-like dimension, none degenerate.) '
       '(iii) a proof that with the opposite overall sign (the sign convention of 4+4.nb, metric η71) no real 16×16 '
       'realization exists, because Cl(7,1) ≅ ℍ(8); for that convention the notebook gives the minimal complexification '
       'Γ71 (the exact block form of T16 with a single factor i) and a real 32×32 realization; '
@@ -87,11 +91,25 @@ text('4+4.nb uses the sign convention “space-like = +1, time-like = −1”: '
      'η4488 = diag(+1,+1,+1,+1,−1,−1,−1,−1) (x0 … x3 space-like, x4 … x7 time-like), and its Dirac '
      'matrices obey T16[A].T16[B] + T16[B].T16[A] = 2 η4488[[A+1,B+1]] ID16. '
      'In the same convention the 7+1 metric is η71 = diag(−1,+1,+1,+1,+1,+1,+1,+1).')
-text('We also use its negative, η17 = −η71 = diag(+1,−1,…,−1) (“mostly minus”). It is the quadratic '
-     'form that the octonions themselves produce: for x = x0 e[0] + … + x7 e[7] the real part of x·x is '
-     'x0² − x1² − … − x7² = X.η17.X (section 4.7). The names tell which Clifford algebra each '
-     'metric generates when v² = Q(v): η71 has 7 plus signs and 1 minus sign, signature (7,1); η17 has 1 plus '
-     'and 7 minus, signature (1,7). Both describe the same spacetime: one time, seven space dimensions.')
+text('We also use its negative, η17 = −η71 = diag(+1,−1,…,−1). η17 is simply the squares of the octonion basis: '
+     'e[0]² = +1 for the unit e[0] = 1 (the time direction x0) and e[i]² = −1 for the seven imaginary units e[1] … e[7] '
+     '(the space directions x1 … x7). More generally η17[[A+1, B+1]] = Re(e[A] e[B]), so for x = x0 e[0] + … + x7 e[7] the real '
+     'part of x·x is x0² − x1² − … − x7² = X.η17.X: the quadratic form that the octonions themselves produce (both statements '
+     'are checked in section 4.7). The names tell which Clifford algebra each matrix generates when v² = Q(v), by the signs of '
+     'the squares of the generators: η71 has 7 plus signs and 1 minus sign, Cl(7,1); η17 has 1 plus and 7 minus, Cl(1,7). '
+     'Both describe the same spacetime: one time-like dimension and seven space-like dimensions.')
+text([('xAct’s signature {7, 1, 0}. ', B),
+      'The tensor package xAct (section 12) declares a metric with a list instead: following the author’s notebook '
+      'Einstein-Lovelock-7+1-Nash.nb, this notebook declares DefMetric[{7, 1, 0}, g71[-a, -b], CD, …], and the list {7, 1, 0} '
+      'declares seven space-like dimensions, one time-like dimension and no degenerate dimension — the counts of +1 and −1 '
+      'in η71 = diag(−1, +1, …, +1), whose sign convention (space-like = +1) is that of 4+4.nb (section 12.2). The list '
+      '{7, 1, 0} and the matrix η17 = diag(+1, −1, …, −1) are two different objects describing the same 7+1 spacetime and '
+      'are not to be confused: the list counts space-like and time-like dimensions, the matrix lists the squares of the '
+      'octonion basis. (This explanation, the corresponding sentences in the summary at the top and in sections 1.4, 4.2, 4.7, 7, '
+      '11, 12.2, 13, 15.1 and 17, and the checks of sections 4.7, 12.2 and 17 were added on 27 October 2026 at the author’s request; '
+      'at the same time section 12.2 returned to the declaration {7, 1, 0} of the reference notebook. The notebook as it was before '
+      'is kept in the workspace as backups/7+1_2026-10-27_before_signature.nb; the folder backups/ is excluded from the repository '
+      'by .gitignore.)'])
 text('gO = ID8 is the norm metric of the octonions (Euclidean, N(x) = x0² + … + x7²); it replaces '
      'g_AB = η4488, the norm metric of the split octonions in 4+4.nb.')
 inp(r'''
@@ -99,8 +117,8 @@ ID4 = IdentityMatrix[4]; ID8 = IdentityMatrix[8]; ID16 = IdentityMatrix[16]; ID3
 Zero4 = ConstantArray[0, {4, 4}]; Zero8 = ConstantArray[0, {8, 8}]; Zero16 = ConstantArray[0, {16, 16}];
 zero8 = ConstantArray[0, 8];
 \[Eta]4488 = DiagonalMatrix[{1, 1, 1, 1, -1, -1, -1, -1}];  (* 4+4.nb, unchanged *)
-\[Eta]71 = DiagonalMatrix[{-1, 1, 1, 1, 1, 1, 1, 1}];       (* 7+1, sign convention of 4+4.nb *)
-\[Eta]17 = -\[Eta]71;                                       (* 7+1, octonionic (mostly minus) convention *)
+\[Eta]71 = DiagonalMatrix[{-1, 1, 1, 1, 1, 1, 1, 1}];       (* 7+1 in the sign convention of 4+4.nb: 7 space-like (+1), 1 time-like (-1) *)
+\[Eta]17 = -\[Eta]71;                                       (* 7+1: simply the squares of the octonion basis, e[0]^2 = +1, e[i]^2 = -1 *)
 gO = ID8;                                                   (* octonion norm metric *)
 Row[{"\[Eta]4488 = ", MatrixForm[\[Eta]4488], "   \[Eta]71 = ", MatrixForm[\[Eta]71], "   \[Eta]17 = ", MatrixForm[\[Eta]17], "   gO = ", MatrixForm[gO]}]
 ''')
@@ -169,7 +187,8 @@ item('(4) Split octonions are NOT a division algebra: they have zero divisors, e
 text([('Consequence for this project. ', B),
       'With v² = Q(v) and the sign convention of 4+4.nb (Q = η71), the Clifford algebra of 7+1 spacetime is '
       'Cl(7,1) ≅ ℍ(8): no rearrangement of indices and no real change of basis can give real 16×16 matrices '
-      '(proof in section 4.4). With the opposite overall sign (Q = η17, the octonions’ own quadratic form Re(x x)) the '
+      '(proof in section 4.4). With the opposite overall sign (Q = η17, the octonions’ own quadratic form Re(x x); '
+      'η17 = diag(+1, −1, …, −1) is simply the squares of the octonion basis, e[0]² = +1, e[i]² = −1) the '
       'algebra is Cl(1,7) ≅ ℝ(16), and section 4.2 builds it from the real 4+4 matrices. Section 4.3 gives, for η71, '
       'the complexification of the 4+4 matrices (one factor i), and section 4.5 a real 32×32 realization.'])
 
@@ -554,7 +573,8 @@ subsection('4.2 The REAL Clifford algebra of 7+1 spacetime: Γ17, Cl(1,7) ≅ �
 text([('Definition. ', B), 'Γ17[0] = T16O[0] (time) and Γ17[i] = T16O[0].T16O[i] (i = 1 … 7, space). Then']
      )
 text('      Γ17[A].Γ17[B] + Γ17[B].Γ17[A] = 2 η17[[A+1,B+1]] ID16 = −2 η71[[A+1,B+1]] ID16:')
-text('time squares to +ID16, each of the seven space directions to −ID16. In block form Γ17[0] = {{0, ID8}, {ID8, 0}} '
+text('time squares to +ID16, each of the seven space directions to −ID16 — the same signs as the squares of the octonion basis, '
+     'e[0]² = +1 and e[i]² = −1, which η17 = diag(+1, −1, …, −1) simply lists. In block form Γ17[0] = {{0, ID8}, {ID8, 0}} '
      '(the same block form as T16[0]) and Γ17[i] = {{τO[i], 0}, {0, τObar[i]}} (block-diagonal). With the 4+4 '
      'matrices only: Γ17[0] = T16[0], Γ17[i] = T16[0].T16[i] (i = 1, 2, 3), Γ17[k] = T16[0].T16[k].S44 (k = 4 … 7). '
      'All entries are 0 or ±1.')
@@ -701,7 +721,9 @@ check["complex chiral projectors for \[CapitalGamma]17: PL17 + PR17 == ID16, PL1
 ''')
 
 subsection('4.7 What the octonions do: Γ(x)² = Re(x x), and alternativity')
-text('For x = Σ x^A e[A] with components equal to the coordinates X: Re(x x) = x0² − x1² − … − x7² = X.η17.X, '
+text('The matrix η17 = diag(+1, −1, …, −1) is simply the squares of the octonion basis: e[0] e[0] = +e[0] and e[i] e[i] = −e[0] '
+     '(i = 1 … 7), and Re(e[A] e[B]) = η17[[A+1, B+1]] for all A, B = 0 … 7 (the first check below). '
+     'For x = Σ x^A e[A] with components equal to the coordinates X: Re(x x) = x0² − x1² − … − x7² = X.η17.X, '
      'the 7+1 interval, and Γ17(x)² = Re(x x) ID16. In the octonion basis (rotate both 8-blocks by EO) the generators are '
      'Γ17e[0] = {{0, ID8}, {ID8, 0}} and Γ17e[i] = {{LO[i], 0}, {0, −LO[i]}}. Write x = x0 e[0] + x⃗ with the imaginary part '
      'x⃗ = x1 e[1] + … + x7 e[7] (xImag in the code); then on Ψ = (ψ1, ψ2) ∈ \U0001D546 ⊕ \U0001D546:')
@@ -710,6 +732,8 @@ text('      Γ17e(x)² Ψ = (x0² ψ1 + x⃗(x⃗ ψ1),  x0² ψ2 + x⃗(x⃗ ψ
 text('where the last step is exactly alternativity: x⃗(x⃗ ψ) = (x⃗ x⃗) ψ = −|x⃗|² ψ. The same formula with the norm '
      'form instead of Re(x x) gives T16O(x)² = N(x) ID16, and in 4+4.nb T16(x)² = X.η4488.X ID16.')
 inp(r'''
+check["\[Eta]17 is simply the squares of the octonion basis: e[A] e[A] == \[Eta]17[[A+1, A+1]] e[0] (e[0]^2 = +1, e[i]^2 = -1) and Re(e[A] e[B]) == \[Eta]17[[A+1, B+1]] (A, B = 0..7)",
+  And @@ Table[oMul[ev[A], ev[A]] == \[Eta]17[[A + 1, A + 1]] ev[0], {A, 0, 7}] && Table[oRe[oMul[ev[A], ev[B]]], {A, 0, 7}, {B, 0, 7}] == \[Eta]17]
 check["Re(x x) == X.\[Eta]17.X: the octonion square produces the 7+1 interval (symbolic)", Expand[oRe[oMul[X, X]] - X.\[Eta]17.X] === 0]
 EO16 = ArrayFlatten[{{EO, 0}, {0, EO}}];
 Do[\[CapitalGamma]17e[A] = FullSimplify[EO16.\[CapitalGamma]17[A].Transpose[EO16]], {A, 0, 7}];
@@ -922,7 +946,10 @@ text([('Task of sections 7–9. ', B),
       'version built with the chiral projections (section 9).'])
 text([('Units and conventions. ', B),
       'ħ = c = 1. Coordinates X = {x0, …, x7} as everywhere in this notebook; ∂_A = ∂/∂xA. Indices A, B = 0 … 7 are raised '
-      'and lowered with η17 = diag(+1, −1, …, −1); i, j = 1 … 7 are space indices, and repeated indices are summed. '
+      'and lowered with η17 = diag(+1, −1, …, −1), which is simply the squares of the octonion basis (e[0]² = +1 for the time '
+      'direction x0, e[i]² = −1 for the seven space directions; η17[[A+1, B+1]] = Re(e[A] e[B])); the spacetime has one '
+      'time-like and seven space-like dimensions, which the tensor package xAct (section 12) declares with the signature list '
+      '{7, 1, 0}: seven space-like, one time-like, none degenerate. i, j = 1 … 7 are space indices, and repeated indices are summed. '
       'A space vector such as the momentum is written p⃗ = (p1, …, p7), p⃗·x⃗ = p1 x1 + … + p7 x7. '
       'm is the mass (mD in the code, a positive symbol); a symbol that has a value elsewhere in this notebook (mass, β, θ) '
       'is never reused with a different meaning.'])

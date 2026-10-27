@@ -21,7 +21,7 @@ from ref71 import G17, eta17
 
 R = {}
 G = {A: np.array(G17[A].tolist(), dtype=float) for A in range(9)}
-eta = np.diag([1.0] + [-1.0]*7)
+eta = np.diag([1.0] + [-1.0]*7)          # eta17: simply the squares of the octonion basis (e_0^2 = +1, e_i^2 = -1)
 Gup = {A: eta[A, A]*G[A] for A in range(8)}
 I16 = np.eye(16)
 omega = G[8]; chi = 1j*omega

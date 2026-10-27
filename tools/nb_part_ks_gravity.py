@@ -14,7 +14,9 @@ text([('About sections 15–16. ', B),
 subsection('15.1 The nine channels')
 text('For a strictly increasing multi-index K = (A1 < A2 < … < Ar) of rank r let Γ^K = Γ17up[A1].….Γ17up[Ar] (Γ^() = ID16) and')
 text('      Θ^K = i^σr Γ^K,   σr = (r(r−1)/2) mod 2,      Θ_K = ηK Θ^K,   ηK = η17_A1A1 ⋯ η17_ArAr.')
-text('The phase makes every bilinear ψbar Θ^K ψ real (Γ17[0].Θ^K is Hermitian), and Θ_K.Θ^K = ID16, tr(Θ_K.Θ^J) = 16 δKJ. '
+text('Here η17 = diag(+1, −1, …, −1) is, as everywhere in this notebook, simply the squares of the octonion basis (e[0]² = +1 for the '
+     'time direction x0, e[i]² = −1 for the seven space directions), so ηK = (−1)^(number of space indices in K). '
+     'The phase makes every bilinear ψbar Θ^K ψ real (Γ17[0].Θ^K is Hermitian), and Θ_K.Θ^K = ID16, tr(Θ_K.Θ^J) = 16 δKJ. '
      'The invariant of rank r and the general self-coupling are')
 text('      I_r = Σ_{|K| = r} (ψbar Θ_K ψ)(ψbar Θ^K ψ) = Σ_{|K| = r} ηK (ψbar Θ^K ψ)²,      L_self = −(1/2) Σ_{r=0}^{8} g_r I_r.')
 text('The ranks have 1, 8, 28, 56, 70, 56, 28, 8, 1 members. The couplings of section 8 are g0 = gS, g1 = gV, g7 = −gA, g8 = −gP '

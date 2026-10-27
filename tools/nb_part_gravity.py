@@ -9,8 +9,9 @@ text([('About sections 11–14. ', B),
       'the canonical spin connection, Einstein–Lovelock gravity, a primordial pair-creation epoch, a Kohn–Sham treatment, the '
       'Standard Model at a lower-dimensional world surface with portals to dirac16complex — and rebuild them on THIS project’s '
       'spacetime. Dirac_claude works on a 4+4 spacetime (four time-like coordinates, a fold, a warped metric); none of that '
-      'metric is used here. Here there is ONE time coordinate x0 and SEVEN space coordinates x1 … x7, the frame metric is '
-      'η17 = diag(+1, −1, …, −1), and the Dirac matrices are the real Γ17[A] of section 4.2.'])
+      'metric is used here. Here there is ONE time coordinate x0 and SEVEN space coordinates x1 … x7, the frame metric '
+      'η17 = diag(+1, −1, …, −1) is simply the squares of the octonion basis (e0² = +1 for the unit e0 = 1, e_i² = −1 for the seven '
+      'imaginary units), and the Dirac matrices are the real Γ17[A] of section 4.2.'])
 text([('Task of sections 11–14. ', B),
       '(i) Curvature of a general 7+1 metric: Christoffel symbols, Riemann, Ricci and Einstein tensors; (ii) the Lovelock '
       'tensors of 7+1 spacetime (Einstein, Gauss–Bonnet, cubic; the quartic one vanishes identically in eight dimensions) and the '
@@ -20,8 +21,12 @@ text([('Task of sections 11–14. ', B),
       'cosmological epochs — primordial (near x0 = 0), modern, far future — with the pair creation of dirac16complex in each.'])
 text([('Conventions. ', B),
       'ħ = c = 1. Coordinates X = {x0, …, x7}; coordinate (Greek) indices μ, ν, λ, ρ, σ = 0 … 7; frame (Latin capital) indices '
-      'A, B, C = 0 … 7, raised and lowered with η17. The metric g_μν has signature (+, −, −, −, −, −, −, −): x0 is time, '
-      'x1, x2, x3 are ordinary space and x4 … x7 the four auxiliary space-like coordinates. The Christoffel symbols are written '
+      'A, B, C = 0 … 7, raised and lowered with η17. The spacetime has one time-like dimension, x0, and seven space-like dimensions: '
+      'x1, x2, x3 (ordinary space) and x4 … x7 (the four auxiliary space-like coordinates); the tensor packages xAct declare this '
+      'with the signature {7, 1, 0} (section 12.2). The metric g_μν = η17_AB e^A_μ e^B_ν carries the signs of '
+      'η17 = diag(+1, −1, …, −1), which are simply the squares of the octonion basis: e0² = +1, e_i² = −1 (i = 1 … 7), i.e. '
+      'η17_AB = Re(e_A e_B) and Re(x x) = x0² − x1² − … − x7² for x = x^A e_A; so g00 > 0 along the time-like direction and the '
+      'squares along the seven space-like directions are negative. The Christoffel symbols are written '
       '{λ μν} (never Γ, which is reserved for Dirac matrices); in the code chr[[λ+1, μ+1, ν+1]]. Curvature (Landau–Lifshitz): '
       'R^ρ_σμν = ∂_μ{ρ σν} − ∂_ν{ρ σμ} + {ρ μλ}{λ σν} − {ρ νλ}{λ σμ},  R_σν = R^ρ_σρν,  R = g^σν R_σν,  '
       'G^μ_ν = R^μ_ν − δ^μ_ν R/2. With these conventions the field equations are G^μ_ν − Λ δ^μ_ν = κ T^μ_ν with κ = 8πG8 '
@@ -148,12 +153,20 @@ text('The packages xAct`xCoba` (components in a basis; it loads xPerm and xTenso
      'loaded exactly as in the reference notebook. Two kinds of output are suppressed while they load: the package banners, and the '
      'warnings that xTensor cannot attach rules to Commutator and Anticommutator, which are protected built-in symbols of Wolfram 15 '
      '(the reference notebook shows the same warnings; these two symbols are not used here). The manifold M8 has dimension 8 and the '
-     'abstract indices a, b, c, d, f, i, j, k, l, m, n, p, q, r, s, y (the list of the reference notebook); the metric g71 has '
-     'signature {1, 7, 0} in the xAct notation (one plus sign, seven minus signs: x0 is time) and its Levi-Civita covariant derivative '
-     'is CD; the chart chartM8 has the coordinate scalars x0[], …, x7[] (the coordinates X = {x0, …, x7} of this notebook; a component '
-     'computed by xAct is turned into a function of x0, …, x7 by x0[] → x0, …). The reference notebook declares the signature '
-     '{7, 1, 0} (the mostly-plus convention); the declaration does not enter the Lovelock tensors with mixed indices, which follow from '
-     'the component matrix alone, and {1, 7, 0} matches the metric η17 = diag(+1, −1, …, −1) of this notebook. The scale factors and '
+     'abstract indices a, b, c, d, f, i, j, k, l, m, n, p, q, r, s, y (the list of the reference notebook); the metric g71 is '
+     'declared, exactly as in the reference notebook, with the signature {7, 1, 0}: in xAct this list declares the spacetime of this '
+     'notebook, seven space-like dimensions (x1, …, x7) and one time-like dimension (x0), with no degenerate direction — the signature '
+     '(7,1) of η71 = diag(−1, +1, …, +1) in the sign convention of 4+4.nb (space-like = +1, section 1.2). Its Levi-Civita covariant '
+     'derivative is CD; the chart chartM8 has the coordinate scalars x0[], …, x7[] (the coordinates X = {x0, …, x7} of this notebook; '
+     'a component computed by xAct is turned into a function of x0, …, x7 by x0[] → x0, …). The signature list is not to be confused '
+     'with the matrix η17 = −η71 = diag(+1, −1, …, −1): η17 is simply the squares of the octonion basis, e0² = +1 for the unit e0 = 1 '
+     '(the time direction x0) and e_i² = −1 for the seven imaginary units (the space directions x1, …, x7), i.e. η17_AB = Re(e_A e_B), '
+     'the quadratic form Re(x x) = x0² − x1² − … − x7² of an octonion x = x^A e_A, and the Clifford relation '
+     'Γ17[A].Γ17[B] + Γ17[B].Γ17[A] = 2 η17_AB ID16 of section 4. The metrics of sections 11–16 are given to xAct with the signs of η17 '
+     '(g00 > 0 along the time-like x0, negative squares along the space-like directions). The declared signature fixes for xAct the '
+     'sign of the determinant of the metric, SignDetOfMetric[g71] = −1, which is the same in both conventions (a metric with one '
+     'time-like and seven space-like directions has a negative determinant either way); the components of the Lovelock tensors follow '
+     'from the component matrix of the metric. The scale factors and '
      'profiles of the metrics below are declared scalar functions and H a constant symbol. The guard If[! MemberQ[$Manifolds, M8], …] and the final Unset make the '
      'cell safe to evaluate twice while the notebook stays open. xAct keeps its definitions in the kernel, while a notebook that is closed '
      'and opened again gets a new private context; to evaluate the notebook again after reopening it, start from a fresh kernel '
@@ -165,7 +178,7 @@ $DefInfoQ = False; $CVVerbose = False;
 SetOptions[ToCanonical, UseMetricOnVBundle -> None, Verbose -> False];
 If[! MemberQ[$Manifolds, M8],
   DefManifold[M8, 8, {a, b, c, d, f, i, j, k, l, m, n, p, q, r, s, y}];
-  DefMetric[{1, 7, 0}, g71[-a, -b], CD, {";", "D"}, WeightedWithBasis -> AIndex];
+  DefMetric[{7, 1, 0}, g71[-a, -b], CD, {";", "D"}, WeightedWithBasis -> AIndex];
   DefChart[chartM8, M8, {0, 1, 2, 3, 4, 5, 6, 7}, {x0[], x1[], x2[], x3[], x4[], x5[], x6[], x7[]},
     ExtendedCoordinateDerivatives -> True, FormatBasis -> {"Partials", "Differentials"}];
   DefScalarFunction /@ {a3, b4, fPP};
@@ -175,6 +188,17 @@ MyArrayComponents[expr_] := expr // ToBasis[chartM8] // ComponentArray // ToValu
 toXc = Thread[X -> Through[X[]]]; fromXc = Thread[Through[X[]] -> X];
 {"xPerm" -> xAct`xPerm`$Version, "xTensor" -> xAct`xTensor`$Version, "xCoba" -> xAct`xCoba`$Version, "xTras" -> xAct`xTras`$Version,
  "SignatureOfMetric[g71]" -> SignatureOfMetric[g71], "DimOfManifold[M8]" -> DimOfManifold[M8]}
+''')
+text('Three checks make the two objects explicit: the xAct declaration (seven space-like dimensions, one time-like dimension), and '
+     'the matrix η17 as the squares of the octonion basis (with the octonion product oMul, the real part oRe and the basis units '
+     'ev[A] = e_A of section 3).')
+inp(r'''
+check["xAct declaration as in the reference notebook: SignatureOfMetric[g71] == {7, 1, 0} (seven space-like dimensions, one time-like dimension, none degenerate) and SignDetOfMetric[g71] == -1",
+  SignatureOfMetric[g71] === {7, 1, 0} && SignDetOfMetric[g71] === -1]
+check["eta17 is simply the squares of the octonion basis: eta17[[A+1, B+1]] == Re(e_A e_B), e_0^2 == +1 (time x0), e_i^2 == -1 (space x_i, i = 1..7)",
+  Table[oRe[oMul[ev[A], ev[B]]], {A, 0, 7}, {B, 0, 7}] == \[Eta]17]
+check["the quadratic form of the octonions has the signs of the squares of the octonion basis: Re(x x) == x0^2 - x1^2 - ... - x7^2 == x.eta17.x for x = x^A e_A (symbolic)",
+  With[{xq = Array[qO, 8, 0]}, Expand[oRe[oMul[xq, xq]] - xq.\[Eta]17.xq] === 0]]
 ''')
 
 subsection('12.3 The Lovelock tensors with abstract indices: the generalized Kronecker delta kδ')
@@ -403,7 +427,9 @@ check["eternal inflation (a = e^{H x0}) with deflation (b = e^{-H x0}): w2 == La
 
 # =====================================================================================
 section('13. Generalized frame matrices, the canonical spin connection, and the covariant Dirac equation of dirac16complex')
-text('A frame field (vielbein) e^A_μ(X) is a square root of the metric, g_μν = η17_AB e^A_μ e^B_ν; its inverse is e_A^μ (code ei[[μ+1, A+1]]). '
+text('A frame field (vielbein) e^A_μ(X) is a square root of the metric, g_μν = η17_AB e^A_μ e^B_ν, with η17 = diag(+1, −1, …, −1) simply '
+     'the squares of the octonion basis (e[0]² = +1 for the time direction, e[i]² = −1 for the seven space directions); its inverse is '
+     'e_A^μ (code ei[[μ+1, A+1]]). '
      'The GENERALIZED FRAME MATRICES are the position-dependent real 16×16 matrices')
 text('      Γ_μ(X) = e^A_μ(X) Γ17[A],    Γ^μ(X) = e_A^μ(X) Γ17up[A],    Γ_μ Γ_ν + Γ_ν Γ_μ = 2 g_μν(X) ID16.')
 text('The CANONICAL (Levi-Civita) SPIN CONNECTION is ω_μ^A_B = e^A_ν (∂_μ e_B^ν + {ν μλ} e_B^λ), antisymmetric when its first frame index '

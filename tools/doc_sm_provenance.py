@@ -3,6 +3,7 @@ data used (with their sources), the decisions taken, the derivations, and the ve
 equation used is written here."""
 from docgen import Doc
 from doc_stage3_common import fmt
+from doc_common import signature_provenance
 from doc_sm import compare, max_rel
 
 
@@ -27,7 +28,15 @@ def build(D, today, runs):
         'Model lives on a seven-dimensional fold of a 4+4 spacetime — but not its metric. Here the Standard Model lives on the 3+1-dimensional '
         'world brane $x_4=\\dots=x_7=0$, the auxiliary coordinates form a torus, and gravity and dirac16complex live in the whole spacetime. '
         'Every documentation file has a companion provenance file and a symbol file, in Markdown and LaTeX with PDFs; no document refers the '
-        'reader to another one, and every equation used is written in the document that uses it.')
+        'reader to another one, and every equation used is written in the document that uses it. On 27 October 2026 the author added: make '
+        'clear in all documentation, examples and provenance records that the xAct list $\\{7,1,0\\}$ declares seven space-like dimensions '
+        'and one time-like dimension, while $\\mathrm{diag}(+1,-1,\\dots,-1)$ is simply the squares of the octonion basis (section 1.1).')
+    d.h2('1.1 The signature: the author’s explanation of 27 October 2026')
+    signature_provenance(d, eta=r'\eta', eta71=r'\eta_{71}', gam=r'\Gamma')
+    d.p('On the world brane the same reading holds: one time-like and three space-like dimensions (in the counting of xAct the list '
+        '$\\{3,1,0\\}$), and the flat frame metric $\\mathrm{diag}(+1,-1,-1,-1)$ is $\\eta$ restricted to $x_0,\\dots,x_3$, the squares of '
+        'the basis $e_0=1,e_1,e_2,e_3$ of the quaternion subalgebra $\\mathbb H$ of the octonions (a check of section 17 of 7+1.nb and of '
+        '`tools/ref_sm.py`).')
 
     d.h1('2. Data and their sources')
     d.table(['quantity', 'value used', 'source'], [

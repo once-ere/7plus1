@@ -221,7 +221,16 @@ rho = [1j*e_ for e_ in ek]                                         # rho_k (k = 
 I4 = np.eye(4)
 R2 = {mu: np.kron(g4[mu], I4) for mu in range(4)}
 for k in range(4): R2[k + 4] = np.kron(g5, rho[k])
-eta = np.diag([1.0] + [-1.0]*7)
+eta = np.diag([1.0] + [-1.0]*7)          # eta17: simply the squares of the octonion basis (e_0^2 = +1, e_i^2 = -1)
+# the brane frame metric diag(+1, -1, -1, -1) is eta17 restricted to x0..x3: simply the squares of the basis 1, e_1, e_2, e_3 of
+# the quaternion subalgebra H of the octonions (one time-like, three space-like brane dimensions; in the counting of xAct {3, 1, 0})
+from ref71 import omul
+from octalg import basis
+_q = [[omul(basis(a_), basis(b_)) for b_ in range(4)] for a_ in range(4)]
+R['brane frame metric diag(+1,-1,-1,-1) = eta17 on x0..x3 = squares of the quaternion basis 1, e_1, e_2, e_3 (Re(e_a e_b)); H closed'] = (
+    [[_q[a_][b_][0] for b_ in range(4)] for a_ in range(4)] == [[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, -1]]
+    and [[eta17[a_, b_] for b_ in range(4)] for a_ in range(4)] == [[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, -1]]
+    and all(all(c == 0 for c in _q[a_][b_][4:]) for a_ in range(4) for b_ in range(4)))
 R['brane representation: gamma_mu (x) 1_4 (mu = 0..3) and gamma5 (x) rho_k (k = 4..7) satisfy {R_A, R_B} = 2 eta_AB'] = all(
     np.allclose(R2[A] @ R2[B] + R2[B] @ R2[A], 2*eta[A, B]*np.eye(16)) for A in range(8) for B in range(8))
 def prods(Gs):

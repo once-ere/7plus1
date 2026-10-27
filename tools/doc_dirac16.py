@@ -4,7 +4,7 @@ theories of the self-coupled field (sections 7-10 of 7+1.nb).  Every equation us
 import sympy as sp
 from docgen import Doc, pmat
 from collections import OrderedDict
-from doc_common import all_checks
+from doc_common import all_checks, signature_block
 
 def num(x, n=12):
     """LaTeX decimal string of x with n significant digits"""
@@ -45,8 +45,9 @@ def build(D):
         '$(\\tau^{O}_i)^2=-1_8$, mutually anticommuting; section 2.3) the eight Dirac matrices are')
     d.eq(r'\Gamma_0=\begin{pmatrix}0&1_8\\1_8&0\end{pmatrix},\qquad \Gamma_i=\begin{pmatrix}\tau^{O}_i&0\\0&-\tau^{O}_i\end{pmatrix},\qquad '
          r'\Gamma_A\Gamma_B+\Gamma_B\Gamma_A=2\,\eta_{AB}\,1_{16},\qquad \eta=\mathrm{diag}(+1,-1,\dots,-1).')
-    d.p('Every entry is $0$ or $\\pm1$. These are the only real choice: with the opposite sign convention (time squaring to $-1$) '
-        'no real 16×16 matrices exist (section 3.3).')
+    d.p('Every entry is $0$ or $\\pm1$. The signs are those of the octonion basis: $\\eta$ is simply the squares of the octonion '
+        'units, $e_0^2=+1$ (time) and $e_i^2=-1$ (space), $\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$ (section 2.1). These are the only real '
+        'choice: with the opposite sign convention (time squaring to $-1$) no real 16×16 matrices exist (section 3.3).')
     d.p('**The Dirac equation of dirac16complex** $\\psi=(\\psi_1,\\dots,\\psi_{16})$, with $\\Gamma^A=\\eta^{AA}\\Gamma_A$ and '
         '$\\partial_A=\\partial/\\partial x_A$:')
     d.eq(r'\big(i\,\Gamma^A\partial_A-m\big)\psi=0\qquad\Longleftrightarrow\qquad i\,\partial_0\psi=\big(-i\,\alpha_i\,\partial_i+\beta\,m\big)\psi,'
@@ -97,6 +98,7 @@ def sec2(d, D):
         '$\\partial_Ax^B=\\delta_A^B$). A space vector is written with an arrow, $\\vec p=(p^1,\\dots,p^7)$, '
         '$\\vec p\\cdot\\vec x=\\sum_ip^ix_i$, $\\vec p^{\\,2}=\\sum_i(p^i)^2$. The wave (d’Alembert) operator is')
     d.eq(r'\Box=\eta^{AB}\partial_A\partial_B=\partial_0^2-\partial_1^2-\dots-\partial_7^2 .')
+    signature_block(d, eta=r'\eta', eta71=r"\eta'", gam=r'\Gamma')
     d.h2('2.2 Matrix notation')
     d.p('$1_n$ is the $n\\times n$ identity, $M^{\\mathsf T}$ the transpose, $M^\\dagger=\\overline{M}^{\\mathsf T}$ the Hermitian '
         'conjugate, $\\overline{z}$ or $z^*$ the complex conjugate, $\\mathrm{tr}$ the trace, $\\delta_{ij}$ the Kronecker delta and '
@@ -158,7 +160,7 @@ def sec3(d, D):
              r'\omega&=\Gamma_0\Gamma_1\cdots\Gamma_7=\begin{pmatrix}0&-1_8\\1_8&0\end{pmatrix},\qquad \omega^2=-1_{16},\qquad '
              r'\omega\,\Gamma_A=-\Gamma_A\,\omega\quad(A=0,\dots,7).'])
     d.p('In the notebook: $\\beta$ = `βD`, $\\alpha_i$ = `αD[i]`, $\\omega$ = `ω17` = `Γ17[8]`.')
-    d.h2('3.3 Why real Dirac matrices force the convention $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$')
+    d.h2('3.3 Why real Dirac matrices must square like the octonion basis, $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$')
     d.p('The opposite overall sign, $\\eta\'=-\\eta=\\mathrm{diag}(-1,+1,\\dots,+1)$ (time squaring to $-1$), generates the Clifford '
         'algebra $Cl(7,1)\\cong\\mathbb H(8)$, which has NO real 16×16 realization: if real $R_A$ with '
         '$R_AR_B+R_BR_A=2\\eta\'_{AB}1_{16}$ existed, then, $Cl_8(\\mathbb C)\\cong\\mathbb C(16)$ having a single irreducible module, '
@@ -167,8 +169,11 @@ def sec3(d, D):
         '$Y\\Gamma_A=-\\Gamma_AY$ for all $A$; then $Y\\omega$ commutes with every $\\Gamma_A$ and, by Schur’s lemma (the commutant of the '
         'irreducible $\\mathbb C(16)$ is $\\mathbb C\\,1_{16}$), $Y=c\\,\\omega$ with $c\\in\\mathbb C$ (the real solutions, computed in 7+1.nb, '
         'are $\\mathbb R\\,\\omega$). But then $Y\\overline Y=|c|^2\\omega^2=-|c|^2\\,1_{16}\\neq1_{16}$ — a contradiction. Reordering, renaming or '
-        're-signing indices does not change the signature, so it cannot help. Hence $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ is the 7+1 '
-        'convention with real 16×16 Dirac matrices, and the Dirac matrices of this document are real.')
+        're-signing indices does not change the signature of the Clifford relation (the numbers of generators squaring to $+1$ and to '
+        '$-1$), so it cannot help. Hence real 16×16 Dirac matrices of 7+1 spacetime must square like the octonion basis: '
+        '$\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ is simply the squares $e_0^2=+1$, $e_i^2=-1$ of the octonion units, and the Dirac '
+        'matrices of this document are real. (The xAct list $\\{7,1,0\\}$ of section 12 of 7+1.nb is a different object: it declares '
+        'seven space-like dimensions and one time-like dimension of the same spacetime.)')
 
 # =========================================================================================================
 @section
@@ -682,7 +687,8 @@ def sec12(d, D):
             secs[cur].append(P.box_to_text(content).strip('"'))
     d.ul(['**%s** — %s' % (k, '; '.join(v) if v else 'the four summary cells: `Length[checks]`, `failedChecks`, `allChecksPassed` and a '
           'table of all checks') for k, v in secs.items()])
-    d.p('Sections 0–6 (the octonions and the Clifford algebra of 7+1 spacetime) are unchanged. The evaluated notebook as it was before '
+    d.p('Sections 0–6 (the octonions and the Clifford algebra of 7+1 spacetime) are unchanged, except for the explanation of the '
+        'signature added on 27 October 2026 at the author’s request (section 2.1: some text cells, two comments and one check). The evaluated notebook as it was before '
         'sections 7–10 were appended is kept in the workspace folder backups/ (file 7+1_2026-10-26_before_dirac16complex.nb), a folder '
         'excluded from the repository by .gitignore. Section 6 summarizes the checks of sections 1–5 (it is evaluated before sections 7–9); '
         'section 10 summarizes all checks.')

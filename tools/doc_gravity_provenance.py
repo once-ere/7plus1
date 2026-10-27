@@ -3,6 +3,7 @@ decisions taken, the equations used, how everything was checked and with which p
 used is written in this document."""
 from docgen import Doc
 from doc_stage3_common import fmt, mnum
+from doc_common import signature_provenance
 
 
 def build(D, today, runs):
@@ -34,12 +35,17 @@ def build(D, today, runs):
           'and the totality of the Standard Model (sections 15–19 of 7+1.nb; this record covers sections 11–14).',
           'Compute the Lovelock tensors as in the author’s reference notebook Einstein-Lovelock-7+1-Nash.nb and do NOT use its section '
           '"FAILED Model metric g71; DO NOT USE!".',
+          'Make clear in all documentation, examples and provenance records that the xAct declaration $\\{7,1,0\\}$ declares seven '
+          'space-like dimensions and one time-like dimension, while $\\mathrm{diag}(+1,-1,\\dots,-1)$ is simply the squares of the octonion '
+          'basis (the author’s instruction of 27 October 2026).',
           'For every documentation file a companion provenance file and a symbol file, each in Markdown and LaTeX, the LaTeX compiled to '
           'PDF; no document refers the reader to another one, and every equation used is written in the document that uses it.',
           'Push every completed stage to github.com/once-ere/7plus1, respecting the repository’s .gitignore; use only the Wolfram front '
           'end WolframNB.exe of Wolfram 15.0.1.'])
     d.p('The coordinates of 7+1.nb are kept: $X=(x_0,\\dots,x_7)$, $x_0$ the time (the direction of the octonion unit), $x_1,x_2,x_3$ '
-        'ordinary space, $x_4,\\dots,x_7$ auxiliary space; metric signature $(+,-,\\dots,-)$ with $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$.')
+        'ordinary space, $x_4,\\dots,x_7$ auxiliary space.')
+    d.h2('1.1 The signature: the author’s explanation of 27 October 2026')
+    signature_provenance(d, eta=r'\eta', eta71=r'\eta_{71}', gam=r'\Gamma')
 
     # ------------------------------------------------------------------------------------------------
     d.h1('2. Inputs')
@@ -76,10 +82,13 @@ def build(D, today, runs):
          r'R^{j_1j_2}{}_{h_1h_2}\cdots R^{j_{2k-1}j_{2k}}{}_{h_{2k-1}h_{2k}}+\lambda\sqrt{|g|}\,g^{lh},\qquad m-1=\frac82-1=3\ \ (n=8).')
     d.p('NOT taken: the section "FAILED Model metric g71; DO NOT USE!" of the reference notebook (its model metric and the solution '
         'found for it); its author states that it never worked for the 7+1 signature. No metric of that section appears in this '
-        'project. Changed: the signature declaration `DefMetric[{7, 1, 0}, …]` (the mostly-plus convention) became `DefMetric[{1, 7, 0}, …]` '
-        'to match $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ of this notebook (the declaration does not enter the Lovelock tensors with mixed '
-        'indices, and both declarations give the same sign of the determinant, $(-1)^q=-1$ for $q=7$ and for $q=1$, as a separate kernel with xTensor 1.2.0 '
-        'confirmed: `SignDetOfMetric` is $-1$ for a metric declared `{1, 7, 0}` and for one declared `{7, 1, 0}`); the metric symbol is called `g71` as in the reference notebook.')
+        'project. Taken unchanged as well: the signature declaration `DefMetric[{7, 1, 0}, g71[-a, -b], CD, …]` — in xAct seven '
+        'space-like dimensions ($x_1,\\dots,x_7$), one time-like dimension ($x_0$), none degenerate — and the metric symbol `g71`.')
+    d.p('**A correction (27 October 2026; section 1.1).** An earlier version of section 12 of 7+1.nb declared `DefMetric[{1, 7, 0}, …]`, '
+        'reading the list as the signs of $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$; it now declares $\\{7,1,0\\}$, as the reference notebook '
+        'does. The Lovelock tensors are the same with both declarations: they follow from the components of the metric, and '
+        '`SignDetOfMetric` is $-1$ for both (a separate kernel with xTensor 1.2.0 confirmed this for a metric declared `{1, 7, 0}` and one '
+        'declared `{7, 1, 0}`).')
     if D.get('sha_reference'):
         d.code('Einstein-Lovelock-7+1-Nash.nb   SHA-256 %s\nEinstein-Lovelock-7+1-Nash.pdf  SHA-256 %s' % D['sha_reference'], 'text')
     d.h2('2.3 Software and other sources')
@@ -103,11 +112,12 @@ def build(D, today, runs):
     d.table(['#', 'decision', 'reason / equation'], [
         ['1', 'Christoffel symbols are written $\\{{}^{\\lambda}_{\\mu\\nu}\\}$', '$\\Gamma$ is reserved for the Dirac matrices'],
         ['2', 'Riemann tensor of Landau and Lifshitz: $R^\\rho{}_{\\sigma\\mu\\nu}=\\partial_\\mu\\{{}^\\rho_{\\sigma\\nu}\\}-\\partial_\\nu\\{{}^\\rho_{\\sigma\\mu}\\}+\\{{}^\\rho_{\\mu\\lambda}\\}\\{{}^\\lambda_{\\sigma\\nu}\\}-\\{{}^\\rho_{\\nu\\lambda}\\}\\{{}^\\lambda_{\\sigma\\mu}\\}$, $R_{\\sigma\\nu}=R^\\rho{}_{\\sigma\\rho\\nu}$',
-         'with $(+,-,\\dots,-)$: $G^\\mu{}_\\nu-\\bar\\Lambda\\delta^\\mu_\\nu=\\kappa T^\\mu{}_\\nu$ with $T^0{}_0>0$; agrees with xAct (the reference notebook’s '
+         'with the signs of $\\eta$ ($g_{00}>0$): $G^\\mu{}_\\nu-\\bar\\Lambda\\delta^\\mu_\\nu=\\kappa T^\\mu{}_\\nu$ with $T^0{}_0>0$; agrees with xAct (the reference notebook’s '
          '$\\mathrm{Lovelock}_1$ equals this $G$)'],
         ['3', 'Lovelock tensors normalized as in the reference notebook, $E^{(k)}=-2^{-(k+1)}\\delta RR\\cdots$', '$E^{(1)}=G$, $E^{(2)}=$ Lanczos tensor'],
         ['4', 'two forms of the field equations: $w$-form (reference notebook) and $\\alpha$-form', '$\\alpha_2=w_2/(w_1H^2)$, $\\alpha_3=w_3/(w_1H^4)$, $\\bar\\Lambda=\\Lambda H^2/w_1$'],
-        ['5', 'xAct signature declaration $\\{1,7,0\\}$', 'one plus sign (time $x_0$), seven minus signs, as $\\eta$'],
+        ['5', 'xAct signature declaration $\\{7,1,0\\}$, as in the reference notebook', 'seven space-like dimensions and one time-like dimension; '
+         '$\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ is a different object, simply the squares of the octonion basis, $\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$'],
         ['6', 'xAct runs in the notebook kernel; the cell is guarded (`If[! MemberQ[$Manifolds, M8], …]`, `Unset` of the component assignments); '
          '`tools/run_eval.wl` evaluates the notebook in a fresh kernel', 'the cell can be evaluated twice while the notebook stays open; xAct keeps its '
          'definitions in the kernel, while a reopened notebook gets a new private context'],

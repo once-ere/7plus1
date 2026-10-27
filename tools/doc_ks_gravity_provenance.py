@@ -2,6 +2,7 @@
 the decisions taken, the derivations, and the verification record.  Self-contained: every equation used is written here."""
 from docgen import Doc
 from doc_stage3_common import fmt
+from doc_common import signature_provenance
 from doc_ks_gravity import compare, max_rel
 
 
@@ -26,10 +27,15 @@ def build(D, today, runs):
           'vector, axial) of the earlier Kohn–Sham theory of the notebook;',
           'the Kohn–Sham theory of dirac16complex in GRAVITATIONAL fields, with the canonical spin connection coupling gravity to the field, '
           'in the primordial epoch (near $x_0=0$), the modern epoch and the far future;',
-          'everything on the 7+1 spacetime of this project — one time coordinate $x_0$, seven space coordinates $x_1,\\dots,x_7$, metric '
-          'signature $(+,-,\\dots,-)$ — with the ideas (not the 4+4 metric) of the repository github.com/once-ere/Dirac_claude;',
+          'everything on the 7+1 spacetime of this project — one time coordinate $x_0$, seven space coordinates $x_1,\\dots,x_7$ — with '
+          'the ideas (not the 4+4 metric) of the repository github.com/once-ere/Dirac_claude;',
           'for every documentation file a companion provenance file and a symbol file, in Markdown and LaTeX with PDFs; no document '
-          'refers the reader to another one; every equation used is written in the document that uses it.'])
+          'refers the reader to another one; every equation used is written in the document that uses it;',
+          'and (27 October 2026) to make clear in all documentation, examples and provenance records that the xAct list $\\{7,1,0\\}$ '
+          'declares seven space-like dimensions and one time-like dimension, while $\\mathrm{diag}(+1,-1,\\dots,-1)$ is simply the '
+          'squares of the octonion basis (section 1.1).'])
+    d.h2('1.1 The signature: the author’s explanation of 27 October 2026')
+    signature_provenance(d, eta=r'\eta', eta71=r'\eta_{71}', gam=r'\Gamma')
 
     d.h1('2. Inputs')
     d.h2('2.1 Objects of the earlier sections of 7+1.nb')

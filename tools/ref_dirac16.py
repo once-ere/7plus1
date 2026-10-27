@@ -15,7 +15,7 @@ from ref71 import *                      # G17 (real Gamma17), tauO, eta17, blk,
 R = {}                                   # name -> result (True/False or a number)
 I8, I16, Z8 = sp.eye(8), sp.eye(16), sp.zeros(8)
 G = {A: G17[A] for A in range(9)}        # G[0..7]: Gamma17[A] (lower index); G[8] = omega = G0 G1 ... G7
-eta = eta17
+eta = eta17                              # diag(+1,-1,...,-1): simply the squares of the octonion basis (e_0^2 = +1, e_i^2 = -1)
 Gup = {A: eta[A, A]*G[A] for A in range(8)}            # Gamma^A = eta^{AA} Gamma_A
 beta = G[0]
 alpha = {i: G[0]*Gup[i] for i in range(1, 8)}          # alpha^i = Gamma^0 Gamma^i

@@ -29,11 +29,18 @@ For each symbol this dictionary gives the mathematical notation, the name used i
 \begin{itemize}
 \item Units: $\hbar=c=1$; a prime is $d/dx_0$.
 \item Coordinates $X=(x_0,x_1,\dots,x_7)$ (\texttt{X = \{x0, …, x7\}}): $x_0$ time, $x_1,x_2,x_3$ ordinary space, $x_4,\dots,x_7$ auxiliary space.
-\item Frame indices $A,B\in\lbrace0,\dots,7\rbrace$, raised and lowered with $\eta=\mathrm{diag}(+1,-1,\dots,-1)$ (\texttt{η17}); coordinate indices $\mu,\nu\in\lbrace0,\dots,7\rbrace$; $i\in\lbrace1,2,3\rbrace$ ordinary, $k\in\lbrace4,\dots,7\rbrace$ auxiliary space. Repeated indices are summed.
+\item Frame indices $A,B\in\lbrace0,\dots,7\rbrace$, raised and lowered with $\eta=\mathrm{diag}(+1,-1,\dots,-1)$ (\texttt{η17}), simply the squares of the octonion basis ($\eta_{AB}=\mathrm{Re}(e_Ae_B)$); coordinate indices $\mu,\nu\in\lbrace0,\dots,7\rbrace$; $i\in\lbrace1,2,3\rbrace$ ordinary, $k\in\lbrace4,\dots,7\rbrace$ auxiliary space. Repeated indices are summed.
 \item Multi-indices $K,J$ are strictly increasing lists of frame indices; $|K|$ is the rank (the length of $K$); $K\in r$ means $|K|=r$.
 \item Matrices: $1_n$ identity, $M^{\mathsf T}$ transpose, $M^\dagger$ conjugate transpose, $\mathrm{tr}$ trace, $[X,Y]=XY-YX$.
 \item Mathematica names with Greek letters are written with named characters: \texttt{\textbackslash{}[CapitalTheta]up} is \texttt{Θup}, \texttt{\textbackslash{}[Eta]K} is \texttt{ηK}, \texttt{\textbackslash{}[Chi]17} is \texttt{χ17}, \texttt{\textbackslash{}[Omega]17} is \texttt{ω17}.
+\item Signature: one time-like dimension ($x_0$) and seven space-like dimensions; the xAct list $\{7,1,0\}$ declares seven space-like dimensions and one time-like dimension, the matrix $\eta$ lists the squares of the octonion basis (below).
 \end{itemize}
+\textbf{The signature: $\{7,1,0\}$ and $\mathrm{diag}(+1,-1,\dots,-1)$.} The 7+1 spacetime has one time-like dimension ($x_0$, the direction of the octonion unit $e_0=1$) and seven space-like dimensions ($x_1,x_2,x_3$ ordinary space, $x_4,\dots,x_7$ auxiliary space). Two different objects describe this, and neither may be replaced by the other. (i) The tensor package xAct, used in section 12 of 7+1.nb exactly as in the author’s notebook Einstein-Lovelock-7+1-Nash.nb, declares the metric with \texttt{DefMetric[\{7, 1, 0\}, g71[-a, -b], CD, …]}: the list $\{7,1,0\}$ declares seven space-like dimensions, one time-like dimension and no degenerate dimension — the numbers of entries $+1$ and $-1$ of $\eta_{71}=\mathrm{diag}(-1,+1,\dots,+1)$ (\texttt{η71}), the same spacetime written in the sign convention of 4+4.nb (space-like $=+1$, time-like $=-1$). (ii) The matrix $\eta=-\eta_{71}=\mathrm{diag}(+1,-1,\dots,-1)$ (\texttt{η17}) is simply the squares of the octonion basis: $e_0^2=+1$ for the unit $e_0=1$ (time) and $e_i^2=-1$ for the seven imaginary units $e_1,\dots,e_7$ (space); more generally it is the real part of the product of two basis units, and it gives the quadratic form of the octonions:
+\begin{gather*}
+\eta_{AB}=\mathrm{Re}(e_Ae_B),\qquad e_0^2=+1,\qquad e_i^2=-1\ \ (i=1,\dots,7),\\ \mathrm{Re}(x\,x)=x_0^2-x_1^2-\cdots-x_7^2=\eta_{AB}\,x^Ax^B\qquad (x=x^Ae_A\in\mathbb O).
+\end{gather*}
+$\eta$ gives the signs of the Clifford relation $\Gamma_A\Gamma_B+\Gamma_B\Gamma_A=2\,\eta_{AB}\,1_{16}$ of the real 16×16 Dirac matrices: time squares to $+1_{16}$ and each of the seven space directions to $-1_{16}$, exactly like the octonion units (in the notation $Cl(p,q)$, with $p$ generators squaring to $+1$ and $q$ to $-1$, the algebra $Cl(1,7)\cong\mathbb R(16)$). It also gives the signs of the metric components: $g_{00}>0$ along the time-like direction, negative squares along the space-like directions. Every component computed by 7+1.nb follows from the component matrix of the metric; the declared list fixes for xAct the sign of the determinant of the metric, \texttt{SignDetOfMetric[g71]} $=-1$, which is the same in both sign conventions, since $\det \eta=\det \eta_{71}=-1$. 7+1.nb checks \texttt{SignatureOfMetric[g71]} $=\{7,1,0\}$, \texttt{SignDetOfMetric[g71]} $=-1$, $\mathrm{Re}(e_Ae_B)=\eta_{AB}$ and $\mathrm{Re}(x\,x)=\eta_{AB}x^Ax^B$.
+
 \Needspace{12\baselineskip}\section*{2. Dirac matrices, chirality, and the field}\addcontentsline{toc}{section}{2. Dirac matrices, chirality, and the field}
 {\small
 \begin{longtable}{>{\raggedright\arraybackslash}p{\dimexpr 0.1500\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.2100\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.3600\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.2800\linewidth-2\tabcolsep\relax}}
@@ -178,6 +185,7 @@ p_a&=\Big\langle\frac{k^2\cos^2\theta}{3a^2\omega}\Big\rangle+\Pi,\quad p_b=\Big
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
+$\{7,1,0\}$ (xAct signature list: seven space-like dimensions, one time-like) & $\eta=\mathrm{diag}(+1,-1,\dots,-1)$ (simply the squares of the octonion basis, $\eta_{AB}=\mathrm{Re}(e_Ae_B)$) \\
 $\omega=\Gamma_0\cdots\Gamma_7$ (volume element) & $\omega$ (single-particle energy), $\omega_\mu{}^A{}_B$ (spin connection) \\
 $\chi$ (chirality) & $\chi_k$ (rescaled mode, $\psi=(a^3b^4)^{-1/2}\chi_k$) \\
 $\Theta^K$ (upper multi-index) & $\Theta_K=\eta_K\Theta^K$ (lower multi-index) \\

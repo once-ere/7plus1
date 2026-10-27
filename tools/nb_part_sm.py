@@ -8,12 +8,20 @@ text([('About sections 17–19. ', B),
       'Model lives on the 3+1-dimensional WORLD BRANE W = {x4 = x5 = x6 = x7 = 0}, spanned by the time x0 and ordinary space x1, x2, x3. '
       'Gravity (sections 11–14) and dirac16complex (sections 7–10, 13, 15–16) live in the whole 7+1 spacetime (the bulk); every Standard '
       'Model field lives on W and feels gravity through the induced metric h_μν = g_μν(x, y = 0) (μ, ν = 0 … 3). The two sectors meet '
-      'at W through portals. The total action is'])
+      'at W through portals. The bulk has one time-like and seven space-like dimensions (in xAct, section 12: the signature list '
+      '{7, 1, 0}); the brane W has one time-like dimension (x0) and three space-like dimensions (x1, x2, x3) (in the same counting: '
+      '{3, 1, 0}). The flat frame metric of the brane, diag(+1, −1, −1, −1), is η17 restricted to x0 … x3: simply the squares of '
+      'the basis e[0] = 1, e[1], e[2], e[3] of the quaternion subalgebra ℍ of the octonions. The total action is'])
 text('      S = S_EL[g] + S_dirac16complex[ψ, g] + ∫_W d⁴x √|h| (L_SM + L_portal) + S_stab,')
 text('with S_EL the Einstein–Lovelock action of section 12, the self-coupled covariant dirac16complex action of sections 13 and 15, '
      'L_SM the complete Standard Model Lagrangian below (gauge fields, Higgs doublet, three generations of quarks and leptons including '
      'right-handed neutrinos, Yukawa couplings), L_portal the couplings of section 18, and S_stab the stabilizing stress of section 14.4 '
      'that keeps b constant in the modern epoch. In eight-dimensional form ∫_W d⁴x √|h| (…) = ∫ d⁸X √|g| δ⁴(y)/b⁴ (…).')
+inp(r'''
+check["brane frame metric diag(+1, -1, -1, -1) == eta17 restricted to x0..x3: the squares of the octonion basis e[0], e[1], e[2], e[3] of the quaternion subalgebra (Re(e[A] e[B]), A, B = 0..3), which is closed under the octonion product",
+  \[Eta]17[[1 ;; 4, 1 ;; 4]] == DiagonalMatrix[{1, -1, -1, -1}] == Table[oRe[oMul[ev[A], ev[B]]], {A, 0, 3}, {B, 0, 3}] &&
+  And @@ Flatten[Table[oMul[ev[A], ev[B]][[5 ;; 8]] == {0, 0, 0, 0}, {A, 0, 3}, {B, 0, 3}]]]
+''')
 
 subsection('17.1 The fields, their quantum numbers, and anomaly cancellation')
 text('Gauge group SU(3)_C × SU(2)_L × U(1)_Y with gauge fields G^a_μ (a = 1 … 8), W^I_μ (I = 1, 2, 3), B_μ and couplings gs, g, g′. '

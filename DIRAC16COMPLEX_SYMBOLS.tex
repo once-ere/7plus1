@@ -49,7 +49,9 @@ For each symbol this dictionary gives the mathematical notation, the name used i
 \bottomrule\endlastfoot
 $X$; $x_0,\dots,x_7$ & \texttt{X = \{x0, …, x7\}} & $X=(x_0,x_1,\dots,x_7)$, $x^A=x_A$ as symbols & $x_0$ ordinary time (direction of the octonion unit $e_0=1$); $x_1,x_2,x_3$ ordinary 3-space; $x_4,\dots,x_7$ auxiliary space-like \\
 $x$, $\vec x$ & — & $x=(x_0,\vec x)$, $\vec x=(x_1,\dots,x_7)$ & spacetime point; space part \\
-$\eta_{AB}$, $\eta^{AB}$ & \texttt{η17}, \texttt{η17inv} & $\eta=\mathrm{diag}(+1,-1,-1,-1,-1,-1,-1,-1)$, $\eta^{-1}=\eta$ & metric of 7+1 spacetime \\
+$\eta_{AB}$, $\eta^{AB}$ & \texttt{η17}, \texttt{η17inv} & $\eta=\mathrm{diag}(+1,-1,-1,-1,-1,-1,-1,-1)$, $\eta^{-1}=\eta$ & metric of 7+1 spacetime: simply the squares of the octonion basis, $\eta_{AB}=\mathrm{Re}(e_Ae_B)$, $e_0^2=+1$, $e_i^2=-1$ \\
+$\eta'$ & \texttt{η71} & $\eta'=-\eta=\mathrm{diag}(-1,+1,\dots,+1)$ & the same spacetime in the sign convention of 4+4.nb (space-like $+1$); its relation has no real 16×16 realization \\
+$\{7,1,0\}$ & \texttt{DefMetric[\{7, 1, 0\}, g71[-a, -b], CD, …]} & xAct signature list (section 12 of 7+1.nb) & seven space-like dimensions, one time-like dimension, none degenerate \\
 $a\cdot b$ & — & $\eta_{AB}a^Ab^B=a^0b^0-\sum_ia^ib^i$ & Minkowski product \\
 $\partial_A$ & \texttt{D[f, X[[A+1]]]} & $\partial_A=\partial/\partial x_A$, $\partial_Ax^B=\delta_A^B$ & partial derivative \\
 $\Box$ & \texttt{waveOp17} & $\eta^{AB}\partial_A\partial_B=\partial_0^2-\partial_1^2-\dots-\partial_7^2$ & wave (d’Alembert) operator \\
@@ -64,6 +66,12 @@ The Minkowski square of a point is the real part of the square of the octonion $
 \begin{equation*}
 x\cdot x=\eta_{AB}x^Ax^B=x_0^2-x_1^2-\dots-x_7^2=\mathrm{Re}(x\,x).
 \end{equation*}
+\textbf{The signature: $\{7,1,0\}$ and $\mathrm{diag}(+1,-1,\dots,-1)$.} The 7+1 spacetime has one time-like dimension ($x_0$, the direction of the octonion unit $e_0=1$) and seven space-like dimensions ($x_1,x_2,x_3$ ordinary space, $x_4,\dots,x_7$ auxiliary space). Two different objects describe this, and neither may be replaced by the other. (i) The tensor package xAct, used in section 12 of 7+1.nb exactly as in the author’s notebook Einstein-Lovelock-7+1-Nash.nb, declares the metric with \texttt{DefMetric[\{7, 1, 0\}, g71[-a, -b], CD, …]}: the list $\{7,1,0\}$ declares seven space-like dimensions, one time-like dimension and no degenerate dimension — the numbers of entries $+1$ and $-1$ of $\eta'=\mathrm{diag}(-1,+1,\dots,+1)$ (\texttt{η71}), the same spacetime written in the sign convention of 4+4.nb (space-like $=+1$, time-like $=-1$). (ii) The matrix $\eta=-\eta'=\mathrm{diag}(+1,-1,\dots,-1)$ (\texttt{η17}) is simply the squares of the octonion basis: $e_0^2=+1$ for the unit $e_0=1$ (time) and $e_i^2=-1$ for the seven imaginary units $e_1,\dots,e_7$ (space); more generally it is the real part of the product of two basis units, and it gives the quadratic form of the octonions:
+\begin{gather*}
+\eta_{AB}=\mathrm{Re}(e_Ae_B),\qquad e_0^2=+1,\qquad e_i^2=-1\ \ (i=1,\dots,7),\\ \mathrm{Re}(x\,x)=x_0^2-x_1^2-\cdots-x_7^2=\eta_{AB}\,x^Ax^B\qquad (x=x^Ae_A\in\mathbb O).
+\end{gather*}
+$\eta$ gives the signs of the Clifford relation $\Gamma_A\Gamma_B+\Gamma_B\Gamma_A=2\,\eta_{AB}\,1_{16}$ of the real 16×16 Dirac matrices: time squares to $+1_{16}$ and each of the seven space directions to $-1_{16}$, exactly like the octonion units (in the notation $Cl(p,q)$, with $p$ generators squaring to $+1$ and $q$ to $-1$, the algebra $Cl(1,7)\cong\mathbb R(16)$). It also gives the signs of the metric components: $g_{00}>0$ along the time-like direction, negative squares along the space-like directions. Every component computed by 7+1.nb follows from the component matrix of the metric; the declared list fixes for xAct the sign of the determinant of the metric, \texttt{SignDetOfMetric[g71]} $=-1$, which is the same in both sign conventions, since $\det \eta=\det \eta'=-1$. 7+1.nb checks \texttt{SignatureOfMetric[g71]} $=\{7,1,0\}$, \texttt{SignDetOfMetric[g71]} $=-1$, $\mathrm{Re}(e_Ae_B)=\eta_{AB}$ and $\mathrm{Re}(x\,x)=\eta_{AB}x^Ax^B$.
+
 \Needspace{12\baselineskip}\section*{3. The real 8×8 matrices}\addcontentsline{toc}{section}{3. The real 8×8 matrices}
 {\small
 \begin{longtable}{>{\raggedright\arraybackslash}p{\dimexpr 0.1500\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.1900\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.3600\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.3000\linewidth-2\tabcolsep\relax}}
@@ -411,6 +419,7 @@ Numerical parameters of the examples: \texttt{gS0} $=g_S=-10^5$, \texttt{gV0} $=
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
+$\{7,1,0\}$, $\eta$ & $\{7,1,0\}$ is the xAct signature list of section 12 of 7+1.nb: seven space-like dimensions, one time-like dimension, none degenerate; $\eta=\mathrm{diag}(+1,-1,\dots,-1)$ is simply the squares of the octonion basis, $\eta_{AB}=\mathrm{Re}(e_Ae_B)$. \\
 $\beta$, $\beta_{\rm b}$, \texttt{βD}, \texttt{β} & $\beta=\Gamma^0$ is the Dirac matrix (\texttt{βD}); $\beta_{\rm b}$ is the rapidity of a boost (the plain symbol \texttt{β} in \texttt{Sβ} and \texttt{Λboost}). \\
 $L$, $\mathcal L$, $\Lambda$, \texttt{Λboost}, \texttt{Λc} & $L$ is the 8×8 Lorentz matrix of a boost (Mathematica \texttt{Λboost}); $\mathcal L$ is a Lagrangian density; $\Lambda$ is the momentum cutoff (\texttt{Λc}). The subscript $L$ means left-handed. \\
 $\mathcal B(\beta_{\rm b})$, $B(M)$ & $\mathcal B$ is the spinor boost; $B(M)$ the one-body operator $\sum M_{ab}c_a^\dagger c_b$; $B$ is also a spacetime index. \\

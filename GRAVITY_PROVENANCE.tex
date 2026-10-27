@@ -22,7 +22,7 @@
 \date{}
 \maketitle
 \begin{abstract}
-This record states what was asked, what was used, every decision taken with the equation behind it, how each result was derived and how it was checked: the 97 checks of sections 11–14 of 7+1.nb (97 True), the 99 boolean checks of the independent Python program tools/ref\_gravity.py (99 True), the comparison of the printed numbers, the program versions and the SHA-256 hashes of the files.
+This record states what was asked, what was used, every decision taken with the equation behind it, how each result was derived and how it was checked: the 100 checks of sections 11–14 of 7+1.nb (100 True), the 101 boolean checks of the independent Python program tools/ref\_gravity.py (101 True), the comparison of the printed numbers, the program versions and the SHA-256 hashes of the files.
 \end{abstract}
 \tableofcontents
 \Needspace{12\baselineskip}\section*{1. The task}\addcontentsline{toc}{section}{1. The task}
@@ -34,10 +34,20 @@ This stage of the project asked for the following (summarized; the original word
 \item Generalized frame matrices, a non-trivial canonical spin connection that couples gravity to dirac16complex, and a total covariant derivative under which the frame matrices are constant.
 \item Kohn–Sham theory of dirac16complex in gravitational fields (primordial near $x_0=0$, modern, far future), its self-coupling, and the totality of the Standard Model (sections 15–19 of 7+1.nb; this record covers sections 11–14).
 \item Compute the Lovelock tensors as in the author’s reference notebook Einstein-Lovelock-7+1-Nash.nb and do NOT use its section "FAILED Model metric g71; DO NOT USE!".
+\item Make clear in all documentation, examples and provenance records that the xAct declaration $\{7,1,0\}$ declares seven space-like dimensions and one time-like dimension, while $\mathrm{diag}(+1,-1,\dots,-1)$ is simply the squares of the octonion basis (the author’s instruction of 27 October 2026).
 \item For every documentation file a companion provenance file and a symbol file, each in Markdown and LaTeX, the LaTeX compiled to PDF; no document refers the reader to another one, and every equation used is written in the document that uses it.
 \item Push every completed stage to github.com/once-ere/7plus1, respecting the repository’s .gitignore; use only the Wolfram front end WolframNB.exe of Wolfram 15.0.1.
 \end{enumerate}
-The coordinates of 7+1.nb are kept: $X=(x_0,\dots,x_7)$, $x_0$ the time (the direction of the octonion unit), $x_1,x_2,x_3$ ordinary space, $x_4,\dots,x_7$ auxiliary space; metric signature $(+,-,\dots,-)$ with $\eta=\mathrm{diag}(+1,-1,\dots,-1)$.
+The coordinates of 7+1.nb are kept: $X=(x_0,\dots,x_7)$, $x_0$ the time (the direction of the octonion unit), $x_1,x_2,x_3$ ordinary space, $x_4,\dots,x_7$ auxiliary space.
+
+\Needspace{8\baselineskip}\subsection*{1.1 The signature: the author’s explanation of 27 October 2026}\addcontentsline{toc}{subsection}{1.1 The signature: the author’s explanation of 27 October 2026}
+\textbf{Source.} On 27 October 2026 the author of the project explained that the xAct list $\{7,1,0\}$ declares seven space-like dimensions and one time-like dimension, while $\mathrm{diag}(+1,-1,\dots,-1)$ is simply the squares of the octonion basis, and asked that this be made clear in all documentation, examples and provenance records. \textbf{What it corrected.} The version of 7+1.nb pushed in the commits 52d8729 to dc2f178 of github.com/once-ere/7plus1 declared the xAct metric of section 12 with \texttt{DefMetric[\{1, 7, 0\}, …]}, reading the list as the signs of $\eta$; since then section 12 declares \texttt{DefMetric[\{7, 1, 0\}, g71[-a, -b], CD, …]}, exactly as the author’s notebook Einstein-Lovelock-7+1-Nash.nb does. \textbf{What was added.} Checks in 7+1.nb — section 4.7: $\eta$ is the squares of the octonion basis, $e_Ae_A=\eta_{AA}e_0$ and $\mathrm{Re}(e_Ae_B)=\eta_{AB}$; section 12.2: \texttt{SignatureOfMetric[g71]} $=\{7,1,0\}$ with \texttt{SignDetOfMetric[g71]} $=-1$, $\mathrm{Re}(e_Ae_B)=\eta_{AB}$, and $\mathrm{Re}(x\,x)=\eta_{AB}x^Ax^B$; section 17: the flat metric $\mathrm{diag}(+1,-1,-1,-1)$ of the world brane is the squares of the basis $e_0,e_1,e_2,e_3$ of the quaternion subalgebra — and the same statements in the Python programs \texttt{tools/ref71.py}, \texttt{tools/ref\_gravity.py} and \texttt{tools/ref\_sm.py}; the explanation itself in the text of 7+1.nb (sections 1.2, 1.4, 4.2, 4.7, 7, 11, 12.2, 13, 15.1, 17) and in every document, symbol file and provenance file of the repository. \textbf{What did not change.} No result. Compared output by output with the backup below, every output of 7+1.nb is the same, except the declared list itself, the new checks and the check counts (and, as in every run, the name of the private context and the measured times); in particular every component of every Lovelock tensor is unchanged. The components follow from the component matrix of the metric, and the sign of the determinant, \texttt{SignDetOfMetric}, is $-1$ for both lists. \textbf{Backup.} The evaluated notebook as it was before is kept in the workspace as \texttt{backups/7+1\_2026-10-27\_before\_signature.nb} (the folder backups/ is excluded from the repository by .gitignore), 1034401 bytes, SHA-256 \texttt{060942488caf4f45120ffd37be0123e96992a31cd7fdbde09ee4dc4ced4f5d3a}; \texttt{tools/verify\_7p1\_nb.py} compares every input, text and section cell of 7+1.nb with it and finds every cell present, each one unchanged or changed by this explanation, and it compares every output in the same way.
+
+\textbf{The explanation, in full.} The 7+1 spacetime has one time-like dimension ($x_0$, the direction of the octonion unit $e_0=1$) and seven space-like dimensions ($x_1,x_2,x_3$ ordinary space, $x_4,\dots,x_7$ auxiliary space). Two different objects describe this, and neither may be replaced by the other. (i) The tensor package xAct, used in section 12 of 7+1.nb exactly as in the author’s notebook Einstein-Lovelock-7+1-Nash.nb, declares the metric with \texttt{DefMetric[\{7, 1, 0\}, g71[-a, -b], CD, …]}: the list $\{7,1,0\}$ declares seven space-like dimensions, one time-like dimension and no degenerate dimension — the numbers of entries $+1$ and $-1$ of $\eta_{71}=\mathrm{diag}(-1,+1,\dots,+1)$ (\texttt{η71}), the same spacetime written in the sign convention of 4+4.nb (space-like $=+1$, time-like $=-1$). (ii) The matrix $\eta=-\eta_{71}=\mathrm{diag}(+1,-1,\dots,-1)$ (\texttt{η17}) is simply the squares of the octonion basis: $e_0^2=+1$ for the unit $e_0=1$ (time) and $e_i^2=-1$ for the seven imaginary units $e_1,\dots,e_7$ (space); more generally it is the real part of the product of two basis units, and it gives the quadratic form of the octonions:
+\begin{gather*}
+\eta_{AB}=\mathrm{Re}(e_Ae_B),\qquad e_0^2=+1,\qquad e_i^2=-1\ \ (i=1,\dots,7),\\ \mathrm{Re}(x\,x)=x_0^2-x_1^2-\cdots-x_7^2=\eta_{AB}\,x^Ax^B\qquad (x=x^Ae_A\in\mathbb O).
+\end{gather*}
+$\eta$ gives the signs of the Clifford relation $\Gamma_A\Gamma_B+\Gamma_B\Gamma_A=2\,\eta_{AB}\,1_{16}$ of the real 16×16 Dirac matrices: time squares to $+1_{16}$ and each of the seven space directions to $-1_{16}$, exactly like the octonion units (in the notation $Cl(p,q)$, with $p$ generators squaring to $+1$ and $q$ to $-1$, the algebra $Cl(1,7)\cong\mathbb R(16)$). It also gives the signs of the metric components: $g_{00}>0$ along the time-like direction, negative squares along the space-like directions. Every component computed by 7+1.nb follows from the component matrix of the metric; the declared list fixes for xAct the sign of the determinant of the metric, \texttt{SignDetOfMetric[g71]} $=-1$, which is the same in both sign conventions, since $\det \eta=\det \eta_{71}=-1$. 7+1.nb checks \texttt{SignatureOfMetric[g71]} $=\{7,1,0\}$, \texttt{SignDetOfMetric[g71]} $=-1$, $\mathrm{Re}(e_Ae_B)=\eta_{AB}$ and $\mathrm{Re}(x\,x)=\eta_{AB}x^Ax^B$.
 
 \Needspace{12\baselineskip}\section*{2. Inputs}\addcontentsline{toc}{section}{2. Inputs}
 \Needspace{8\baselineskip}\subsection*{2.1 Objects of the earlier sections of 7+1.nb}\addcontentsline{toc}{subsection}{2.1 Objects of the earlier sections of 7+1.nb}
@@ -74,7 +84,9 @@ with the justification it quotes from D. Lovelock and H. Rund, \emph{Tensors, Di
 \begin{equation*}
 A^{lh}=\sqrt{|g|}\sum_{k=1}^{m-1}\alpha_{(k)}\,g^{jl}\,\delta^{h h_1\cdots h_{2k}}_{j j_1\cdots j_{2k}}\,R^{j_1j_2}{}_{h_1h_2}\cdots R^{j_{2k-1}j_{2k}}{}_{h_{2k-1}h_{2k}}+\lambda\sqrt{|g|}\,g^{lh},\qquad m-1=\frac82-1=3\ \ (n=8).
 \end{equation*}
-NOT taken: the section "FAILED Model metric g71; DO NOT USE!" of the reference notebook (its model metric and the solution found for it); its author states that it never worked for the 7+1 signature. No metric of that section appears in this project. Changed: the signature declaration \texttt{DefMetric[\{7, 1, 0\}, …]} (the mostly-plus convention) became \texttt{DefMetric[\{1, 7, 0\}, …]} to match $\eta=\mathrm{diag}(+1,-1,\dots,-1)$ of this notebook (the declaration does not enter the Lovelock tensors with mixed indices, and both declarations give the same sign of the determinant, $(-1)^q=-1$ for $q=7$ and for $q=1$, as a separate kernel with xTensor 1.2.0 confirmed: \texttt{SignDetOfMetric} is $-1$ for a metric declared \texttt{\{1, 7, 0\}} and for one declared \texttt{\{7, 1, 0\}}); the metric symbol is called \texttt{g71} as in the reference notebook.
+NOT taken: the section "FAILED Model metric g71; DO NOT USE!" of the reference notebook (its model metric and the solution found for it); its author states that it never worked for the 7+1 signature. No metric of that section appears in this project. Taken unchanged as well: the signature declaration \texttt{DefMetric[\{7, 1, 0\}, g71[-a, -b], CD, …]} — in xAct seven space-like dimensions ($x_1,\dots,x_7$), one time-like dimension ($x_0$), none degenerate — and the metric symbol \texttt{g71}.
+
+\textbf{A correction (27 October 2026; section 1.1).} An earlier version of section 12 of 7+1.nb declared \texttt{DefMetric[\{1, 7, 0\}, …]}, reading the list as the signs of $\eta=\mathrm{diag}(+1,-1,\dots,-1)$; it now declares $\{7,1,0\}$, as the reference notebook does. The Lovelock tensors are the same with both declarations: they follow from the components of the metric, and \texttt{SignDetOfMetric} is $-1$ for both (a separate kernel with xTensor 1.2.0 confirmed this for a metric declared \texttt{\{1, 7, 0\}} and one declared \texttt{\{7, 1, 0\}}).
 
 \begin{Verbatim}[fontsize=\small,frame=single,framesep=2mm]
 Einstein-Lovelock-7+1-Nash.nb   SHA-256 b2dcb7b9f435d644da085fdd9e738a0cc80d3268ef28606ff9f367ed
@@ -103,10 +115,10 @@ Einstein-Lovelock-7+1-Nash.pdf  SHA-256 6580f9fcaff9c7f1337df35a7fce6b4b04c022d0
 \endfoot
 \bottomrule\endlastfoot
 1 & Christoffel symbols are written $\{{}^{\lambda}_{\mu\nu}\}$ & $\Gamma$ is reserved for the Dirac matrices \\
-2 & Riemann tensor of Landau and Lifshitz: $R^\rho{}_{\sigma\mu\nu}=\partial_\mu\{{}^\rho_{\sigma\nu}\}-\partial_\nu\{{}^\rho_{\sigma\mu}\}+\{{}^\rho_{\mu\lambda}\}\{{}^\lambda_{\sigma\nu}\}-\{{}^\rho_{\nu\lambda}\}\{{}^\lambda_{\sigma\mu}\}$, $R_{\sigma\nu}=R^\rho{}_{\sigma\rho\nu}$ & with $(+,-,\dots,-)$: $G^\mu{}_\nu-\bar\Lambda\delta^\mu_\nu=\kappa T^\mu{}_\nu$ with $T^0{}_0>0$; agrees with xAct (the reference notebook’s $\mathrm{Lovelock}_1$ equals this $G$) \\
+2 & Riemann tensor of Landau and Lifshitz: $R^\rho{}_{\sigma\mu\nu}=\partial_\mu\{{}^\rho_{\sigma\nu}\}-\partial_\nu\{{}^\rho_{\sigma\mu}\}+\{{}^\rho_{\mu\lambda}\}\{{}^\lambda_{\sigma\nu}\}-\{{}^\rho_{\nu\lambda}\}\{{}^\lambda_{\sigma\mu}\}$, $R_{\sigma\nu}=R^\rho{}_{\sigma\rho\nu}$ & with the signs of $\eta$ ($g_{00}>0$): $G^\mu{}_\nu-\bar\Lambda\delta^\mu_\nu=\kappa T^\mu{}_\nu$ with $T^0{}_0>0$; agrees with xAct (the reference notebook’s $\mathrm{Lovelock}_1$ equals this $G$) \\
 3 & Lovelock tensors normalized as in the reference notebook, $E^{(k)}=-2^{-(k+1)}\delta RR\cdots$ & $E^{(1)}=G$, $E^{(2)}=$ Lanczos tensor \\
 4 & two forms of the field equations: $w$-form (reference notebook) and $\alpha$-form & $\alpha_2=w_2/(w_1H^2)$, $\alpha_3=w_3/(w_1H^4)$, $\bar\Lambda=\Lambda H^2/w_1$ \\
-5 & xAct signature declaration $\{1,7,0\}$ & one plus sign (time $x_0$), seven minus signs, as $\eta$ \\
+5 & xAct signature declaration $\{7,1,0\}$, as in the reference notebook & seven space-like dimensions and one time-like dimension; $\eta=\mathrm{diag}(+1,-1,\dots,-1)$ is a different object, simply the squares of the octonion basis, $\eta_{AB}=\mathrm{Re}(e_Ae_B)$ \\
 6 & xAct runs in the notebook kernel; the cell is guarded (\texttt{If[! MemberQ[\$Manifolds, M8], …]}, \texttt{Unset} of the component assignments); \texttt{tools/run\_eval.wl} evaluates the notebook in a fresh kernel & the cell can be evaluated twice while the notebook stays open; xAct keeps its definitions in the kernel, while a reopened notebook gets a new private context \\
 7 & \texttt{xActLovelock} returns the Transpose of \texttt{MyArrayComponents} & the array has the lower index $a$ first; the pp-wave ($E^0{}_1=-E^1{}_0$) fixes the order \\
 8 & a second, independent computation (pair-set sums) is kept & exact agreement with xAct is a strong check; it also works on exact rational tables \\
@@ -142,7 +154,7 @@ G^0{}_0=-\big(3K_{12}+6K_{45}+12K_{14}\big)=3H_a^2+12H_aH_b+6H_b^2,\\ E^{(2)0}{}
 \textbf{de Sitter pair creation.} For $i\dot c=(ke^{-Hx_0}\sigma_1+M\sigma_3)c$ the change of variable $z\propto e^{-Hx_0}$ gives Whittaker functions; their connection formula yields $|\beta|^2=1/(e^{2\pi M/H}+1)$, checked numerically below.
 
 \Needspace{12\baselineskip}\section*{5. Verification}\addcontentsline{toc}{section}{5. Verification}
-\textbf{Evaluation of 7+1.nb.} The notebook was generated by \texttt{tools/make\_7p1\_nb.py} (which executes \texttt{tools/nb\_part\_gravity.py}, \texttt{tools/nb\_part\_ks\_gravity.py}, \texttt{tools/nb\_part\_sm.py}) and evaluated by \texttt{tools/run\_eval.wl} in a fresh kernel of Wolfram 15.0.1 for Microsoft Windows (64-bit) (July 2, 2026); seconds 225.3, message cells 0, finished Tue 27 Oct 2026 14:15:35. The final section of the notebook lists 346 checks; all passed: True.
+\textbf{Evaluation of 7+1.nb.} The notebook was generated by \texttt{tools/make\_7p1\_nb.py} (which executes \texttt{tools/nb\_part\_gravity.py}, \texttt{tools/nb\_part\_ks\_gravity.py}, \texttt{tools/nb\_part\_sm.py}) and evaluated by \texttt{tools/run\_eval.wl} in a fresh kernel of Wolfram 15.0.1 for Microsoft Windows (64-bit) (July 2, 2026); seconds 228.954, message cells 0, finished Tue 27 Oct 2026 16:10:34. The final section of the notebook lists 351 checks; all passed: True.
 
 \textbf{The checks of sections 11–14 of 7+1.nb:}
 
@@ -165,94 +177,97 @@ G^0{}_0=-\big(3K_{12}+6K_{45}+12K_{14}\big)=3H_a^2+12H_aH_b+6H_b^2,\\ E^{(2)0}{}
 7 & \texttt{cosmological metric: contracted Bianchi identity nabla\_mu G\textasciicircum{}mu\_nu = 0 (arbitrary a, b)} & True & 11.3 \\
 8 & \texttt{generalized Kronecker delta: contraction identity delta\textasciicircum{}\{m1..mp r\}\_\{n1..np r\} = (8-p) delta\textasciicircum{}\{m1..mp\}\_\{n1..np\} (p = 1..4, 60 random index sets each)} & True & 12.1 \\
 9 & \texttt{generalized Kronecker delta with 9 upper indices vanishes in 8 dimensions (100 random index sets)} & True & 12.1 \\
-10 & \texttt{xAct: Lovelock1 == R\_a\textasciicircum{}b - (1/2) delta\_a\textasciicircum{}b R, the Einstein tensor (abstract indices)} & True & 12.3 \\
-11 & \texttt{xAct: trace of Lovelock2 == -2 L\_2 with L\_2 = R\textasciicircum{}2 - 4 R\_cd R\textasciicircum{}cd + R\_cdfi R\textasciicircum{}cdfi (abstract indices)} & True & 12.3 \\
-12 & \texttt{xAct, cosmological metric: Lovelock1 == EinsteinCD == the Einstein tensor of the curvature engine of section 11.1} & True & 12.4 \\
-13 & \texttt{pair-set algorithm == brute-force generalized-delta contraction for E\textasciicircum{}(1) (cosmological metric)} & True & 12.5 \\
-14 & \texttt{pair-set algorithm == xAct (section 12.4) for E\textasciicircum{}(1), E\textasciicircum{}(2), E\textasciicircum{}(3) of the cosmological metric (two independent computations)} & True & 12.5 \\
-15 & \texttt{E\textasciicircum{}(1) == Einstein tensor G and L\_1 == R (cosmological metric)} & True & 12.6 \\
-16 & \texttt{trace identity E\textasciicircum{}(k)mu\_mu == -((8-2k)/2) L\_k for k = 0..4} & True & 12.6 \\
-17 & \texttt{E\textasciicircum{}(4) == 0 identically in 8 dimensions, while the Euler density L\_4 != 0} & True & 12.6 \\
-18 & \texttt{every E\textasciicircum{}(k) is diagonal, E\textasciicircum{}(k)1\_1 = E\textasciicircum{}(k)2\_2 = E\textasciicircum{}(k)3\_3 and E\textasciicircum{}(k)4\_4 = ... = E\textasciicircum{}(k)7\_7} & True & 12.6 \\
-19 & \texttt{E\textasciicircum{}(2) == Lanczos tensor and L\_2 == R\textasciicircum{}2 - 4 Ric.Ric + Riem.Riem (cosmological metric)} & True & 12.6 \\
-20 & \texttt{E\textasciicircum{}(2)0\_0 = -12 Hb (4Ha\textasciicircum{}3 + 18Ha\textasciicircum{}2 Hb + 12 Ha Hb\textasciicircum{}2 + Hb\textasciicircum{}3) and E\textasciicircum{}(3)0\_0 = 360 Ha\textasciicircum{}2 Hb\textasciicircum{}3 (4Ha + 3Hb)} & True & 12.6 \\
-21 & \texttt{divergence-free: d0 E\textasciicircum{}0\_0 + 3Ha (E\textasciicircum{}0\_0 - E\textasciicircum{}1\_1) + 4Hb (E\textasciicircum{}0\_0 - E\textasciicircum{}4\_4) == 0 for k = 1, 2, 3 (arbitrary a, b)} & True & 12.6 \\
-22 & \texttt{variation of nL a\textasciicircum{}3 b\textasciicircum{}4 L\_k: EL\_nL = -2 a\textasciicircum{}3 b\textasciicircum{}4 E\textasciicircum{}(k)0\_0, EL\_a = -6 a\textasciicircum{}2 b\textasciicircum{}4 E\textasciicircum{}(k)1\_1, EL\_b = -8 a\textasciicircum{}3 b\textasciicircum{}3 E\textasciicircum{}(k)4\_4 (k = 1..4)} & True & 12.6 \\
-23 & \texttt{inhomogeneous metric: nabla\_mu E\textasciicircum{}(k)mu\_nu == 0 EXACTLY at (x0, x4) = (1/2, 1/3) for k = 1, 2, 3} & True & 12.7 \\
-24 & \texttt{inhomogeneous metric: E\textasciicircum{}(1) == G at the point, and E\textasciicircum{}(k)\_mu nu symmetric (k = 1, 2, 3)} & True & 12.7 \\
-25 & \texttt{inhomogeneous metric: E\textasciicircum{}(2) == Lanczos tensor at the point (exact)} & True & 12.7 \\
-26 & \texttt{pp-wave: E\textasciicircum{}(1)\_mu nu == +(1/2)(d2\textasciicircum{}2 + d3\textasciicircum{}2) fPP l\_mu l\_nu} & True & 12.8 \\
-27 & \texttt{pp-wave: E\textasciicircum{}(2) == E\textasciicircum{}(3) == 0 for every profile fPP} & True & 12.8 \\
-28 & \texttt{pp-wave: xAct (section 12.4) == pair-set algorithm for E\textasciicircum{}(1), E\textasciicircum{}(2), E\textasciicircum{}(3) (a metric that is not diagonal; arbitrary profile fPP)} & True & 12.8 \\
-29 & \texttt{exponential expansion a = e\textasciicircum{}\{H x0\}, b = e\textasciicircum{}\{qH H x0\}: xAct Lovelock\_k == the closed forms of section 12.6 with Ha = H, Hb = qH H, Ha' = Hb' = 0 (k = 1, 2, 3)} & True & 12.9 \\
-30 & \texttt{exponential expansion: three distinct vacuum equations, related by 3 Ha (eq00 - eq11) + 4 Hb (eq00 - eq44) == 0} & True & 12.9 \\
-31 & \texttt{exponential vacuum solutions: (w2, w3) solve all 64 components for every qH (generic qH) and every Lambda} & True & 12.9 \\
-32 & \texttt{eternal inflation (a = e\textasciicircum{}\{H x0\}) with deflation (b = e\textasciicircum{}\{-H x0\}): w2 == Lambda/4 - w1/2, w3 == w1/24 - Lambda/36; for Lambda = 0: w2/w1 == -1/2, w3/w1 == 1/24} & True & 12.9 \\
-33 & \texttt{cosmological metric: Omega\_0 == 0, Omega\_i == (a'/2) Gamma17[i].Gamma17[0], Omega\_k == (b'/2) Gamma17[k].Gamma17[0]} & True & 13.2 \\
-34 & \texttt{cosmological metric: Gamma\textasciicircum{}mu Omega\_mu == (3a'/(2a) + 2b'/b) Gamma17[0]} & True & 13.2 \\
-35 & \texttt{current identity: d\_mu(sqrt|g| psibar Gamma\textasciicircum{}mu psi) == sqrt|g| [(D\_mu psibar) Gamma\textasciicircum{}mu psi + psibar Gamma\textasciicircum{}mu D\_mu psi] (psi, psibar arbitrary)} & True & 13.2 \\
-36 & \texttt{Lichnerowicz formula: (Gamma\textasciicircum{}mu D\_mu)\textasciicircum{}2 psi == (g\textasciicircum{}mu nu nabla\_mu D\_nu - R/4) psi} & True & 13.2 \\
-37 & \texttt{rescaling psi = (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) chi removes the spin connection: Gamma\textasciicircum{}mu D\_mu psi == (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) Gamma\textasciicircum{}mu d\_mu chi} & True & 13.2 \\
-38 & \texttt{mode equation: Gamma17[0].(i Gamma\textasciicircum{}mu D\_mu - m) psi == (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) e\textasciicircum{}\{i(p.x+q.y)\} (i dc/dx0 - h(x0) c) for psi = (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) e\textasciicircum{}\{i(p.x+q.y)\} c(x0)} & True & 13.2 \\
-39 & \texttt{conformal weight 7/2: Gamma\textasciicircum{}mu D\_mu (C\textasciicircum{}(-7/2) f) == C\textasciicircum{}(-9/2) Gamma17up[A] d\_A f for g = C(x0)\textasciicircum{}2 eta17} & True & 13.4 \\
-40 & \texttt{Cartan's first structure equation de\textasciicircum{}A + omega\textasciicircum{}A\_B \textasciicircum{} e\textasciicircum{}B == 0 (no torsion): cosmological, pp-wave and inhomogeneous frames} & True & 13.5 \\
-41 & \texttt{structure coefficients: omega\_C,AB == -(1/2)(C\_ACB + C\_BAC - C\_CBA) with C\textasciicircum{}A\_BC = e\_B\textasciicircum{}mu e\_C\textasciicircum{}nu (d\_mu e\textasciicircum{}A\_nu - d\_nu e\textasciicircum{}A\_mu): cosmological and inhomogeneous frames} & True & 13.5 \\
-42 & \texttt{static radial metric: Cartan's first structure equation and omega\_C,AB == -(1/2)(C\_ACB + C\_BAC - C\_CBA)} & True & 13.5 \\
-43 & \texttt{static radial metric: Omega\_0 == (f'/(4 Sqrt[f] Sqrt[h])) Gamma17[1].Gamma17[0], Omega\_1 == 0, Omega\_k == (1/(2 Sqrt[h])) Gamma17[1].Gamma17[k] (k = 2..7)} & True & 13.5 \\
-44 & \texttt{static radial metric: Gamma\textasciicircum{}mu Omega\_mu == (1/Sqrt[h]) (f'/(4 f) + 3/r) Gamma17up[1]} & True & 13.5 \\
-45 & \texttt{static radial metric: psi = f\textasciicircum{}(-1/4) r\textasciicircum{}(-3) chi removes the spin connection, Gamma\textasciicircum{}mu D\_mu psi == f\textasciicircum{}(-1/4) r\textasciicircum{}(-3) Gamma\textasciicircum{}mu d\_mu chi} & True & 13.5 \\
-46 & \texttt{U(1) gauge covariance: Gamma\textasciicircum{}mu (D\_mu - i q A'\_mu)(e\textasciicircum{}\{i q alpha\} psi) == e\textasciicircum{}\{i q alpha\} Gamma\textasciicircum{}mu (D\_mu - i q A\_mu) psi with A'\_mu = A\_mu + d\_mu alpha} & True & 13.5 \\
-47 & \texttt{current identity with the gauge field: d\_mu(sqrt|g| psibar Gamma\textasciicircum{}mu psi) == sqrt|g| [(D\_mu psibar) Gamma\textasciicircum{}mu psi + psibar Gamma\textasciicircum{}mu D\_mu psi], D including -i q A\_mu} & True & 13.5 \\
-48 & \texttt{Kasner metric: the Einstein tensor computed directly from the metric equals the closed form (x0\textasciicircum{}2 G\textasciicircum{}mu\_mu, mu = 0, 1, 4)} & True & 14.1 \\
-49 & \texttt{Einstein Kasner: (p, q) = ((1+2Sqrt[2])/7, (2-3Sqrt[2])/14) and ((1-2Sqrt[2])/7, (2+3Sqrt[2])/14) solve E\textasciicircum{}(1) == 0} & True & 14.1 \\
-50 & \texttt{Gauss-Bonnet Kasner: 3 real roots of the cubic; (p, (3-3p)/4) solve E\textasciicircum{}(2) == 0} & True & 14.1 \\
-51 & \texttt{cubic Lovelock Kasner: (p, q) = (-15/7, 20/7) solves E\textasciicircum{}(3) == 0; E\textasciicircum{}(3) == 0 identically for q = 0 and for p = 0} & True & 14.1 \\
-52 & \texttt{2x2 reduction: A, B, betaD square to ID16 and anticommute; Zc = A.B.betaD: Zc.Zc == -ID16, Transpose[Zc] == -Zc, Zc commutes with A, B, betaD} & True & 14.2 \\
-53 & \texttt{Kasner pair creation: |alpha|\textasciicircum{}2 + |beta|\textasciicircum{}2 == 1 (to 10\textasciicircum{}-8) for (|p|, |q|) = (1,1), (2,1), (1,3)} & True & 14.3 \\
-54 & \texttt{Kasner scaling: (|p|, |q|) = (1.4302.., 2.5) has K = 1 and the same |beta|\textasciicircum{}2 as (1, 1) (to 10\textasciicircum{}-6)} & True & 14.3 \\
-55 & \texttt{16x16 evolution == 4 copies of the 2x2 evolution with +m sigma3 and 4 with -m sigma3 (Kasner, m = 0.3, |p| = 1, |q| = 1.5, x0 from 0.05 to 40): average |beta|\textasciicircum{}2 agrees to 10\textasciicircum{}-8; unitarity; the two classes differ} & True & 14.3 \\
-56 & \texttt{isotropic expansion, massless: no pair creation (|beta|\textasciicircum{}2 < 10\textasciicircum{}-20)} & True & 14.3 \\
-57 & \texttt{static auxiliary space (Hb = 0): E\textasciicircum{}(1) = (3Ha\textasciicircum{}2, 2Ha' + 3Ha\textasciicircum{}2, 3Ha' + 6Ha\textasciicircum{}2), E\textasciicircum{}(2) = (0, 0, -12 Ha\textasciicircum{}2 (Ha' + Ha\textasciicircum{}2)), E\textasciicircum{}(3) = 0} & True & 14.4 \\
-58 & \texttt{8D de Sitter: E\textasciicircum{}(1) = 21 H\textasciicircum{}2, E\textasciicircum{}(2) = -420 H\textasciicircum{}4, E\textasciicircum{}(3) = 2520 H\textasciicircum{}6 (all diagonal entries)} & True & 14.5 \\
-59 & \texttt{de Sitter over a static auxiliary space: E\textasciicircum{}(1) = (3, 3, 6) H\textasciicircum{}2, E\textasciicircum{}(2) = (0, 0, -12) H\textasciicircum{}4, E\textasciicircum{}(3) = 0} & True & 14.5 \\
-60 & \texttt{de Sitter pair creation: |beta|\textasciicircum{}2 == 1/(Exp[2 Pi M/H] + 1) to 10\textasciicircum{}-7, M/H = 0.25, 0.5, 1} & True & 14.5 \\
-61 & \texttt{integrator benchmark (Landau-Zener): |beta|\textasciicircum{}2 == Exp[-Pi kappa\textasciicircum{}2] to 10\textasciicircum{}-6} & True & 14.5 \\
-62 & \texttt{cosmological metric: eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True & 13.1 \\
-63 & \texttt{cosmological metric: canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True & 13.1 \\
-64 & \texttt{cosmological metric: vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True & 13.1 \\
-65 & \texttt{cosmological metric: TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True & 13.1 \\
-66 & \texttt{cosmological metric: constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True & 13.1 \\
-67 & \texttt{cosmological metric: Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True & 13.1 \\
-68 & \texttt{cosmological metric: spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True & 13.1 \\
-69 & \texttt{cosmological metric: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True & 13.1 \\
-70 & \texttt{cosmological metric: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True & 13.1 \\
-71 & \texttt{pp-wave: eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True & 13.1 \\
-72 & \texttt{pp-wave: canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True & 13.1 \\
-73 & \texttt{pp-wave: vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True & 13.1 \\
-74 & \texttt{pp-wave: TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True & 13.1 \\
-75 & \texttt{pp-wave: constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True & 13.1 \\
-76 & \texttt{pp-wave: Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True & 13.1 \\
-77 & \texttt{pp-wave: spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True & 13.1 \\
-78 & \texttt{pp-wave: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True & 13.1 \\
-79 & \texttt{pp-wave: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True & 13.1 \\
-80 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True & 13.1 \\
-81 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True & 13.1 \\
-82 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True & 13.1 \\
-83 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True & 13.1 \\
-84 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True & 13.1 \\
-85 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True & 13.1 \\
-86 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True & 13.1 \\
-87 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True & 13.1 \\
-88 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True & 13.1 \\
-89 & \texttt{static radial metric: eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True & 13.1 \\
-90 & \texttt{static radial metric: canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True & 13.1 \\
-91 & \texttt{static radial metric: vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True & 13.1 \\
-92 & \texttt{static radial metric: TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True & 13.1 \\
-93 & \texttt{static radial metric: constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True & 13.1 \\
-94 & \texttt{static radial metric: Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True & 13.1 \\
-95 & \texttt{static radial metric: spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True & 13.1 \\
-96 & \texttt{static radial metric: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True & 13.1 \\
-97 & \texttt{static radial metric: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True & 13.1 \\*
+10 & \texttt{xAct declaration as in the reference notebook: SignatureOfMetric[g71] == \{7, 1, 0\} (seven space-like dimensions, one time-like dimension, none degenerate) and SignDetOfMetric[g71] == -1} & True & 12.2 \\
+11 & \texttt{eta17 is simply the squares of the octonion basis: eta17[[A+1, B+1]] == Re(e\_A e\_B), e\_0\textasciicircum{}2 == +1 (time x0), e\_i\textasciicircum{}2 == -1 (space x\_i, i = 1..7)} & True & 12.2 \\
+12 & \texttt{the quadratic form of the octonions has the signs of the squares of the octonion basis: Re(x x) == x0\textasciicircum{}2 - x1\textasciicircum{}2 - ... - x7\textasciicircum{}2 == x.eta17.x for x = x\textasciicircum{}A e\_A (symbolic)} & True & 12.2 \\
+13 & \texttt{xAct: Lovelock1 == R\_a\textasciicircum{}b - (1/2) delta\_a\textasciicircum{}b R, the Einstein tensor (abstract indices)} & True & 12.3 \\
+14 & \texttt{xAct: trace of Lovelock2 == -2 L\_2 with L\_2 = R\textasciicircum{}2 - 4 R\_cd R\textasciicircum{}cd + R\_cdfi R\textasciicircum{}cdfi (abstract indices)} & True & 12.3 \\
+15 & \texttt{xAct, cosmological metric: Lovelock1 == EinsteinCD == the Einstein tensor of the curvature engine of section 11.1} & True & 12.4 \\
+16 & \texttt{pair-set algorithm == brute-force generalized-delta contraction for E\textasciicircum{}(1) (cosmological metric)} & True & 12.5 \\
+17 & \texttt{pair-set algorithm == xAct (section 12.4) for E\textasciicircum{}(1), E\textasciicircum{}(2), E\textasciicircum{}(3) of the cosmological metric (two independent computations)} & True & 12.5 \\
+18 & \texttt{E\textasciicircum{}(1) == Einstein tensor G and L\_1 == R (cosmological metric)} & True & 12.6 \\
+19 & \texttt{trace identity E\textasciicircum{}(k)mu\_mu == -((8-2k)/2) L\_k for k = 0..4} & True & 12.6 \\
+20 & \texttt{E\textasciicircum{}(4) == 0 identically in 8 dimensions, while the Euler density L\_4 != 0} & True & 12.6 \\
+21 & \texttt{every E\textasciicircum{}(k) is diagonal, E\textasciicircum{}(k)1\_1 = E\textasciicircum{}(k)2\_2 = E\textasciicircum{}(k)3\_3 and E\textasciicircum{}(k)4\_4 = ... = E\textasciicircum{}(k)7\_7} & True & 12.6 \\
+22 & \texttt{E\textasciicircum{}(2) == Lanczos tensor and L\_2 == R\textasciicircum{}2 - 4 Ric.Ric + Riem.Riem (cosmological metric)} & True & 12.6 \\
+23 & \texttt{E\textasciicircum{}(2)0\_0 = -12 Hb (4Ha\textasciicircum{}3 + 18Ha\textasciicircum{}2 Hb + 12 Ha Hb\textasciicircum{}2 + Hb\textasciicircum{}3) and E\textasciicircum{}(3)0\_0 = 360 Ha\textasciicircum{}2 Hb\textasciicircum{}3 (4Ha + 3Hb)} & True & 12.6 \\
+24 & \texttt{divergence-free: d0 E\textasciicircum{}0\_0 + 3Ha (E\textasciicircum{}0\_0 - E\textasciicircum{}1\_1) + 4Hb (E\textasciicircum{}0\_0 - E\textasciicircum{}4\_4) == 0 for k = 1, 2, 3 (arbitrary a, b)} & True & 12.6 \\
+25 & \texttt{variation of nL a\textasciicircum{}3 b\textasciicircum{}4 L\_k: EL\_nL = -2 a\textasciicircum{}3 b\textasciicircum{}4 E\textasciicircum{}(k)0\_0, EL\_a = -6 a\textasciicircum{}2 b\textasciicircum{}4 E\textasciicircum{}(k)1\_1, EL\_b = -8 a\textasciicircum{}3 b\textasciicircum{}3 E\textasciicircum{}(k)4\_4 (k = 1..4)} & True & 12.6 \\
+26 & \texttt{inhomogeneous metric: nabla\_mu E\textasciicircum{}(k)mu\_nu == 0 EXACTLY at (x0, x4) = (1/2, 1/3) for k = 1, 2, 3} & True & 12.7 \\
+27 & \texttt{inhomogeneous metric: E\textasciicircum{}(1) == G at the point, and E\textasciicircum{}(k)\_mu nu symmetric (k = 1, 2, 3)} & True & 12.7 \\
+28 & \texttt{inhomogeneous metric: E\textasciicircum{}(2) == Lanczos tensor at the point (exact)} & True & 12.7 \\
+29 & \texttt{pp-wave: E\textasciicircum{}(1)\_mu nu == +(1/2)(d2\textasciicircum{}2 + d3\textasciicircum{}2) fPP l\_mu l\_nu} & True & 12.8 \\
+30 & \texttt{pp-wave: E\textasciicircum{}(2) == E\textasciicircum{}(3) == 0 for every profile fPP} & True & 12.8 \\
+31 & \texttt{pp-wave: xAct (section 12.4) == pair-set algorithm for E\textasciicircum{}(1), E\textasciicircum{}(2), E\textasciicircum{}(3) (a metric that is not diagonal; arbitrary profile fPP)} & True & 12.8 \\
+32 & \texttt{exponential expansion a = e\textasciicircum{}\{H x0\}, b = e\textasciicircum{}\{qH H x0\}: xAct Lovelock\_k == the closed forms of section 12.6 with Ha = H, Hb = qH H, Ha' = Hb' = 0 (k = 1, 2, 3)} & True & 12.9 \\
+33 & \texttt{exponential expansion: three distinct vacuum equations, related by 3 Ha (eq00 - eq11) + 4 Hb (eq00 - eq44) == 0} & True & 12.9 \\
+34 & \texttt{exponential vacuum solutions: (w2, w3) solve all 64 components for every qH (generic qH) and every Lambda} & True & 12.9 \\
+35 & \texttt{eternal inflation (a = e\textasciicircum{}\{H x0\}) with deflation (b = e\textasciicircum{}\{-H x0\}): w2 == Lambda/4 - w1/2, w3 == w1/24 - Lambda/36; for Lambda = 0: w2/w1 == -1/2, w3/w1 == 1/24} & True & 12.9 \\
+36 & \texttt{cosmological metric: Omega\_0 == 0, Omega\_i == (a'/2) Gamma17[i].Gamma17[0], Omega\_k == (b'/2) Gamma17[k].Gamma17[0]} & True & 13.2 \\
+37 & \texttt{cosmological metric: Gamma\textasciicircum{}mu Omega\_mu == (3a'/(2a) + 2b'/b) Gamma17[0]} & True & 13.2 \\
+38 & \texttt{current identity: d\_mu(sqrt|g| psibar Gamma\textasciicircum{}mu psi) == sqrt|g| [(D\_mu psibar) Gamma\textasciicircum{}mu psi + psibar Gamma\textasciicircum{}mu D\_mu psi] (psi, psibar arbitrary)} & True & 13.2 \\
+39 & \texttt{Lichnerowicz formula: (Gamma\textasciicircum{}mu D\_mu)\textasciicircum{}2 psi == (g\textasciicircum{}mu nu nabla\_mu D\_nu - R/4) psi} & True & 13.2 \\
+40 & \texttt{rescaling psi = (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) chi removes the spin connection: Gamma\textasciicircum{}mu D\_mu psi == (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) Gamma\textasciicircum{}mu d\_mu chi} & True & 13.2 \\
+41 & \texttt{mode equation: Gamma17[0].(i Gamma\textasciicircum{}mu D\_mu - m) psi == (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) e\textasciicircum{}\{i(p.x+q.y)\} (i dc/dx0 - h(x0) c) for psi = (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) e\textasciicircum{}\{i(p.x+q.y)\} c(x0)} & True & 13.2 \\
+42 & \texttt{conformal weight 7/2: Gamma\textasciicircum{}mu D\_mu (C\textasciicircum{}(-7/2) f) == C\textasciicircum{}(-9/2) Gamma17up[A] d\_A f for g = C(x0)\textasciicircum{}2 eta17} & True & 13.4 \\
+43 & \texttt{Cartan's first structure equation de\textasciicircum{}A + omega\textasciicircum{}A\_B \textasciicircum{} e\textasciicircum{}B == 0 (no torsion): cosmological, pp-wave and inhomogeneous frames} & True & 13.5 \\
+44 & \texttt{structure coefficients: omega\_C,AB == -(1/2)(C\_ACB + C\_BAC - C\_CBA) with C\textasciicircum{}A\_BC = e\_B\textasciicircum{}mu e\_C\textasciicircum{}nu (d\_mu e\textasciicircum{}A\_nu - d\_nu e\textasciicircum{}A\_mu): cosmological and inhomogeneous frames} & True & 13.5 \\
+45 & \texttt{static radial metric: Cartan's first structure equation and omega\_C,AB == -(1/2)(C\_ACB + C\_BAC - C\_CBA)} & True & 13.5 \\
+46 & \texttt{static radial metric: Omega\_0 == (f'/(4 Sqrt[f] Sqrt[h])) Gamma17[1].Gamma17[0], Omega\_1 == 0, Omega\_k == (1/(2 Sqrt[h])) Gamma17[1].Gamma17[k] (k = 2..7)} & True & 13.5 \\
+47 & \texttt{static radial metric: Gamma\textasciicircum{}mu Omega\_mu == (1/Sqrt[h]) (f'/(4 f) + 3/r) Gamma17up[1]} & True & 13.5 \\
+48 & \texttt{static radial metric: psi = f\textasciicircum{}(-1/4) r\textasciicircum{}(-3) chi removes the spin connection, Gamma\textasciicircum{}mu D\_mu psi == f\textasciicircum{}(-1/4) r\textasciicircum{}(-3) Gamma\textasciicircum{}mu d\_mu chi} & True & 13.5 \\
+49 & \texttt{U(1) gauge covariance: Gamma\textasciicircum{}mu (D\_mu - i q A'\_mu)(e\textasciicircum{}\{i q alpha\} psi) == e\textasciicircum{}\{i q alpha\} Gamma\textasciicircum{}mu (D\_mu - i q A\_mu) psi with A'\_mu = A\_mu + d\_mu alpha} & True & 13.5 \\
+50 & \texttt{current identity with the gauge field: d\_mu(sqrt|g| psibar Gamma\textasciicircum{}mu psi) == sqrt|g| [(D\_mu psibar) Gamma\textasciicircum{}mu psi + psibar Gamma\textasciicircum{}mu D\_mu psi], D including -i q A\_mu} & True & 13.5 \\
+51 & \texttt{Kasner metric: the Einstein tensor computed directly from the metric equals the closed form (x0\textasciicircum{}2 G\textasciicircum{}mu\_mu, mu = 0, 1, 4)} & True & 14.1 \\
+52 & \texttt{Einstein Kasner: (p, q) = ((1+2Sqrt[2])/7, (2-3Sqrt[2])/14) and ((1-2Sqrt[2])/7, (2+3Sqrt[2])/14) solve E\textasciicircum{}(1) == 0} & True & 14.1 \\
+53 & \texttt{Gauss-Bonnet Kasner: 3 real roots of the cubic; (p, (3-3p)/4) solve E\textasciicircum{}(2) == 0} & True & 14.1 \\
+54 & \texttt{cubic Lovelock Kasner: (p, q) = (-15/7, 20/7) solves E\textasciicircum{}(3) == 0; E\textasciicircum{}(3) == 0 identically for q = 0 and for p = 0} & True & 14.1 \\
+55 & \texttt{2x2 reduction: A, B, betaD square to ID16 and anticommute; Zc = A.B.betaD: Zc.Zc == -ID16, Transpose[Zc] == -Zc, Zc commutes with A, B, betaD} & True & 14.2 \\
+56 & \texttt{Kasner pair creation: |alpha|\textasciicircum{}2 + |beta|\textasciicircum{}2 == 1 (to 10\textasciicircum{}-8) for (|p|, |q|) = (1,1), (2,1), (1,3)} & True & 14.3 \\
+57 & \texttt{Kasner scaling: (|p|, |q|) = (1.4302.., 2.5) has K = 1 and the same |beta|\textasciicircum{}2 as (1, 1) (to 10\textasciicircum{}-6)} & True & 14.3 \\
+58 & \texttt{16x16 evolution == 4 copies of the 2x2 evolution with +m sigma3 and 4 with -m sigma3 (Kasner, m = 0.3, |p| = 1, |q| = 1.5, x0 from 0.05 to 40): average |beta|\textasciicircum{}2 agrees to 10\textasciicircum{}-8; unitarity; the two classes differ} & True & 14.3 \\
+59 & \texttt{isotropic expansion, massless: no pair creation (|beta|\textasciicircum{}2 < 10\textasciicircum{}-20)} & True & 14.3 \\
+60 & \texttt{static auxiliary space (Hb = 0): E\textasciicircum{}(1) = (3Ha\textasciicircum{}2, 2Ha' + 3Ha\textasciicircum{}2, 3Ha' + 6Ha\textasciicircum{}2), E\textasciicircum{}(2) = (0, 0, -12 Ha\textasciicircum{}2 (Ha' + Ha\textasciicircum{}2)), E\textasciicircum{}(3) = 0} & True & 14.4 \\
+61 & \texttt{8D de Sitter: E\textasciicircum{}(1) = 21 H\textasciicircum{}2, E\textasciicircum{}(2) = -420 H\textasciicircum{}4, E\textasciicircum{}(3) = 2520 H\textasciicircum{}6 (all diagonal entries)} & True & 14.5 \\
+62 & \texttt{de Sitter over a static auxiliary space: E\textasciicircum{}(1) = (3, 3, 6) H\textasciicircum{}2, E\textasciicircum{}(2) = (0, 0, -12) H\textasciicircum{}4, E\textasciicircum{}(3) = 0} & True & 14.5 \\
+63 & \texttt{de Sitter pair creation: |beta|\textasciicircum{}2 == 1/(Exp[2 Pi M/H] + 1) to 10\textasciicircum{}-7, M/H = 0.25, 0.5, 1} & True & 14.5 \\
+64 & \texttt{integrator benchmark (Landau-Zener): |beta|\textasciicircum{}2 == Exp[-Pi kappa\textasciicircum{}2] to 10\textasciicircum{}-6} & True & 14.5 \\
+65 & \texttt{cosmological metric: eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True & 13.1 \\
+66 & \texttt{cosmological metric: canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True & 13.1 \\
+67 & \texttt{cosmological metric: vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True & 13.1 \\
+68 & \texttt{cosmological metric: TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True & 13.1 \\
+69 & \texttt{cosmological metric: constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True & 13.1 \\
+70 & \texttt{cosmological metric: Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True & 13.1 \\
+71 & \texttt{cosmological metric: spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True & 13.1 \\
+72 & \texttt{cosmological metric: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True & 13.1 \\
+73 & \texttt{cosmological metric: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True & 13.1 \\
+74 & \texttt{pp-wave: eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True & 13.1 \\
+75 & \texttt{pp-wave: canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True & 13.1 \\
+76 & \texttt{pp-wave: vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True & 13.1 \\
+77 & \texttt{pp-wave: TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True & 13.1 \\
+78 & \texttt{pp-wave: constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True & 13.1 \\
+79 & \texttt{pp-wave: Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True & 13.1 \\
+80 & \texttt{pp-wave: spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True & 13.1 \\
+81 & \texttt{pp-wave: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True & 13.1 \\
+82 & \texttt{pp-wave: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True & 13.1 \\
+83 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True & 13.1 \\
+84 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True & 13.1 \\
+85 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True & 13.1 \\
+86 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True & 13.1 \\
+87 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True & 13.1 \\
+88 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True & 13.1 \\
+89 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True & 13.1 \\
+90 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True & 13.1 \\
+91 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True & 13.1 \\
+92 & \texttt{static radial metric: eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True & 13.1 \\
+93 & \texttt{static radial metric: canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True & 13.1 \\
+94 & \texttt{static radial metric: vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True & 13.1 \\
+95 & \texttt{static radial metric: TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True & 13.1 \\
+96 & \texttt{static radial metric: constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True & 13.1 \\
+97 & \texttt{static radial metric: Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True & 13.1 \\
+98 & \texttt{static radial metric: spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True & 13.1 \\
+99 & \texttt{static radial metric: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True & 13.1 \\
+100 & \texttt{static radial metric: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True & 13.1 \\*
 \end{longtable}}
 \textbf{The independent Python program} tools/ref\_gravity.py (its own curvature and Lovelock engine tools/lovelock71.py; the Dirac matrices rebuilt from the split octonions of 4+4.nb by tools/ref71.py). Its boolean checks:
 
@@ -266,105 +281,107 @@ G^0{}_0=-\big(3K_{12}+6K_{45}+12K_{14}\big)=3H_a^2+12H_aH_b+6H_b^2,\\ E^{(2)0}{}
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-1 & \texttt{cosmological metric: sectional curvatures R\textasciicircum{}\{AB\}\_\{AB\} = -(Ha'+Ha\textasciicircum{}2), -(Hb'+Hb\textasciicircum{}2), -Ha\textasciicircum{}2, -Hb\textasciicircum{}2, -Ha Hb} & True \\
-2 & \texttt{cosmological metric: Riemann R\textasciicircum{}\{cd\}\_\{ab\} non-zero only for \{c,d\} = \{a,b\}} & True \\
-3 & \texttt{G\textasciicircum{}0\_0 = 3Ha\textasciicircum{}2 + 12 Ha Hb + 6 Hb\textasciicircum{}2} & True \\
-4 & \texttt{G\textasciicircum{}1\_1 = 2Ha' + 3Ha\textasciicircum{}2 + 4Hb' + 10Hb\textasciicircum{}2 + 8HaHb} & True \\
-5 & \texttt{G\textasciicircum{}4\_4 = 3Ha' + 6Ha\textasciicircum{}2 + 3Hb' + 6Hb\textasciicircum{}2 + 9HaHb} & True \\
-6 & \texttt{scalar curvature R = -2(3Ha' + 6Ha\textasciicircum{}2 + 4Hb' + 10Hb\textasciicircum{}2 + 12 HaHb)} & True \\
-7 & \texttt{E\textasciicircum{}(1) = Einstein tensor G (cosmological metric)} & True \\
-8 & \texttt{L\_1 = R} & True \\
-9 & \texttt{E\textasciicircum{}(0) = -delta/2} & True \\
-10 & \texttt{trace identity E\textasciicircum{}(k)mu\_mu = -(8-2k)/2 L\_k, k = 0..4} & True \\
-11 & \texttt{E\textasciicircum{}(4) = 0 identically in 8 dimensions, but L\_4 (Euler density) is not 0} & True \\
-12 & \texttt{E\textasciicircum{}(k) diagonal: E\textasciicircum{}(k)mu\_nu = 0 for mu != nu, and E\textasciicircum{}(k)1\_1 = E\textasciicircum{}(k)2\_2 = E\textasciicircum{}(k)3\_3, E\textasciicircum{}(k)4\_4 = ... = E\textasciicircum{}(k)7\_7} & True \\
-13 & \texttt{E\textasciicircum{}(2)0\_0 = -12 Hb (4Ha\textasciicircum{}3 + 18Ha\textasciicircum{}2Hb + 12HaHb\textasciicircum{}2 + Hb\textasciicircum{}3)} & True \\
-14 & \texttt{E\textasciicircum{}(3)0\_0 = 360 Ha\textasciicircum{}2 Hb\textasciicircum{}3 (4Ha + 3Hb)} & True \\
-15 & \texttt{E\textasciicircum{}(2) = Lanczos tensor 2(R R\_mn - 2R\_ma R\textasciicircum{}a\_n - 2R\textasciicircum{}ab R\_manb + R\_m\textasciicircum{}abc R\_nabc) - g\_mn L\_2/2, and L\_2 = R\textasciicircum{}2 - 4 Ric.Ric + Riem.Riem (cosmological metric)} & True \\
-16 & \texttt{divergence-free E\textasciicircum{}(k), k = 1, 2, 3 (cosmological metric, arbitrary a, b)} & True \\
-17 & \texttt{variation of sqrt|g| L\_k (lapse N, a, b): EL\_N = -2 a\textasciicircum{}3 b\textasciicircum{}4 E\textasciicircum{}(k)0\_0, EL\_a = -6 a\textasciicircum{}2 b\textasciicircum{}4 E\textasciicircum{}(k)1\_1, EL\_b = -8 a\textasciicircum{}3 b\textasciicircum{}3 E\textasciicircum{}(k)4\_4, k = 1..4} & True \\
-18 & \texttt{inhomogeneous metric (N, A, B of x0 and x4): E\textasciicircum{}(1) = G at the point} & True \\
-19 & \texttt{inhomogeneous metric: nabla\_mu E\textasciicircum{}(k)mu\_nu = 0 exactly at x0 = 1/2, x4 = 1/3, k = 1, 2, 3} & True \\
-20 & \texttt{inhomogeneous metric: E\textasciicircum{}(k)\_mu nu symmetric, k = 1, 2, 3} & True \\
-21 & \texttt{pp-wave: E\textasciicircum{}(1)\_mu nu = +(1/2) (d2\textasciicircum{}2 + d3\textasciicircum{}2) F l\_mu l\_nu, l = dx0 - dx1} & True \\
-22 & \texttt{pp-wave: E\textasciicircum{}(2) = E\textasciicircum{}(3) = 0 for every profile F} & True \\
-23 & \texttt{Einstein Kasner: p = (1+-2 sqrt2)/7, q = (2-+3 sqrt2)/14 solve E\textasciicircum{}(1) = 0; 3p+4q = 1, 3p\textasciicircum{}2+4q\textasciicircum{}2 = 1} & True \\
-24 & \texttt{Gauss-Bonnet Kasner: the three (p, (3-3p)/4) solve E\textasciicircum{}(2) = 0, sum of the 7 exponents = 3} & True \\
-25 & \texttt{cubic Lovelock Kasner: (p, q) = (-15/7, 20/7) solves E\textasciicircum{}(3) = 0, 3p + 4q = 5; degenerate families q = 0 and p = 0} & True \\
-26 & \texttt{Einstein Kasner is not a cubic-Lovelock vacuum (E\textasciicircum{}(3) != 0)} & True \\
-27 & \texttt{8D de Sitter (a = b = e\textasciicircum{}\{H x0\}): E\textasciicircum{}(1) = 21 H\textasciicircum{}2, E\textasciicircum{}(2) = -420 H\textasciicircum{}4, E\textasciicircum{}(3) = 2520 H\textasciicircum{}6 (times delta)} & True \\
-28 & \texttt{4D de Sitter on a static T\textasciicircum{}4 (a = e\textasciicircum{}\{H x0\}, b = b0): E\textasciicircum{}(1) = diag(3,3,6) H\textasciicircum{}2, E\textasciicircum{}(2) = diag(0,0,-12) H\textasciicircum{}4, E\textasciicircum{}(3) = 0} & True \\
-29 & \texttt{static T\textasciicircum{}4 (Hb = 0): E\textasciicircum{}(1) = (3Ha\textasciicircum{}2, 2Ha'+3Ha\textasciicircum{}2, 3Ha'+6Ha\textasciicircum{}2), E\textasciicircum{}(2) = (0, 0, -12 Ha\textasciicircum{}2 (Ha'+Ha\textasciicircum{}2)), E\textasciicircum{}(3) = 0} & True \\
-30 & \texttt{exponential expansion a = e\textasciicircum{}\{H x0\}, b = e\textasciicircum{}\{q H x0\}: E\textasciicircum{}(k) (00, 11, 44) = closed forms with Ha = H, Hb = q H, Ha' = Hb' = 0 (k = 1, 2, 3)} & True \\
-31 & \texttt{exponential expansion: 3 Ha (eq00 - eq11) + 4 Hb (eq00 - eq44) = 0 identically (the three vacuum equations have rank 2)} & True \\
-32 & \texttt{exponential vacuum solutions: one solution (w2, w3) for given w1, Lambda, q, satisfying all three equations} & True \\
-33 & \texttt{eternal inflation a = e\textasciicircum{}\{H x0\} with deflation b = e\textasciicircum{}\{-H x0\}: w2 = Lambda/4 - w1/2, w3 = w1/24 - Lambda/36 (Lambda = 0: w2/w1 = -1/2, w3/w1 = 1/24)} & True \\
-34 & \texttt{cosmological metric: eta e e = g} & True \\
-35 & \texttt{cosmological metric: \{Gamma\_mu, Gamma\_nu\} = 2 g\_mu nu} & True \\
-36 & \texttt{cosmological metric: Gamma\_mu real} & True \\
-37 & \texttt{cosmological metric: omega\_mu AB = -omega\_mu BA} & True \\
-38 & \texttt{cosmological metric: vielbein postulate d\_mu e\textasciicircum{}A\_nu - chr\textasciicircum{}l\_mu nu e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu = 0} & True \\
-39 & \texttt{cosmological metric: Omega\_mu real, Gamma17[0] Omega\_mu\textasciicircum{}T Gamma17[0] = -Omega\_mu} & True \\
-40 & \texttt{cosmological metric: total covariant derivative of the frame matrices: d\_mu Gamma\_nu - chr\textasciicircum{}l\_mu nu Gamma\_l + [Omega\_mu, Gamma\_nu] = 0} & True \\
-41 & \texttt{cosmological metric: constant frame matrices: omega\_mu\textasciicircum{}A\_B Gamma\textasciicircum{}B + [Omega\_mu, Gamma\textasciicircum{}A] = 0} & True \\
-42 & \texttt{cosmological metric: spin curvature F\_mu nu = (1/4) R\_AB mu nu Gamma\textasciicircum{}A Gamma\textasciicircum{}B} & True \\
-43 & \texttt{cosmological metric: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic = 0} & True \\
-44 & \texttt{cosmological metric: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu = -(R/4) 1\_16} & True \\
-45 & \texttt{cosmological metric: Gamma\textasciicircum{}mu Omega\_mu = (3a'/(2a) + 2b'/b) Gamma17[0]} & True \\
-46 & \texttt{cosmological metric: Omega\_i = (a'/2) Gamma17[i] Gamma17[0] (i = 1..3), Omega\_k = (b'/2) Gamma17[k] Gamma17[0] (k = 4..7), Omega\_0 = 0} & True \\
-47 & \texttt{pp-wave: eta e e = g} & True \\
-48 & \texttt{pp-wave: \{Gamma\_mu, Gamma\_nu\} = 2 g\_mu nu} & True \\
-49 & \texttt{pp-wave: Gamma\_mu real} & True \\
-50 & \texttt{pp-wave: omega\_mu AB = -omega\_mu BA} & True \\
-51 & \texttt{pp-wave: vielbein postulate d\_mu e\textasciicircum{}A\_nu - chr\textasciicircum{}l\_mu nu e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu = 0} & True \\
-52 & \texttt{pp-wave: Omega\_mu real, Gamma17[0] Omega\_mu\textasciicircum{}T Gamma17[0] = -Omega\_mu} & True \\
-53 & \texttt{pp-wave: total covariant derivative of the frame matrices: d\_mu Gamma\_nu - chr\textasciicircum{}l\_mu nu Gamma\_l + [Omega\_mu, Gamma\_nu] = 0} & True \\
-54 & \texttt{pp-wave: constant frame matrices: omega\_mu\textasciicircum{}A\_B Gamma\textasciicircum{}B + [Omega\_mu, Gamma\textasciicircum{}A] = 0} & True \\
-55 & \texttt{pp-wave: spin curvature F\_mu nu = (1/4) R\_AB mu nu Gamma\textasciicircum{}A Gamma\textasciicircum{}B} & True \\
-56 & \texttt{pp-wave: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic = 0} & True \\
-57 & \texttt{pp-wave: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu = -(R/4) 1\_16} & True \\
-58 & \texttt{inhomogeneous metric N, A, B (x0, x4): eta e e = g} & True \\
-59 & \texttt{inhomogeneous metric N, A, B (x0, x4): \{Gamma\_mu, Gamma\_nu\} = 2 g\_mu nu} & True \\
-60 & \texttt{inhomogeneous metric N, A, B (x0, x4): Gamma\_mu real} & True \\
-61 & \texttt{inhomogeneous metric N, A, B (x0, x4): omega\_mu AB = -omega\_mu BA} & True \\
-62 & \texttt{inhomogeneous metric N, A, B (x0, x4): vielbein postulate d\_mu e\textasciicircum{}A\_nu - chr\textasciicircum{}l\_mu nu e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu = 0} & True \\
-63 & \texttt{inhomogeneous metric N, A, B (x0, x4): Omega\_mu real, Gamma17[0] Omega\_mu\textasciicircum{}T Gamma17[0] = -Omega\_mu} & True \\
-64 & \texttt{inhomogeneous metric N, A, B (x0, x4): total covariant derivative of the frame matrices: d\_mu Gamma\_nu - chr\textasciicircum{}l\_mu nu Gamma\_l + [Omega\_mu, Gamma\_nu] = 0} & True \\
-65 & \texttt{inhomogeneous metric N, A, B (x0, x4): constant frame matrices: omega\_mu\textasciicircum{}A\_B Gamma\textasciicircum{}B + [Omega\_mu, Gamma\textasciicircum{}A] = 0} & True \\
-66 & \texttt{inhomogeneous metric N, A, B (x0, x4): spin curvature F\_mu nu = (1/4) R\_AB mu nu Gamma\textasciicircum{}A Gamma\textasciicircum{}B} & True \\
-67 & \texttt{inhomogeneous metric N, A, B (x0, x4): Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic = 0} & True \\
-68 & \texttt{inhomogeneous metric N, A, B (x0, x4): (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu = -(R/4) 1\_16} & True \\
-69 & \texttt{Cartan's first structure equation de\textasciicircum{}A + omega\textasciicircum{}A\_B \textasciicircum{} e\textasciicircum{}B = 0 (torsion-free) for the cosmological frame} & True \\
-70 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): eta e e = g} & True \\
-71 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): \{Gamma\_mu, Gamma\_nu\} = 2 g\_mu nu} & True \\
-72 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): Gamma\_mu real} & True \\
-73 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): omega\_mu AB = -omega\_mu BA} & True \\
-74 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): vielbein postulate d\_mu e\textasciicircum{}A\_nu - chr\textasciicircum{}l\_mu nu e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu = 0} & True \\
-75 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): Omega\_mu real, Gamma17[0] Omega\_mu\textasciicircum{}T Gamma17[0] = -Omega\_mu} & True \\
-76 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): total covariant derivative of the frame matrices: d\_mu Gamma\_nu - chr\textasciicircum{}l\_mu nu Gamma\_l + [Omega\_mu, Gamma\_nu] = 0} & True \\
-77 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): constant frame matrices: omega\_mu\textasciicircum{}A\_B Gamma\textasciicircum{}B + [Omega\_mu, Gamma\textasciicircum{}A] = 0} & True \\
-78 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): spin curvature F\_mu nu = (1/4) R\_AB mu nu Gamma\textasciicircum{}A Gamma\textasciicircum{}B} & True \\
-79 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic = 0} & True \\
-80 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu = -(R/4) 1\_16} & True \\
-81 & \texttt{Cartan's first structure equation for the static radial metric} & True \\
-82 & \texttt{structure coefficients: de\textasciicircum{}A = (1/2) C\textasciicircum{}A\_BC e\textasciicircum{}B \textasciicircum{} e\textasciicircum{}C and omega\_C,AB (form index C) = -(1/2)(C\_ACB + C\_BAC - C\_CBA) (static radial metric)} & True \\
-83 & \texttt{static radial metric: Omega\_0 = (f'/(4 sqrt(f h))) Gamma17[1] Gamma17[0], Omega\_1 = 0, Omega\_k = (1/(2 sqrt h)) Gamma17[1] Gamma17[k] (k = 2..7)} & True \\
-84 & \texttt{static radial metric: Gamma\textasciicircum{}mu Omega\_mu = (1/sqrt h)(f'/(4f) + 3/r) Gamma17up[1], so (i Gamma\textasciicircum{}mu D\_mu - m) psi = [i Gamma17up[0] d0/sqrt f + i Gamma17up[1] (d\_r + f'/(4f) + 3/r)/sqrt h + sum\_k i Gamma17up[k] d\_k/r - m] psi} & True \\
-85 & \texttt{static radial metric: psi = f\textasciicircum{}(-1/4) r\textasciicircum{}(-3) chi removes the spin connection: Gamma\textasciicircum{}mu D\_mu psi = f\textasciicircum{}(-1/4) r\textasciicircum{}(-3) Gamma\textasciicircum{}mu d\_mu chi} & True \\
-86 & \texttt{U(1) gauge covariance: Gamma\textasciicircum{}mu (D\_mu - i q A'\_mu)(e\textasciicircum{}\{i q alpha\} psi) = e\textasciicircum{}\{i q alpha\} Gamma\textasciicircum{}mu (D\_mu - i q A\_mu) psi with A' = A + d alpha} & True \\
-87 & \texttt{current identity with the gauge field: d\_mu(sqrt|g| psibar Gamma\textasciicircum{}mu psi) = sqrt|g| [(D\_mu psibar) Gamma\textasciicircum{}mu psi + psibar Gamma\textasciicircum{}mu D\_mu psi], D including -i q A\_mu} & True \\
-88 & \texttt{current identity d\_mu(sqrt|g| psibar Gamma\textasciicircum{}mu psi) = sqrt|g| [(D\_mu psibar) Gamma\textasciicircum{}mu psi + psibar Gamma\textasciicircum{}mu D\_mu psi]} & True \\
-89 & \texttt{Lichnerowicz: (Gamma\textasciicircum{}mu D\_mu)\textasciicircum{}2 psi = (g\textasciicircum{}mu nu nabla\_mu D\_nu - R/4) psi} & True \\
-90 & \texttt{rescaling psi = (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) chi removes the spin connection: Gamma\textasciicircum{}mu D\_mu psi = (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) Gamma\textasciicircum{}mu d\_mu chi} & True \\
-91 & \texttt{mode equation: (i Gamma\textasciicircum{}mu D\_mu - m) psi = 0  <=>  i dc/dx0 = h(x0) c, h = alpha.(p/a, q/b) + beta m} & True \\
-92 & \texttt{conformal weight 7/2: Gamma\textasciicircum{}mu D\_mu (C\textasciicircum{}(-7/2) f) = C\textasciicircum{}(-9/2) Gamma\textasciicircum{}A d\_A f for g = C(x0)\textasciicircum{}2 eta} & True \\
-93 & \texttt{2x2 reduction: A = alpha.n\_a, B = alpha.n\_b, beta: squares 1, mutually anticommuting; Z = A B beta: Z\textasciicircum{}2 = -1, Z\textasciicircum{}T = -Z, commutes with A, B, beta} & True \\
-94 & \texttt{Kasner: |alpha|\textasciicircum{}2 + |beta|\textasciicircum{}2 = 1 (to 1e-8)} & True \\
-95 & \texttt{Kasner scaling: (|p|, |q|) = (1.430..., 2.5) has K = 1 and the same |beta|\textasciicircum{}2 as (1, 1) (to 1e-6)} & True \\
-96 & \texttt{16x16 evolution = 4 copies of the 2x2 evolution with +m sigma3 and 4 copies with -m sigma3: average agrees (to 1e-8), unitarity; the two sectors differ} & True \\
-97 & \texttt{isotropic expansion, massless: no pair creation (|beta|\textasciicircum{}2 < 1e-20)} & True \\
-98 & \texttt{de Sitter: |beta|\textasciicircum{}2 = 1/(exp(2 pi m/H) + 1) (Fermi-Dirac at the Gibbons-Hawking temperature H/2pi), to 1e-7} & True \\
-99 & \texttt{integrator benchmark: Landau-Zener |beta|\textasciicircum{}2 = exp(-pi kappa\textasciicircum{}2) (to 1e-6)} & True \\*
+1 & \texttt{eta17 is simply the squares of the octonion basis: eta\_AB = Re(e\_A e\_B), e\_0\textasciicircum{}2 = +1, e\_i\textasciicircum{}2 = -1 (i = 1..7)} & True \\
+2 & \texttt{the quadratic form of the octonions has the signs of the squares of the octonion basis: Re(x x) = x0\textasciicircum{}2 - x1\textasciicircum{}2 - ... - x7\textasciicircum{}2 = x.eta17.x} & True \\
+3 & \texttt{cosmological metric: sectional curvatures R\textasciicircum{}\{AB\}\_\{AB\} = -(Ha'+Ha\textasciicircum{}2), -(Hb'+Hb\textasciicircum{}2), -Ha\textasciicircum{}2, -Hb\textasciicircum{}2, -Ha Hb} & True \\
+4 & \texttt{cosmological metric: Riemann R\textasciicircum{}\{cd\}\_\{ab\} non-zero only for \{c,d\} = \{a,b\}} & True \\
+5 & \texttt{G\textasciicircum{}0\_0 = 3Ha\textasciicircum{}2 + 12 Ha Hb + 6 Hb\textasciicircum{}2} & True \\
+6 & \texttt{G\textasciicircum{}1\_1 = 2Ha' + 3Ha\textasciicircum{}2 + 4Hb' + 10Hb\textasciicircum{}2 + 8HaHb} & True \\
+7 & \texttt{G\textasciicircum{}4\_4 = 3Ha' + 6Ha\textasciicircum{}2 + 3Hb' + 6Hb\textasciicircum{}2 + 9HaHb} & True \\
+8 & \texttt{scalar curvature R = -2(3Ha' + 6Ha\textasciicircum{}2 + 4Hb' + 10Hb\textasciicircum{}2 + 12 HaHb)} & True \\
+9 & \texttt{E\textasciicircum{}(1) = Einstein tensor G (cosmological metric)} & True \\
+10 & \texttt{L\_1 = R} & True \\
+11 & \texttt{E\textasciicircum{}(0) = -delta/2} & True \\
+12 & \texttt{trace identity E\textasciicircum{}(k)mu\_mu = -(8-2k)/2 L\_k, k = 0..4} & True \\
+13 & \texttt{E\textasciicircum{}(4) = 0 identically in 8 dimensions, but L\_4 (Euler density) is not 0} & True \\
+14 & \texttt{E\textasciicircum{}(k) diagonal: E\textasciicircum{}(k)mu\_nu = 0 for mu != nu, and E\textasciicircum{}(k)1\_1 = E\textasciicircum{}(k)2\_2 = E\textasciicircum{}(k)3\_3, E\textasciicircum{}(k)4\_4 = ... = E\textasciicircum{}(k)7\_7} & True \\
+15 & \texttt{E\textasciicircum{}(2)0\_0 = -12 Hb (4Ha\textasciicircum{}3 + 18Ha\textasciicircum{}2Hb + 12HaHb\textasciicircum{}2 + Hb\textasciicircum{}3)} & True \\
+16 & \texttt{E\textasciicircum{}(3)0\_0 = 360 Ha\textasciicircum{}2 Hb\textasciicircum{}3 (4Ha + 3Hb)} & True \\
+17 & \texttt{E\textasciicircum{}(2) = Lanczos tensor 2(R R\_mn - 2R\_ma R\textasciicircum{}a\_n - 2R\textasciicircum{}ab R\_manb + R\_m\textasciicircum{}abc R\_nabc) - g\_mn L\_2/2, and L\_2 = R\textasciicircum{}2 - 4 Ric.Ric + Riem.Riem (cosmological metric)} & True \\
+18 & \texttt{divergence-free E\textasciicircum{}(k), k = 1, 2, 3 (cosmological metric, arbitrary a, b)} & True \\
+19 & \texttt{variation of sqrt|g| L\_k (lapse N, a, b): EL\_N = -2 a\textasciicircum{}3 b\textasciicircum{}4 E\textasciicircum{}(k)0\_0, EL\_a = -6 a\textasciicircum{}2 b\textasciicircum{}4 E\textasciicircum{}(k)1\_1, EL\_b = -8 a\textasciicircum{}3 b\textasciicircum{}3 E\textasciicircum{}(k)4\_4, k = 1..4} & True \\
+20 & \texttt{inhomogeneous metric (N, A, B of x0 and x4): E\textasciicircum{}(1) = G at the point} & True \\
+21 & \texttt{inhomogeneous metric: nabla\_mu E\textasciicircum{}(k)mu\_nu = 0 exactly at x0 = 1/2, x4 = 1/3, k = 1, 2, 3} & True \\
+22 & \texttt{inhomogeneous metric: E\textasciicircum{}(k)\_mu nu symmetric, k = 1, 2, 3} & True \\
+23 & \texttt{pp-wave: E\textasciicircum{}(1)\_mu nu = +(1/2) (d2\textasciicircum{}2 + d3\textasciicircum{}2) F l\_mu l\_nu, l = dx0 - dx1} & True \\
+24 & \texttt{pp-wave: E\textasciicircum{}(2) = E\textasciicircum{}(3) = 0 for every profile F} & True \\
+25 & \texttt{Einstein Kasner: p = (1+-2 sqrt2)/7, q = (2-+3 sqrt2)/14 solve E\textasciicircum{}(1) = 0; 3p+4q = 1, 3p\textasciicircum{}2+4q\textasciicircum{}2 = 1} & True \\
+26 & \texttt{Gauss-Bonnet Kasner: the three (p, (3-3p)/4) solve E\textasciicircum{}(2) = 0, sum of the 7 exponents = 3} & True \\
+27 & \texttt{cubic Lovelock Kasner: (p, q) = (-15/7, 20/7) solves E\textasciicircum{}(3) = 0, 3p + 4q = 5; degenerate families q = 0 and p = 0} & True \\
+28 & \texttt{Einstein Kasner is not a cubic-Lovelock vacuum (E\textasciicircum{}(3) != 0)} & True \\
+29 & \texttt{8D de Sitter (a = b = e\textasciicircum{}\{H x0\}): E\textasciicircum{}(1) = 21 H\textasciicircum{}2, E\textasciicircum{}(2) = -420 H\textasciicircum{}4, E\textasciicircum{}(3) = 2520 H\textasciicircum{}6 (times delta)} & True \\
+30 & \texttt{4D de Sitter on a static T\textasciicircum{}4 (a = e\textasciicircum{}\{H x0\}, b = b0): E\textasciicircum{}(1) = diag(3,3,6) H\textasciicircum{}2, E\textasciicircum{}(2) = diag(0,0,-12) H\textasciicircum{}4, E\textasciicircum{}(3) = 0} & True \\
+31 & \texttt{static T\textasciicircum{}4 (Hb = 0): E\textasciicircum{}(1) = (3Ha\textasciicircum{}2, 2Ha'+3Ha\textasciicircum{}2, 3Ha'+6Ha\textasciicircum{}2), E\textasciicircum{}(2) = (0, 0, -12 Ha\textasciicircum{}2 (Ha'+Ha\textasciicircum{}2)), E\textasciicircum{}(3) = 0} & True \\
+32 & \texttt{exponential expansion a = e\textasciicircum{}\{H x0\}, b = e\textasciicircum{}\{q H x0\}: E\textasciicircum{}(k) (00, 11, 44) = closed forms with Ha = H, Hb = q H, Ha' = Hb' = 0 (k = 1, 2, 3)} & True \\
+33 & \texttt{exponential expansion: 3 Ha (eq00 - eq11) + 4 Hb (eq00 - eq44) = 0 identically (the three vacuum equations have rank 2)} & True \\
+34 & \texttt{exponential vacuum solutions: one solution (w2, w3) for given w1, Lambda, q, satisfying all three equations} & True \\
+35 & \texttt{eternal inflation a = e\textasciicircum{}\{H x0\} with deflation b = e\textasciicircum{}\{-H x0\}: w2 = Lambda/4 - w1/2, w3 = w1/24 - Lambda/36 (Lambda = 0: w2/w1 = -1/2, w3/w1 = 1/24)} & True \\
+36 & \texttt{cosmological metric: eta e e = g} & True \\
+37 & \texttt{cosmological metric: \{Gamma\_mu, Gamma\_nu\} = 2 g\_mu nu} & True \\
+38 & \texttt{cosmological metric: Gamma\_mu real} & True \\
+39 & \texttt{cosmological metric: omega\_mu AB = -omega\_mu BA} & True \\
+40 & \texttt{cosmological metric: vielbein postulate d\_mu e\textasciicircum{}A\_nu - chr\textasciicircum{}l\_mu nu e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu = 0} & True \\
+41 & \texttt{cosmological metric: Omega\_mu real, Gamma17[0] Omega\_mu\textasciicircum{}T Gamma17[0] = -Omega\_mu} & True \\
+42 & \texttt{cosmological metric: total covariant derivative of the frame matrices: d\_mu Gamma\_nu - chr\textasciicircum{}l\_mu nu Gamma\_l + [Omega\_mu, Gamma\_nu] = 0} & True \\
+43 & \texttt{cosmological metric: constant frame matrices: omega\_mu\textasciicircum{}A\_B Gamma\textasciicircum{}B + [Omega\_mu, Gamma\textasciicircum{}A] = 0} & True \\
+44 & \texttt{cosmological metric: spin curvature F\_mu nu = (1/4) R\_AB mu nu Gamma\textasciicircum{}A Gamma\textasciicircum{}B} & True \\
+45 & \texttt{cosmological metric: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic = 0} & True \\
+46 & \texttt{cosmological metric: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu = -(R/4) 1\_16} & True \\
+47 & \texttt{cosmological metric: Gamma\textasciicircum{}mu Omega\_mu = (3a'/(2a) + 2b'/b) Gamma17[0]} & True \\
+48 & \texttt{cosmological metric: Omega\_i = (a'/2) Gamma17[i] Gamma17[0] (i = 1..3), Omega\_k = (b'/2) Gamma17[k] Gamma17[0] (k = 4..7), Omega\_0 = 0} & True \\
+49 & \texttt{pp-wave: eta e e = g} & True \\
+50 & \texttt{pp-wave: \{Gamma\_mu, Gamma\_nu\} = 2 g\_mu nu} & True \\
+51 & \texttt{pp-wave: Gamma\_mu real} & True \\
+52 & \texttt{pp-wave: omega\_mu AB = -omega\_mu BA} & True \\
+53 & \texttt{pp-wave: vielbein postulate d\_mu e\textasciicircum{}A\_nu - chr\textasciicircum{}l\_mu nu e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu = 0} & True \\
+54 & \texttt{pp-wave: Omega\_mu real, Gamma17[0] Omega\_mu\textasciicircum{}T Gamma17[0] = -Omega\_mu} & True \\
+55 & \texttt{pp-wave: total covariant derivative of the frame matrices: d\_mu Gamma\_nu - chr\textasciicircum{}l\_mu nu Gamma\_l + [Omega\_mu, Gamma\_nu] = 0} & True \\
+56 & \texttt{pp-wave: constant frame matrices: omega\_mu\textasciicircum{}A\_B Gamma\textasciicircum{}B + [Omega\_mu, Gamma\textasciicircum{}A] = 0} & True \\
+57 & \texttt{pp-wave: spin curvature F\_mu nu = (1/4) R\_AB mu nu Gamma\textasciicircum{}A Gamma\textasciicircum{}B} & True \\
+58 & \texttt{pp-wave: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic = 0} & True \\
+59 & \texttt{pp-wave: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu = -(R/4) 1\_16} & True \\
+60 & \texttt{inhomogeneous metric N, A, B (x0, x4): eta e e = g} & True \\
+61 & \texttt{inhomogeneous metric N, A, B (x0, x4): \{Gamma\_mu, Gamma\_nu\} = 2 g\_mu nu} & True \\
+62 & \texttt{inhomogeneous metric N, A, B (x0, x4): Gamma\_mu real} & True \\
+63 & \texttt{inhomogeneous metric N, A, B (x0, x4): omega\_mu AB = -omega\_mu BA} & True \\
+64 & \texttt{inhomogeneous metric N, A, B (x0, x4): vielbein postulate d\_mu e\textasciicircum{}A\_nu - chr\textasciicircum{}l\_mu nu e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu = 0} & True \\
+65 & \texttt{inhomogeneous metric N, A, B (x0, x4): Omega\_mu real, Gamma17[0] Omega\_mu\textasciicircum{}T Gamma17[0] = -Omega\_mu} & True \\
+66 & \texttt{inhomogeneous metric N, A, B (x0, x4): total covariant derivative of the frame matrices: d\_mu Gamma\_nu - chr\textasciicircum{}l\_mu nu Gamma\_l + [Omega\_mu, Gamma\_nu] = 0} & True \\
+67 & \texttt{inhomogeneous metric N, A, B (x0, x4): constant frame matrices: omega\_mu\textasciicircum{}A\_B Gamma\textasciicircum{}B + [Omega\_mu, Gamma\textasciicircum{}A] = 0} & True \\
+68 & \texttt{inhomogeneous metric N, A, B (x0, x4): spin curvature F\_mu nu = (1/4) R\_AB mu nu Gamma\textasciicircum{}A Gamma\textasciicircum{}B} & True \\
+69 & \texttt{inhomogeneous metric N, A, B (x0, x4): Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic = 0} & True \\
+70 & \texttt{inhomogeneous metric N, A, B (x0, x4): (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu = -(R/4) 1\_16} & True \\
+71 & \texttt{Cartan's first structure equation de\textasciicircum{}A + omega\textasciicircum{}A\_B \textasciicircum{} e\textasciicircum{}B = 0 (torsion-free) for the cosmological frame} & True \\
+72 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): eta e e = g} & True \\
+73 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): \{Gamma\_mu, Gamma\_nu\} = 2 g\_mu nu} & True \\
+74 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): Gamma\_mu real} & True \\
+75 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): omega\_mu AB = -omega\_mu BA} & True \\
+76 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): vielbein postulate d\_mu e\textasciicircum{}A\_nu - chr\textasciicircum{}l\_mu nu e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu = 0} & True \\
+77 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): Omega\_mu real, Gamma17[0] Omega\_mu\textasciicircum{}T Gamma17[0] = -Omega\_mu} & True \\
+78 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): total covariant derivative of the frame matrices: d\_mu Gamma\_nu - chr\textasciicircum{}l\_mu nu Gamma\_l + [Omega\_mu, Gamma\_nu] = 0} & True \\
+79 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): constant frame matrices: omega\_mu\textasciicircum{}A\_B Gamma\textasciicircum{}B + [Omega\_mu, Gamma\textasciicircum{}A] = 0} & True \\
+80 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): spin curvature F\_mu nu = (1/4) R\_AB mu nu Gamma\textasciicircum{}A Gamma\textasciicircum{}B} & True \\
+81 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic = 0} & True \\
+82 & \texttt{static radial metric f(r) dx0\textasciicircum{}2 - h(r) dr\textasciicircum{}2 - r\textasciicircum{}2 (dx2\textasciicircum{}2 + ... + dx7\textasciicircum{}2): (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu = -(R/4) 1\_16} & True \\
+83 & \texttt{Cartan's first structure equation for the static radial metric} & True \\
+84 & \texttt{structure coefficients: de\textasciicircum{}A = (1/2) C\textasciicircum{}A\_BC e\textasciicircum{}B \textasciicircum{} e\textasciicircum{}C and omega\_C,AB (form index C) = -(1/2)(C\_ACB + C\_BAC - C\_CBA) (static radial metric)} & True \\
+85 & \texttt{static radial metric: Omega\_0 = (f'/(4 sqrt(f h))) Gamma17[1] Gamma17[0], Omega\_1 = 0, Omega\_k = (1/(2 sqrt h)) Gamma17[1] Gamma17[k] (k = 2..7)} & True \\
+86 & \texttt{static radial metric: Gamma\textasciicircum{}mu Omega\_mu = (1/sqrt h)(f'/(4f) + 3/r) Gamma17up[1], so (i Gamma\textasciicircum{}mu D\_mu - m) psi = [i Gamma17up[0] d0/sqrt f + i Gamma17up[1] (d\_r + f'/(4f) + 3/r)/sqrt h + sum\_k i Gamma17up[k] d\_k/r - m] psi} & True \\
+87 & \texttt{static radial metric: psi = f\textasciicircum{}(-1/4) r\textasciicircum{}(-3) chi removes the spin connection: Gamma\textasciicircum{}mu D\_mu psi = f\textasciicircum{}(-1/4) r\textasciicircum{}(-3) Gamma\textasciicircum{}mu d\_mu chi} & True \\
+88 & \texttt{U(1) gauge covariance: Gamma\textasciicircum{}mu (D\_mu - i q A'\_mu)(e\textasciicircum{}\{i q alpha\} psi) = e\textasciicircum{}\{i q alpha\} Gamma\textasciicircum{}mu (D\_mu - i q A\_mu) psi with A' = A + d alpha} & True \\
+89 & \texttt{current identity with the gauge field: d\_mu(sqrt|g| psibar Gamma\textasciicircum{}mu psi) = sqrt|g| [(D\_mu psibar) Gamma\textasciicircum{}mu psi + psibar Gamma\textasciicircum{}mu D\_mu psi], D including -i q A\_mu} & True \\
+90 & \texttt{current identity d\_mu(sqrt|g| psibar Gamma\textasciicircum{}mu psi) = sqrt|g| [(D\_mu psibar) Gamma\textasciicircum{}mu psi + psibar Gamma\textasciicircum{}mu D\_mu psi]} & True \\
+91 & \texttt{Lichnerowicz: (Gamma\textasciicircum{}mu D\_mu)\textasciicircum{}2 psi = (g\textasciicircum{}mu nu nabla\_mu D\_nu - R/4) psi} & True \\
+92 & \texttt{rescaling psi = (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) chi removes the spin connection: Gamma\textasciicircum{}mu D\_mu psi = (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) Gamma\textasciicircum{}mu d\_mu chi} & True \\
+93 & \texttt{mode equation: (i Gamma\textasciicircum{}mu D\_mu - m) psi = 0  <=>  i dc/dx0 = h(x0) c, h = alpha.(p/a, q/b) + beta m} & True \\
+94 & \texttt{conformal weight 7/2: Gamma\textasciicircum{}mu D\_mu (C\textasciicircum{}(-7/2) f) = C\textasciicircum{}(-9/2) Gamma\textasciicircum{}A d\_A f for g = C(x0)\textasciicircum{}2 eta} & True \\
+95 & \texttt{2x2 reduction: A = alpha.n\_a, B = alpha.n\_b, beta: squares 1, mutually anticommuting; Z = A B beta: Z\textasciicircum{}2 = -1, Z\textasciicircum{}T = -Z, commutes with A, B, beta} & True \\
+96 & \texttt{Kasner: |alpha|\textasciicircum{}2 + |beta|\textasciicircum{}2 = 1 (to 1e-8)} & True \\
+97 & \texttt{Kasner scaling: (|p|, |q|) = (1.430..., 2.5) has K = 1 and the same |beta|\textasciicircum{}2 as (1, 1) (to 1e-6)} & True \\
+98 & \texttt{16x16 evolution = 4 copies of the 2x2 evolution with +m sigma3 and 4 copies with -m sigma3: average agrees (to 1e-8), unitarity; the two sectors differ} & True \\
+99 & \texttt{isotropic expansion, massless: no pair creation (|beta|\textasciicircum{}2 < 1e-20)} & True \\
+100 & \texttt{de Sitter: |beta|\textasciicircum{}2 = 1/(exp(2 pi m/H) + 1) (Fermi-Dirac at the Gibbons-Hawking temperature H/2pi), to 1e-7} & True \\
+101 & \texttt{integrator benchmark: Landau-Zener |beta|\textasciicircum{}2 = exp(-pi kappa\textasciicircum{}2) (to 1e-6)} & True \\*
 \end{longtable}}
 \textbf{Numbers computed by both programs:}
 
@@ -388,32 +405,36 @@ de Sitter $|\beta|^2$, $M/H=1$ & 0.00186397746 & — \\*
 \textbf{SHA-256 of the files} (at the time this document was generated):
 
 \begin{Verbatim}[fontsize=\small,frame=single,framesep=2mm]
-7+1.nb                             060942488caf4f45120ffd37be0123e96992a31cd7fdbde09ee4dc4ced4f5
-    ...d3a
-tools/make_7p1_nb.py               2fac94dfd0c9fcf3aed8d6e90a77fbbb8ab1c8450819ff591b7e5cf7b5787
-    ...d6f
-tools/nb_part_gravity.py           55d16f735e16df7a7cd2aa70d322969bc6cf82c777965f112b5a9acf46a6a
-    ...d5f
-tools/nb_part_ks_gravity.py        886814fedc4cd015c63b950ee83724025ba21fd6c3e56b68dcb7f2f07afdc
-    ...205
-tools/nb_part_sm.py                20782f1fe557fd3f3dea7417e89ecd42a1602f7a48599fcdcfd0cff77f120
-    ...ecc
+7+1.nb                             8ef9fed74c1c887a51945dfaa670cd1e32a2b07e4964f2f5ae59ac0e9747a
+    ...a0c
+tools/make_7p1_nb.py               7407dbef711b841fa0adb7817c6fb5bfe5018bc02a603100a46dd2169b93c
+    ...4fe
+tools/nb_part_gravity.py           c4caf2ad5c932e8f603341edade5f4b98fa784feb05906c051eab7c884cd6
+    ...8f8
+tools/nb_part_ks_gravity.py        a656c0ad040b4576b75b17e029545109e531c8e656ad99bfdb5cba946e967
+    ...772
+tools/nb_part_sm.py                43e92beed57453a4b57931de6d603ac6c218efba6e4005133b69b8054a975
+    ...c5b
 tools/lovelock71.py                d93ecbd0f82adb972218d59dfe32999a4af944945ca9758607f3a633e1af9
     ...5a1
-tools/ref_gravity.py               2bfdc087ed4dc7d84258e04449d11141b415f54b992e65d42fa42cace08ff
-    ...6bd
-tools/ref_ks_gravity.py            8d082985c5161254d7c6294c0310f7807aa037bff27a8cd3ec4d3f8a9f6e0
-    ...550
-tools/ref_sm.py                    d36d23f472c8339d80f1d0b1eb46c509398562053ead7033d96b054782e73
-    ...b49
-tools/ref71.py                     4ac783b1ab221317387f2a74e0be60f114fd64940fe3ea96af79b33ee7dcb
-    ...8b0
+tools/ref_gravity.py               f07cf8adaff585af89c87d19532f1aaa7db606ad88ae90483b2d1f41341ed
+    ...f36
+tools/ref_ks_gravity.py            b6488ef24b1c16aacd8ff6cf6a5a1ba3f316e082449ad97480022d1a26383
+    ...27f
+tools/ref_sm.py                    f3f80806893f42bbf166e1f1de896ffd611dbfe847685da8e3ee367e9cde6
+    ...aba
+tools/ref71.py                     1a7a06eb0add3f459611776dc9c474a5bb959d947a9db949db4612b1ab943
+    ...4e0
 tools/ref44.py                     ab100c3ebcc055fbe59c132a02f80ecb17630e934e99d59f88e919ec8064f
     ...af5
 \end{Verbatim}
 \textbf{Output of tools/ref\_gravity.py (independent checks of sections 11-14; exit code 0)} (complete):
 
 \begin{Verbatim}[fontsize=\small,frame=single,framesep=2mm]
+eta17 is simply the squares of the octonion basis: eta_AB = Re(e_A e_B), e_0^2 = +1, e_i^2 = -1
+    ...(i = 1..7) : True
+the quadratic form of the octonions has the signs of the squares of the octonion basis: Re(x x)
+    ...= x0^2 - x1^2 - ... - x7^2 = x.eta17.x : True
 cosmological metric: sectional curvatures R^{AB}_{AB} = -(Ha'+Ha^2), -(Hb'+Hb^2), -Ha^2, -Hb^2,
     ...-Ha Hb : True
 cosmological metric: Riemann R^{cd}_{ab} non-zero only for {c,d} = {a,b} : True
@@ -605,7 +626,7 @@ far future (de Sitter, H = 1): |beta|^2 for m/H = 0.25, 0.5, 1 :
 de Sitter: |beta|^2 = 1/(exp(2 pi m/H) + 1) (Fermi-Dirac at the Gibbons-Hawking temperature
     ...H/2pi), to 1e-7 : True
 integrator benchmark: Landau-Zener |beta|^2 = exp(-pi kappa^2) (to 1e-6) : True
-boolean checks: 99   failed: 0
+boolean checks: 101   failed: 0
 VERDICT: ALL CHECKS PASSED
 \end{Verbatim}
 \end{document}

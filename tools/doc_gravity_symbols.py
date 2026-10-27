@@ -3,6 +3,7 @@ Lovelock tensors, the generalized frame matrices, the canonical spin connection,
 dirac16complex and the three epochs (sections 11-14 of 7+1.nb), with its defining equation and its name in the notebook.
 Self-contained: every equation needed to define a symbol is written in this document."""
 from docgen import Doc
+from doc_common import signature_block
 
 W4 = [0.14, 0.24, 0.35, 0.27]
 HEAD4 = ['symbol', 'Mathematica', 'definition', 'meaning']
@@ -31,18 +32,25 @@ def build(D, today):
           'The abstract indices of the xAct computation (section 4.3) are the letters $a$, $b$, $c$, $d$, $f$, $i$, $j$, $k$, $l$, $m$, $n$, $p$, $q$, $r$, $s$, $y$; they are '
           'unrelated to the index ranges above.',
           'Frame indices are raised and lowered with $\\eta$, coordinate indices with $g_{\\mu\\nu}$.',
+          'Signature: one time-like dimension ($x_0$, $g_{00}>0$) and seven space-like dimensions ($x_1,\\dots,x_7$, negative squares). '
+          'The xAct declaration $\\{7,1,0\\}$ counts them (seven space-like, one time-like, none degenerate), as in the reference notebook; '
+          'the matrix $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ is a different object, simply the squares of the octonion basis '
+          '($e_0^2=+1$, $e_i^2=-1$, $\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$).',
           'Matrices: $1_n$ is the $n\\times n$ identity, $M^{\\mathsf T}$ the transpose, $[X,Y]=XY-YX$, $\\lbrace X,Y\\rbrace=XY+YX$.',
           'Mathematica lists are 1-based: $g_{\\mu\\nu}$ is `g[[μ+1, ν+1]]`, $\\Gamma_A$ is `Γ17[A]` (an argument, not a list index). '
           'Greek letters in names are named characters: `\\[CapitalGamma]` is Γ, `\\[Eta]` is η, `\\[Alpha]` is α, `\\[Beta]` is β, '
           '`\\[Delta]` is δ, `\\[CapitalLambda]` is Λ.',
           'Christoffel symbols are written $\\{{}^{\\lambda}_{\\mu\\nu}\\}$, never $\\Gamma$: in this project $\\Gamma$ always denotes a Dirac matrix.'])
+    signature_block(d, eta=r'\eta', eta71=r'\eta_{71}', gam=r'\Gamma')
 
     # ------------------------------------------------------------------------------------------------
     d.h1('2. Spacetime, metrics and coordinates')
     d.table(HEAD4, [
         ['$X$; $x_0,\\dots,x_7$', '`X = {x0, …, x7}`', '$X=(x_0,x_1,\\dots,x_7)$', '$x_0$ time (the octonion unit direction), $x_1,x_2,x_3$ '
          'ordinary space, $x_4,\\dots,x_7$ auxiliary space'],
-        ['$\\eta_{AB}$', '`η17`', '$\\eta=\\mathrm{diag}(+1,-1,-1,-1,-1,-1,-1,-1)$', 'frame metric; signature $(+,-,\\dots,-)$'],
+        ['$\\eta_{AB}$', '`η17`', '$\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$, $\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$', 'frame metric: simply the squares of the octonion basis, $e_0^2=+1$ (time), $e_i^2=-1$ (space)'],
+        ['$\\eta_{71}$', '`η71`', '$-\\eta=\\mathrm{diag}(-1,+1,\\dots,+1)$', 'the same spacetime in the sign convention of 4+4.nb (space-like $=+1$): seven entries $+1$ (space-like), one $-1$ (time-like), as the xAct list $\\{7,1,0\\}$ counts them'],
+        ['$e_A$; $xy$; $\\mathrm{Re}(x)$', '`ev[A]`; `oMul[x, y]`; `oRe[x]`', 'octonion basis units $e_0=1,e_1,\\dots,e_7$, octonion product, real part (section 3 of 7+1.nb)', 'used in section 12.2 to check $\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$ and $\\mathrm{Re}(xx)=x\\cdot\\eta\\cdot x$'],
         ['$g_{\\mu\\nu}$, $g^{\\mu\\nu}$', '`cv["g"]`, `cv["ginv"]`', '$g^{\\mu\\lambda}g_{\\lambda\\nu}=\\delta^\\mu_\\nu$', 'metric and inverse metric'],
         ['$|g|$', '—', '$|\\det g_{\\mu\\nu}|$', 'volume factor $\\sqrt{|g|}$'],
         ['$a$, $b$', '`a3[x0]`, `b4[x0]`', 'cosmological metric (2.1)', 'scale factors of ordinary and auxiliary space'],
@@ -107,7 +115,7 @@ def build(D, today):
     d.h2('4.2 The xAct objects (the method of the reference notebook Einstein-Lovelock-7+1-Nash.nb)')
     d.table(HEAD4, [
         ['$M_8$', '`M8`', '`DefManifold[M8, 8, {a, b, c, d, f, i, j, k, l, m, n, p, q, r, s, y}]`', 'the 8-dimensional manifold with its abstract indices'],
-        ['$g$', '`g71`', '`DefMetric[{1, 7, 0}, g71[-a, -b], CD, …]`', 'abstract metric; $\\{1,7,0\\}$ = one plus, seven minus signs'],
+        ['$g$', '`g71`', '`DefMetric[{7, 1, 0}, g71[-a, -b], CD, …]`', 'abstract metric; $\\{7,1,0\\}$: seven space-like dimensions, one time-like, none degenerate (the declaration of the reference notebook)'],
         ['$\\nabla$', '`CD`', 'Levi-Civita derivative of `g71`', 'after `CD = LC[g71]`: the connection of a component metric'],
         ['chart', '`chartM8`', '`DefChart[chartM8, M8, {0, …, 7}, {x0[], …, x7[]}, …]`', 'coordinate chart; `x0[]` … `x7[]` coordinate scalars'],
         ['$\\delta_a{}^b$', '`delta[-a, b]`', 'Kronecker delta of xAct', ''],
@@ -210,5 +218,6 @@ def build(D, today):
         ['$K$ (Kasner scaling variable)', '$K_{AB}$ (sectional curvature)'],
         ['$\\kappa=8\\pi G_8$', '$\\kappa_{\\rm LZ}$ (Landau–Zener coupling)'],
         ['`Lovelock1` $=E^{(1)b}{}_a$ (xAct)', '`lovelockE[ra, 1]` $=E^{(1)\\mu}{}_\\nu$ (pair-set sum): the same tensor, row/column order transposed by `xActLovelock`'],
+        ['$\\{7,1,0\\}$ (xAct signature: seven space-like dimensions, one time-like)', '$\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ (simply the squares of the octonion basis, $\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$)'],
     ], widths=[0.42, 0.58])
     return d

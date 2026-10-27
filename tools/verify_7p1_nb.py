@@ -10,9 +10,12 @@ u_s(p) are recomputed; the printed closed forms of the uniform-matter integrals 
 number (uniform matter in the Hartree and Hartree-Fock approximations, chiral form, NJL vacuum) is compared with the
 independent Python computation of tools/ref_dirac16.py.
 Sections 11-19 (gravity, Kohn-Sham in gravitational fields, Standard Model): every check of each section is True; the
-summary table of the last section lists Length[checks] checks, all True; sections 0-10 equal the backup taken before they
-were extended; the printed numbers of sections 14-19 are compared with tools/ref_gravity.py, tools/ref_ks_gravity.py and
-tools/ref_sm.py (their outputs are computed by running them, or read from build/docs/runs.json when it exists).
+summary table of the last section lists Length[checks] checks, all True; sections 0-6 and 0-10 equal the backups taken before
+they were extended, and the whole notebook equals the backup taken before the signature explanation of 27 October 2026, except
+for the cells of that explanation (each changed or added cell states that diag(+1,-1,...,-1) is simply the squares of the
+octonion basis, or contains the xAct signature list {7, 1, 0}); no cell of a backup is missing; the printed numbers of
+sections 14-19 are compared with tools/ref_gravity.py, tools/ref_ks_gravity.py and tools/ref_sm.py (their outputs are
+computed by running them, or read from build/docs/runs.json when it exists).
 """
 import os, re, sys
 sys.setrecursionlimit(100000)
@@ -164,17 +167,37 @@ R['tools/ref_dirac16.py: all its boolean checks True'] = all(v for v in RR.value
 
 # sections 0-6 must be exactly the notebook of the first stage: compare every non-output cell with the backup that was
 # taken before sections 7-10 were appended (the backup is kept in backups/, which .gitignore excludes)
+def _cells(pth):
+    out = []
+    for d0, c0 in P.iter_cells(P.parse_notebook(pth)):
+        st0, ct0, op0 = P.cell_info(c0)
+        if st0 not in ('Output', 'Message', 'Print'): out.append((st0, P.box_to_text(ct0)))
+    return out
+# the signature explanation of 27 October 2026 (the author's request): every cell it changed or added says that
+# diag(+1,-1,...,-1) is simply the squares of the octonion basis, or contains the xAct signature list {7, 1, 0}
+SIG_MARKERS = ('squares of the octonion basis', '{7, 1, 0}')
+def _compare_sig(old, new):
+    """(ok, equal, changed, added): every cell of old is present in new in the same order, unchanged or changed by the signature
+    explanation; every changed or added cell of new contains one of SIG_MARKERS"""
+    import difflib
+    sm = difflib.SequenceMatcher(a=old, b=new, autojunk=False)
+    eq = ch = ad = 0; ok = True
+    for tag, i1, i2, j1, j2 in sm.get_opcodes():
+        if tag == 'equal': eq += i2 - i1; continue
+        from collections import Counter
+        if tag == 'delete' or (i2 - i1) > (j2 - j1) or (Counter(c[0] for c in old[i1:i2]) - Counter(c[0] for c in new[j1:j2])):
+            ok = False                     # a cell of the backup is missing, or a cell changed its style
+        ch += i2 - i1; ad += (j2 - j1) - (i2 - i1)
+        if not all(any(m in new[j][1] for m in SIG_MARKERS) for j in range(j1, j2)): ok = False
+    return ok, eq, ch, ad
+_b = _cells(path)
 bk = os.path.join(os.path.dirname(here), 'backups', '7+1_2026-10-26_before_dirac16complex.nb')
 if os.path.exists(bk):
-    def _cells(pth):
-        out = []
-        for d0, c0 in P.iter_cells(P.parse_notebook(pth)):
-            st0, ct0, op0 = P.cell_info(c0)
-            if st0 not in ('Output', 'Message', 'Print'): out.append((st0, P.box_to_text(ct0)))
-        return out
-    _a = _cells(bk); _b = _cells(path)
+    _a = _cells(bk)
     _k = next((i for i, (s0, t0) in enumerate(_b) if s0 == 'Section' and t0.strip('"').startswith('7.')), len(_b))
-    R['sections 0-6: the %d input and text cells equal those of the backup' % len(_a)] = (_a == _b[:_k])
+    _ok, _eq, _ch, _ad = _compare_sig(_a, _b[:_k])
+    R['sections 0-6: the %d input and text cells of the backup are all present, %d unchanged, %d changed and %d added by the '
+      'signature explanation of 27 October 2026' % (len(_a), _eq, _ch, _ad)] = _ok
 else:
     R['sections 0-6: backup not present, comparison skipped'] = 'skipped'
 
@@ -192,17 +215,57 @@ if stage3:
     R['summary table: every printed check is listed'] = all(n_ in names for n_ in printed)
     bk3 = os.path.join(os.path.dirname(here), 'backups', '7+1_2026-10-26_before_gravity.nb')
     if os.path.exists(bk3):
-        def _cells3(pth):
-            out = []
-            for d0, c0 in P.iter_cells(P.parse_notebook(pth)):
-                st0, ct0, op0 = P.cell_info(c0)
-                if st0 not in ('Output', 'Message', 'Print'): out.append((st0, P.box_to_text(ct0)))
-            return out
-        _a3 = _cells3(bk3); _b3 = _cells3(path)
-        _k3 = next((i for i, (s0, t0) in enumerate(_b3) if s0 == 'Section' and t0.strip('"').startswith('11.')), len(_b3))
-        R['sections 0-10: the %d input and text cells equal those of the backup taken before sections 11-20' % len(_a3)] = (_a3 == _b3[:_k3])
+        _a3 = _cells(bk3)
+        _k3 = next((i for i, (s0, t0) in enumerate(_b) if s0 == 'Section' and t0.strip('"').startswith('11.')), len(_b))
+        _ok, _eq, _ch, _ad = _compare_sig(_a3, _b[:_k3])
+        R['sections 0-10: the %d input and text cells of the backup taken before sections 11-20 are all present, %d unchanged, %d '
+          'changed and %d added by the signature explanation of 27 October 2026' % (len(_a3), _eq, _ch, _ad)] = _ok
     else:
         R['sections 0-10: backup not present, comparison skipped'] = 'skipped'
+    bk4 = os.path.join(os.path.dirname(here), 'backups', '7+1_2026-10-27_before_signature.nb')
+    if os.path.exists(bk4):
+        _a4 = _cells(bk4)
+        _ok, _eq, _ch, _ad = _compare_sig(_a4, _b)
+        R['sections 0-20: the %d input and text cells of the backup taken before the signature explanation are all present, %d '
+          'unchanged, %d changed and %d added by that explanation' % (len(_a4), _eq, _ch, _ad)] = _ok
+    else:
+        R['sections 0-20: backup not present, comparison skipped'] = 'skipped'
+    if os.path.exists(bk4):
+        # the OUTPUTS: the explanation of 27 October 2026 must not change any result.  Allowed differences: the new check outputs
+        # (each with a marker), the check counts and tables of the summary sections, the declared list {7,1,0} itself, the name of
+        # the private notebook context ($Context, section 0) and measured times (bare real numbers).
+        def _outs(pth):
+            out = []; sec = ''
+            for d0, c0 in P.iter_cells(P.parse_notebook(pth)):
+                st0, ct0, op0 = P.cell_info(c0)
+                if st0 == 'Section': sec = P.box_to_text(ct0).strip('"')
+                if st0 in ('Output', 'Message', 'Print'): out.append((sec, P.box_to_text(ct0)))
+            return out
+        import difflib
+        _o4 = _outs(bk4); _n4 = _outs(path)
+        _sm = difflib.SequenceMatcher(a=[t for q, t in _o4], b=[t for q, t in _n4], autojunk=False)
+        _same = 0; _new = 0; _ok = True; _bad = []
+        _num = re.compile(r'\d+\.\d*`?')
+        def _allowed(o, n):
+            _ctx = lambda t: re.sub(r'Notebook\$\$[0-9$]+`', 'Notebook`', t)
+            if n[0].startswith('0.') and o[0].startswith('0.') and 'Notebook$$' in n[1] and _ctx(o[1]) == _ctx(n[1]): return True
+            if _num.fullmatch(o[1].strip()) and _num.fullmatch(n[1].strip()): return True
+            if 'Summary of all checks' in n[0] and 'Summary of all checks' in o[0]: return True
+            if '"SignatureOfMetric[g71]"->{7,1,0}' in n[1] and o[1].replace('{1,7,0}', '{7,1,0}') == n[1]: return True
+            return False
+        for tag, i1, i2, j1, j2 in _sm.get_opcodes():
+            if tag == 'equal': _same += i2 - i1; continue
+            olds = _o4[i1:i2]; news = _n4[j1:j2]
+            # pair the changed outputs in order; the surplus of new outputs must be new check outputs with a marker
+            for k in range(len(olds)):
+                if k >= len(news) or not _allowed(olds[k], news[k]): _ok = False; _bad.append((olds[k][0][:30], olds[k][1][:80]))
+            for n_ in news[len(olds):]:
+                if re.fullmatch(r'"[^"]*(?:"[^"]*)*"->True', n_[1].strip(), flags=re.S) and any(m in n_[1] for m in SIG_MARKERS): _new += 1
+                else: _ok = False; _bad.append((n_[0][:30], n_[1][:80]))
+        R['sections 0-20, outputs: of the %d outputs of the backup taken before the signature explanation %d are identical; the others '
+          'differ only in the check counts and tables of the summary sections, the declared list {7,1,0}, the private context name and '
+          'measured times; %d new check outputs, all True' % (len(_o4), _same, _new)] = _ok
+        if _bad: R['  outputs that differ otherwise'] = _bad[:10]
     # printed numbers versus the independent Python programs
     import json, subprocess
     rfile = os.path.join(os.path.dirname(here), 'build', 'docs', 'runs.json')
@@ -247,7 +310,7 @@ good = (R['message cells (must be 0)'] == 0 and R['check outputs'] == R['check o
         and all(str(R[k]).endswith('(True)') for k in R if k.startswith('section ') and 'check outputs' in k)
         and all(R[k] for k in R if k.startswith('section 7:') or k.startswith('section 8:') or k.startswith('sections 8-9') or k.startswith('tools/ref_dirac16'))
         and all(R[k] is True or R[k] == 'skipped' for k in R if k.startswith('sections 0-6'))
-        and all(R[k] is True or R[k] == 'skipped' for k in R if k.startswith('sections 0-10') or k.startswith('summary table')
+        and all(R[k] is True or R[k] == 'skipped' for k in R if k.startswith('sections 0-10') or k.startswith('sections 0-20') or k.startswith('summary table')
                 or k.startswith('sections 14-19')))
 print('\nVERDICT:', 'ALL CROSS-CHECKS PASSED' if good else 'SOMETHING FAILED')
 sys.exit(0 if good else 1)

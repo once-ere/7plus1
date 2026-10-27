@@ -14,8 +14,23 @@ This stage of the project asked (summarized; the original wording is the author�
 
 1. a GENERALIZED self-coupling of the 16-component field dirac16complex, beyond the four contact couplings (scalar, pseudoscalar, vector, axial) of the earlier Kohn–Sham theory of the notebook;
 2. the Kohn–Sham theory of dirac16complex in GRAVITATIONAL fields, with the canonical spin connection coupling gravity to the field, in the primordial epoch (near $`x_0=0`$), the modern epoch and the far future;
-3. everything on the 7+1 spacetime of this project — one time coordinate $`x_0`$, seven space coordinates $`x_1,\dots,x_7`$, metric signature $`(+,-,\dots,-)`$ — with the ideas (not the 4+4 metric) of the repository github.com/once-ere/Dirac_claude;
-4. for every documentation file a companion provenance file and a symbol file, in Markdown and LaTeX with PDFs; no document refers the reader to another one; every equation used is written in the document that uses it.
+3. everything on the 7+1 spacetime of this project — one time coordinate $`x_0`$, seven space coordinates $`x_1,\dots,x_7`$ — with the ideas (not the 4+4 metric) of the repository github.com/once-ere/Dirac_claude;
+4. for every documentation file a companion provenance file and a symbol file, in Markdown and LaTeX with PDFs; no document refers the reader to another one; every equation used is written in the document that uses it;
+5. and (27 October 2026) to make clear in all documentation, examples and provenance records that the xAct list $`\{7,1,0\}`$ declares seven space-like dimensions and one time-like dimension, while $`\mathrm{diag}(+1,-1,\dots,-1)`$ is simply the squares of the octonion basis (section 1.1).
+
+### 1.1 The signature: the author’s explanation of 27 October 2026
+
+**Source.** On 27 October 2026 the author of the project explained that the xAct list $`\{7,1,0\}`$ declares seven space-like dimensions and one time-like dimension, while $`\mathrm{diag}(+1,-1,\dots,-1)`$ is simply the squares of the octonion basis, and asked that this be made clear in all documentation, examples and provenance records. **What it corrected.** The version of 7+1.nb pushed in the commits 52d8729 to dc2f178 of github.com/once-ere/7plus1 declared the xAct metric of section 12 with `DefMetric[{1, 7, 0}, …]`, reading the list as the signs of $`\eta`$; since then section 12 declares `DefMetric[{7, 1, 0}, g71[-a, -b], CD, …]`, exactly as the author’s notebook Einstein-Lovelock-7+1-Nash.nb does. **What was added.** Checks in 7+1.nb — section 4.7: $`\eta`$ is the squares of the octonion basis, $`e_Ae_A=\eta_{AA}e_0`$ and $`\mathrm{Re}(e_Ae_B)=\eta_{AB}`$; section 12.2: `SignatureOfMetric[g71]` $`=\{7,1,0\}`$ with `SignDetOfMetric[g71]` $`=-1`$, $`\mathrm{Re}(e_Ae_B)=\eta_{AB}`$, and $`\mathrm{Re}(x\,x)=\eta_{AB}x^Ax^B`$; section 17: the flat metric $`\mathrm{diag}(+1,-1,-1,-1)`$ of the world brane is the squares of the basis $`e_0,e_1,e_2,e_3`$ of the quaternion subalgebra — and the same statements in the Python programs `tools/ref71.py`, `tools/ref_gravity.py` and `tools/ref_sm.py`; the explanation itself in the text of 7+1.nb (sections 1.2, 1.4, 4.2, 4.7, 7, 11, 12.2, 13, 15.1, 17) and in every document, symbol file and provenance file of the repository. **What did not change.** No result. Compared output by output with the backup below, every output of 7+1.nb is the same, except the declared list itself, the new checks and the check counts (and, as in every run, the name of the private context and the measured times); in particular every component of every Lovelock tensor is unchanged. The components follow from the component matrix of the metric, and the sign of the determinant, `SignDetOfMetric`, is $`-1`$ for both lists. **Backup.** The evaluated notebook as it was before is kept in the workspace as `backups/7+1_2026-10-27_before_signature.nb` (the folder backups/ is excluded from the repository by .gitignore), 1034401 bytes, SHA-256 `060942488caf4f45120ffd37be0123e96992a31cd7fdbde09ee4dc4ced4f5d3a`; `tools/verify_7p1_nb.py` compares every input, text and section cell of 7+1.nb with it and finds every cell present, each one unchanged or changed by this explanation, and it compares every output in the same way.
+
+**The explanation, in full.** The 7+1 spacetime has one time-like dimension ($`x_0`$, the direction of the octonion unit $`e_0=1`$) and seven space-like dimensions ($`x_1,x_2,x_3`$ ordinary space, $`x_4,\dots,x_7`$ auxiliary space). Two different objects describe this, and neither may be replaced by the other. (i) The tensor package xAct, used in section 12 of 7+1.nb exactly as in the author’s notebook Einstein-Lovelock-7+1-Nash.nb, declares the metric with `DefMetric[{7, 1, 0}, g71[-a, -b], CD, …]`: the list $`\{7,1,0\}`$ declares seven space-like dimensions, one time-like dimension and no degenerate dimension — the numbers of entries $`+1`$ and $`-1`$ of $`\eta_{71}=\mathrm{diag}(-1,+1,\dots,+1)`$ (`η71`), the same spacetime written in the sign convention of 4+4.nb (space-like $`=+1`$, time-like $`=-1`$). (ii) The matrix $`\eta=-\eta_{71}=\mathrm{diag}(+1,-1,\dots,-1)`$ (`η17`) is simply the squares of the octonion basis: $`e_0^2=+1`$ for the unit $`e_0=1`$ (time) and $`e_i^2=-1`$ for the seven imaginary units $`e_1,\dots,e_7`$ (space); more generally it is the real part of the product of two basis units, and it gives the quadratic form of the octonions:
+
+```math
+\begin{gathered}
+\eta_{AB}=\mathrm{Re}(e_Ae_B),\qquad e_0^2=+1,\qquad e_i^2=-1\ \ (i=1,\dots,7),\\ \mathrm{Re}(x\,x)=x_0^2-x_1^2-\cdots-x_7^2=\eta_{AB}\,x^Ax^B\qquad (x=x^Ae_A\in\mathbb O).
+\end{gathered}
+```
+
+$`\eta`$ gives the signs of the Clifford relation $`\Gamma_A\Gamma_B+\Gamma_B\Gamma_A=2\,\eta_{AB}\,1_{16}`$ of the real 16×16 Dirac matrices: time squares to $`+1_{16}`$ and each of the seven space directions to $`-1_{16}`$, exactly like the octonion units (in the notation $`Cl(p,q)`$, with $`p`$ generators squaring to $`+1`$ and $`q`$ to $`-1`$, the algebra $`Cl(1,7)\cong\mathbb R(16)`$). It also gives the signs of the metric components: $`g_{00}>0`$ along the time-like direction, negative squares along the space-like directions. Every component computed by 7+1.nb follows from the component matrix of the metric; the declared list fixes for xAct the sign of the determinant of the metric, `SignDetOfMetric[g71]` $`=-1`$, which is the same in both sign conventions, since $`\det \eta=\det \eta_{71}=-1`$. 7+1.nb checks `SignatureOfMetric[g71]` $`=\{7,1,0\}`$, `SignDetOfMetric[g71]` $`=-1`$, $`\mathrm{Re}(e_Ae_B)=\eta_{AB}`$ and $`\mathrm{Re}(x\,x)=\eta_{AB}x^Ax^B`$.
 
 ## 2. Inputs
 
@@ -84,7 +99,7 @@ The kinetic pressures are the momentum flux per direction: three ordinary direct
 
 ## 5. Verification
 
-**Evaluation of 7+1.nb**: Wolfram 15.0.1 for Microsoft Windows (64-bit) (July 2, 2026); finished Tue 27 Oct 2026 14:15:35; message cells 0. The checks of sections 15–16:
+**Evaluation of 7+1.nb**: Wolfram 15.0.1 for Microsoft Windows (64-bit) (July 2, 2026); finished Tue 27 Oct 2026 16:10:34; message cells 0. The checks of sections 15–16:
 
 | # | check | result | section |
 |---|---|---|---|
@@ -165,16 +180,16 @@ The kinetic pressures are the momentum flux per direction: three ordinary direct
 **SHA-256 of the files** (at the time this document was generated):
 
 ```text
-7+1.nb                             060942488caf4f45120ffd37be0123e96992a31cd7fdbde09ee4dc4ced4f5d3a
-tools/make_7p1_nb.py               2fac94dfd0c9fcf3aed8d6e90a77fbbb8ab1c8450819ff591b7e5cf7b5787d6f
-tools/nb_part_gravity.py           55d16f735e16df7a7cd2aa70d322969bc6cf82c777965f112b5a9acf46a6ad5f
-tools/nb_part_ks_gravity.py        886814fedc4cd015c63b950ee83724025ba21fd6c3e56b68dcb7f2f07afdc205
-tools/nb_part_sm.py                20782f1fe557fd3f3dea7417e89ecd42a1602f7a48599fcdcfd0cff77f120ecc
+7+1.nb                             8ef9fed74c1c887a51945dfaa670cd1e32a2b07e4964f2f5ae59ac0e9747aa0c
+tools/make_7p1_nb.py               7407dbef711b841fa0adb7817c6fb5bfe5018bc02a603100a46dd2169b93c4fe
+tools/nb_part_gravity.py           c4caf2ad5c932e8f603341edade5f4b98fa784feb05906c051eab7c884cd68f8
+tools/nb_part_ks_gravity.py        a656c0ad040b4576b75b17e029545109e531c8e656ad99bfdb5cba946e967772
+tools/nb_part_sm.py                43e92beed57453a4b57931de6d603ac6c218efba6e4005133b69b8054a975c5b
 tools/lovelock71.py                d93ecbd0f82adb972218d59dfe32999a4af944945ca9758607f3a633e1af95a1
-tools/ref_gravity.py               2bfdc087ed4dc7d84258e04449d11141b415f54b992e65d42fa42cace08ff6bd
-tools/ref_ks_gravity.py            8d082985c5161254d7c6294c0310f7807aa037bff27a8cd3ec4d3f8a9f6e0550
-tools/ref_sm.py                    d36d23f472c8339d80f1d0b1eb46c509398562053ead7033d96b054782e73b49
-tools/ref71.py                     4ac783b1ab221317387f2a74e0be60f114fd64940fe3ea96af79b33ee7dcb8b0
+tools/ref_gravity.py               f07cf8adaff585af89c87d19532f1aaa7db606ad88ae90483b2d1f41341edf36
+tools/ref_ks_gravity.py            b6488ef24b1c16aacd8ff6cf6a5a1ba3f316e082449ad97480022d1a2638327f
+tools/ref_sm.py                    f3f80806893f42bbf166e1f1de896ffd611dbfe847685da8e3ee367e9cde6aba
+tools/ref71.py                     1a7a06eb0add3f459611776dc9c474a5bb959d947a9db949db4612b1ab9434e0
 tools/ref44.py                     ab100c3ebcc055fbe59c132a02f80ecb17630e934e99d59f88e919ec8064faf5
 ```
 

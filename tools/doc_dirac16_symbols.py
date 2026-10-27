@@ -2,6 +2,7 @@
 theories of the 16-component field dirac16complex (sections 7-10 of 7+1.nb), with its defining equation and its name
 in the notebook.  Self-contained: every equation needed to define a symbol is written in this document."""
 from docgen import Doc, pmat
+from doc_common import signature_block
 
 W4 = [0.15, 0.19, 0.36, 0.30]
 HEAD4 = ['symbol', 'Mathematica', 'definition', 'meaning']
@@ -44,7 +45,9 @@ def build(D):
         ['$X$; $x_0,\\dots,x_7$', '`X = {x0, …, x7}`', '$X=(x_0,x_1,\\dots,x_7)$, $x^A=x_A$ as symbols',
          '$x_0$ ordinary time (direction of the octonion unit $e_0=1$); $x_1,x_2,x_3$ ordinary 3-space; $x_4,\\dots,x_7$ auxiliary space-like'],
         ['$x$, $\\vec x$', '—', '$x=(x_0,\\vec x)$, $\\vec x=(x_1,\\dots,x_7)$', 'spacetime point; space part'],
-        ['$\\eta_{AB}$, $\\eta^{AB}$', '`η17`, `η17inv`', '$\\eta=\\mathrm{diag}(+1,-1,-1,-1,-1,-1,-1,-1)$, $\\eta^{-1}=\\eta$', 'metric of 7+1 spacetime'],
+        ['$\\eta_{AB}$, $\\eta^{AB}$', '`η17`, `η17inv`', '$\\eta=\\mathrm{diag}(+1,-1,-1,-1,-1,-1,-1,-1)$, $\\eta^{-1}=\\eta$', 'metric of 7+1 spacetime: simply the squares of the octonion basis, $\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$, $e_0^2=+1$, $e_i^2=-1$'],
+        ["$\\eta'$", '`η71`', "$\\eta'=-\\eta=\\mathrm{diag}(-1,+1,\\dots,+1)$", 'the same spacetime in the sign convention of 4+4.nb (space-like $+1$); its relation has no real 16×16 realization'],
+        ['$\\{7,1,0\\}$', '`DefMetric[{7, 1, 0}, g71[-a, -b], CD, …]`', 'xAct signature list (section 12 of 7+1.nb)', 'seven space-like dimensions, one time-like dimension, none degenerate'],
         ['$a\\cdot b$', '—', '$\\eta_{AB}a^Ab^B=a^0b^0-\\sum_ia^ib^i$', 'Minkowski product'],
         ['$\\partial_A$', '`D[f, X[[A+1]]]`', '$\\partial_A=\\partial/\\partial x_A$, $\\partial_Ax^B=\\delta_A^B$', 'partial derivative'],
         ['$\\Box$', '`waveOp17`', '$\\eta^{AB}\\partial_A\\partial_B=\\partial_0^2-\\partial_1^2-\\dots-\\partial_7^2$', 'wave (d’Alembert) operator'],
@@ -57,6 +60,7 @@ def build(D):
     ], widths=W4)
     d.p('The Minkowski square of a point is the real part of the square of the octonion $x=x_0e_0+\\sum_ix_ie_i$:')
     d.eq(r'x\cdot x=\eta_{AB}x^Ax^B=x_0^2-x_1^2-\dots-x_7^2=\mathrm{Re}(x\,x).')
+    signature_block(d, eta=r'\eta', eta71=r"\eta'", gam=r'\Gamma')
 
     # ------------------------------------------------------------------------------------------------
     d.h1('3. The real 8×8 matrices')
@@ -320,6 +324,7 @@ def build(D):
     # ------------------------------------------------------------------------------------------------
     d.h1('10. Symbols that look alike')
     d.table(['symbols', 'how to tell them apart'], [
+        ['$\\{7,1,0\\}$, $\\eta$', '$\\{7,1,0\\}$ is the xAct signature list of section 12 of 7+1.nb: seven space-like dimensions, one time-like dimension, none degenerate; $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ is simply the squares of the octonion basis, $\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$.'],
         ['$\\beta$, $\\beta_{\\rm b}$, `βD`, `β`', '$\\beta=\\Gamma^0$ is the Dirac matrix (`βD`); $\\beta_{\\rm b}$ is the rapidity of a boost (the plain symbol `β` in `Sβ` and `Λboost`).'],
         ['$L$, $\\mathcal L$, $\\Lambda$, `Λboost`, `Λc`', '$L$ is the 8×8 Lorentz matrix of a boost (Mathematica `Λboost`); $\\mathcal L$ is a Lagrangian density; $\\Lambda$ is the momentum cutoff (`Λc`). The subscript $L$ means left-handed.'],
         ['$\\mathcal B(\\beta_{\\rm b})$, $B(M)$', '$\\mathcal B$ is the spinor boost; $B(M)$ the one-body operator $\\sum M_{ab}c_a^\\dagger c_b$; $B$ is also a spacetime index.'],

@@ -22,7 +22,7 @@
 \date{}
 \maketitle
 \begin{abstract}
-This record states, for every object of 7+1.nb, where it comes from (the task statement, the notebook 4+4.nb, or the literature), the equation that defines it, how it was derived, and how it was checked: the full list of the 346 checks and their results, the independent Python cross-checks, and the hashes of the files. Sections 1–3 concern the first stage (sections 0–6 of the notebook: octonions and Clifford algebras), section 6 the second stage (sections 7–10: the Dirac equation and the Kohn–Sham theories of the field dirac16complex), section 7 the third stage (sections 11–20: gravity, the self-coupled field in gravitational fields, the Standard Model).
+This record states, for every object of 7+1.nb, where it comes from (the task statement, the notebook 4+4.nb, or the literature), the equation that defines it, how it was derived, and how it was checked: the full list of the 351 checks and their results, the independent Python cross-checks, and the hashes of the files. Sections 1–3 concern the first stage (sections 0–6 of the notebook: octonions and Clifford algebras), section 6 the second stage (sections 7–10: the Dirac equation and the Kohn–Sham theories of the field dirac16complex), section 7 the third stage (sections 11–20: gravity, the self-coupled field in gravitational fields, the Standard Model).
 \end{abstract}
 \tableofcontents
 \Needspace{12\baselineskip}\section*{1. Sources}\addcontentsline{toc}{section}{1. Sources}
@@ -74,6 +74,15 @@ split table & In[325], Out[325] & $\varepsilon_B\varepsilon_C=\sum_D(g_{BB}E_{44
 \item H. B. Lawson and M.-L. Michelsohn, \emph{Spin Geometry}, Princeton (1989): classification of real Clifford algebras, $Cl(p+1,q+1)\cong Cl(p,q)\otimes\mathbb R(2)$. 7+1.nb does not rely on it: it computes the classification directly (section 2.10 below).
 \item Standard facts used in proofs: Schur's lemma (the intertwiners of an irreducible module form a division algebra; over $\mathbb C$, the scalars); $Cl_8(\mathbb C)\cong\mathbb C(16)$ has a unique irreducible module $\mathbb C^{16}$; Hurwitz's theorem (a unital composition algebra of dimension 8 is the octonions if its norm is positive definite and the split octonions if the norm is indefinite); Degen's eight-square identity.
 \end{itemize}
+\Needspace{8\baselineskip}\subsection*{1.4 The signature: the author’s explanation of 27 October 2026}\addcontentsline{toc}{subsection}{1.4 The signature: the author’s explanation of 27 October 2026}
+\textbf{Source.} On 27 October 2026 the author of the project explained that the xAct list $\{7,1,0\}$ declares seven space-like dimensions and one time-like dimension, while $\mathrm{diag}(+1,-1,\dots,-1)$ is simply the squares of the octonion basis, and asked that this be made clear in all documentation, examples and provenance records. \textbf{What it corrected.} The version of 7+1.nb pushed in the commits 52d8729 to dc2f178 of github.com/once-ere/7plus1 declared the xAct metric of section 12 with \texttt{DefMetric[\{1, 7, 0\}, …]}, reading the list as the signs of $\eta^{(1,7)}$; since then section 12 declares \texttt{DefMetric[\{7, 1, 0\}, g71[-a, -b], CD, …]}, exactly as the author’s notebook Einstein-Lovelock-7+1-Nash.nb does. \textbf{What was added.} Checks in 7+1.nb — section 4.7: $\eta^{(1,7)}$ is the squares of the octonion basis, $e_Ae_A=\eta^{(1,7)}_{AA}e_0$ and $\mathrm{Re}(e_Ae_B)=\eta^{(1,7)}_{AB}$; section 12.2: \texttt{SignatureOfMetric[g71]} $=\{7,1,0\}$ with \texttt{SignDetOfMetric[g71]} $=-1$, $\mathrm{Re}(e_Ae_B)=\eta^{(1,7)}_{AB}$, and $\mathrm{Re}(x\,x)=\eta^{(1,7)}_{AB}x^Ax^B$; section 17: the flat metric $\mathrm{diag}(+1,-1,-1,-1)$ of the world brane is the squares of the basis $e_0,e_1,e_2,e_3$ of the quaternion subalgebra — and the same statements in the Python programs \texttt{tools/ref71.py}, \texttt{tools/ref\_gravity.py} and \texttt{tools/ref\_sm.py}; the explanation itself in the text of 7+1.nb (sections 1.2, 1.4, 4.2, 4.7, 7, 11, 12.2, 13, 15.1, 17) and in every document, symbol file and provenance file of the repository. \textbf{What did not change.} No result. Compared output by output with the backup below, every output of 7+1.nb is the same, except the declared list itself, the new checks and the check counts (and, as in every run, the name of the private context and the measured times); in particular every component of every Lovelock tensor is unchanged. The components follow from the component matrix of the metric, and the sign of the determinant, \texttt{SignDetOfMetric}, is $-1$ for both lists. \textbf{Backup.} The evaluated notebook as it was before is kept in the workspace as \texttt{backups/7+1\_2026-10-27\_before\_signature.nb} (the folder backups/ is excluded from the repository by .gitignore), 1034401 bytes, SHA-256 \texttt{060942488caf4f45120ffd37be0123e96992a31cd7fdbde09ee4dc4ced4f5d3a}; \texttt{tools/verify\_7p1\_nb.py} compares every input, text and section cell of 7+1.nb with it and finds every cell present, each one unchanged or changed by this explanation, and it compares every output in the same way.
+
+\textbf{The explanation, in full.} The 7+1 spacetime has one time-like dimension ($x_0$, the direction of the octonion unit $e_0=1$) and seven space-like dimensions ($x_1,x_2,x_3$ ordinary space, $x_4,\dots,x_7$ auxiliary space). Two different objects describe this, and neither may be replaced by the other. (i) The tensor package xAct, used in section 12 of 7+1.nb exactly as in the author’s notebook Einstein-Lovelock-7+1-Nash.nb, declares the metric with \texttt{DefMetric[\{7, 1, 0\}, g71[-a, -b], CD, …]}: the list $\{7,1,0\}$ declares seven space-like dimensions, one time-like dimension and no degenerate dimension — the numbers of entries $+1$ and $-1$ of $\eta^{(7,1)}=\mathrm{diag}(-1,+1,\dots,+1)$ (\texttt{η71}), the same spacetime written in the sign convention of 4+4.nb (space-like $=+1$, time-like $=-1$). (ii) The matrix $\eta^{(1,7)}=-\eta^{(7,1)}=\mathrm{diag}(+1,-1,\dots,-1)$ (\texttt{η17}) is simply the squares of the octonion basis: $e_0^2=+1$ for the unit $e_0=1$ (time) and $e_i^2=-1$ for the seven imaginary units $e_1,\dots,e_7$ (space); more generally it is the real part of the product of two basis units, and it gives the quadratic form of the octonions:
+\begin{gather*}
+\eta^{(1,7)}_{AB}=\mathrm{Re}(e_Ae_B),\qquad e_0^2=+1,\qquad e_i^2=-1\ \ (i=1,\dots,7),\\ \mathrm{Re}(x\,x)=x_0^2-x_1^2-\cdots-x_7^2=\eta^{(1,7)}_{AB}\,x^Ax^B\qquad (x=x^Ae_A\in\mathbb O).
+\end{gather*}
+$\eta^{(1,7)}$ gives the signs of the Clifford relation $\Gamma^{(1,7)}_A\Gamma^{(1,7)}_B+\Gamma^{(1,7)}_B\Gamma^{(1,7)}_A=2\,\eta^{(1,7)}_{AB}\,1_{16}$ of the real 16×16 Dirac matrices: time squares to $+1_{16}$ and each of the seven space directions to $-1_{16}$, exactly like the octonion units (in the notation $Cl(p,q)$, with $p$ generators squaring to $+1$ and $q$ to $-1$, the algebra $Cl(1,7)\cong\mathbb R(16)$). It also gives the signs of the metric components: $g_{00}>0$ along the time-like direction, negative squares along the space-like directions. Every component computed by 7+1.nb follows from the component matrix of the metric; the declared list fixes for xAct the sign of the determinant of the metric, \texttt{SignDetOfMetric[g71]} $=-1$, which is the same in both sign conventions, since $\det \eta^{(1,7)}=\det \eta^{(7,1)}=-1$. 7+1.nb checks \texttt{SignatureOfMetric[g71]} $=\{7,1,0\}$, \texttt{SignDetOfMetric[g71]} $=-1$, $\mathrm{Re}(e_Ae_B)=\eta^{(1,7)}_{AB}$ and $\mathrm{Re}(x\,x)=\eta^{(1,7)}_{AB}x^Ax^B$.
+
 \Needspace{12\baselineskip}\section*{2. Derivations: how each new object was obtained}\addcontentsline{toc}{section}{2. Derivations: how each new object was obtained}
 \Needspace{8\baselineskip}\subsection*{2.1 Octonion matrices \texorpdfstring{$\tau^{O}$}{τO}}\addcontentsline{toc}{subsection}{2.1 Octonion matrices \texorpdfstring{$\tau^{O}$}{τO}}
 Origin: the split matrices of 4+4.nb and the observation (checked) that $\sigma=\tau_1\tau_2\tau_3=\tau_4\tau_5\tau_6\tau_7$ commutes with $\tau_1,\tau_2,\tau_3$, anticommutes with $\tau_4,\dots,\tau_7$ and squares to $1_8$. Hence
@@ -104,7 +113,7 @@ Origin: the standard construction of a Lorentzian Clifford algebra from a Euclid
 \Gamma^{(1,7)}_0&=T^{O}_0,\qquad \Gamma^{(1,7)}_i=T^{O}_0T^{O}_i,\qquad (T^{O}_0T^{O}_i)^2=-(T^{O}_0)^2(T^{O}_i)^2=-1_{16}, \\
 \lbrace T^{O}_0,T^{O}_0T^{O}_i\rbrace&=T^{O}_i+T^{O}_0T^{O}_iT^{O}_0=T^{O}_i-T^{O}_i=0,\qquad \lbrace T^{O}_0T^{O}_i,T^{O}_0T^{O}_j\rbrace=-\lbrace T^{O}_i,T^{O}_j\rbrace=-2\delta_{ij}1_{16}.
 \end{align*}
-Hence $\lbrace\Gamma^{(1,7)}_A,\Gamma^{(1,7)}_B\rbrace=2\eta^{(1,7)}_{AB}1_{16}$, and $\Gamma^{(1,7)}(x)^2=\mathrm{Re}(xx)1_{16}$.
+Hence $\lbrace\Gamma^{(1,7)}_A,\Gamma^{(1,7)}_B\rbrace=2\eta^{(1,7)}_{AB}1_{16}$ — the generators square like the octonion basis, since $\eta^{(1,7)}_{AB}=\mathrm{Re}(e_Ae_B)$ ($e_0^2=+1$, $e_i^2=-1$) — and $\Gamma^{(1,7)}(x)^2=\mathrm{Re}(xx)1_{16}$.
 
 \Needspace{8\baselineskip}\subsection*{2.6 Complexified generators \texorpdfstring{$\Gamma^{(7,1)}$}{Γ(7,1)}}\addcontentsline{toc}{subsection}{2.6 Complexified generators \texorpdfstring{$\Gamma^{(7,1)}$}{Γ(7,1)}}
 Origin: the task's instruction to use the complexification of the 4+4 matrices if real numbers fail. Only the time block is multiplied by $i$: $\tau^{C}_0=\bar\tau^{C}_0=i1_8$, $\tau^{C}_k=\tau^{O}_k$; then $\Gamma^{(7,1)}_A=\left(\begin{smallmatrix}0&\bar\tau^{C}_A\\\tau^{C}_A&0\end{smallmatrix}\right)$, $(\Gamma^{(7,1)}_0)^2=i^2\,1_{16}=-1_{16}$, and $\Gamma^{(7,1)}_A=S(i\Gamma^{(1,7)}_A)S^{-1}$ with $S=(1_{16}-i\Gamma^{(1,7)}_0)/\sqrt2$.
@@ -162,13 +171,13 @@ split octonions are a "pseudo-normed division algebra" & they have zero divisors
 program & \texttt{C:\textbackslash{}Program Files\textbackslash{}Wolfram Research\textbackslash{}Wolfram\textbackslash{}15.0.1\textbackslash{}WolframNB.exe} \\
 \$Version & 15.0.1 for Microsoft Windows (64-bit) (July 2, 2026) \\
 method & \texttt{Get["D:/Developer/github/7+1/tools/run\_eval.wl"]}: all cells evaluated (\texttt{SelectionEvaluate}) in a fresh kernel (front-end kernel configuration "Eval71"), then \texttt{NotebookSave}; earlier stages: \texttt{NotebookEvaluate[nb, InsertResults -> True]} in the front end’s kernel \\
-finished & Tue 27 Oct 2026 14:15:35 \\
-evaluation time & 225.3 s \\
-private context of the notebook & \texttt{Notebook\$\$41\$124309} \\
-input cells / output cells / message cells & 145 / 382 / 0 \\
-checks / True & 346 / 346 (310 printed where they stand, 36 by \texttt{frameChecks} in the summary table) \\
-commutant computation (8192×1024 sparse \texttt{NullSpace}) & 0.9989724 s \\
-SHA-256 of the evaluated 7+1.nb (1034401 bytes) & \texttt{060942488caf4f45120ffd37be0123e96992a31cd7fdbde09ee4dc4ced4f5d3a} \\*
+finished & Tue 27 Oct 2026 16:10:34 \\
+evaluation time & 228.954 s \\
+private context of the notebook & \texttt{Notebook\$\$47\$131205} \\
+input cells / output cells / message cells & 147 / 387 / 0 \\
+checks / True & 351 / 351 (315 printed where they stand, 36 by \texttt{frameChecks} in the summary table) \\
+commutant computation (8192×1024 sparse \texttt{NullSpace}) & 1.0244613 s \\
+SHA-256 of the evaluated 7+1.nb (1047471 bytes) & \texttt{8ef9fed74c1c887a51945dfaa670cd1e32a2b07e4964f2f5ae59ac0e9747aa0c} \\*
 \end{longtable}}
 \Needspace{8\baselineskip}\subsection*{4.2 All checks of 7+1.nb and their results}\addcontentsline{toc}{subsection}{4.2 All checks of 7+1.nb and their results}
 Each row is one check \texttt{check["name", test]} of the notebook, in the order in which the notebook makes them (the order of the summary table of its last section), grouped by the section of the notebook in which it stands; the test is the Wolfram Language expression of that check, and the result is what Wolfram 15.0.1 returned. The 36 checks of the generalized frame matrices are made by the function \texttt{frameChecks} of section 13.1, nine for each of four metrics, in sections 13.2 (cosmological metric), 13.3 (pp-wave, inhomogeneous metric) and 13.5 (static radial metric), where they are listed; only the summary table of section 20 prints them.
@@ -475,10 +484,11 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-100 & \texttt{Re(x x) == X.η17.X: the octonion square produces the 7+1 interval (symbolic)} & True \\
-101 & \texttt{octonion basis: Γ17e[0] == \{\{0,ID8\},\{ID8,0\}\} and Γ17e[i] == \{\{LO[i],0\},\{0,-LO[i]\}\}} & True \\
-102 & \texttt{alternativity in action: xImag(xImag ψ) == -|xImag|\textasciicircum{}2 ψ for the imaginary part xImag of x (symbolic)} & True \\
-103 & \texttt{T16O(x)\textasciicircum{}2 == N(x) ID16 (octonion norm) and T16(x)\textasciicircum{}2 == (X.η4488.X) ID16 (4+4.nb)} & True \\*
+100 & \texttt{η17 is simply the squares of the octonion basis: e[A] e[A] == η17[[A+1, A+1]] e[0] (e[0]\textasciicircum{}2 = +1, e[i]\textasciicircum{}2 = -1) and Re(e[A] e[B]) == η17[[A+1, B+1]] (A, B = 0..7)} & True \\
+101 & \texttt{Re(x x) == X.η17.X: the octonion square produces the 7+1 interval (symbolic)} & True \\
+102 & \texttt{octonion basis: Γ17e[0] == \{\{0,ID8\},\{ID8,0\}\} and Γ17e[i] == \{\{LO[i],0\},\{0,-LO[i]\}\}} & True \\
+103 & \texttt{alternativity in action: xImag(xImag ψ) == -|xImag|\textasciicircum{}2 ψ for the imaginary part xImag of x (symbolic)} & True \\
+104 & \texttt{T16O(x)\textasciicircum{}2 == N(x) ID16 (octonion norm) and T16(x)\textasciicircum{}2 == (X.η4488.X) ID16 (4+4.nb)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{5.1 The Lorentz algebra so(1,7)}
 {\footnotesize
@@ -491,10 +501,10 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-104 & \texttt{28 real generators Σ17[A,B] (A < B), linearly independent} & True \\
-105 & \texttt{[Σ17[A,B], Γ17[K]] == η17[[B+1,K+1]] Γ17[A] - η17[[A+1,K+1]] Γ17[B]} & True \\
-106 & \texttt{so(1,7): [Σ\_AB, Σ\_KL] == η\_BK Σ\_AL - η\_AK Σ\_BL - η\_BL Σ\_AK + η\_AL Σ\_BK} & True \\
-107 & \texttt{the complex structure J = Γ17[8] commutes with all Σ17[A,B] (Spin(1,7) acts complex-linearly on ℝ\textasciicircum{}16 = ℂ\textasciicircum{}8)} & True \\*
+105 & \texttt{28 real generators Σ17[A,B] (A < B), linearly independent} & True \\
+106 & \texttt{[Σ17[A,B], Γ17[K]] == η17[[B+1,K+1]] Γ17[A] - η17[[A+1,K+1]] Γ17[B]} & True \\
+107 & \texttt{so(1,7): [Σ\_AB, Σ\_KL] == η\_BK Σ\_AL - η\_AK Σ\_BL - η\_BL Σ\_AK + η\_AL Σ\_BK} & True \\
+108 & \texttt{the complex structure J = Γ17[8] commutes with all Σ17[A,B] (Spin(1,7) acts complex-linearly on ℝ\textasciicircum{}16 = ℂ\textasciicircum{}8)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{5.2 A boost along x1 and a rotation in the x4–x5 plane}
 {\footnotesize
@@ -507,10 +517,10 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-108 & \texttt{S(β) and R(θ) are the exponentials: dS/dβ == Σ17[0,1].S, S(0) == ID16, dR/dθ == Σ17[4,5].R, R(0) == ID16, and S.Sinv == R.Rinv == ID16} & True \\
-109 & \texttt{S(β).Γ17[K].S(β)\textasciicircum{}-1 == Σ\_B Λboost[[B+1,K+1]] Γ17[B]; Λboost is the boost along x1} & True \\
-110 & \texttt{R(θ).Γ17[K].R(θ)\textasciicircum{}-1 == Σ\_B Λrot[[B+1,K+1]] Γ17[B]; Λrot is the rotation in the x4-x5 plane} & True \\
-111 & \texttt{both Λ preserve the 7+1 metric: Transpose[Λ].η17.Λ == η17} & True \\*
+109 & \texttt{S(β) and R(θ) are the exponentials: dS/dβ == Σ17[0,1].S, S(0) == ID16, dR/dθ == Σ17[4,5].R, R(0) == ID16, and S.Sinv == R.Rinv == ID16} & True \\
+110 & \texttt{S(β).Γ17[K].S(β)\textasciicircum{}-1 == Σ\_B Λboost[[B+1,K+1]] Γ17[B]; Λboost is the boost along x1} & True \\
+111 & \texttt{R(θ).Γ17[K].R(θ)\textasciicircum{}-1 == Σ\_B Λrot[[B+1,K+1]] Γ17[B]; Λrot is the rotation in the x4-x5 plane} & True \\
+112 & \texttt{both Λ preserve the 7+1 metric: Transpose[Λ].η17.Λ == η17} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{5.3 The 7+1 Dirac operator squares to the 7+1 wave operator}
 {\footnotesize
@@ -523,7 +533,7 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-112 & \texttt{(Γ17\textasciicircum{}A ∂\_A)\textasciicircum{}2 Ψ == (∂0\textasciicircum{}2 - ∂1\textasciicircum{}2 - ... - ∂7\textasciicircum{}2) Ψ for 16 arbitrary functions of x0..x7} & True \\*
+113 & \texttt{(Γ17\textasciicircum{}A ∂\_A)\textasciicircum{}2 Ψ == (∂0\textasciicircum{}2 - ∂1\textasciicircum{}2 - ... - ∂7\textasciicircum{}2) Ψ for 16 arbitrary functions of x0..x7} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{5.4 Spinors on the mass shell: real amplitudes}
 {\footnotesize
@@ -536,9 +546,9 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-113 & \texttt{p is on the mass shell (p.η17.p == m\textasciicircum{}2) and pslash.pslash == m\textasciicircum{}2 ID16} & True \\
-114 & \texttt{(pslash - m) w == 0 has 8 linearly independent REAL solutions w} & True \\
-115 & \texttt{Ψ = w Exp[-I p.x] solves (I Γ17\textasciicircum{}A ∂\_A - m) Ψ == 0} & True \\*
+114 & \texttt{p is on the mass shell (p.η17.p == m\textasciicircum{}2) and pslash.pslash == m\textasciicircum{}2 ID16} & True \\
+115 & \texttt{(pslash - m) w == 0 has 8 linearly independent REAL solutions w} & True \\
+116 & \texttt{Ψ = w Exp[-I p.x] solves (I Γ17\textasciicircum{}A ∂\_A - m) Ψ == 0} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{5.5 Real spinor fields: massless with \texorpdfstring{\ensuremath{\Gamma}}{Γ}17, massive with the real 32×32 matrices}
 {\footnotesize
@@ -551,13 +561,13 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-116 & \texttt{the matrices anticommuting with every Γ17[A] are exactly the multiples of Γ17[8], and (c Γ17[8])\textasciicircum{}2 == -c\textasciicircum{}2 ID16: no real J with J.J == +ID16} & True \\
-117 & \texttt{null momentum k = (1,1,0,0,0,0,0,0): k.η17.k == 0, kslash.kslash == 0, and kslash.w == 0 has 8 REAL solutions} & True \\
-118 & \texttt{Ψ = w Cos[k.x] is a REAL solution of the real massless Dirac equation Γ17\textasciicircum{}A ∂\_A Ψ == 0} & True \\
-119 & \texttt{(Γ71R32\textasciicircum{}A ∂\_A)\textasciicircum{}2 Ψ == -(∂0\textasciicircum{}2 - ∂1\textasciicircum{}2 - ... - ∂7\textasciicircum{}2) Ψ for 32 arbitrary functions of x0..x7} & True \\
-120 & \texttt{p.η71.p == -m\textasciicircum{}2 and pslash32.pslash32 == -m\textasciicircum{}2 ID32} & True \\
-121 & \texttt{Ψ = w Cos[p.x] + (pslash32.w/m) Sin[p.x], with 32 arbitrary REAL constants w, solves the REAL massive equation (Γ71R32\textasciicircum{}A ∂\_A - m) Ψ == 0} & True \\
-122 & \texttt{... and Ψ obeys the Klein-Gordon equation (∂0\textasciicircum{}2 - ∂1\textasciicircum{}2 - ... - ∂7\textasciicircum{}2 + m\textasciicircum{}2) Ψ == 0} & True \\*
+117 & \texttt{the matrices anticommuting with every Γ17[A] are exactly the multiples of Γ17[8], and (c Γ17[8])\textasciicircum{}2 == -c\textasciicircum{}2 ID16: no real J with J.J == +ID16} & True \\
+118 & \texttt{null momentum k = (1,1,0,0,0,0,0,0): k.η17.k == 0, kslash.kslash == 0, and kslash.w == 0 has 8 REAL solutions} & True \\
+119 & \texttt{Ψ = w Cos[k.x] is a REAL solution of the real massless Dirac equation Γ17\textasciicircum{}A ∂\_A Ψ == 0} & True \\
+120 & \texttt{(Γ71R32\textasciicircum{}A ∂\_A)\textasciicircum{}2 Ψ == -(∂0\textasciicircum{}2 - ∂1\textasciicircum{}2 - ... - ∂7\textasciicircum{}2) Ψ for 32 arbitrary functions of x0..x7} & True \\
+121 & \texttt{p.η71.p == -m\textasciicircum{}2 and pslash32.pslash32 == -m\textasciicircum{}2 ID32} & True \\
+122 & \texttt{Ψ = w Cos[p.x] + (pslash32.w/m) Sin[p.x], with 32 arbitrary REAL constants w, solves the REAL massive equation (Γ71R32\textasciicircum{}A ∂\_A - m) Ψ == 0} & True \\
+123 & \texttt{... and Ψ obeys the Klein-Gordon equation (∂0\textasciicircum{}2 - ∂1\textasciicircum{}2 - ... - ∂7\textasciicircum{}2 + m\textasciicircum{}2) Ψ == 0} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{5.6 All nine signatures p + q = 8, and the corrected table of [1B]}
 {\footnotesize
@@ -570,12 +580,12 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-123 & \texttt{split analogue: Re(x x) of split octonions == X.η53.X, and Γ53 realizes Cl(5,3) with REAL 16×16 matrices} & True \\
-124 & \texttt{Γ08[A] = T16O[8].T16O[A] realizes Cl(0,8) with REAL 16×16 matrices} & True \\
-125 & \texttt{gens[p] satisfy the Clifford relation of signature (p, 8-p) for p = 0..8} & True \\
-126 & \texttt{classification: ℝ(16) for (8,0),(5,3),(4,4),(1,7),(0,8); ℍ(8) for (7,1),(6,2),(3,5),(2,6)} & True \\
-127 & \texttt{every ℝ(16) case has explicit REAL 16×16 generators in this notebook (T16O, Γ53, T16, Γ17, Γ08)} & True \\
-128 & \texttt{ℂ(16) cannot occur: its real dimension 2*16\textasciicircum{}2 = 512 differs from 2\textasciicircum{}8 = 256} & True \\*
+124 & \texttt{split analogue: Re(x x) of split octonions == X.η53.X, and Γ53 realizes Cl(5,3) with REAL 16×16 matrices} & True \\
+125 & \texttt{Γ08[A] = T16O[8].T16O[A] realizes Cl(0,8) with REAL 16×16 matrices} & True \\
+126 & \texttt{gens[p] satisfy the Clifford relation of signature (p, 8-p) for p = 0..8} & True \\
+127 & \texttt{classification: ℝ(16) for (8,0),(5,3),(4,4),(1,7),(0,8); ℍ(8) for (7,1),(6,2),(3,5),(2,6)} & True \\
+128 & \texttt{every ℝ(16) case has explicit REAL 16×16 generators in this notebook (T16O, Γ53, T16, Γ17, Γ08)} & True \\
+129 & \texttt{ℂ(16) cannot occur: its real dimension 2*16\textasciicircum{}2 = 512 differs from 2\textasciicircum{}8 = 256} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{7.1 The eight real Dirac matrices and the Dirac \texorpdfstring{\ensuremath{\alpha}}{α}, \texorpdfstring{\ensuremath{\beta}}{β}}
 {\footnotesize
@@ -588,11 +598,11 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-129 & \texttt{Dirac matrices: Γ17up[0] == Γ17[0], Γ17up[i] == -Γ17[i]; all REAL, every entry 0 or ±1} & True \\
-130 & \texttt{Dirac adjoint: ConjugateTranspose[Γ17up[A]] == Γ17[0].Γ17up[A].Γ17[0] for A = 0..7} & True \\
-131 & \texttt{βD == \{\{0,ID8\},\{ID8,0\}\} and αD[i] == \{\{0,τO[i]\},\{-τO[i],0\}\}: real and symmetric} & True \\
-132 & \texttt{αD[i].αD[j] + αD[j].αD[i] == 2 δij ID16, αD[i].βD + βD.αD[i] == 0, βD.βD == ID16} & True \\
-133 & \texttt{ω17 = Γ17[8] == \{\{0,-ID8\},\{ID8,0\}\} is real, ω17.ω17 == -ID16, and ω17 anticommutes with every Γ17[A]} & True \\*
+130 & \texttt{Dirac matrices: Γ17up[0] == Γ17[0], Γ17up[i] == -Γ17[i]; all REAL, every entry 0 or ±1} & True \\
+131 & \texttt{Dirac adjoint: ConjugateTranspose[Γ17up[A]] == Γ17[0].Γ17up[A].Γ17[0] for A = 0..7} & True \\
+132 & \texttt{βD == \{\{0,ID8\},\{ID8,0\}\} and αD[i] == \{\{0,τO[i]\},\{-τO[i],0\}\}: real and symmetric} & True \\
+133 & \texttt{αD[i].αD[j] + αD[j].αD[i] == 2 δij ID16, αD[i].βD + βD.αD[i] == 0, βD.βD == ID16} & True \\
+134 & \texttt{ω17 = Γ17[8] == \{\{0,-ID8\},\{ID8,0\}\} is real, ω17.ω17 == -ID16, and ω17 anticommutes with every Γ17[A]} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{7.2 The field dirac16complex and its Dirac equation}
 {\footnotesize
@@ -605,7 +615,7 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-134 & \texttt{(I Γ17up[A] ∂\_A + m)(I Γ17up[A] ∂\_A - m) dirac16complex == -(∂0\textasciicircum{}2 - ∂1\textasciicircum{}2 - ... - ∂7\textasciicircum{}2 + m\textasciicircum{}2) dirac16complex (16 arbitrary functions)} & True \\*
+135 & \texttt{(I Γ17up[A] ∂\_A + m)(I Γ17up[A] ∂\_A - m) dirac16complex == -(∂0\textasciicircum{}2 - ∂1\textasciicircum{}2 - ... - ∂7\textasciicircum{}2 + m\textasciicircum{}2) dirac16complex (16 arbitrary functions)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{7.3 Hamiltonian form}
 {\footnotesize
@@ -618,7 +628,7 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-135 & \texttt{Γ17[0].(I Γ17up[A] ∂\_A - m) ψ == I ∂0 ψ - h ψ with h = -I αD[i] ∂\_i + βD m (16 arbitrary functions)} & True \\*
+136 & \texttt{Γ17[0].(I Γ17up[A] ∂\_A - m) ψ == I ∂0 ψ - h ψ with h = -I αD[i] ∂\_i + βD m (16 arbitrary functions)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{7.4 Plane waves and the real spinors u\_s, v\_s}
 {\footnotesize
@@ -631,13 +641,13 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-136 & \texttt{h(p) == \{\{0, M\}, \{Transpose[M], 0\}\} with the REAL 8×8 matrix M = m ID8 + p\_i τO[i]} & True \\
-137 & \texttt{M.Transpose[M] == Transpose[M].M == E\textasciicircum{}2 ID8 and h(p).h(p) == E\textasciicircum{}2 ID16, E\textasciicircum{}2 = m\textasciicircum{}2 + p\textasciicircum{}2} & True \\
-138 & \texttt{h(p).u\_s == E u\_s and h(-p).v\_s == -E v\_s for s = 1..8} & True \\
-139 & \texttt{(pslash - m).u\_s == 0 and (pslash + m).v\_s == 0, pslash = E Γ17[0] + p\_i Γ17[i]} & True \\
-140 & \texttt{u\_s.u\_r == v\_s.v\_r == 2E δsr, and u\_s(p).v\_r(-p) == 0} & True \\
-141 & \texttt{plane waves: u\_s Exp[-I(E x0 - p.x)] and v\_s Exp[+I(E x0 - p.x)] solve (I Γ17up[A] ∂\_A - m) ψ == 0} & True \\
-142 & \texttt{example p = (2,2,4,0,0,0,0), m = 1: E = 5 and the eight u\_s are real (entries in Sqrt[5] ℚ) and solve h(p).u\_s == 5 u\_s} & True \\*
+137 & \texttt{h(p) == \{\{0, M\}, \{Transpose[M], 0\}\} with the REAL 8×8 matrix M = m ID8 + p\_i τO[i]} & True \\
+138 & \texttt{M.Transpose[M] == Transpose[M].M == E\textasciicircum{}2 ID8 and h(p).h(p) == E\textasciicircum{}2 ID16, E\textasciicircum{}2 = m\textasciicircum{}2 + p\textasciicircum{}2} & True \\
+139 & \texttt{h(p).u\_s == E u\_s and h(-p).v\_s == -E v\_s for s = 1..8} & True \\
+140 & \texttt{(pslash - m).u\_s == 0 and (pslash + m).v\_s == 0, pslash = E Γ17[0] + p\_i Γ17[i]} & True \\
+141 & \texttt{u\_s.u\_r == v\_s.v\_r == 2E δsr, and u\_s(p).v\_r(-p) == 0} & True \\
+142 & \texttt{plane waves: u\_s Exp[-I(E x0 - p.x)] and v\_s Exp[+I(E x0 - p.x)] solve (I Γ17up[A] ∂\_A - m) ψ == 0} & True \\
+143 & \texttt{example p = (2,2,4,0,0,0,0), m = 1: E = 5 and the eight u\_s are real (entries in Sqrt[5] ℚ) and solve h(p).u\_s == 5 u\_s} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{7.5 Spin sums, completeness, and the diagonalization of h}
 {\footnotesize
@@ -650,9 +660,9 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-143 & \texttt{spin sums: Σ\_s u\_s ubar\_s == pslash + m and Σ\_s v\_s vbar\_s == pslash - m} & True \\
-144 & \texttt{completeness: Σ\_s u\_s(p) u\_s(p)\textasciicircum{}T + Σ\_s v\_s(-p) v\_s(-p)\textasciicircum{}T == 2E ID16} & True \\
-145 & \texttt{U = (u\_1..u\_8, v\_1(-p)..v\_8(-p))/Sqrt[2E] is orthogonal and Transpose[U].h(p).U == diag(E ID8, -E ID8)} & True \\*
+144 & \texttt{spin sums: Σ\_s u\_s ubar\_s == pslash + m and Σ\_s v\_s vbar\_s == pslash - m} & True \\
+145 & \texttt{completeness: Σ\_s u\_s(p) u\_s(p)\textasciicircum{}T + Σ\_s v\_s(-p) v\_s(-p)\textasciicircum{}T == 2E ID16} & True \\
+146 & \texttt{U = (u\_1..u\_8, v\_1(-p)..v\_8(-p))/Sqrt[2E] is orthogonal and Transpose[U].h(p).U == diag(E ID8, -E ID8)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{7.6 Grassmann algebra: anticommuting components, Lagrangian, conserved current}
 {\footnotesize
@@ -665,10 +675,10 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-146 & \texttt{Grassmann: θ1 θ2 == -θ2 θ1, θ1 θ1 == 0, associativity, and ∂/∂θ2 (θ1 θ2 θ3) == -θ1 θ3} & True \\
-147 & \texttt{the three plane waves U1, U2, U3 solve the Dirac equation with m = 1} & True \\
-148 & \texttt{Grassmann field: ψ\_a ψ\_b + ψ\_b ψ\_a == 0 for all a, b (in particular ψ\_a\textasciicircum{}2 == 0)} & True \\
-149 & \texttt{current conservation ∂\_A (ψbar Γ17up[A] ψ) == 0 for the Grassmann-valued solution ψ = θ1 U1 + θ2 U2 + θ3 U3} & True \\*
+147 & \texttt{Grassmann: θ1 θ2 == -θ2 θ1, θ1 θ1 == 0, associativity, and ∂/∂θ2 (θ1 θ2 θ3) == -θ1 θ3} & True \\
+148 & \texttt{the three plane waves U1, U2, U3 solve the Dirac equation with m = 1} & True \\
+149 & \texttt{Grassmann field: ψ\_a ψ\_b + ψ\_b ψ\_a == 0 for all a, b (in particular ψ\_a\textasciicircum{}2 == 0)} & True \\
+150 & \texttt{current conservation ∂\_A (ψbar Γ17up[A] ψ) == 0 for the Grassmann-valued solution ψ = θ1 U1 + θ2 U2 + θ3 U3} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{7.7 Quantization: mode expansion and canonical anticommutators}
 {\footnotesize
@@ -681,7 +691,7 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-150 & \texttt{canonical anticommutator from the mode algebra: \{ψ\_a(x0,x), ψ\_b(x0,y)\textasciicircum{}†\} == δab (1/V) Σ\_p Exp[I p.(x - y)] (five momenta, symbolic x, y)} & True \\*
+151 & \texttt{canonical anticommutator from the mode algebra: \{ψ\_a(x0,x), ψ\_b(x0,y)\textasciicircum{}†\} == δab (1/V) Σ\_p Exp[I p.(x - y)] (five momenta, symbolic x, y)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{7.8 Charge conjugation}
 {\footnotesize
@@ -694,8 +704,8 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-151 & \texttt{ψ -> ψc = ω17.ψ\textasciicircum{}*: (I Γ17up[A] ∂\_A - m)(ω17.ψ\textasciicircum{}*) == ω17.((I Γ17up[A] ∂\_A - m) ψ)\textasciicircum{}* for arbitrary ψ = ψre + I ψim} & True \\
-152 & \texttt{(pslash + m).ω17.u\_s == 0 and ω17.u\_s == Σ\_r v\_r (-Transpose[M]/E)\_rs; ω17.ω17 == -ID16 (no Majorana spinors)} & True \\*
+152 & \texttt{ψ -> ψc = ω17.ψ\textasciicircum{}*: (I Γ17up[A] ∂\_A - m)(ω17.ψ\textasciicircum{}*) == ω17.((I Γ17up[A] ∂\_A - m) ψ)\textasciicircum{}* for arbitrary ψ = ψre + I ψim} & True \\
+153 & \texttt{(pslash + m).ω17.u\_s == 0 and ω17.u\_s == Σ\_r v\_r (-Transpose[M]/E)\_rs; ω17.ω17 == -ID16 (no Majorana spinors)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{7.9 Lorentz covariance}
 {\footnotesize
@@ -708,7 +718,7 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-153 & \texttt{boost at β = 2 log 2: S == 5/4 ID16 + 3/4 Γ17[0].Γ17[1], p' = Λ.p == (55/8, -41/8, 2, 4, 0, 0, 0, 0) is on shell, (pslash' - m).S.u\_s(p) == 0} & True \\*
+154 & \texttt{boost at β = 2 log 2: S == 5/4 ID16 + 3/4 Γ17[0].Γ17[1], p' = Λ.p == (55/8, -41/8, 2, 4, 0, 0, 0, 0) is on shell, (pslash' - m).S.u\_s(p) == 0} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{7.10 Chirality: no real chirality matrix, complex chiral projections}
 {\footnotesize
@@ -721,10 +731,10 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-154 & \texttt{χ17 = I ω17: Hermitian, χ17.χ17 == ID16, anticommutes with every Γ17[A], commutes with every Σ17[A,B]} & True \\
-155 & \texttt{PL17, PR17 are complex (not real); Γ17[A].PL17 == PR17.Γ17[A]; ConjugateTranspose[PL17].Γ17[0] == Γ17[0].PR17} & True \\
-156 & \texttt{EL, ER: χ17.EL == -EL, χ17.ER == ER, EL\textasciicircum{}†.EL == ER\textasciicircum{}†.ER == ID8, EL\textasciicircum{}†.ER == 0, EL.EL\textasciicircum{}† == PL17, ER.ER\textasciicircum{}† == PR17, W unitary} & True \\
-157 & \texttt{φL == (ψup + I ψdown)/Sqrt[2], φR == (I ψup + ψdown)/Sqrt[2], PL17.ψ == EL.φL, PR17.ψ == ER.φR, ψ == EL.φL + ER.φR} & True \\*
+155 & \texttt{χ17 = I ω17: Hermitian, χ17.χ17 == ID16, anticommutes with every Γ17[A], commutes with every Σ17[A,B]} & True \\
+156 & \texttt{PL17, PR17 are complex (not real); Γ17[A].PL17 == PR17.Γ17[A]; ConjugateTranspose[PL17].Γ17[0] == Γ17[0].PR17} & True \\
+157 & \texttt{EL, ER: χ17.EL == -EL, χ17.ER == ER, EL\textasciicircum{}†.EL == ER\textasciicircum{}†.ER == ID8, EL\textasciicircum{}†.ER == 0, EL.EL\textasciicircum{}† == PL17, ER.ER\textasciicircum{}† == PR17, W unitary} & True \\
+158 & \texttt{φL == (ψup + I ψdown)/Sqrt[2], φR == (I ψup + ψdown)/Sqrt[2], PL17.ψ == EL.φL, PR17.ψ == ER.φR, ψ == EL.φL + ER.φR} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{7.11 The two coupled 8-component equations}
 {\footnotesize
@@ -737,12 +747,12 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-158 & \texttt{σW[i] = I τO[i]: Hermitian, σW[i].σW[j] + σW[j].σW[i] == 2 δij ID8} & True \\
-159 & \texttt{chiral (Weyl) form: W\textasciicircum{}†.h(p).W == \{\{-σW.p, m ID8\}, \{m ID8, σW.p\}\} (symbolic p)} & True \\
-160 & \texttt{EL\textasciicircum{}†.Γ17[0].(I Γ17up[A] ∂\_A - m) ψ == (I ∂0 + τO[i] ∂\_i) φL - m φR (16 arbitrary functions)} & True \\
-161 & \texttt{ER\textasciicircum{}†.Γ17[0].(I Γ17up[A] ∂\_A - m) ψ == (I ∂0 - τO[i] ∂\_i) φR - m φL (16 arbitrary functions)} & True \\
-162 & \texttt{Klein-Gordon for each 8-component field: (I ∂0 - τO[i] ∂\_i)(I ∂0 + τO[j] ∂\_j) f == -(∂0\textasciicircum{}2 - ∂1\textasciicircum{}2 - ... - ∂7\textasciicircum{}2) f (8 arbitrary functions)} & True \\
-163 & \texttt{plane-wave example p = (2,2,4,0,0,0,0), m = 1, E = 5: (E + σW.p) φL == m φR and (E - σW.p) φR == m φL for all eight u\_s} & True \\*
+159 & \texttt{σW[i] = I τO[i]: Hermitian, σW[i].σW[j] + σW[j].σW[i] == 2 δij ID8} & True \\
+160 & \texttt{chiral (Weyl) form: W\textasciicircum{}†.h(p).W == \{\{-σW.p, m ID8\}, \{m ID8, σW.p\}\} (symbolic p)} & True \\
+161 & \texttt{EL\textasciicircum{}†.Γ17[0].(I Γ17up[A] ∂\_A - m) ψ == (I ∂0 + τO[i] ∂\_i) φL - m φR (16 arbitrary functions)} & True \\
+162 & \texttt{ER\textasciicircum{}†.Γ17[0].(I Γ17up[A] ∂\_A - m) ψ == (I ∂0 - τO[i] ∂\_i) φR - m φL (16 arbitrary functions)} & True \\
+163 & \texttt{Klein-Gordon for each 8-component field: (I ∂0 - τO[i] ∂\_i)(I ∂0 + τO[j] ∂\_j) f == -(∂0\textasciicircum{}2 - ∂1\textasciicircum{}2 - ... - ∂7\textasciicircum{}2) f (8 arbitrary functions)} & True \\
+164 & \texttt{plane-wave example p = (2,2,4,0,0,0,0), m = 1, E = 5: (E + σW.p) φL == m φR and (E - σW.p) φR == m φL for all eight u\_s} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{8.1 The self-coupled field: Lagrangian, densities, Hamiltonian}
 {\footnotesize
@@ -755,8 +765,8 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-164 & \texttt{the densities ρS, ρP, j\textasciicircum{}A, j5\textasciicircum{}A are real: Γ17[0].op is Hermitian for op = ID16, I χ17, Γ17up[A], Γ17up[A].χ17} & True \\
-165 & \texttt{18 vertex pairs; lower vertex == η17[[A+1,A+1]] upper vertex in the V and A channels} & True \\*
+165 & \texttt{the densities ρS, ρP, j\textasciicircum{}A, j5\textasciicircum{}A are real: Γ17[0].op is Hermitian for op = ID16, I χ17, Γ17up[A], Γ17up[A].χ17} & True \\
+166 & \texttt{18 vertex pairs; lower vertex == η17[[A+1,A+1]] upper vertex in the V and A channels} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{8.2 The nonlinear field equation (Grassmann left derivatives)}
 {\footnotesize
@@ -769,7 +779,7 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-166 & \texttt{nonlinear field equation: left derivative ∂L\_int/∂ψbar\_a == -[gS (ψbar ψ) ψ + gP (ψbar Iχ17 ψ) Iχ17 ψ + gV (ψbar Γ17[A] ψ) Γ17up[A] ψ + gA (ψbar Γ17[A]χ17 ψ) Γ17up[A]χ17 ψ]\_a (32 Grassmann generators)} & True \\*
+167 & \texttt{nonlinear field equation: left derivative ∂L\_int/∂ψbar\_a == -[gS (ψbar ψ) ψ + gP (ψbar Iχ17 ψ) Iχ17 ψ + gV (ψbar Γ17[A] ψ) Γ17up[A] ψ + gA (ψbar Γ17[A]χ17 ψ) Γ17up[A]χ17 ψ]\_a (32 Grassmann generators)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{8.4 The 16-component Kohn–Sham equations}
 {\footnotesize
@@ -782,9 +792,9 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-167 & \texttt{h\_KS(p) is Hermitian for real S, P, V\_A, A\_A (symbolic momentum and potentials)} & True \\
-168 & \texttt{plane wave: Γ17[0].(pslash(ε,p) - m - S - I χ17 P - Γ17up[A](V\_A + χ17 A\_A)) == ε ID16 - h\_KS(p)} & True \\
-169 & \texttt{Hartree potentials: ∂E\_H/∂φ\_a\textasciicircum{}* == (v\_H.φ)\_a, v\_H = h\_KS - h with S = gS ρS, P = gP ρP, V\_A = gV j\_A, A\_A = gA j5\_A (32 variables)} & True \\*
+168 & \texttt{h\_KS(p) is Hermitian for real S, P, V\_A, A\_A (symbolic momentum and potentials)} & True \\
+169 & \texttt{plane wave: Γ17[0].(pslash(ε,p) - m - S - I χ17 P - Γ17up[A](V\_A + χ17 A\_A)) == ε ID16 - h\_KS(p)} & True \\
+170 & \texttt{Hartree potentials: ∂E\_H/∂φ\_a\textasciicircum{}* == (v\_H.φ)\_a, v\_H = h\_KS - h with S = gS ρS, P = gP ρP, V\_A = gV j\_A, A\_A = gA j5\_A (32 variables)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{8.5 Exchange: Wick’s theorem for contact couplings}
 {\footnotesize
@@ -797,7 +807,7 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-170 & \texttt{Wick's theorem in the 560-dimensional Fock space: <Φ| :(ψbar o1 ψ)(ψbar o2 ψ): |Φ> == tr(o1 R) tr(o2 R) - tr(o1 R o2 R) for all 18 vertex pairs} & True \\*
+171 & \texttt{Wick's theorem in the 560-dimensional Fock space: <Φ| :(ψbar o1 ψ)(ψbar o2 ψ): |Φ> == tr(o1 R) tr(o2 R) - tr(o1 R o2 R) for all 18 vertex pairs} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{8.6 The exchange self-energy and the Fierz identities}
 {\footnotesize
@@ -810,10 +820,10 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-171 & \texttt{exchange self-energy: d/dt E\_x(R + t dR) at t = 0 == tr(Σ\_x.dR) and E\_x == tr(Σ\_x.R)/2 (random complex R, dR; symbolic couplings)} & True \\
-172 & \texttt{the 256 products Γ\_K are orthogonal matrices with tr(Inverse[Γ\_K].Γ\_L) == 16 δKL} & True \\
-173 & \texttt{Fierz completeness: Σ\_K (Γ\_K)\_ab (Inverse[Γ\_K])\_cd == 16 δad δcb (as the 256×256 matrix identity Transpose[F].F == 16 ID)} & True \\
-174 & \texttt{Fierz rearrangement of every exchange term: tr(o1 R o2 R) == (1/16) Σ\_K tr(Inverse[Γ\_K].R) tr(o1.Γ\_K.o2.R) for all 18 vertex pairs (random complex R)} & True \\*
+172 & \texttt{exchange self-energy: d/dt E\_x(R + t dR) at t = 0 == tr(Σ\_x.dR) and E\_x == tr(Σ\_x.R)/2 (random complex R, dR; symbolic couplings)} & True \\
+173 & \texttt{the 256 products Γ\_K are orthogonal matrices with tr(Inverse[Γ\_K].Γ\_L) == 16 δKL} & True \\
+174 & \texttt{Fierz completeness: Σ\_K (Γ\_K)\_ab (Inverse[Γ\_K])\_cd == 16 δad δcb (as the 256×256 matrix identity Transpose[F].F == 16 ID)} & True \\
+175 & \texttt{Fierz rearrangement of every exchange term: tr(o1 R o2 R) == (1/16) Σ\_K tr(Inverse[Γ\_K].R) tr(o1.Γ\_K.o2.R) for all 18 vertex pairs (random complex R)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{8.7 Example: uniform matter (no sea), Hartree and Hartree–Fock}
 {\footnotesize
@@ -826,18 +836,18 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-175 & \texttt{uniform matter: tr R == ρS, tr(Γ17up[0].R) == ρ, and the densities ρP, j\textasciicircum{}i, j5\textasciicircum{}A vanish} & True \\
-176 & \texttt{the occupied plane waves give this R: (1/2) Σ\_s [u\_s(p) ubar\_s(p) + u\_s(-p) ubar\_s(-p)]/(2E) == (E Γ17[0] + m ID16)/(2E)} & True \\
-177 & \texttt{uniform exchange energy: E\_x(R) == -gS/32 (ρS\textasciicircum{}2 + ρ\textasciicircum{}2) + gP/32 (ρS\textasciicircum{}2 - ρ\textasciicircum{}2) - gV/32 (8ρS\textasciicircum{}2 - 6ρ\textasciicircum{}2) + gA/32 (8ρS\textasciicircum{}2 + 6ρ\textasciicircum{}2)} & True \\
-178 & \texttt{uniform exchange self-energy: Σ\_x == S\_x ID16 + V\_x Γ17[0] with S\_x == ∂E\_x/∂ρS and V\_x == ∂E\_x/∂ρ} & True \\
-179 & \texttt{uniform Hartree-Fock == Hartree with the Fierz-transformed couplings: gS/2 ρS\textasciicircum{}2 + gV/2 ρ\textasciicircum{}2 + E\_x == G\_S/2 ρS\textasciicircum{}2 + G\_V/2 ρ\textasciicircum{}2 (gP, gA arbitrary)} & True \\
-180 & \texttt{c7 == 8 |S\textasciicircum{}6|/(2 Pi)\textasciicircum{}7 == 1/(15 Pi\textasciicircum{}4), |S\textasciicircum{}6| == 2 Pi\textasciicircum{}(7/2)/Gamma[7/2] == 16 Pi\textasciicircum{}3/15, and ρ == c7 kF\textasciicircum{}7/7 == kF\textasciicircum{}7/(105 Pi\textasciicircum{}4)} & True \\
-181 & \texttt{closed forms: d/dkF of the integrals gives the integrands, both vanish at kF = 0, and dε\_kin/dm* == ρS} & True \\
-182 & \texttt{Hartree gap equation m* == m + gS ρS(m*) solved to 45 digits; m* is a stationary point of ε(m*) at fixed kF} & True \\
-183 & \texttt{total energy == sum of KS eigenvalues - E\_H (double counting) == ε\_kin - (m* - m) ρS + E\_H} & True \\
-184 & \texttt{Hugenholtz-Van Hove at saturation: E/A == ε\_F == dε/dρ; E/A - m < 0 and E/A at 0.95 kF0 and 1.05 kF0 is higher} & True \\
-185 & \texttt{Hugenholtz-Van Hove away from saturation: μ == dε/dρ == ε\_F at kF = 1} & True \\
-186 & \texttt{Hartree-Fock at kF = 3/4 (gP = gA = 0): G\_S == -98750, G\_V == 20000; m* - m == gS ρS + S\_x, V\_0 == gV ρ + V\_x; μ == ε\_F} & True \\*
+176 & \texttt{uniform matter: tr R == ρS, tr(Γ17up[0].R) == ρ, and the densities ρP, j\textasciicircum{}i, j5\textasciicircum{}A vanish} & True \\
+177 & \texttt{the occupied plane waves give this R: (1/2) Σ\_s [u\_s(p) ubar\_s(p) + u\_s(-p) ubar\_s(-p)]/(2E) == (E Γ17[0] + m ID16)/(2E)} & True \\
+178 & \texttt{uniform exchange energy: E\_x(R) == -gS/32 (ρS\textasciicircum{}2 + ρ\textasciicircum{}2) + gP/32 (ρS\textasciicircum{}2 - ρ\textasciicircum{}2) - gV/32 (8ρS\textasciicircum{}2 - 6ρ\textasciicircum{}2) + gA/32 (8ρS\textasciicircum{}2 + 6ρ\textasciicircum{}2)} & True \\
+179 & \texttt{uniform exchange self-energy: Σ\_x == S\_x ID16 + V\_x Γ17[0] with S\_x == ∂E\_x/∂ρS and V\_x == ∂E\_x/∂ρ} & True \\
+180 & \texttt{uniform Hartree-Fock == Hartree with the Fierz-transformed couplings: gS/2 ρS\textasciicircum{}2 + gV/2 ρ\textasciicircum{}2 + E\_x == G\_S/2 ρS\textasciicircum{}2 + G\_V/2 ρ\textasciicircum{}2 (gP, gA arbitrary)} & True \\
+181 & \texttt{c7 == 8 |S\textasciicircum{}6|/(2 Pi)\textasciicircum{}7 == 1/(15 Pi\textasciicircum{}4), |S\textasciicircum{}6| == 2 Pi\textasciicircum{}(7/2)/Gamma[7/2] == 16 Pi\textasciicircum{}3/15, and ρ == c7 kF\textasciicircum{}7/7 == kF\textasciicircum{}7/(105 Pi\textasciicircum{}4)} & True \\
+182 & \texttt{closed forms: d/dkF of the integrals gives the integrands, both vanish at kF = 0, and dε\_kin/dm* == ρS} & True \\
+183 & \texttt{Hartree gap equation m* == m + gS ρS(m*) solved to 45 digits; m* is a stationary point of ε(m*) at fixed kF} & True \\
+184 & \texttt{total energy == sum of KS eigenvalues - E\_H (double counting) == ε\_kin - (m* - m) ρS + E\_H} & True \\
+185 & \texttt{Hugenholtz-Van Hove at saturation: E/A == ε\_F == dε/dρ; E/A - m < 0 and E/A at 0.95 kF0 and 1.05 kF0 is higher} & True \\
+186 & \texttt{Hugenholtz-Van Hove away from saturation: μ == dε/dρ == ε\_F at kF = 1} & True \\
+187 & \texttt{Hartree-Fock at kF = 3/4 (gP = gA = 0): G\_S == -98750, G\_V == 20000; m* - m == gS ρS + S\_x, V\_0 == gV ρ + V\_x; μ == ε\_F} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{9.1 Chiral densities}
 {\footnotesize
@@ -850,8 +860,8 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-187 & \texttt{chiral densities: ρS == κ + κ\textasciicircum{}*, ρP == I(κ - κ\textasciicircum{}*), j\textasciicircum{}A == jL\textasciicircum{}A + jR\textasciicircum{}A, j5\textasciicircum{}A == jR\textasciicircum{}A - jL\textasciicircum{}A (symbolic chiral orbitals)} & True \\
-188 & \texttt{the chiral blocks behind these densities: EL\textasciicircum{}†.βD.ER == ID8, EL\textasciicircum{}†.βD.EL == 0, EL\textasciicircum{}†.αD[i].EL == -σW[i], ER\textasciicircum{}†.αD[i].ER == σW[i], EL\textasciicircum{}†.αD[i].ER == 0} & True \\*
+188 & \texttt{chiral densities: ρS == κ + κ\textasciicircum{}*, ρP == I(κ - κ\textasciicircum{}*), j\textasciicircum{}A == jL\textasciicircum{}A + jR\textasciicircum{}A, j5\textasciicircum{}A == jR\textasciicircum{}A - jL\textasciicircum{}A (symbolic chiral orbitals)} & True \\
+189 & \texttt{the chiral blocks behind these densities: EL\textasciicircum{}†.βD.ER == ID8, EL\textasciicircum{}†.βD.EL == 0, EL\textasciicircum{}†.αD[i].EL == -σW[i], ER\textasciicircum{}†.αD[i].ER == σW[i], EL\textasciicircum{}†.αD[i].ER == 0} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{9.2 The Hartree energy in chiral variables}
 {\footnotesize
@@ -864,7 +874,7 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-189 & \texttt{E\_H (16-component form, chiral orbitals) == gS/2 (κ + κ\textasciicircum{}*)\textasciicircum{}2 - gP/2 (κ - κ\textasciicircum{}*)\textasciicircum{}2 + (gV + gA)/2 (jL.jL + jR.jR) + (gV - gA) jL.jR} & True \\*
+190 & \texttt{E\_H (16-component form, chiral orbitals) == gS/2 (κ + κ\textasciicircum{}*)\textasciicircum{}2 - gP/2 (κ - κ\textasciicircum{}*)\textasciicircum{}2 + (gV + gA)/2 (jL.jL + jR.jR) + (gV - gA) jL.jR} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{9.3 The chiral Kohn–Sham equations}
 {\footnotesize
@@ -877,9 +887,9 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-190 & \texttt{chiral KS Hamiltonian: W\textasciicircum{}†.h\_KS(p).W == \{\{V\textasciicircum{}L\_0 - σW.(p + V\textasciicircum{}L), M\}, \{M\textasciicircum{}*, V\textasciicircum{}R\_0 + σW.(p + V\textasciicircum{}R)\}\}, M = m + S + I P, V\textasciicircum{}L = V - A, V\textasciicircum{}R = V + A} & True \\
-191 & \texttt{Hartree (Wirtinger): M - m == ∂e\_H/∂κ == gS ρS + I gP ρP, V\textasciicircum{}L\_A == ∂e\_H/∂jL\textasciicircum{}A; V\textasciicircum{}L\_A == V\_A - A\_A and V\textasciicircum{}R\_A == V\_A + A\_A with V\_A = gV j\_A, A\_A = gA j5\_A} & True \\
-192 & \texttt{chiral KS potentials are derivatives: ∂E\_H/∂φL\textasciicircum{}* == (V\textasciicircum{}L\_0 - σW[i] V\textasciicircum{}L\_i) φL + (M - m) φR and ∂E\_H/∂φR\textasciicircum{}* == (V\textasciicircum{}R\_0 + σW[i] V\textasciicircum{}R\_i) φR + (M - m)\textasciicircum{}* φL} & True \\*
+191 & \texttt{chiral KS Hamiltonian: W\textasciicircum{}†.h\_KS(p).W == \{\{V\textasciicircum{}L\_0 - σW.(p + V\textasciicircum{}L), M\}, \{M\textasciicircum{}*, V\textasciicircum{}R\_0 + σW.(p + V\textasciicircum{}R)\}\}, M = m + S + I P, V\textasciicircum{}L = V - A, V\textasciicircum{}R = V + A} & True \\
+192 & \texttt{Hartree (Wirtinger): M - m == ∂e\_H/∂κ == gS ρS + I gP ρP, V\textasciicircum{}L\_A == ∂e\_H/∂jL\textasciicircum{}A; V\textasciicircum{}L\_A == V\_A - A\_A and V\textasciicircum{}R\_A == V\_A + A\_A with V\_A = gV j\_A, A\_A = gA j5\_A} & True \\
+193 & \texttt{chiral KS potentials are derivatives: ∂E\_H/∂φL\textasciicircum{}* == (V\textasciicircum{}L\_0 - σW[i] V\textasciicircum{}L\_i) φL + (M - m) φR and ∂E\_H/∂φR\textasciicircum{}* == (V\textasciicircum{}R\_0 + σW[i] V\textasciicircum{}R\_i) φR + (M - m)\textasciicircum{}* φL} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{9.4 Chiral symmetry}
 {\footnotesize
@@ -892,9 +902,9 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-193 & \texttt{e\textasciicircum{}(Iθχ17) == cosθ ID16 - sinθ ω17 is REAL and orthogonal; U.EL == e\textasciicircum{}(-Iθ) EL, U.ER == e\textasciicircum{}(Iθ) ER} & True \\
-194 & \texttt{U\textasciicircum{}†.βD.U == βD.(cos 2θ ID16 + I sin 2θ χ17); vector and axial densities invariant} & True \\
-195 & \texttt{E\_H(e\textasciicircum{}(Iθχ17) ψ) - E\_H(ψ) == (gS - gP)/2 [(e\textasciicircum{}(4Iθ) - 1) κ\textasciicircum{}2 + (e\textasciicircum{}(-4Iθ) - 1) κ\textasciicircum{}*2]: U(1)\_A symmetric iff gP == gS} & True \\*
+194 & \texttt{e\textasciicircum{}(Iθχ17) == cosθ ID16 - sinθ ω17 is REAL and orthogonal; U.EL == e\textasciicircum{}(-Iθ) EL, U.ER == e\textasciicircum{}(Iθ) ER} & True \\
+195 & \texttt{U\textasciicircum{}†.βD.U == βD.(cos 2θ ID16 + I sin 2θ χ17); vector and axial densities invariant} & True \\
+196 & \texttt{E\_H(e\textasciicircum{}(Iθχ17) ψ) - E\_H(ψ) == (gS - gP)/2 [(e\textasciicircum{}(4Iθ) - 1) κ\textasciicircum{}2 + (e\textasciicircum{}(-4Iθ) - 1) κ\textasciicircum{}*2]: U(1)\_A symmetric iff gP == gS} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{9.5 Uniform matter in chiral form}
 {\footnotesize
@@ -907,8 +917,8 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-196 & \texttt{uniform matter in chiral form: κ == ρS/2, jL\textasciicircum{}0 == jR\textasciicircum{}0 == ρ/2, jL\textasciicircum{}i == jR\textasciicircum{}i == 0} & True \\
-197 & \texttt{(h\_χ - V\_0)\textasciicircum{}2 == (p\textasciicircum{}2 + m*\textasciicircum{}2) ID16: eigenvalues V\_0 ± Sqrt[p\textasciicircum{}2 + m*\textasciicircum{}2], eight times each} & True \\*
+197 & \texttt{uniform matter in chiral form: κ == ρS/2, jL\textasciicircum{}0 == jR\textasciicircum{}0 == ρ/2, jL\textasciicircum{}i == jR\textasciicircum{}i == 0} & True \\
+198 & \texttt{(h\_χ - V\_0)\textasciicircum{}2 == (p\textasciicircum{}2 + m*\textasciicircum{}2) ID16: eigenvalues V\_0 ± Sqrt[p\textasciicircum{}2 + m*\textasciicircum{}2], eight times each} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{9.6 The chiral vacuum with the Dirac sea: spontaneous chiral symmetry breaking}
 {\footnotesize
@@ -921,11 +931,11 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-198 & \texttt{|S\textasciicircum{}6|/(2 Pi)\textasciicircum{}7 == 1/(120 Pi\textasciicircum{}4); J(0) == Λ\textasciicircum{}6/(720 Pi\textasciicircum{}4); g\_c == -1/(8 J(0)) == -90 Pi\textasciicircum{}4/Λ\textasciicircum{}6; J(M) -> J(0) and K(M) -> K(0) as M -> 0} & True \\
-199 & \texttt{m = 0, g = 6/5 g\_c: the gap equation 1 + 8 g J(|M|) == 0 has the root |M| (32 digits); M == 2 g κ\textasciicircum{}* with κ == -4 M J; E is stationary there and lower than E(0)} & True \\
-200 & \texttt{degenerate chiral vacua for m = 0: E(|M| e\textasciicircum{}(I ϕ)) == E(|M|) for ϕ = 1, 2, 4 (the phase is the Goldstone direction)} & True \\
-201 & \texttt{explicit breaking m = 1/100: the real M == m - 8 g J(M) M solves the gap equation, E is stationary there, and every complex phase raises E} & True \\
-202 & \texttt{the sea at one momentum: h\_χ\textasciicircum{}2 == E\textasciicircum{}2 ID16; Π\_- is a projector of rank 8; κ\_p == tr(Π\_- RL block) == -4 M\textasciicircum{}*/E; tr(Π\_-.h0) == -8E + 8 Re[(M - m) M\textasciicircum{}*]/E} & True \\*
+199 & \texttt{|S\textasciicircum{}6|/(2 Pi)\textasciicircum{}7 == 1/(120 Pi\textasciicircum{}4); J(0) == Λ\textasciicircum{}6/(720 Pi\textasciicircum{}4); g\_c == -1/(8 J(0)) == -90 Pi\textasciicircum{}4/Λ\textasciicircum{}6; J(M) -> J(0) and K(M) -> K(0) as M -> 0} & True \\
+200 & \texttt{m = 0, g = 6/5 g\_c: the gap equation 1 + 8 g J(|M|) == 0 has the root |M| (32 digits); M == 2 g κ\textasciicircum{}* with κ == -4 M J; E is stationary there and lower than E(0)} & True \\
+201 & \texttt{degenerate chiral vacua for m = 0: E(|M| e\textasciicircum{}(I ϕ)) == E(|M|) for ϕ = 1, 2, 4 (the phase is the Goldstone direction)} & True \\
+202 & \texttt{explicit breaking m = 1/100: the real M == m - 8 g J(M) M solves the gap equation, E is stationary there, and every complex phase raises E} & True \\
+203 & \texttt{the sea at one momentum: h\_χ\textasciicircum{}2 == E\textasciicircum{}2 ID16; Π\_- is a projector of rank 8; κ\_p == tr(Π\_- RL block) == -4 M\textasciicircum{}*/E; tr(Π\_-.h0) == -8E + 8 Re[(M - m) M\textasciicircum{}*]/E} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{11.2 The cosmological metric of 7+1 spacetime}
 {\footnotesize
@@ -938,10 +948,10 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-203 & \texttt{cosmological metric: sectional curvatures K\_0i = -(Ha'+Ha\textasciicircum{}2), K\_0k = -(Hb'+Hb\textasciicircum{}2), K\_ij = -Ha\textasciicircum{}2, K\_kl = -Hb\textasciicircum{}2, K\_ik = -Ha Hb} & True \\
-204 & \texttt{cosmological metric: R\textasciicircum{}cd\_ab is non-zero only for \{c,d\} = \{a,b\}} & True \\
-205 & \texttt{Einstein tensor: G\textasciicircum{}0\_0 = 3Ha\textasciicircum{}2 + 12 Ha Hb + 6 Hb\textasciicircum{}2, G\textasciicircum{}1\_1 = 2Ha' + 3Ha\textasciicircum{}2 + 4Hb' + 10Hb\textasciicircum{}2 + 8HaHb, G\textasciicircum{}4\_4 = 3Ha' + 6Ha\textasciicircum{}2 + 3Hb' + 6Hb\textasciicircum{}2 + 9HaHb} & True \\
-206 & \texttt{scalar curvature R = -2 (3Ha' + 6Ha\textasciicircum{}2 + 4Hb' + 10Hb\textasciicircum{}2 + 12 Ha Hb)} & True \\*
+204 & \texttt{cosmological metric: sectional curvatures K\_0i = -(Ha'+Ha\textasciicircum{}2), K\_0k = -(Hb'+Hb\textasciicircum{}2), K\_ij = -Ha\textasciicircum{}2, K\_kl = -Hb\textasciicircum{}2, K\_ik = -Ha Hb} & True \\
+205 & \texttt{cosmological metric: R\textasciicircum{}cd\_ab is non-zero only for \{c,d\} = \{a,b\}} & True \\
+206 & \texttt{Einstein tensor: G\textasciicircum{}0\_0 = 3Ha\textasciicircum{}2 + 12 Ha Hb + 6 Hb\textasciicircum{}2, G\textasciicircum{}1\_1 = 2Ha' + 3Ha\textasciicircum{}2 + 4Hb' + 10Hb\textasciicircum{}2 + 8HaHb, G\textasciicircum{}4\_4 = 3Ha' + 6Ha\textasciicircum{}2 + 3Hb' + 6Hb\textasciicircum{}2 + 9HaHb} & True \\
+207 & \texttt{scalar curvature R = -2 (3Ha' + 6Ha\textasciicircum{}2 + 4Hb' + 10Hb\textasciicircum{}2 + 12 Ha Hb)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{11.3 Symmetries of the Riemann tensor and the contracted Bianchi identity}
 {\footnotesize
@@ -954,9 +964,9 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-207 & \texttt{inhomogeneous metric, exactly at (x0, x4) = (1/2, 1/3): R\_rsmn = -R\_srmn = -R\_rsnm = R\_mnrs and R\textasciicircum{}r\_[smn] = 0 (first Bianchi identity)} & True \\
-208 & \texttt{inhomogeneous metric: contracted Bianchi identity nabla\_mu G\textasciicircum{}mu\_nu == 0, exactly at (x0, x4) = (1/2, 1/3)} & True \\
-209 & \texttt{cosmological metric: contracted Bianchi identity nabla\_mu G\textasciicircum{}mu\_nu = 0 (arbitrary a, b)} & True \\*
+208 & \texttt{inhomogeneous metric, exactly at (x0, x4) = (1/2, 1/3): R\_rsmn = -R\_srmn = -R\_rsnm = R\_mnrs and R\textasciicircum{}r\_[smn] = 0 (first Bianchi identity)} & True \\
+209 & \texttt{inhomogeneous metric: contracted Bianchi identity nabla\_mu G\textasciicircum{}mu\_nu == 0, exactly at (x0, x4) = (1/2, 1/3)} & True \\
+210 & \texttt{cosmological metric: contracted Bianchi identity nabla\_mu G\textasciicircum{}mu\_nu = 0 (arbitrary a, b)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{12.1 The generalized Kronecker delta}
 {\footnotesize
@@ -969,8 +979,23 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-210 & \texttt{generalized Kronecker delta: contraction identity delta\textasciicircum{}\{m1..mp r\}\_\{n1..np r\} = (8-p) delta\textasciicircum{}\{m1..mp\}\_\{n1..np\} (p = 1..4, 60 random index sets each)} & True \\
-211 & \texttt{generalized Kronecker delta with 9 upper indices vanishes in 8 dimensions (100 random index sets)} & True \\*
+211 & \texttt{generalized Kronecker delta: contraction identity delta\textasciicircum{}\{m1..mp r\}\_\{n1..np r\} = (8-p) delta\textasciicircum{}\{m1..mp\}\_\{n1..np\} (p = 1..4, 60 random index sets each)} & True \\
+212 & \texttt{generalized Kronecker delta with 9 upper indices vanishes in 8 dimensions (100 random index sets)} & True \\*
+\end{longtable}}
+\Needspace{6\baselineskip}\subsubsection*{12.2 The tensor packages xAct: manifold, metric and chart (as in Einstein-Lovelock-7+1-Nash.nb)}
+{\footnotesize
+\begin{longtable}{>{\raggedright\arraybackslash}p{\dimexpr 0.0700\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.8100\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.1200\linewidth-2\tabcolsep\relax}}
+\toprule
+\textbf{\#} & \textbf{check} & \textbf{result} \\
+\midrule\endfirsthead
+\toprule
+\textbf{\#} & \textbf{check} & \textbf{result} \\
+\midrule\endhead
+\endfoot
+\bottomrule\endlastfoot
+213 & \texttt{xAct declaration as in the reference notebook: SignatureOfMetric[g71] == \{7, 1, 0\} (seven space-like dimensions, one time-like dimension, none degenerate) and SignDetOfMetric[g71] == -1} & True \\
+214 & \texttt{eta17 is simply the squares of the octonion basis: eta17[[A+1, B+1]] == Re(e\_A e\_B), e\_0\textasciicircum{}2 == +1 (time x0), e\_i\textasciicircum{}2 == -1 (space x\_i, i = 1..7)} & True \\
+215 & \texttt{the quadratic form of the octonions has the signs of the squares of the octonion basis: Re(x x) == x0\textasciicircum{}2 - x1\textasciicircum{}2 - ... - x7\textasciicircum{}2 == x.eta17.x for x = x\textasciicircum{}A e\_A (symbolic)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{12.3 The Lovelock tensors with abstract indices: the generalized Kronecker delta k\texorpdfstring{\ensuremath{\delta}}{δ}}
 {\footnotesize
@@ -983,8 +1008,8 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-212 & \texttt{xAct: Lovelock1 == R\_a\textasciicircum{}b - (1/2) delta\_a\textasciicircum{}b R, the Einstein tensor (abstract indices)} & True \\
-213 & \texttt{xAct: trace of Lovelock2 == -2 L\_2 with L\_2 = R\textasciicircum{}2 - 4 R\_cd R\textasciicircum{}cd + R\_cdfi R\textasciicircum{}cdfi (abstract indices)} & True \\*
+216 & \texttt{xAct: Lovelock1 == R\_a\textasciicircum{}b - (1/2) delta\_a\textasciicircum{}b R, the Einstein tensor (abstract indices)} & True \\
+217 & \texttt{xAct: trace of Lovelock2 == -2 L\_2 with L\_2 = R\textasciicircum{}2 - 4 R\_cd R\textasciicircum{}cd + R\_cdfi R\textasciicircum{}cdfi (abstract indices)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{12.4 Components with xAct: CD = LC[g]}
 {\footnotesize
@@ -997,7 +1022,7 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-214 & \texttt{xAct, cosmological metric: Lovelock1 == EinsteinCD == the Einstein tensor of the curvature engine of section 11.1} & True \\*
+218 & \texttt{xAct, cosmological metric: Lovelock1 == EinsteinCD == the Einstein tensor of the curvature engine of section 11.1} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{12.5 An independent computation: the pair-set algorithm}
 {\footnotesize
@@ -1010,8 +1035,8 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-215 & \texttt{pair-set algorithm == brute-force generalized-delta contraction for E\textasciicircum{}(1) (cosmological metric)} & True \\
-216 & \texttt{pair-set algorithm == xAct (section 12.4) for E\textasciicircum{}(1), E\textasciicircum{}(2), E\textasciicircum{}(3) of the cosmological metric (two independent computations)} & True \\*
+219 & \texttt{pair-set algorithm == brute-force generalized-delta contraction for E\textasciicircum{}(1) (cosmological metric)} & True \\
+220 & \texttt{pair-set algorithm == xAct (section 12.4) for E\textasciicircum{}(1), E\textasciicircum{}(2), E\textasciicircum{}(3) of the cosmological metric (two independent computations)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{12.6 The Lovelock tensors of the cosmological metric}
 {\footnotesize
@@ -1024,14 +1049,14 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-217 & \texttt{E\textasciicircum{}(1) == Einstein tensor G and L\_1 == R (cosmological metric)} & True \\
-218 & \texttt{trace identity E\textasciicircum{}(k)mu\_mu == -((8-2k)/2) L\_k for k = 0..4} & True \\
-219 & \texttt{E\textasciicircum{}(4) == 0 identically in 8 dimensions, while the Euler density L\_4 != 0} & True \\
-220 & \texttt{every E\textasciicircum{}(k) is diagonal, E\textasciicircum{}(k)1\_1 = E\textasciicircum{}(k)2\_2 = E\textasciicircum{}(k)3\_3 and E\textasciicircum{}(k)4\_4 = ... = E\textasciicircum{}(k)7\_7} & True \\
-221 & \texttt{E\textasciicircum{}(2) == Lanczos tensor and L\_2 == R\textasciicircum{}2 - 4 Ric.Ric + Riem.Riem (cosmological metric)} & True \\
-222 & \texttt{E\textasciicircum{}(2)0\_0 = -12 Hb (4Ha\textasciicircum{}3 + 18Ha\textasciicircum{}2 Hb + 12 Ha Hb\textasciicircum{}2 + Hb\textasciicircum{}3) and E\textasciicircum{}(3)0\_0 = 360 Ha\textasciicircum{}2 Hb\textasciicircum{}3 (4Ha + 3Hb)} & True \\
-223 & \texttt{divergence-free: d0 E\textasciicircum{}0\_0 + 3Ha (E\textasciicircum{}0\_0 - E\textasciicircum{}1\_1) + 4Hb (E\textasciicircum{}0\_0 - E\textasciicircum{}4\_4) == 0 for k = 1, 2, 3 (arbitrary a, b)} & True \\
-224 & \texttt{variation of nL a\textasciicircum{}3 b\textasciicircum{}4 L\_k: EL\_nL = -2 a\textasciicircum{}3 b\textasciicircum{}4 E\textasciicircum{}(k)0\_0, EL\_a = -6 a\textasciicircum{}2 b\textasciicircum{}4 E\textasciicircum{}(k)1\_1, EL\_b = -8 a\textasciicircum{}3 b\textasciicircum{}3 E\textasciicircum{}(k)4\_4 (k = 1..4)} & True \\*
+221 & \texttt{E\textasciicircum{}(1) == Einstein tensor G and L\_1 == R (cosmological metric)} & True \\
+222 & \texttt{trace identity E\textasciicircum{}(k)mu\_mu == -((8-2k)/2) L\_k for k = 0..4} & True \\
+223 & \texttt{E\textasciicircum{}(4) == 0 identically in 8 dimensions, while the Euler density L\_4 != 0} & True \\
+224 & \texttt{every E\textasciicircum{}(k) is diagonal, E\textasciicircum{}(k)1\_1 = E\textasciicircum{}(k)2\_2 = E\textasciicircum{}(k)3\_3 and E\textasciicircum{}(k)4\_4 = ... = E\textasciicircum{}(k)7\_7} & True \\
+225 & \texttt{E\textasciicircum{}(2) == Lanczos tensor and L\_2 == R\textasciicircum{}2 - 4 Ric.Ric + Riem.Riem (cosmological metric)} & True \\
+226 & \texttt{E\textasciicircum{}(2)0\_0 = -12 Hb (4Ha\textasciicircum{}3 + 18Ha\textasciicircum{}2 Hb + 12 Ha Hb\textasciicircum{}2 + Hb\textasciicircum{}3) and E\textasciicircum{}(3)0\_0 = 360 Ha\textasciicircum{}2 Hb\textasciicircum{}3 (4Ha + 3Hb)} & True \\
+227 & \texttt{divergence-free: d0 E\textasciicircum{}0\_0 + 3Ha (E\textasciicircum{}0\_0 - E\textasciicircum{}1\_1) + 4Hb (E\textasciicircum{}0\_0 - E\textasciicircum{}4\_4) == 0 for k = 1, 2, 3 (arbitrary a, b)} & True \\
+228 & \texttt{variation of nL a\textasciicircum{}3 b\textasciicircum{}4 L\_k: EL\_nL = -2 a\textasciicircum{}3 b\textasciicircum{}4 E\textasciicircum{}(k)0\_0, EL\_a = -6 a\textasciicircum{}2 b\textasciicircum{}4 E\textasciicircum{}(k)1\_1, EL\_b = -8 a\textasciicircum{}3 b\textasciicircum{}3 E\textasciicircum{}(k)4\_4 (k = 1..4)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{12.7 An inhomogeneous metric: the Lovelock tensors are divergence-free (exact check at a point)}
 {\footnotesize
@@ -1044,9 +1069,9 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-225 & \texttt{inhomogeneous metric: nabla\_mu E\textasciicircum{}(k)mu\_nu == 0 EXACTLY at (x0, x4) = (1/2, 1/3) for k = 1, 2, 3} & True \\
-226 & \texttt{inhomogeneous metric: E\textasciicircum{}(1) == G at the point, and E\textasciicircum{}(k)\_mu nu symmetric (k = 1, 2, 3)} & True \\
-227 & \texttt{inhomogeneous metric: E\textasciicircum{}(2) == Lanczos tensor at the point (exact)} & True \\*
+229 & \texttt{inhomogeneous metric: nabla\_mu E\textasciicircum{}(k)mu\_nu == 0 EXACTLY at (x0, x4) = (1/2, 1/3) for k = 1, 2, 3} & True \\
+230 & \texttt{inhomogeneous metric: E\textasciicircum{}(1) == G at the point, and E\textasciicircum{}(k)\_mu nu symmetric (k = 1, 2, 3)} & True \\
+231 & \texttt{inhomogeneous metric: E\textasciicircum{}(2) == Lanczos tensor at the point (exact)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{12.8 A plane gravitational wave: only the Einstein tensor survives}
 {\footnotesize
@@ -1059,9 +1084,9 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-228 & \texttt{pp-wave: E\textasciicircum{}(1)\_mu nu == +(1/2)(d2\textasciicircum{}2 + d3\textasciicircum{}2) fPP l\_mu l\_nu} & True \\
-229 & \texttt{pp-wave: E\textasciicircum{}(2) == E\textasciicircum{}(3) == 0 for every profile fPP} & True \\
-230 & \texttt{pp-wave: xAct (section 12.4) == pair-set algorithm for E\textasciicircum{}(1), E\textasciicircum{}(2), E\textasciicircum{}(3) (a metric that is not diagonal; arbitrary profile fPP)} & True \\*
+232 & \texttt{pp-wave: E\textasciicircum{}(1)\_mu nu == +(1/2)(d2\textasciicircum{}2 + d3\textasciicircum{}2) fPP l\_mu l\_nu} & True \\
+233 & \texttt{pp-wave: E\textasciicircum{}(2) == E\textasciicircum{}(3) == 0 for every profile fPP} & True \\
+234 & \texttt{pp-wave: xAct (section 12.4) == pair-set algorithm for E\textasciicircum{}(1), E\textasciicircum{}(2), E\textasciicircum{}(3) (a metric that is not diagonal; arbitrary profile fPP)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{12.9 Exponential vacuum solutions: eternal inflation of ordinary space and deflation of the auxiliary space}
 {\footnotesize
@@ -1074,10 +1099,10 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-231 & \texttt{exponential expansion a = e\textasciicircum{}\{H x0\}, b = e\textasciicircum{}\{qH H x0\}: xAct Lovelock\_k == the closed forms of section 12.6 with Ha = H, Hb = qH H, Ha' = Hb' = 0 (k = 1, 2, 3)} & True \\
-232 & \texttt{exponential expansion: three distinct vacuum equations, related by 3 Ha (eq00 - eq11) + 4 Hb (eq00 - eq44) == 0} & True \\
-233 & \texttt{exponential vacuum solutions: (w2, w3) solve all 64 components for every qH (generic qH) and every Lambda} & True \\
-234 & \texttt{eternal inflation (a = e\textasciicircum{}\{H x0\}) with deflation (b = e\textasciicircum{}\{-H x0\}): w2 == Lambda/4 - w1/2, w3 == w1/24 - Lambda/36; for Lambda = 0: w2/w1 == -1/2, w3/w1 == 1/24} & True \\*
+235 & \texttt{exponential expansion a = e\textasciicircum{}\{H x0\}, b = e\textasciicircum{}\{qH H x0\}: xAct Lovelock\_k == the closed forms of section 12.6 with Ha = H, Hb = qH H, Ha' = Hb' = 0 (k = 1, 2, 3)} & True \\
+236 & \texttt{exponential expansion: three distinct vacuum equations, related by 3 Ha (eq00 - eq11) + 4 Hb (eq00 - eq44) == 0} & True \\
+237 & \texttt{exponential vacuum solutions: (w2, w3) solve all 64 components for every qH (generic qH) and every Lambda} & True \\
+238 & \texttt{eternal inflation (a = e\textasciicircum{}\{H x0\}) with deflation (b = e\textasciicircum{}\{-H x0\}): w2 == Lambda/4 - w1/2, w3 == w1/24 - Lambda/36; for Lambda = 0: w2/w1 == -1/2, w3/w1 == 1/24} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{13.2 The cosmological metric: frame, spin connection, Dirac equation}
 {\footnotesize
@@ -1090,21 +1115,21 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-235 & \texttt{cosmological metric: eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True \\
-236 & \texttt{cosmological metric: canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True \\
-237 & \texttt{cosmological metric: vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True \\
-238 & \texttt{cosmological metric: TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True \\
-239 & \texttt{cosmological metric: constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True \\
-240 & \texttt{cosmological metric: Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True \\
-241 & \texttt{cosmological metric: spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True \\
-242 & \texttt{cosmological metric: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True \\
-243 & \texttt{cosmological metric: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True \\
-244 & \texttt{cosmological metric: Omega\_0 == 0, Omega\_i == (a'/2) Gamma17[i].Gamma17[0], Omega\_k == (b'/2) Gamma17[k].Gamma17[0]} & True \\
-245 & \texttt{cosmological metric: Gamma\textasciicircum{}mu Omega\_mu == (3a'/(2a) + 2b'/b) Gamma17[0]} & True \\
-246 & \texttt{current identity: d\_mu(sqrt|g| psibar Gamma\textasciicircum{}mu psi) == sqrt|g| [(D\_mu psibar) Gamma\textasciicircum{}mu psi + psibar Gamma\textasciicircum{}mu D\_mu psi] (psi, psibar arbitrary)} & True \\
-247 & \texttt{Lichnerowicz formula: (Gamma\textasciicircum{}mu D\_mu)\textasciicircum{}2 psi == (g\textasciicircum{}mu nu nabla\_mu D\_nu - R/4) psi} & True \\
-248 & \texttt{rescaling psi = (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) chi removes the spin connection: Gamma\textasciicircum{}mu D\_mu psi == (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) Gamma\textasciicircum{}mu d\_mu chi} & True \\
-249 & \texttt{mode equation: Gamma17[0].(i Gamma\textasciicircum{}mu D\_mu - m) psi == (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) e\textasciicircum{}\{i(p.x+q.y)\} (i dc/dx0 - h(x0) c) for psi = (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) e\textasciicircum{}\{i(p.x+q.y)\} c(x0)} & True \\*
+239 & \texttt{cosmological metric: eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True \\
+240 & \texttt{cosmological metric: canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True \\
+241 & \texttt{cosmological metric: vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True \\
+242 & \texttt{cosmological metric: TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True \\
+243 & \texttt{cosmological metric: constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True \\
+244 & \texttt{cosmological metric: Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True \\
+245 & \texttt{cosmological metric: spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True \\
+246 & \texttt{cosmological metric: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True \\
+247 & \texttt{cosmological metric: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True \\
+248 & \texttt{cosmological metric: Omega\_0 == 0, Omega\_i == (a'/2) Gamma17[i].Gamma17[0], Omega\_k == (b'/2) Gamma17[k].Gamma17[0]} & True \\
+249 & \texttt{cosmological metric: Gamma\textasciicircum{}mu Omega\_mu == (3a'/(2a) + 2b'/b) Gamma17[0]} & True \\
+250 & \texttt{current identity: d\_mu(sqrt|g| psibar Gamma\textasciicircum{}mu psi) == sqrt|g| [(D\_mu psibar) Gamma\textasciicircum{}mu psi + psibar Gamma\textasciicircum{}mu D\_mu psi] (psi, psibar arbitrary)} & True \\
+251 & \texttt{Lichnerowicz formula: (Gamma\textasciicircum{}mu D\_mu)\textasciicircum{}2 psi == (g\textasciicircum{}mu nu nabla\_mu D\_nu - R/4) psi} & True \\
+252 & \texttt{rescaling psi = (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) chi removes the spin connection: Gamma\textasciicircum{}mu D\_mu psi == (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) Gamma\textasciicircum{}mu d\_mu chi} & True \\
+253 & \texttt{mode equation: Gamma17[0].(i Gamma\textasciicircum{}mu D\_mu - m) psi == (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) e\textasciicircum{}\{i(p.x+q.y)\} (i dc/dx0 - h(x0) c) for psi = (a\textasciicircum{}3 b\textasciicircum{}4)\textasciicircum{}(-1/2) e\textasciicircum{}\{i(p.x+q.y)\} c(x0)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{13.3 The pp-wave and the inhomogeneous metric: frames that are not diagonal and not homogeneous}
 {\footnotesize
@@ -1117,24 +1142,24 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-250 & \texttt{pp-wave: eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True \\
-251 & \texttt{pp-wave: canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True \\
-252 & \texttt{pp-wave: vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True \\
-253 & \texttt{pp-wave: TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True \\
-254 & \texttt{pp-wave: constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True \\
-255 & \texttt{pp-wave: Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True \\
-256 & \texttt{pp-wave: spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True \\
-257 & \texttt{pp-wave: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True \\
-258 & \texttt{pp-wave: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True \\
-259 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True \\
-260 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True \\
-261 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True \\
-262 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True \\
-263 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True \\
-264 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True \\
-265 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True \\
-266 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True \\
-267 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True \\*
+254 & \texttt{pp-wave: eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True \\
+255 & \texttt{pp-wave: canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True \\
+256 & \texttt{pp-wave: vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True \\
+257 & \texttt{pp-wave: TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True \\
+258 & \texttt{pp-wave: constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True \\
+259 & \texttt{pp-wave: Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True \\
+260 & \texttt{pp-wave: spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True \\
+261 & \texttt{pp-wave: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True \\
+262 & \texttt{pp-wave: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True \\
+263 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True \\
+264 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True \\
+265 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True \\
+266 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True \\
+267 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True \\
+268 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True \\
+269 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True \\
+270 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True \\
+271 & \texttt{inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3)): (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{13.4 Conformal weight 7/2 of the massless field}
 {\footnotesize
@@ -1147,7 +1172,7 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-268 & \texttt{conformal weight 7/2: Gamma\textasciicircum{}mu D\_mu (C\textasciicircum{}(-7/2) f) == C\textasciicircum{}(-9/2) Gamma17up[A] d\_A f for g = C(x0)\textasciicircum{}2 eta17} & True \\*
+272 & \texttt{conformal weight 7/2: Gamma\textasciicircum{}mu D\_mu (C\textasciicircum{}(-7/2) f) == C\textasciicircum{}(-9/2) Gamma17up[A] d\_A f for g = C(x0)\textasciicircum{}2 eta17} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{13.5 Cartan’s first structure equation, a static metric with a radial coordinate, and the coupling to a gauge field}
 {\footnotesize
@@ -1160,23 +1185,23 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-269 & \texttt{Cartan's first structure equation de\textasciicircum{}A + omega\textasciicircum{}A\_B \textasciicircum{} e\textasciicircum{}B == 0 (no torsion): cosmological, pp-wave and inhomogeneous frames} & True \\
-270 & \texttt{structure coefficients: omega\_C,AB == -(1/2)(C\_ACB + C\_BAC - C\_CBA) with C\textasciicircum{}A\_BC = e\_B\textasciicircum{}mu e\_C\textasciicircum{}nu (d\_mu e\textasciicircum{}A\_nu - d\_nu e\textasciicircum{}A\_mu): cosmological and inhomogeneous frames} & True \\
-271 & \texttt{static radial metric: eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True \\
-272 & \texttt{static radial metric: canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True \\
-273 & \texttt{static radial metric: vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True \\
-274 & \texttt{static radial metric: TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True \\
-275 & \texttt{static radial metric: constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True \\
-276 & \texttt{static radial metric: Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True \\
-277 & \texttt{static radial metric: spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True \\
-278 & \texttt{static radial metric: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True \\
-279 & \texttt{static radial metric: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True \\
-280 & \texttt{static radial metric: Cartan's first structure equation and omega\_C,AB == -(1/2)(C\_ACB + C\_BAC - C\_CBA)} & True \\
-281 & \texttt{static radial metric: Omega\_0 == (f'/(4 Sqrt[f] Sqrt[h])) Gamma17[1].Gamma17[0], Omega\_1 == 0, Omega\_k == (1/(2 Sqrt[h])) Gamma17[1].Gamma17[k] (k = 2..7)} & True \\
-282 & \texttt{static radial metric: Gamma\textasciicircum{}mu Omega\_mu == (1/Sqrt[h]) (f'/(4 f) + 3/r) Gamma17up[1]} & True \\
-283 & \texttt{static radial metric: psi = f\textasciicircum{}(-1/4) r\textasciicircum{}(-3) chi removes the spin connection, Gamma\textasciicircum{}mu D\_mu psi == f\textasciicircum{}(-1/4) r\textasciicircum{}(-3) Gamma\textasciicircum{}mu d\_mu chi} & True \\
-284 & \texttt{U(1) gauge covariance: Gamma\textasciicircum{}mu (D\_mu - i q A'\_mu)(e\textasciicircum{}\{i q alpha\} psi) == e\textasciicircum{}\{i q alpha\} Gamma\textasciicircum{}mu (D\_mu - i q A\_mu) psi with A'\_mu = A\_mu + d\_mu alpha} & True \\
-285 & \texttt{current identity with the gauge field: d\_mu(sqrt|g| psibar Gamma\textasciicircum{}mu psi) == sqrt|g| [(D\_mu psibar) Gamma\textasciicircum{}mu psi + psibar Gamma\textasciicircum{}mu D\_mu psi], D including -i q A\_mu} & True \\*
+273 & \texttt{Cartan's first structure equation de\textasciicircum{}A + omega\textasciicircum{}A\_B \textasciicircum{} e\textasciicircum{}B == 0 (no torsion): cosmological, pp-wave and inhomogeneous frames} & True \\
+274 & \texttt{structure coefficients: omega\_C,AB == -(1/2)(C\_ACB + C\_BAC - C\_CBA) with C\textasciicircum{}A\_BC = e\_B\textasciicircum{}mu e\_C\textasciicircum{}nu (d\_mu e\textasciicircum{}A\_nu - d\_nu e\textasciicircum{}A\_mu): cosmological and inhomogeneous frames} & True \\
+275 & \texttt{static radial metric: eta17 e e == g and \{Gamma\_mu, Gamma\_nu\} == 2 g\_mu nu ID16 (generalized frame matrices, real)} & True \\
+276 & \texttt{static radial metric: canonical spin connection antisymmetric, omega\_mu AB == -omega\_mu BA} & True \\
+277 & \texttt{static radial metric: vielbein postulate d\_mu e\textasciicircum{}A\_nu - \{l mu nu\} e\textasciicircum{}A\_l + omega\_mu\textasciicircum{}A\_B e\textasciicircum{}B\_nu == 0} & True \\
+278 & \texttt{static radial metric: TOTAL covariant derivative of the frame matrices vanishes, d\_mu Gamma\_nu - \{l mu nu\} Gamma\_l + [Omega\_mu, Gamma\_nu] == 0} & True \\
+279 & \texttt{static radial metric: constant frame matrices are covariantly constant, omega\_mu\textasciicircum{}A\_B Gamma17up[B] + [Omega\_mu, Gamma17up[A]] == 0} & True \\
+280 & \texttt{static radial metric: Omega\_mu real and Gamma17[0].Transpose[Omega\_mu].Gamma17[0] == -Omega\_mu (so D\_mu psibar = d\_mu psibar - psibar Omega\_mu)} & True \\
+281 & \texttt{static radial metric: spin curvature F\_mu nu == (1/4) R\_AB mu nu Gamma17up[A].Gamma17up[B]} & True \\
+282 & \texttt{static radial metric: Bianchi identity d\_l F\_mn + [Omega\_l, F\_mn] + cyclic == 0} & True \\
+283 & \texttt{static radial metric: (1/2) Gamma\textasciicircum{}mu Gamma\textasciicircum{}nu F\_mu nu == -(R/4) ID16} & True \\
+284 & \texttt{static radial metric: Cartan's first structure equation and omega\_C,AB == -(1/2)(C\_ACB + C\_BAC - C\_CBA)} & True \\
+285 & \texttt{static radial metric: Omega\_0 == (f'/(4 Sqrt[f] Sqrt[h])) Gamma17[1].Gamma17[0], Omega\_1 == 0, Omega\_k == (1/(2 Sqrt[h])) Gamma17[1].Gamma17[k] (k = 2..7)} & True \\
+286 & \texttt{static radial metric: Gamma\textasciicircum{}mu Omega\_mu == (1/Sqrt[h]) (f'/(4 f) + 3/r) Gamma17up[1]} & True \\
+287 & \texttt{static radial metric: psi = f\textasciicircum{}(-1/4) r\textasciicircum{}(-3) chi removes the spin connection, Gamma\textasciicircum{}mu D\_mu psi == f\textasciicircum{}(-1/4) r\textasciicircum{}(-3) Gamma\textasciicircum{}mu d\_mu chi} & True \\
+288 & \texttt{U(1) gauge covariance: Gamma\textasciicircum{}mu (D\_mu - i q A'\_mu)(e\textasciicircum{}\{i q alpha\} psi) == e\textasciicircum{}\{i q alpha\} Gamma\textasciicircum{}mu (D\_mu - i q A\_mu) psi with A'\_mu = A\_mu + d\_mu alpha} & True \\
+289 & \texttt{current identity with the gauge field: d\_mu(sqrt|g| psibar Gamma\textasciicircum{}mu psi) == sqrt|g| [(D\_mu psibar) Gamma\textasciicircum{}mu psi + psibar Gamma\textasciicircum{}mu D\_mu psi], D including -i q A\_mu} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{14.1 Primordial epoch near x0 = 0: Kasner solutions}
 {\footnotesize
@@ -1189,10 +1214,10 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-286 & \texttt{Kasner metric: the Einstein tensor computed directly from the metric equals the closed form (x0\textasciicircum{}2 G\textasciicircum{}mu\_mu, mu = 0, 1, 4)} & True \\
-287 & \texttt{Einstein Kasner: (p, q) = ((1+2Sqrt[2])/7, (2-3Sqrt[2])/14) and ((1-2Sqrt[2])/7, (2+3Sqrt[2])/14) solve E\textasciicircum{}(1) == 0} & True \\
-288 & \texttt{Gauss-Bonnet Kasner: 3 real roots of the cubic; (p, (3-3p)/4) solve E\textasciicircum{}(2) == 0} & True \\
-289 & \texttt{cubic Lovelock Kasner: (p, q) = (-15/7, 20/7) solves E\textasciicircum{}(3) == 0; E\textasciicircum{}(3) == 0 identically for q = 0 and for p = 0} & True \\*
+290 & \texttt{Kasner metric: the Einstein tensor computed directly from the metric equals the closed form (x0\textasciicircum{}2 G\textasciicircum{}mu\_mu, mu = 0, 1, 4)} & True \\
+291 & \texttt{Einstein Kasner: (p, q) = ((1+2Sqrt[2])/7, (2-3Sqrt[2])/14) and ((1-2Sqrt[2])/7, (2+3Sqrt[2])/14) solve E\textasciicircum{}(1) == 0} & True \\
+292 & \texttt{Gauss-Bonnet Kasner: 3 real roots of the cubic; (p, (3-3p)/4) solve E\textasciicircum{}(2) == 0} & True \\
+293 & \texttt{cubic Lovelock Kasner: (p, q) = (-15/7, 20/7) solves E\textasciicircum{}(3) == 0; E\textasciicircum{}(3) == 0 identically for q = 0 and for p = 0} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{14.2 The mode equation in two dimensions}
 {\footnotesize
@@ -1205,7 +1230,7 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-290 & \texttt{2x2 reduction: A, B, betaD square to ID16 and anticommute; Zc = A.B.betaD: Zc.Zc == -ID16, Transpose[Zc] == -Zc, Zc commutes with A, B, betaD} & True \\*
+294 & \texttt{2x2 reduction: A, B, betaD square to ID16 and anticommute; Zc = A.B.betaD: Zc.Zc == -ID16, Transpose[Zc] == -Zc, Zc commutes with A, B, betaD} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{14.3 Pair creation in the primordial epoch (Einstein–Kasner branch p = 0.547, q = −0.160)}
 {\footnotesize
@@ -1218,10 +1243,10 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-291 & \texttt{Kasner pair creation: |alpha|\textasciicircum{}2 + |beta|\textasciicircum{}2 == 1 (to 10\textasciicircum{}-8) for (|p|, |q|) = (1,1), (2,1), (1,3)} & True \\
-292 & \texttt{Kasner scaling: (|p|, |q|) = (1.4302.., 2.5) has K = 1 and the same |beta|\textasciicircum{}2 as (1, 1) (to 10\textasciicircum{}-6)} & True \\
-293 & \texttt{16x16 evolution == 4 copies of the 2x2 evolution with +m sigma3 and 4 with -m sigma3 (Kasner, m = 0.3, |p| = 1, |q| = 1.5, x0 from 0.05 to 40): average |beta|\textasciicircum{}2 agrees to 10\textasciicircum{}-8; unitarity; the two classes differ} & True \\
-294 & \texttt{isotropic expansion, massless: no pair creation (|beta|\textasciicircum{}2 < 10\textasciicircum{}-20)} & True \\*
+295 & \texttt{Kasner pair creation: |alpha|\textasciicircum{}2 + |beta|\textasciicircum{}2 == 1 (to 10\textasciicircum{}-8) for (|p|, |q|) = (1,1), (2,1), (1,3)} & True \\
+296 & \texttt{Kasner scaling: (|p|, |q|) = (1.4302.., 2.5) has K = 1 and the same |beta|\textasciicircum{}2 as (1, 1) (to 10\textasciicircum{}-6)} & True \\
+297 & \texttt{16x16 evolution == 4 copies of the 2x2 evolution with +m sigma3 and 4 with -m sigma3 (Kasner, m = 0.3, |p| = 1, |q| = 1.5, x0 from 0.05 to 40): average |beta|\textasciicircum{}2 agrees to 10\textasciicircum{}-8; unitarity; the two classes differ} & True \\
+298 & \texttt{isotropic expansion, massless: no pair creation (|beta|\textasciicircum{}2 < 10\textasciicircum{}-20)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{14.4 Modern epoch: a static auxiliary space}
 {\footnotesize
@@ -1234,7 +1259,7 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-295 & \texttt{static auxiliary space (Hb = 0): E\textasciicircum{}(1) = (3Ha\textasciicircum{}2, 2Ha' + 3Ha\textasciicircum{}2, 3Ha' + 6Ha\textasciicircum{}2), E\textasciicircum{}(2) = (0, 0, -12 Ha\textasciicircum{}2 (Ha' + Ha\textasciicircum{}2)), E\textasciicircum{}(3) = 0} & True \\*
+299 & \texttt{static auxiliary space (Hb = 0): E\textasciicircum{}(1) = (3Ha\textasciicircum{}2, 2Ha' + 3Ha\textasciicircum{}2, 3Ha' + 6Ha\textasciicircum{}2), E\textasciicircum{}(2) = (0, 0, -12 Ha\textasciicircum{}2 (Ha' + Ha\textasciicircum{}2)), E\textasciicircum{}(3) = 0} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{14.5 Far future: de Sitter expansion and thermal pair creation}
 {\footnotesize
@@ -1247,10 +1272,10 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-296 & \texttt{8D de Sitter: E\textasciicircum{}(1) = 21 H\textasciicircum{}2, E\textasciicircum{}(2) = -420 H\textasciicircum{}4, E\textasciicircum{}(3) = 2520 H\textasciicircum{}6 (all diagonal entries)} & True \\
-297 & \texttt{de Sitter over a static auxiliary space: E\textasciicircum{}(1) = (3, 3, 6) H\textasciicircum{}2, E\textasciicircum{}(2) = (0, 0, -12) H\textasciicircum{}4, E\textasciicircum{}(3) = 0} & True \\
-298 & \texttt{de Sitter pair creation: |beta|\textasciicircum{}2 == 1/(Exp[2 Pi M/H] + 1) to 10\textasciicircum{}-7, M/H = 0.25, 0.5, 1} & True \\
-299 & \texttt{integrator benchmark (Landau-Zener): |beta|\textasciicircum{}2 == Exp[-Pi kappa\textasciicircum{}2] to 10\textasciicircum{}-6} & True \\*
+300 & \texttt{8D de Sitter: E\textasciicircum{}(1) = 21 H\textasciicircum{}2, E\textasciicircum{}(2) = -420 H\textasciicircum{}4, E\textasciicircum{}(3) = 2520 H\textasciicircum{}6 (all diagonal entries)} & True \\
+301 & \texttt{de Sitter over a static auxiliary space: E\textasciicircum{}(1) = (3, 3, 6) H\textasciicircum{}2, E\textasciicircum{}(2) = (0, 0, -12) H\textasciicircum{}4, E\textasciicircum{}(3) = 0} & True \\
+302 & \texttt{de Sitter pair creation: |beta|\textasciicircum{}2 == 1/(Exp[2 Pi M/H] + 1) to 10\textasciicircum{}-7, M/H = 0.25, 0.5, 1} & True \\
+303 & \texttt{integrator benchmark (Landau-Zener): |beta|\textasciicircum{}2 == Exp[-Pi kappa\textasciicircum{}2] to 10\textasciicircum{}-6} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{15.1 The nine channels}
 {\footnotesize
@@ -1263,12 +1288,12 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-300 & \texttt{256 multi-indices in 9 ranks with 1, 8, 28, 56, 70, 56, 28, 8, 1 members} & True \\
-301 & \texttt{every bilinear psibar Theta\textasciicircum{}K psi is real: Gamma17[0].Theta\textasciicircum{}K Hermitian for all 256 K} & True \\
-302 & \texttt{Theta\_K.Theta\textasciicircum{}K == ID16 and Tr[Theta\_K.Theta\textasciicircum{}J] == 16 delta\_KJ} & True \\
-303 & \texttt{Hodge duality: Theta\textasciicircum{}K.omega17 == (phase) Theta\textasciicircum{}(complement of K), |phase| = 1} & True \\
-304 & \texttt{the couplings of section 8 are four of the nine: I\_0 == (psibar psi)\textasciicircum{}2, I\_1 == (psibar Gamma\textasciicircum{}A psi)(psibar Gamma\_A psi), I\_8 == -(psibar i chi17 psi)\textasciicircum{}2, I\_7 == -(axial invariant)} & True \\
-305 & \texttt{local Lorentz invariance: I\_r(S psi, psibar S\textasciicircum{}-1) == I\_r(psi, psibar) for r = 0..8 (random finite Lorentz transformation), and S\textasciicircum{}-1 == Gamma17[0].S\textasciicircum{}dagger.Gamma17[0]} & True \\*
+304 & \texttt{256 multi-indices in 9 ranks with 1, 8, 28, 56, 70, 56, 28, 8, 1 members} & True \\
+305 & \texttt{every bilinear psibar Theta\textasciicircum{}K psi is real: Gamma17[0].Theta\textasciicircum{}K Hermitian for all 256 K} & True \\
+306 & \texttt{Theta\_K.Theta\textasciicircum{}K == ID16 and Tr[Theta\_K.Theta\textasciicircum{}J] == 16 delta\_KJ} & True \\
+307 & \texttt{Hodge duality: Theta\textasciicircum{}K.omega17 == (phase) Theta\textasciicircum{}(complement of K), |phase| = 1} & True \\
+308 & \texttt{the couplings of section 8 are four of the nine: I\_0 == (psibar psi)\textasciicircum{}2, I\_1 == (psibar Gamma\textasciicircum{}A psi)(psibar Gamma\_A psi), I\_8 == -(psibar i chi17 psi)\textasciicircum{}2, I\_7 == -(axial invariant)} & True \\
+309 & \texttt{local Lorentz invariance: I\_r(S psi, psibar S\textasciicircum{}-1) == I\_r(psi, psibar) for r = 0..8 (random finite Lorentz transformation), and S\textasciicircum{}-1 == Gamma17[0].S\textasciicircum{}dagger.Gamma17[0]} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{15.2 The 9×9 Fierz matrix and Hartree–Fock with nine channels}
 {\footnotesize
@@ -1281,13 +1306,13 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-306 & \texttt{Fierz matrix: closed form == (1/256) Sum\_\{K in r\} Tr[Theta\_K.Theta\_J.Theta\textasciicircum{}K.Theta\textasciicircum{}J] for the first and last J of every rank s} & True \\
-307 & \texttt{F.F == IdentityMatrix[9]; eigenvalues: five +1 and four -1} & True \\
-308 & \texttt{Fierz identity for commuting spinors (random): Sum\_\{K in r\} (a Theta\_K b)(c Theta\textasciicircum{}K d) == Sum\_s F\_rs Sum\_\{J in s\} (a Theta\_J d)(c Theta\textasciicircum{}J b), r = 0..8} & True \\
-309 & \texttt{Hartree-Fock energy E\_H + E\_x == Sum\_s (G\_s/2) D\_s with G = (1 - Transpose[F]) g (random density matrix and couplings)} & True \\
-310 & \texttt{uniform density matrix (rhoS ID16 + rho Gamma17[0])/16: D\_0 == rhoS\textasciicircum{}2, D\_1 == rho\textasciicircum{}2, D\_2 .. D\_8 == 0} & True \\
-311 & \texttt{section 8 recovered: with g = (gS, gV, 0, 0, 0, 0, 0, -gA, -gP) the exchange energy of uniform matter is that of section 8.7} & True \\
-312 & \texttt{the Hartree-Fock couplings of section 8.7: gS = -100000, gV = 10000 give G\_0 = -98750, G\_1 = 20000} & True \\*
+310 & \texttt{Fierz matrix: closed form == (1/256) Sum\_\{K in r\} Tr[Theta\_K.Theta\_J.Theta\textasciicircum{}K.Theta\textasciicircum{}J] for the first and last J of every rank s} & True \\
+311 & \texttt{F.F == IdentityMatrix[9]; eigenvalues: five +1 and four -1} & True \\
+312 & \texttt{Fierz identity for commuting spinors (random): Sum\_\{K in r\} (a Theta\_K b)(c Theta\textasciicircum{}K d) == Sum\_s F\_rs Sum\_\{J in s\} (a Theta\_J d)(c Theta\textasciicircum{}J b), r = 0..8} & True \\
+313 & \texttt{Hartree-Fock energy E\_H + E\_x == Sum\_s (G\_s/2) D\_s with G = (1 - Transpose[F]) g (random density matrix and couplings)} & True \\
+314 & \texttt{uniform density matrix (rhoS ID16 + rho Gamma17[0])/16: D\_0 == rhoS\textasciicircum{}2, D\_1 == rho\textasciicircum{}2, D\_2 .. D\_8 == 0} & True \\
+315 & \texttt{section 8 recovered: with g = (gS, gV, 0, 0, 0, 0, 0, -gA, -gP) the exchange energy of uniform matter is that of section 8.7} & True \\
+316 & \texttt{the Hartree-Fock couplings of section 8.7: gS = -100000, gV = 10000 give G\_0 = -98750, G\_1 = 20000} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{15.3 The covariant nonlinear field equation}
 {\footnotesize
@@ -1300,7 +1325,7 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-313 & \texttt{nonlinear field equation: dL\_self/d psibar\_a == -Sum\_r g\_r Sum\_K (psibar Theta\_K psi) (Theta\textasciicircum{}K psi)\_a} & True \\*
+317 & \texttt{nonlinear field equation: dL\_self/d psibar\_a == -Sum\_r g\_r Sum\_K (psibar Theta\_K psi) (Theta\textasciicircum{}K psi)\_a} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{15.4 Chirality in a gravitational field}
 {\footnotesize
@@ -1313,8 +1338,8 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-314 & \texttt{chi17 commutes with every generator (Gamma17up[A].Gamma17up[B] - Gamma17up[B].Gamma17up[A])/4, hence with every Omega\_mu} & True \\
-315 & \texttt{curved chiral equations: E\_L\textasciicircum{}dag.Gamma17[0].(i Gamma\textasciicircum{}mu D\_mu - m) psi == (i d0 + i(3Ha/2 + 2Hb) + tauO.d) phi\_L - m phi\_R, and the same for E\_R with -tauO.d} & True \\*
+318 & \texttt{chi17 commutes with every generator (Gamma17up[A].Gamma17up[B] - Gamma17up[B].Gamma17up[A])/4, hence with every Omega\_mu} & True \\
+319 & \texttt{curved chiral equations: E\_L\textasciicircum{}dag.Gamma17[0].(i Gamma\textasciicircum{}mu D\_mu - m) psi == (i d0 + i(3Ha/2 + 2Hb) + tauO.d) phi\_L - m phi\_R, and the same for E\_R with -tauO.d} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{16.1 Homogeneous Kohn–Sham matter in the cosmological spacetime}
 {\footnotesize
@@ -1327,9 +1352,9 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-316 & \texttt{flat limit a = b = 1, kF = kFsat: m* == 0.3480973401... and E/A - m == -0.0283214279... (section 8.7), to 10\textasciicircum{}-11} & True \\
-317 & \texttt{flat limit: pa == pb == rho eps\_F - eps (Gibbs-Duhem), which is 0 at the saturation density} & True \\
-318 & \texttt{energy-momentum conservation of the Kohn-Sham matter: eps' + 3Ha(eps + pa) + 4Hb(eps + pb) == 0 (a = 1 + 0.3x + 0.05x\textasciicircum{}2, b = 1/(1 + 0.2x), x0 = 0.7; relative 10\textasciicircum{}-8)} & True \\*
+320 & \texttt{flat limit a = b = 1, kF = kFsat: m* == 0.3480973401... and E/A - m == -0.0283214279... (section 8.7), to 10\textasciicircum{}-11} & True \\
+321 & \texttt{flat limit: pa == pb == rho eps\_F - eps (Gibbs-Duhem), which is 0 at the saturation density} & True \\
+322 & \texttt{energy-momentum conservation of the Kohn-Sham matter: eps' + 3Ha(eps + pa) + 4Hb(eps + pb) == 0 (a = 1 + 0.3x + 0.05x\textasciicircum{}2, b = 1/(1 + 0.2x), x0 = 0.7; relative 10\textasciicircum{}-8)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{16.2 The three epochs}
 {\footnotesize
@@ -1342,9 +1367,9 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-319 & \texttt{primordial: rho x0 == kFsat\textasciicircum{}7/(105 Pi\textasciicircum{}4) at every x0, and m* decreases monotonically to below 0.05 at x0 = 10\textasciicircum{}-4} & True \\
-320 & \texttt{modern (b = 1): eps a\textasciicircum{}3 tends to a constant and pa/eps -> 0 (pressureless in ordinary space)} & True \\
-321 & \texttt{far future (de Sitter, H = 0.1): rho == rho0 e\textasciicircum{}\{-3 H x0\} and 1 - m* decays like rho} & True \\*
+323 & \texttt{primordial: rho x0 == kFsat\textasciicircum{}7/(105 Pi\textasciicircum{}4) at every x0, and m* decreases monotonically to below 0.05 at x0 = 10\textasciicircum{}-4} & True \\
+324 & \texttt{modern (b = 1): eps a\textasciicircum{}3 tends to a constant and pa/eps -> 0 (pressureless in ordinary space)} & True \\
+325 & \texttt{far future (de Sitter, H = 0.1): rho == rho0 e\textasciicircum{}\{-3 H x0\} and 1 - m* decays like rho} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{16.3 Self-consistent evolution: Einstein–Lovelock gravity driven by the Kohn–Sham matter}
 {\footnotesize
@@ -1357,8 +1382,21 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-322 & \texttt{the 11 and 44 Einstein-Lovelock equations are linear in (Ha', Hb'); the 00 equation contains neither (constraint)} & True \\
-323 & \texttt{self-consistent evolution: the constraint Sum alpha\_k E\textasciicircum{}(k)0\_0 - Lambda == kappa eps is preserved to 10\textasciicircum{}-7 (relative) for Einstein and for Einstein-Lovelock (alpha2 = 20, alpha3 = 500)} & True \\*
+326 & \texttt{the 11 and 44 Einstein-Lovelock equations are linear in (Ha', Hb'); the 00 equation contains neither (constraint)} & True \\
+327 & \texttt{self-consistent evolution: the constraint Sum alpha\_k E\textasciicircum{}(k)0\_0 - Lambda == kappa eps is preserved to 10\textasciicircum{}-7 (relative) for Einstein and for Einstein-Lovelock (alpha2 = 20, alpha3 = 500)} & True \\*
+\end{longtable}}
+\Needspace{6\baselineskip}\subsubsection*{17. The Standard Model on the world brane of 7+1 spacetime}
+{\footnotesize
+\begin{longtable}{>{\raggedright\arraybackslash}p{\dimexpr 0.0700\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.8100\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.1200\linewidth-2\tabcolsep\relax}}
+\toprule
+\textbf{\#} & \textbf{check} & \textbf{result} \\
+\midrule\endfirsthead
+\toprule
+\textbf{\#} & \textbf{check} & \textbf{result} \\
+\midrule\endhead
+\endfoot
+\bottomrule\endlastfoot
+328 & \texttt{brane frame metric diag(+1, -1, -1, -1) == eta17 restricted to x0..x3: the squares of the octonion basis e[0], e[1], e[2], e[3] of the quaternion subalgebra (Re(e[A] e[B]), A, B = 0..3), which is closed under the octonion product} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{17.1 The fields, their quantum numbers, and anomaly cancellation}
 {\footnotesize
@@ -1371,9 +1409,9 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-324 & \texttt{anomaly cancellation per generation (with nu\_R): SU(3)\textasciicircum{}2U(1), SU(2)\textasciicircum{}2U(1), U(1)\textasciicircum{}3, grav\textasciicircum{}2U(1), SU(3)\textasciicircum{}3 all vanish; doublets per generation even} & True \\
-325 & \texttt{electric charges Q = T3 + Y: (u, d) = (2/3, -1/3), (nu, e) = (0, -1), u\_R 2/3, d\_R -1/3, e\_R -1, nu\_R 0} & True \\
-326 & \texttt{g* = 28 + (7/8) 90 = 106.75 for the Standard Model fields (without nu\_R)} & True \\*
+329 & \texttt{anomaly cancellation per generation (with nu\_R): SU(3)\textasciicircum{}2U(1), SU(2)\textasciicircum{}2U(1), U(1)\textasciicircum{}3, grav\textasciicircum{}2U(1), SU(3)\textasciicircum{}3 all vanish; doublets per generation even} & True \\
+330 & \texttt{electric charges Q = T3 + Y: (u, d) = (2/3, -1/3), (nu, e) = (0, -1), u\_R 2/3, d\_R -1/3, e\_R -1, nu\_R 0} & True \\
+331 & \texttt{g* = 28 + (7/8) 90 = 106.75 for the Standard Model fields (without nu\_R)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{17.3 Electroweak symmetry breaking}
 {\footnotesize
@@ -1386,8 +1424,8 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-327 & \texttt{gauge-boson mass matrix: eigenvalues g\textasciicircum{}2 v\textasciicircum{}2/4 (twice), (g\textasciicircum{}2 + g'\textasciicircum{}2) v\textasciicircum{}2/4 and 0 (photon)} & True \\
-328 & \texttt{tree level: m\_W == g v/2, m\_Z == Sqrt[g\textasciicircum{}2 + g'\textasciicircum{}2] v/2, rho == m\_W\textasciicircum{}2/(m\_Z\textasciicircum{}2 cos\textasciicircum{}2 theta\_W) == 1, m\_H\textasciicircum{}2 == 2 lambda v\textasciicircum{}2} & True \\*
+332 & \texttt{gauge-boson mass matrix: eigenvalues g\textasciicircum{}2 v\textasciicircum{}2/4 (twice), (g\textasciicircum{}2 + g'\textasciicircum{}2) v\textasciicircum{}2/4 and 0 (photon)} & True \\
+333 & \texttt{tree level: m\_W == g v/2, m\_Z == Sqrt[g\textasciicircum{}2 + g'\textasciicircum{}2] v/2, rho == m\_W\textasciicircum{}2/(m\_Z\textasciicircum{}2 cos\textasciicircum{}2 theta\_W) == 1, m\_H\textasciicircum{}2 == 2 lambda v\textasciicircum{}2} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{17.4 Quark and lepton masses; CKM and PMNS mixing}
 {\footnotesize
@@ -1400,9 +1438,9 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-329 & \texttt{CKM: unitary; Jarlskog invariant J = 3.12 x 10\textasciicircum{}-5 (PDG 2024: 3.12 +0.13 -0.12 x 10\textasciicircum{}-5); A, rhobar, etabar within the PDG uncertainties} & True \\
-330 & \texttt{Yukawa matrices: singular values x v/Sqrt[2] are the quark masses and |U\_uL\textasciicircum{}dag.U\_dL| == |V\_CKM|} & True \\
-331 & \texttt{PMNS unitary; Dirac neutrino Yukawa Sqrt[2] U.diag(m)/v reproduces the masses (singular values)} & True \\*
+334 & \texttt{CKM: unitary; Jarlskog invariant J = 3.12 x 10\textasciicircum{}-5 (PDG 2024: 3.12 +0.13 -0.12 x 10\textasciicircum{}-5); A, rhobar, etabar within the PDG uncertainties} & True \\
+335 & \texttt{Yukawa matrices: singular values x v/Sqrt[2] are the quark masses and |U\_uL\textasciicircum{}dag.U\_dL| == |V\_CKM|} & True \\
+336 & \texttt{PMNS unitary; Dirac neutrino Yukawa Sqrt[2] U.diag(m)/v reproduces the masses (singular values)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{17.5 The modern epoch on the brane}
 {\footnotesize
@@ -1415,8 +1453,8 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-332 & \texttt{age of the universe from the brane Friedmann equation: 13.79 Gyr (Planck 2018: 13.787 +- 0.020 Gyr)} & True \\
-333 & \texttt{ADD relation: kappa8 rho4/V\_perp == 8 Pi G4 rho4 with G4 = G8/V\_perp (kappa8 = 8 Pi G8)} & True \\*
+337 & \texttt{age of the universe from the brane Friedmann equation: 13.79 Gyr (Planck 2018: 13.787 +- 0.020 Gyr)} & True \\
+338 & \texttt{ADD relation: kappa8 rho4/V\_perp == 8 Pi G4 rho4 with G4 = G8/V\_perp (kappa8 = 8 Pi G8)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{18. dirac16complex at the world brane: the 16 components as four brane Dirac spinors, and the portals}
 {\footnotesize
@@ -1429,10 +1467,10 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-334 & \texttt{brane representation: R\_A R\_B + R\_B R\_A == 2 eta17\_AB ID16 for R = (gamma\_mu (x) 1\_4, gamma5 (x) rho\_k)} & True \\
-335 & \texttt{intertwiner: Gamma17[A].U == U.R\_A for A = 0..7, and U is unitary} & True \\
-336 & \texttt{chi17 == U.(gamma5 (x) rho4567).U\textasciicircum{}dag; rho4567 Hermitian with eigenvalues \{-1, -1, 1, 1\}} & True \\
-337 & \texttt{bilinears at the brane: psibar psi' == Sum\_a psibar\_a psi'\_a and psibar Gamma\textasciicircum{}mu psi' == Sum\_a psibar\_a gamma\textasciicircum{}mu psi'\_a (mu = 0..3)} & True \\*
+339 & \texttt{brane representation: R\_A R\_B + R\_B R\_A == 2 eta17\_AB ID16 for R = (gamma\_mu (x) 1\_4, gamma5 (x) rho\_k)} & True \\
+340 & \texttt{intertwiner: Gamma17[A].U == U.R\_A for A = 0..7, and U is unitary} & True \\
+341 & \texttt{chi17 == U.(gamma5 (x) rho4567).U\textasciicircum{}dag; rho4567 Hermitian with eigenvalues \{-1, -1, 1, 1\}} & True \\
+342 & \texttt{bilinears at the brane: psibar psi' == Sum\_a psibar\_a psi'\_a and psibar Gamma\textasciicircum{}mu psi' == Sum\_a psibar\_a gamma\textasciicircum{}mu psi'\_a (mu = 0..3)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{18.1 Kaluza–Klein masses on the auxiliary torus}
 {\footnotesize
@@ -1445,8 +1483,8 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-338 & \texttt{KK operator: X.X == -|q|\textasciicircum{}2/b0\textasciicircum{}2 ID16 and X anticommutes with gamma\_mu (x) 1\_4} & True \\
-339 & \texttt{KK masses: Det[gamma.p (x) 1 + X - m] vanishes on p0\textasciicircum{}2 - |p|\textasciicircum{}2 == m\textasciicircum{}2 + |q|\textasciicircum{}2/b0\textasciicircum{}2 (40-digit arithmetic) and not off shell} & True \\*
+343 & \texttt{KK operator: X.X == -|q|\textasciicircum{}2/b0\textasciicircum{}2 ID16 and X anticommutes with gamma\_mu (x) 1\_4} & True \\
+344 & \texttt{KK masses: Det[gamma.p (x) 1 + X - m] vanishes on p0\textasciicircum{}2 - |p|\textasciicircum{}2 == m\textasciicircum{}2 + |q|\textasciicircum{}2/b0\textasciicircum{}2 (40-digit arithmetic) and not off shell} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{18.2 The portals}
 {\footnotesize
@@ -1459,7 +1497,7 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-340 & \texttt{portal mixing: 1 - N.N\textasciicircum{}dag == mu.mu\textasciicircum{}dag/m\textasciicircum{}2 to second order (non-unitary light mixing)} & True \\*
+345 & \texttt{portal mixing: 1 - N.N\textasciicircum{}dag == mu.mu\textasciicircum{}dag/m\textasciicircum{}2 to second order (non-unitary light mixing)} & True \\*
 \end{longtable}}
 \Needspace{6\baselineskip}\subsubsection*{19. Neutrino flavour and flavour conversion}
 {\footnotesize
@@ -1472,35 +1510,35 @@ Each row is one check \texttt{check["name", test]} of the notebook, in the order
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-341 & \texttt{vacuum: P(a->b) doubly stochastic; equals delta - 4 Sum Re X sin\textasciicircum{}2 Delta + 2 Sum Im X sin 2Delta; CPT P(a->b) == P(bbar->abar)} & True \\
-342 & \texttt{V\_CC(rho Y\_e = 1 g/cm\textasciicircum{}3) == 7.63 x 10\textasciicircum{}-14 eV; matter evolution doubly stochastic; a flavour-universal potential has no effect} & True \\
-343 & \texttt{two-flavour MSW: sin\textasciicircum{}2 theta\_m from diagonalization == formula, and sin\textasciicircum{}2 2theta\_m == 1 at 2 E V == dm\textasciicircum{}2 cos 2theta} & True \\
-344 & \texttt{Sun: numerical P\_ee == adiabatic MSW formula to 2 x 10\textasciicircum{}-3 at 0.3, 1, 5 and 10 MeV; P\_ee(0.3 MeV) within 0.03 of the vacuum average; P\_ee falls with energy} & True \\
-345 & \texttt{cosmic neutrino background: T\_nu == 1.945 K and n == 112 cm\textasciicircum{}-3 per flavour} & True \\
-346 & \texttt{dirac16complex portal: non-unitary oscillations, Sum\_b P(a->b) < 1 (zero-distance effect); decoupled limit == three-flavour vacuum result} & True \\*
+346 & \texttt{vacuum: P(a->b) doubly stochastic; equals delta - 4 Sum Re X sin\textasciicircum{}2 Delta + 2 Sum Im X sin 2Delta; CPT P(a->b) == P(bbar->abar)} & True \\
+347 & \texttt{V\_CC(rho Y\_e = 1 g/cm\textasciicircum{}3) == 7.63 x 10\textasciicircum{}-14 eV; matter evolution doubly stochastic; a flavour-universal potential has no effect} & True \\
+348 & \texttt{two-flavour MSW: sin\textasciicircum{}2 theta\_m from diagonalization == formula, and sin\textasciicircum{}2 2theta\_m == 1 at 2 E V == dm\textasciicircum{}2 cos 2theta} & True \\
+349 & \texttt{Sun: numerical P\_ee == adiabatic MSW formula to 2 x 10\textasciicircum{}-3 at 0.3, 1, 5 and 10 MeV; P\_ee(0.3 MeV) within 0.03 of the vacuum average; P\_ee falls with energy} & True \\
+350 & \texttt{cosmic neutrino background: T\_nu == 1.945 K and n == 112 cm\textasciicircum{}-3 per flavour} & True \\
+351 & \texttt{dirac16complex portal: non-unitary oscillations, Sum\_b P(a->b) < 1 (zero-distance effect); decoupled limit == three-flavour vacuum result} & True \\*
 \end{longtable}}
 \Needspace{8\baselineskip}\subsection*{4.3 Independent Python cross-checks}\addcontentsline{toc}{subsection}{4.3 Independent Python cross-checks}
 \textbf{tools/verify\_7p1\_nb.py (parses the evaluated 7+1.nb; exit code 0)}
 
 \begin{Verbatim}[fontsize=\small,frame=single,framesep=2mm]
 input cells                                                                                    
-    ...: 145
+    ...: 147
 output cells                                                                                   
-    ...: 382
+    ...: 387
 message cells (must be 0)                                                                      
     ...: 0
 check outputs                                                                                  
-    ...: 310
+    ...: 315
 check outputs that are True                                                                    
-    ...: 310
+    ...: 315
 check["..."] calls in the input cells                                                          
-    ...: 310
+    ...: 315
 $Version output                                                                                
-    ...: ['{"15.0.1 for Microsoft Windows (64-bit) (July 2, 2026)","Notebook$$41$124309`"}']
+    ...: ['{"15.0.1 for Microsoft Windows (64-bit) (July 2, 2026)","Notebook$$47$131205`"}']
 private notebook context                                                                       
     ...: True
 Length[checks]                                                                                 
-    ...: 346
+    ...: 351
 failedChecks == {}                                                                             
     ...: True
 allChecksPassed output True                                                                    
@@ -1530,19 +1568,21 @@ section 9: check outputs (all True)
 section 7: printed Sqrt[5] u_s(p) == python (5 e_s; M^T e_s) and (pslash - m) u_s == 0         
     ...: True
 section 8: printed closed forms of int k^6 m*/E and int k^6 E: d/dkF == integrands, zero at kF
-    ...= 0 (sympy)                                             : True
+    ...= 0 (sympy)                                                                             
+    ...: True
 sections 8-9: 23 printed numbers agree with tools/ref_dirac16.py to 17 digits                  
     ...: True
 sections 8-9: G_S == -98750, G_V == 20000 printed                                              
     ...: True
 tools/ref_dirac16.py: all its boolean checks True                                              
     ...: True
-sections 0-6: the 166 input and text cells equal those of the backup                           
+sections 0-6: the 166 input and text cells of the backup are all present, 159 unchanged, 7
+    ...changed and 1 added by the signature explanation of 27 October 2026                     
     ...: True
 section 11: check outputs (all True)                                                           
     ...: 7 (True)
 section 12: check outputs (all True)                                                           
-    ...: 25 (True)
+    ...: 28 (True)
 section 13: check outputs (all True)                                                           
     ...: 15 (True)
 section 14: check outputs (all True)                                                           
@@ -1552,7 +1592,7 @@ section 15: check outputs (all True)
 section 16: check outputs (all True)                                                           
     ...: 8 (True)
 section 17: check outputs (all True)                                                           
-    ...: 10 (True)
+    ...: 11 (True)
 section 18: check outputs (all True)                                                           
     ...: 7 (True)
 section 19: check outputs (all True)                                                           
@@ -1561,10 +1601,20 @@ summary table: entries == Length[checks], all True
     ...: True
 summary table: every printed check is listed                                                   
     ...: True
-sections 0-10: the 368 input and text cells equal those of the backup taken before sections
-    ...11-20                                                      : True
+sections 0-10: the 368 input and text cells of the backup taken before sections 11-20 are all
+    ...present, 360 unchanged, 8 changed and 1 added by the signature explanation of 27 October
+    ...2026                                                                                    
+    ...: True
+sections 0-20: the 601 input and text cells of the backup taken before the signature
+    ...explanation are all present, 586 unchanged, 15 changed and 4 added by that explanation  
+    ...: True
+sections 0-20, outputs: of the 382 outputs of the backup taken before the signature explanation
+    ...373 are identical; the others differ only in the check counts and tables of the summary
+    ...sections, the declared list {7,1,0}, the private context name and measured times; 5 new
+    ...check outputs, all True : True
 sections 14-19: 27 groups of printed numbers agree with the Python programs (relative 1e-6;
-    ...rounded prints 1e-4; ODE and ill-conditioned results 1e-5) : True
+    ...rounded prints 1e-4; ODE and ill-conditioned results 1e-5)                              
+    ...: True
 
 VERDICT: ALL CROSS-CHECKS PASSED
 \end{Verbatim}
@@ -1619,6 +1669,7 @@ T16O[k]==T16A44[k].S44 (k>=4)                     : True
 S44==diag(sigma,sigma)                            : True
 T16O[8] diag                                      : [-1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1,
     ...1, 1, 1, 1, 1]
+eta17 = squares of the octonion basis: Re(e_A e_B) = eta17_AB: True
 G17 Cl(1,7)                                       : True
 G17 real                                          : True
 G17[0] sym, G17[i] antisym                        : True
@@ -1826,6 +1877,10 @@ VERDICT: ALL CHECKS PASSED
 \textbf{tools/ref\_gravity.py (independent checks of sections 11-14; exit code 0)}
 
 \begin{Verbatim}[fontsize=\small,frame=single,framesep=2mm]
+eta17 is simply the squares of the octonion basis: eta_AB = Re(e_A e_B), e_0^2 = +1, e_i^2 = -1
+    ...(i = 1..7) : True
+the quadratic form of the octonions has the signs of the squares of the octonion basis: Re(x x)
+    ...= x0^2 - x1^2 - ... - x7^2 = x.eta17.x : True
 cosmological metric: sectional curvatures R^{AB}_{AB} = -(Ha'+Ha^2), -(Hb'+Hb^2), -Ha^2, -Hb^2,
     ...-Ha Hb : True
 cosmological metric: Riemann R^{cd}_{ab} non-zero only for {c,d} = {a,b} : True
@@ -2017,7 +2072,7 @@ far future (de Sitter, H = 1): |beta|^2 for m/H = 0.25, 0.5, 1 :
 de Sitter: |beta|^2 = 1/(exp(2 pi m/H) + 1) (Fermi-Dirac at the Gibbons-Hawking temperature
     ...H/2pi), to 1e-7 : True
 integrator benchmark: Landau-Zener |beta|^2 = exp(-pi kappa^2) (to 1e-6) : True
-boolean checks: 99   failed: 0
+boolean checks: 101   failed: 0
 VERDICT: ALL CHECKS PASSED
 \end{Verbatim}
 \textbf{tools/ref\_ks\_gravity.py (independent checks of sections 15-16; exit code 0)}
@@ -2180,6 +2235,8 @@ NUM supernova MSW resonance densities for E = 20 MeV, Y_e = 0.5: H (dm31, theta1
 NUM cosmic neutrino background: T_nu = (4/11)^(1/3) T_gamma [K], number density per flavour
     ...[cm^-3] : (1.9453688391750839, 112.01641316574336)
 CNB: T_nu = 1.945 K and n = 112 cm^-3 per flavour : True
+brane frame metric diag(+1,-1,-1,-1) = eta17 on x0..x3 = squares of the quaternion basis 1,
+    ...e_1, e_2, e_3 (Re(e_a e_b)); H closed : True
 brane representation: gamma_mu (x) 1_4 (mu = 0..3) and gamma5 (x) rho_k (k = 4..7) satisfy
     ...{R_A, R_B} = 2 eta_AB : True
 intertwiner U (Schur average over the 256 Clifford products): Gamma17[A] U = U R_A for A =
@@ -2209,7 +2266,7 @@ ADD relation: 3 Ha^2 = kappa8 rho4/V_perp = 8 pi G4 rho4 with G4 = G8/V_perp : T
 NUM ADD example (reduced 8D Planck mass 10 TeV): V_perp [GeV^-4], V_perp^(1/4) [m], lowest KK
     ...mass 2 pi/V_perp^(1/4) [MeV] : (5929225000000.0, 3.079186208511254e-13,
     ...4.026524867292262)
-boolean checks: 32   failed: 0
+boolean checks: 33   failed: 0
 VERDICT: ALL CHECKS PASSED
 \end{Verbatim}
 \Needspace{8\baselineskip}\subsection*{4.4 Hashes of the files used to build 7+1.nb and its documentation}\addcontentsline{toc}{subsection}{4.4 Hashes of the files used to build 7+1.nb and its documentation}
@@ -2223,51 +2280,51 @@ VERDICT: ALL CHECKS PASSED
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-\texttt{7+1.nb} & \texttt{060942488caf4f45120ffd37be0123e96992a31cd7fdbde09ee4dc4ced4f5d3a} \\
+\texttt{7+1.nb} & \texttt{8ef9fed74c1c887a51945dfaa670cd1e32a2b07e4964f2f5ae59ac0e9747aa0c} \\
 \texttt{4+4.nb} & \texttt{740023233eaa0cd24ca0e2e7010094671b1d314b698114c08db94050d3e0aed5} \\
 \texttt{tools/cayley\_dickson\_formulas.py} & \texttt{bdde8c4c8199b09ef36ae4e15d5d53bc62744fc85b4c5ba52eab5516f77b5d5f} \\
 \texttt{tools/cayley\_dickson\_match.py} & \texttt{73f2cc584bbe1a3620c50890ffe5fb299857b04a14bc34fed2f9eaefd2e36c4e} \\
 \texttt{tools/classify\_clifford.py} & \texttt{42291276f46b046183fdbb7b62be7c5cedfd695fe9da96ac256afa23580930a9} \\
-\texttt{tools/doc\_common.py} & \texttt{eb63a44f3da35fc75dae8420186867f85fecfa15415eefa108b5b0f23c646385} \\
-\texttt{tools/doc\_dirac16.py} & \texttt{7916c204596a471015e9408616aaca1b7b89575adc774b808c468f337e8418de} \\
+\texttt{tools/doc\_common.py} & \texttt{1e37b140f8334aa813418f4a79b7d0a8e67740b2c4a3fe4d5f4e34abde690d3e} \\
+\texttt{tools/doc\_dirac16.py} & \texttt{3f81df5fe2237843edd29116e5676679527b80e946623890e6289a1487f754f1} \\
 \texttt{tools/doc\_dirac16\_common.py} & \texttt{9324b4fae59e51019125ebe09157f3c8c9489560e1383a697fe6c22a3a93e208} \\
-\texttt{tools/doc\_dirac16\_provenance.py} & \texttt{9ac843eac503c8f3d1417a67e82765c0f896422171a897a3200b67f80d420dfe} \\
-\texttt{tools/doc\_dirac16\_symbols.py} & \texttt{70cee4b84501c0f7a7a02105e39acfa6e21c61835a667eca28e43e6ad65cf674} \\
-\texttt{tools/doc\_gravity.py} & \texttt{6d0da11131b4f0473855658cdb1c2a34afbdac630cfcf528a9ecbe5cf5ef3d90} \\
-\texttt{tools/doc\_gravity\_provenance.py} & \texttt{2809bf6cc4f6c44c4f9a66422321329103bb4d231cbc3c1e7eea794026fe77f4} \\
-\texttt{tools/doc\_gravity\_symbols.py} & \texttt{da852b5feb4a7d68b44da53eb254471d1c8546d305b6dda3c8e59440e1372ae8} \\
-\texttt{tools/doc\_ks\_gravity.py} & \texttt{e62dffaadee563428788e9600ba14c92acc346186d58d70a9b41193e917f9ff8} \\
-\texttt{tools/doc\_ks\_gravity\_provenance.py} & \texttt{1a97d4be904ff2921c426ae92dee4ef3a3eb9dde20f2f9ef55babb5a9923e4f1} \\
-\texttt{tools/doc\_ks\_gravity\_symbols.py} & \texttt{afa9b5b30b13e5ab90a2cf74bd6ae5ef8a5dbaa34c25ce33a1ce6011033f9fbd} \\
-\texttt{tools/doc\_provenance.py} & \texttt{49e7b60c6ce31ad7869b3b9c3eaefd28517e8b4ffd7e4d8c0e9651d461bb56a1} \\
-\texttt{tools/doc\_readme.py} & \texttt{1b99079a18c39f9ba7a73465982787c9b9139079d3a4af98e65a261bb5eaacff} \\
-\texttt{tools/doc\_readme\_stage3.py} & \texttt{8076bbaf4f0c8854a9411f95cd1637fc1dcfeae1fc45f2701d88ff7f356a67d6} \\
-\texttt{tools/doc\_sm.py} & \texttt{faa244fed5ec09465f576661ad601def9e815e56389361e037e98fd5b45553c0} \\
-\texttt{tools/doc\_sm\_provenance.py} & \texttt{ab0f9d1cce27f2250bfa278ff72670bd40339cfa8ca0ecc025c3e099a2d4118a} \\
-\texttt{tools/doc\_sm\_symbols.py} & \texttt{353df4989623fed65925777ce46759ff296f3cec3bd42797123b7b4b0b3d9766} \\
+\texttt{tools/doc\_dirac16\_provenance.py} & \texttt{daf12ff5757d0c4ca8857840d027907f21429e7340b2f02c3b50fbf8edb2d663} \\
+\texttt{tools/doc\_dirac16\_symbols.py} & \texttt{69224cd370206759e31abd225fc556630455d6d99226db0bc46068eae9b27db0} \\
+\texttt{tools/doc\_gravity.py} & \texttt{184c7aa38742a2057449a98037a8521842fc81072613611c228c63c17083af0c} \\
+\texttt{tools/doc\_gravity\_provenance.py} & \texttt{3845317cdef374106b60524416eda8e3a81fd5d2a8e35c327c3f1ae32925b0f4} \\
+\texttt{tools/doc\_gravity\_symbols.py} & \texttt{fcff3b16ea23fa62fe205e66310552f7d3e119c619c150379e67bd17150b5d22} \\
+\texttt{tools/doc\_ks\_gravity.py} & \texttt{9aa73527f90318ee3444fcf97af41d2255a5d8fb1697d9fa0128ca671e94e51f} \\
+\texttt{tools/doc\_ks\_gravity\_provenance.py} & \texttt{112b51528ab67acd8ed110b57c347352c602c984eae1408d7dd36e41c74fc0ea} \\
+\texttt{tools/doc\_ks\_gravity\_symbols.py} & \texttt{2acdf7f901b9cb7c3047b6de6895d32385be37d16789df9d9124f976c6d5a515} \\
+\texttt{tools/doc\_provenance.py} & \texttt{b7fab7b6147c23db63ab09566781920e2117ef760178d4f49ecdb60e24990896} \\
+\texttt{tools/doc\_readme.py} & \texttt{0d52ed557785c4ddf6a445b5e9f4db5171894111047131e4b972ae82d193b9dc} \\
+\texttt{tools/doc\_readme\_stage3.py} & \texttt{89e02b3b0e07ff99efc3f19d503043a98c47b7eda5b35a0dac7d9ca29a5e2b54} \\
+\texttt{tools/doc\_sm.py} & \texttt{d7245d8c5f5dfd2687e987d43d9d544d0a1a46538901066e244fe0261bd427c3} \\
+\texttt{tools/doc\_sm\_provenance.py} & \texttt{742dec7e9ea7214a8921777a260838830c18204223b5cbb37b57962ab522d01c} \\
+\texttt{tools/doc\_sm\_symbols.py} & \texttt{a019dcbf5e68f3f00f41613f5c592b84eafa8b48d4023208516fd5d93b8893f8} \\
 \texttt{tools/doc\_stage3\_common.py} & \texttt{2364ce6eff9533051a9b56a5435e59039cf9417c03a477d75d40f68c8dd4b1d6} \\
-\texttt{tools/doc\_symbols.py} & \texttt{f5bf59d7962459f7e8bc06581852e0be3b695f7cec7513b01a9e91fcfa1fa507} \\
+\texttt{tools/doc\_symbols.py} & \texttt{2c56ea7234b0c490f30ce7b6dd01adf5ee0dbc1bddc99fb626e64b8b510c4e9b} \\
 \texttt{tools/docgen.py} & \texttt{5db6f40cb1eb10e48da5b69c3893829737c3d8d2e90edcb28311a980c1aa5fea} \\
 \texttt{tools/eval\_cells\_log.wl} & \texttt{833b6bd854cab253e5bb935c28f28ab50b286f409d130f433fa5dfb9b9236bbe} \\
 \texttt{tools/extra71.py} & \texttt{9935ef99cd9300f2a7d4f06d36cf7e173912ebae61b6feff448ebe0588853168} \\
 \texttt{tools/git\_push.wl} & \texttt{ac05a6d0256834b48cc9fa943fa247bccc574f723e68f053d00bfba9aca2e21a} \\
 \texttt{tools/lovelock71.py} & \texttt{d93ecbd0f82adb972218d59dfe32999a4af944945ca9758607f3a633e1af95a1} \\
-\texttt{tools/make\_7p1\_nb.py} & \texttt{2fac94dfd0c9fcf3aed8d6e90a77fbbb8ab1c8450819ff591b7e5cf7b5787d6f} \\
+\texttt{tools/make\_7p1\_nb.py} & \texttt{7407dbef711b841fa0adb7817c6fb5bfe5018bc02a603100a46dd2169b93c4fe} \\
 \texttt{tools/make\_docs.py} & \texttt{2c71a87dc93d5612106129a671af4f67b351d4f290e586388f42106a39b74f81} \\
-\texttt{tools/nb\_part\_gravity.py} & \texttt{55d16f735e16df7a7cd2aa70d322969bc6cf82c777965f112b5a9acf46a6ad5f} \\
-\texttt{tools/nb\_part\_ks\_gravity.py} & \texttt{886814fedc4cd015c63b950ee83724025ba21fd6c3e56b68dcb7f2f07afdc205} \\
-\texttt{tools/nb\_part\_sm.py} & \texttt{20782f1fe557fd3f3dea7417e89ecd42a1602f7a48599fcdcfd0cff77f120ecc} \\
+\texttt{tools/nb\_part\_gravity.py} & \texttt{c4caf2ad5c932e8f603341edade5f4b98fa784feb05906c051eab7c884cd68f8} \\
+\texttt{tools/nb\_part\_ks\_gravity.py} & \texttt{a656c0ad040b4576b75b17e029545109e531c8e656ad99bfdb5cba946e967772} \\
+\texttt{tools/nb\_part\_sm.py} & \texttt{43e92beed57453a4b57931de6d603ac6c218efba6e4005133b69b8054a975c5b} \\
 \texttt{tools/nbparse.py} & \texttt{ad2255a8864be7447a55023840b327f789cb8c9d868d42261b19261653847423} \\
 \texttt{tools/nbwrite.py} & \texttt{dcbe8ce5b3203c89a1d17fbe946e1b6b7bb7f8895afa944743d651cfefadeffb} \\
 \texttt{tools/octalg.py} & \texttt{36b50120b69a963e252e07d60ec007755220822b4ad339716ea7aed93d58eb24} \\
 \texttt{tools/ref44.py} & \texttt{ab100c3ebcc055fbe59c132a02f80ecb17630e934e99d59f88e919ec8064faf5} \\
-\texttt{tools/ref71.py} & \texttt{4ac783b1ab221317387f2a74e0be60f114fd64940fe3ea96af79b33ee7dcb8b0} \\
-\texttt{tools/ref\_dirac16.py} & \texttt{a6e139ebe5199621a95c8adc772bc3e1e9b452c0ca20a963c536cbfc6539319c} \\
-\texttt{tools/ref\_gravity.py} & \texttt{2bfdc087ed4dc7d84258e04449d11141b415f54b992e65d42fa42cace08ff6bd} \\
-\texttt{tools/ref\_ks\_gravity.py} & \texttt{8d082985c5161254d7c6294c0310f7807aa037bff27a8cd3ec4d3f8a9f6e0550} \\
-\texttt{tools/ref\_sm.py} & \texttt{d36d23f472c8339d80f1d0b1eb46c509398562053ead7033d96b054782e73b49} \\
+\texttt{tools/ref71.py} & \texttt{1a7a06eb0add3f459611776dc9c474a5bb959d947a9db949db4612b1ab9434e0} \\
+\texttt{tools/ref\_dirac16.py} & \texttt{32e8c50de1c480bc4ef50d254d04a9aaa0e56b486198edf0355905c0dda25674} \\
+\texttt{tools/ref\_gravity.py} & \texttt{f07cf8adaff585af89c87d19532f1aaa7db606ad88ae90483b2d1f41341edf36} \\
+\texttt{tools/ref\_ks\_gravity.py} & \texttt{b6488ef24b1c16aacd8ff6cf6a5a1ba3f316e082449ad97480022d1a2638327f} \\
+\texttt{tools/ref\_sm.py} & \texttt{f3f80806893f42bbf166e1f1de896ffd611dbfe847685da8e3ee367e9cde6aba} \\
 \texttt{tools/run\_eval.wl} & \texttt{85ba54f18a8362a69c991e66a207230dd001ba18e52639fc1edf7cac761aac30} \\
-\texttt{tools/verify\_7p1\_nb.py} & \texttt{d3aaeeeb7f380f63d4e7610c5b4235973cadd1d6db0ebf09ecbd65d561795d17} \\
+\texttt{tools/verify\_7p1\_nb.py} & \texttt{4ddecdc6e3718fd77f28e8ed8c4b5835d531cf2d153de5a736583c0120e2c1ab} \\
 \texttt{tools/watch\_requests.wl} & \texttt{d9ceedb0b45ac3cf9b4dd8519ac164953f2c80e5188b1557fe20ef5107ae352d} \\*
 \end{longtable}}
 \Needspace{12\baselineskip}\section*{5. Process and environment}\addcontentsline{toc}{section}{5. Process and environment}
@@ -2295,8 +2352,8 @@ This section records the provenance of the Dirac equation and the Kohn–Sham th
 \item A 16-component Kohn–Sham theory of the field coupled to itself, and a chiral version using the chiral projections.
 \item Complete, checked documentation (every document with a provenance file and a symbol file, Markdown and LaTeX, compiled to PDF, each self-contained); every completed stage pushed to github.com/once-ere/7plus1 (the repository was renamed from 7+1 to 7plus1); only the Wolfram front end 15.0.1 is used.
 \end{enumerate}
-\Needspace{8\baselineskip}\subsection*{6.2 The first part of the notebook is unchanged}\addcontentsline{toc}{subsection}{6.2 The first part of the notebook is unchanged}
-The evaluated notebook of the first stage was copied, in the workspace, to the file below (the folder backups/ is excluded from the repository by its .gitignore). \texttt{tools/verify\_7p1\_nb.py} compares every input, text and section cell of sections 0–6 of the new 7+1.nb with that copy: all are identical.
+\Needspace{8\baselineskip}\subsection*{6.2 The first part of the notebook}\addcontentsline{toc}{subsection}{6.2 The first part of the notebook}
+The evaluated notebook of the first stage was copied, in the workspace, to the file below (the folder backups/ is excluded from the repository by its .gitignore). \texttt{tools/verify\_7p1\_nb.py} compares every input, text and section cell of sections 0–6 of the new 7+1.nb with that copy: every cell is present, and each is identical except the cells changed or added by the explanation of the signature of 27 October 2026 (section 1.4).
 
 \begin{Verbatim}[fontsize=\small,frame=single,framesep=2mm]
 backups/7+1_2026-10-26_before_dirac16complex.nb
@@ -2369,20 +2426,21 @@ J(M)&=\frac1{120\pi^4}\int_0^{\Lambda_{\rm c}}\frac{q^6dq}{\sqrt{q^2+M^2}},\qqua
 Sections 7–9 of 7+1.nb contain 74 checks, all True; they are rows of section 4.2 above, and the evaluation is the one of section 4.1. \texttt{tools/ref\_dirac16.py} recomputes the constructions independently with 90 boolean checks, all True, and its output is printed in section 4.3, together with that of \texttt{tools/verify\_7p1\_nb.py}, which compares the printed spinors, the closed-form integrals and 23 printed numbers with it (at least 17 digits) and the first part of the notebook with the backup.
 
 \Needspace{12\baselineskip}\section*{7. The third stage: sections 11–20 of 7+1.nb}\addcontentsline{toc}{section}{7. The third stage: sections 11–20 of 7+1.nb}
-This section records the provenance of the gravity, Kohn–Sham and Standard Model sections (11–19) and of the final summary (20). Notation: $\Gamma_A=\Gamma^{(1,7)}_A$, $\Gamma^A=\eta_{(1,7)}^{AA}\Gamma_A$, $\eta=\mathrm{diag}(+1,-1,\dots,-1)$, $\Psi$ the field dirac16complex.
+This section records the provenance of the gravity, Kohn–Sham and Standard Model sections (11–19) and of the final summary (20). Notation: $\Gamma_A=\Gamma^{(1,7)}_A$, $\Gamma^A=\eta_{(1,7)}^{AA}\Gamma_A$, $\eta=\mathrm{diag}(+1,-1,\dots,-1)$ (simply the squares of the octonion basis, $\eta_{AB}=\mathrm{Re}(e_Ae_B)$), $\Psi$ the field dirac16complex.
 
 \Needspace{8\baselineskip}\subsection*{7.1 The task}\addcontentsline{toc}{subsection}{7.1 The task}
 \begin{enumerate}
 \item Rebuild the ideas of github.com/once-ere/Dirac\_claude on the 7+1 spacetime of this project (one time coordinate, seven space coordinates; never the 4+4 metric of Dirac\_claude): the Einstein and Lovelock tensors; generalized frame matrices; a canonical spin connection, with a vanishing total covariant derivative, that couples gravity to dirac16complex; the Kohn–Sham theory of dirac16complex in gravitational fields in the primordial (near $x_0=0$), modern and far-future epochs; a generalized self-coupling; and the totality of the Standard Model.
 \item Compute the Lovelock tensors as in the author’s corrected reference notebook Einstein-Lovelock-7+1-Nash.nb, and do not use its section "FAILED Model metric g71; DO NOT USE!".
 \item Document every stage (documentation, provenance and symbol files; Markdown, LaTeX, PDF; self-contained) and push every completed stage to github.com/once-ere/7plus1.
+\item Make clear in all documentation, examples and provenance records that the xAct declaration $\{7,1,0\}$ declares seven space-like dimensions and one time-like dimension, while $\mathrm{diag}(+1,-1,\dots,-1)$ is simply the squares of the octonion basis (the author’s instruction of 27 October 2026).
 \end{enumerate}
 \Needspace{8\baselineskip}\subsection*{7.2 Inputs and how they were used}\addcontentsline{toc}{subsection}{7.2 Inputs and how they were used}
 The reference notebook Einstein-Lovelock-7+1-Nash.nb (P. L. Nash, 2022, GPL; the author’s corrected version) supplied: the xAct packages xCoba and xTras; the manifold with abstract indices $a$, $b$, $c$, $d$, $f$, $i$, $j$, $k$, $l$, $m$, $n$, $p$, $q$, $r$, $s$, $y$; the chart with coordinate scalars \texttt{x0[]}, …, \texttt{x7[]}; \texttt{MyArrayComponents}; the generalized delta \texttt{kδ}; the three Lovelock tensors with their normalization
 \begin{equation*}
 \mathrm{Lovelock}_k=-\frac1{2^{k+1}}\,R_{c_1d_1}{}^{f_1i_1}\cdots R_{c_kd_k}{}^{f_ki_k}\,\delta^{b\,c_1d_1\cdots c_kd_k}_{a\,f_1i_1\cdots f_ki_k}\quad(k=1,2,3);
 \end{equation*}
-the evaluation of components by \texttt{CD = LC[g]}; and the vacuum field equations $0=-\Lambda\delta+H^{-2}w_1\mathrm{Lovelock}_1+H^{-4}w_2\mathrm{Lovelock}_2+H^{-6}w_3\mathrm{Lovelock}_3$ with the procedure of solving them for $w_2,w_3$. The model metric of its FAILED section was not used anywhere. The only change: the signature declaration $\{7,1,0\}$ became $\{1,7,0\}$ to match $\eta$ of this notebook (it does not enter the Lovelock tensors with mixed indices, and \texttt{SignDetOfMetric} is $-1$ for both declarations, as checked with xTensor 1.2.0). xAct versions as printed by the notebook: xPerm 1.2.3, xTensor 1.2.0, xCoba 0.8.6, xTras 1.4.2.
+the evaluation of components by \texttt{CD = LC[g]}; and the vacuum field equations $0=-\Lambda\delta+H^{-2}w_1\mathrm{Lovelock}_1+H^{-4}w_2\mathrm{Lovelock}_2+H^{-6}w_3\mathrm{Lovelock}_3$ with the procedure of solving them for $w_2,w_3$. The model metric of its FAILED section was not used anywhere. Taken unchanged as well: the signature declaration \texttt{DefMetric[\{7, 1, 0\}, g71[-a, -b], CD, …]} — in xAct the list $\{7,1,0\}$ declares seven space-like dimensions, one time-like dimension and no degenerate dimension, exactly the 7+1 spacetime of this project. It is not to be confused with the matrix $\eta=\mathrm{diag}(+1,-1,\dots,-1)$, which is simply the squares of the octonion basis ($e_0^2=+1$, $e_i^2=-1$, $\eta_{AB}=\mathrm{Re}(e_Ae_B)$) and gives the signs of the metric components ($g_{00}>0$). \textbf{A correction (27 October 2026):} an earlier version of 7+1.nb declared $\{1,7,0\}$, reading the list as the signs of $\eta$; the author pointed out that $\{7,1,0\}$ declares seven space-like and one time-like dimension while $\mathrm{diag}(+1,-1,\dots,-1)$ is simply the squares of the octonion basis, and 7+1.nb now declares $\{7,1,0\}$ as the reference notebook does. No Lovelock component changed: they follow from the component matrix of the metric, and \texttt{SignDetOfMetric} is $-1$ for both lists (checked with xTensor 1.2.0). xAct versions as printed by the notebook: xPerm 1.2.3, xTensor 1.2.0, xCoba 0.8.6, xTras 1.4.2.
 
 \begin{Verbatim}[fontsize=\small,frame=single,framesep=2mm]
 Einstein-Lovelock-7+1-Nash.nb   SHA-256 b2dcb7b9f435d644da085fdd9e738a0cc80d3268ef28606ff9f367ed
@@ -2403,7 +2461,7 @@ Data of the Standard Model part: Particle Data Group 2024/2025 ($G_F$, boson mas
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-1 & Christoffel symbols written $\{{}^{\lambda}_{\mu\nu}\}$; Landau–Lifshitz curvature & $\Gamma$ is reserved for Dirac matrices; with $(+,-,\dots,-)$, $G^\mu{}_\nu-\bar\Lambda\delta^\mu_\nu=\kappa T^\mu{}_\nu$, $T^0{}_0>0$ \\
+1 & Christoffel symbols written $\{{}^{\lambda}_{\mu\nu}\}$; Landau–Lifshitz curvature & $\Gamma$ is reserved for Dirac matrices; with the signs of $\eta$ ($g_{00}>0$), $G^\mu{}_\nu-\bar\Lambda\delta^\mu_\nu=\kappa T^\mu{}_\nu$, $T^0{}_0>0$ \\
 2 & the Lovelock tensors are computed twice (xAct; pair-set sums) & exact agreement is an independent check of the reference method \\
 3 & the exponential solutions are obtained from the xAct components of the cosmological metric & a new xAct run with symbolic exponentials does not finish in reasonable time \\
 4 & the canonical (Levi-Civita) spin connection, $\Omega_\mu=\frac14\omega_{\mu AB}\Gamma^A\Gamma^B$ & it is the connection with $\nabla_\mu\Gamma_\nu=0$ \\
@@ -2421,7 +2479,7 @@ Data of the Standard Model part: Particle Data Group 2024/2025 ($G_F$, boson mas
 \item N. Arkani-Hamed, S. Dimopoulos, G. Dvali, Phys. Lett. B 429 (1998) 263; L. Wolfenstein, Phys. Rev. D 17 (1978) 2369; S. P. Mikheyev and A. Yu. Smirnov, Sov. J. Nucl. Phys. 42 (1985) 913 — extra dimensions, the MSW effect (section 12.5–12.6).
 \end{itemize}
 \Needspace{8\baselineskip}\subsection*{7.5 Verification of the third stage}\addcontentsline{toc}{subsection}{7.5 Verification of the third stage}
-Sections 11–19 of 7+1.nb contain 144 checks (gravity 97, Kohn–Sham 24, Standard Model 23), all True; they are rows of section 4.2 above. The independent programs recompute everything: \texttt{tools/ref\_gravity.py} (99 boolean checks, 99 True), \texttt{tools/ref\_ks\_gravity.py} (29, 29), \texttt{tools/ref\_sm.py} (32, 32); their complete outputs are printed in section 4.3.
+Sections 11–19 of 7+1.nb contain 148 checks (gravity 100, Kohn–Sham 24, Standard Model 24), all True; they are rows of section 4.2 above. The independent programs recompute everything: \texttt{tools/ref\_gravity.py} (101 boolean checks, 101 True), \texttt{tools/ref\_ks\_gravity.py} (29, 29), \texttt{tools/ref\_sm.py} (33, 33); their complete outputs are printed in section 4.3.
 
 \Needspace{12\baselineskip}\section*{8. Authorship}\addcontentsline{toc}{section}{8. Authorship}
 Notebook, tools and documentation written by Claude (Anthropic, model claude-opus-5-5) for Nash: the first stage (sections 0–6 of 7+1.nb) from the task statement and the notebook 4+4.nb described in section 1, the second stage (sections 7–10) from the task of section 6.1, the third stage (sections 11–20) from the task of section 7.1 and the reference notebook Einstein-Lovelock-7+1-Nash.nb of its author; this document was generated on 2026-10-27.

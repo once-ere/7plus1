@@ -3,6 +3,7 @@ frame matrices, the canonical spin connection and the total covariant derivative
 dirac16complex, and the three cosmological epochs (sections 11-14 of 7+1.nb).  Every equation used is written here."""
 from docgen import Doc
 from doc_stage3_common import fmt, mnum, mlist, break_sum
+from doc_common import signature_block
 
 def build(D, today):
     ck = D['checks']['grav']; ref = D['ref'].get('grav', ('', '', {}))[2]; nm = D['nums']['grav']
@@ -30,8 +31,10 @@ def build(D, today):
     # ==============================================================================================
     d.h1('1. Results at a glance')
     d.p('**Spacetime.** Coordinates $X=(x_0,x_1,\\dots,x_7)$ with $x_0$ the time (the direction of the octonion unit $e_0=1$), '
-        '$x_1,x_2,x_3$ ordinary space and $x_4,\\dots,x_7$ auxiliary space. The metric $g_{\\mu\\nu}(X)$ has signature '
-        '$(+,-,-,-,-,-,-,-)$. The frame metric and the eight real Dirac matrices are')
+        '$x_1,x_2,x_3$ ordinary space and $x_4,\\dots,x_7$ auxiliary space: one time-like and seven space-like dimensions, which xAct '
+        'declares, as the reference notebook Einstein-Lovelock-7+1-Nash.nb does, with the signature list $\\{7,1,0\\}$ (seven space-like, '
+        'one time-like, none degenerate). The frame metric — simply the squares of the octonion basis, $e_0^2=+1$, $e_i^2=-1$ '
+        '(section 2) — and the eight real Dirac matrices are')
     d.eq(r'\eta=\mathrm{diag}(+1,-1,\dots,-1),\qquad \Gamma_0=\begin{pmatrix}0&1_8\\1_8&0\end{pmatrix},\quad '
          r'\Gamma_i=\begin{pmatrix}\tau^{O}_i&0\\0&-\tau^{O}_i\end{pmatrix},\qquad \Gamma_A\Gamma_B+\Gamma_B\Gamma_A=2\eta_{AB}1_{16},')
     d.p('with the real antisymmetric 8×8 octonion matrices $\\tau^{O}_i$ ($i=1,\\dots,7$, $(\\tau^O_i)^2=-1_8$, mutually anticommuting).')
@@ -58,8 +61,11 @@ def build(D, today):
     d.h1('2. Conventions')
     d.ul(['Units: $\\hbar=c=1$. A prime is $d/dx_0$.',
           'Indices: Greek $\\mu,\\nu,\\lambda,\\rho,\\sigma,\\alpha,\\beta,\\gamma,\\delta\\in\\lbrace0,\\dots,7\\rbrace$ are coordinate indices; '
-          'Latin capitals $A,B,C\\in\\lbrace0,\\dots,7\\rbrace$ are frame indices, raised and lowered with $\\eta$; repeated indices are summed. '
+          'Latin capitals $A,B,C\\in\\lbrace0,\\dots,7\\rbrace$ are frame indices, raised and lowered with $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$, '
+          'the squares of the octonion basis ($\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$); repeated indices are summed. '
           'In Mathematica all lists are 1-based: $g_{\\mu\\nu}$ is `g[[μ+1, ν+1]]`.',
+          'Signature: one time-like dimension ($x_0$, with $g_{00}>0$) and seven space-like dimensions ($x_1,\\dots,x_7$, negative squares); '
+          'in xAct the signature $\\{7,1,0\\}$ (seven space-like, one time-like, none degenerate), as in the reference notebook.',
           'Christoffel symbols are written $\\{{}^{\\lambda}_{\\mu\\nu}\\}$ — never $\\Gamma$, which in this project always denotes a Dirac matrix:',
           ])
     d.eq(r'\{{}^{\lambda}_{\mu\nu}\}=\tfrac12\,g^{\lambda\rho}\big(\partial_\mu g_{\rho\nu}+\partial_\nu g_{\rho\mu}-\partial_\rho g_{\mu\nu}\big).')
@@ -68,9 +74,10 @@ def build(D, today):
              r'+\{{}^{\rho}_{\mu\lambda}\}\{{}^{\lambda}_{\sigma\nu}\}-\{{}^{\rho}_{\nu\lambda}\}\{{}^{\lambda}_{\sigma\mu}\},',
              r'R_{\sigma\nu}&=R^{\rho}{}_{\sigma\rho\nu},\qquad R=g^{\sigma\nu}R_{\sigma\nu},\qquad G^{\mu}{}_{\nu}=R^{\mu}{}_{\nu}-\tfrac12\delta^\mu_\nu R,'
              r'\qquad R^{\gamma\delta}{}_{\alpha\beta}=g^{\delta\sigma}R^{\gamma}{}_{\sigma\alpha\beta}.'])
-    d.p('With these conventions and the signature $(+,-,\\dots,-)$ the field equations of general relativity read '
+    d.p('With these conventions and the signs of $\\eta$ ($g_{00}>0$) the field equations of general relativity read '
         '$G^\\mu{}_\\nu-\\Lambda\\delta^\\mu_\\nu=\\kappa T^\\mu{}_\\nu$ with $T^0{}_0>0$ the energy density, and a de Sitter space has '
         '$R<0$.')
+    signature_block(d, eta=r'\eta', eta71=r'\eta_{71}', gam=r'\Gamma')
 
     # ==============================================================================================
     d.h1('3. Curvature of a 7+1 metric (section 11 of 7+1.nb)')
@@ -155,16 +162,25 @@ def build(D, today):
            '$DefInfoQ = False; $CVVerbose = False;\n'
            'SetOptions[ToCanonical, UseMetricOnVBundle -> None, Verbose -> False];\n'
            'DefManifold[M8, 8, {a, b, c, d, f, i, j, k, l, m, n, p, q, r, s, y}];\n'
-           'DefMetric[{1, 7, 0}, g71[-a, -b], CD, {";", "D"}, WeightedWithBasis -> AIndex];\n'
+           'DefMetric[{7, 1, 0}, g71[-a, -b], CD, {";", "D"}, WeightedWithBasis -> AIndex];\n'
            'DefChart[chartM8, M8, {0, 1, 2, 3, 4, 5, 6, 7}, {x0[], x1[], x2[], x3[], x4[], x5[], x6[], x7[]},\n'
            '  ExtendedCoordinateDerivatives -> True, FormatBasis -> {"Partials", "Differentials"}];\n'
            'MyArrayComponents[expr_] := expr // ToBasis[chartM8] // ComponentArray // ToValues // ToValues // Simplify;\n'
            'kδ[lower_, upper_] /; Length[lower] == Length[upper] := Det[Outer[delta, lower, upper]];')
-    d.p('In the xAct notation the signature is $\\{p,q,z\\}$ = (number of $+1$, of $-1$, of $0$ eigenvalues). The reference notebook '
-        'declares $\\{7,1,0\\}$ (the mostly-plus convention); this notebook declares $\\{1,7,0\\}$, which matches its metric '
-        '$\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$. The declaration does not enter the Lovelock tensors with mixed indices, which follow from '
-        'the components alone, and both declarations give xAct the same sign of the determinant of the metric, '
-        '$(-1)^q=-1$ for $q=7$ and for $q=1$ (`SignDetOfMetric`). While the packages load, their banners and the warnings that xTensor cannot attach rules to '
+    d.p('**The signature.** `DefMetric[{7, 1, 0}, …]` is the declaration of the reference notebook, taken unchanged: in xAct the list '
+        '$\\{7,1,0\\}$ declares seven space-like dimensions ($x_1,\\dots,x_7$), one time-like dimension ($x_0$) and no degenerate one '
+        '— the signature $(7,1)$ of $\\eta_{71}=\\mathrm{diag}(-1,+1,\\dots,+1)$ in the sign convention of 4+4.nb (space-like $=+1$). '
+        'It is not to be confused with the matrix $\\eta=\\eta_{17}=-\\eta_{71}=\\mathrm{diag}(+1,-1,\\dots,-1)$, which is simply the '
+        'squares of the octonion basis: $e_0^2=+1$ for the unit $e_0=1$ (time) and $e_i^2=-1$ for the seven imaginary units (space), '
+        'i.e. $\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$ and $\\mathrm{Re}(xx)=x_0^2-x_1^2-\\cdots-x_7^2$ for $x=x^Ae_A$. The metrics of this '
+        'document are given to xAct with the signs of $\\eta$ ($g_{00}>0$). The declared signature fixes for xAct the sign of the '
+        'determinant of the metric, `SignDetOfMetric[g71]` $=-1$, the same in both conventions (a metric with one time-like and seven '
+        'space-like directions has a negative determinant either way); the Lovelock tensors follow from the components of the metric, '
+        'and they agree exactly with the independent pair-set computation of section 4.5. The notebook checks '
+        '`SignatureOfMetric[g71]` $=\\{7,1,0\\}$, `SignDetOfMetric[g71]` $=-1$, $\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$ and the quadratic '
+        'form $\\mathrm{Re}(xx)=x\\cdot\\eta\\cdot x$ of the octonions. (An earlier version of 7+1.nb declared $\\{1,7,0\\}$, reading '
+        'the list as the signs of $\\eta$; it was corrected on 27 October 2026. Both declarations give the same Lovelock tensors.)')
+    d.p('While the packages load, their banners and the warnings that xTensor cannot attach rules to '
         '`Commutator` and `Anticommutator` (protected built-in symbols of Wolfram 15, not used here) are suppressed. '
         '`kδ[lower, upper]` is the generalized Kronecker delta $\\delta^{\\text{upper}}_{\\text{lower}}$ with abstract indices; the '
         'Lovelock tensors are then typed exactly as in the reference notebook,')
@@ -456,11 +472,11 @@ def build(D, today):
         'everything again with its own curvature and Lovelock engine (tools/lovelock71.py). The checks of sections 11–14 of the notebook:')
     d.table(['#', 'check', 'result', 'section'],
             [[str(i + 1), '`' + c[0].replace('`', "'") + '`', c[1], c[3][:4] if c[3] else c[2][:3]] for i, c in enumerate(ck)],
-            widths=[0.05, 0.75, 0.08, 0.12], small=True)
+            widths=[0.06, 0.74, 0.08, 0.12], small=True)
     d.p('The Python program’s boolean checks:')
     d.table(['#', 'check', 'result'],
             [[str(i + 1), '`' + k.replace('`', "'") + '`', v] for i, (k, v) in enumerate([(k, v) for k, v in ref.items() if v in ('True', 'False')])],
-            widths=[0.05, 0.83, 0.12], small=True)
+            widths=[0.06, 0.82, 0.12], small=True)
     d.h1('9. How to reproduce')
     d.ol(['`python3 tools/make_7p1_nb.py` writes 7+1.nb (unevaluated) from tools/make_7p1_nb.py and tools/nb_part_*.py.',
           'Evaluate 7+1.nb in a fresh kernel of Wolfram 15.0.1 (Evaluation ▸ Quit Kernel, then Evaluation ▸ Evaluate Notebook; or `Get["D:/Developer/github/7+1/tools/run_eval.wl"]`) and save it; the last section summarizes all checks.',

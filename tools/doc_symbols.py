@@ -26,7 +26,8 @@ def build(D):
           '$M\\otimes N$ is the Kronecker product (`KroneckerProduct[M, N]`).',
           'An index 8 on a family of eight Clifford generators $G_0,\\dots,G_7$ means the ordered product $G_8=G_0G_1\\cdots G_7$ '
           '(the convention of 4+4.nb).',
-          '$Cl(p,q)$: $p$ generators square to $+1$ and $q$ to $-1$ ($v^2=Q(v)$, $Q$ of signature $(p,q)$).'])
+          '$Cl(p,q)$: $p$ generators square to $+1$ and $q$ to $-1$ ($v^2=Q(v)$, $Q$ of signature $(p,q)$). This label is not the xAct '
+          'list $\\{7,1,0\\}$, which declares seven space-like dimensions and one time-like dimension (section 2).'])
 
     d.h1('2. Coordinates and metrics')
     d.table(['symbol', 'Mathematica', 'definition', 'meaning'], [
@@ -36,13 +37,15 @@ def build(D):
         ['$x_4$', '`x4`', '—', '7+1.nb: auxiliary space-like, $e_4=\\ell$. 4+4.nb: ordinary time'],
         ['$x_5,x_6,x_7$', '`x5, x6, x7`', '—', '7+1.nb: auxiliary space-like, $e_5,e_6,e_7$. 4+4.nb: auxiliary time-like ("superluminal deflating time")'],
         ['$\\eta^{(4,4)}$', '`η4488`', '$\\mathrm{diag}(1,1,1,1,-1,-1,-1,-1)$', 'metric of 4+4.nb (space-like $+1$, time-like $-1$); split-octonion norm'],
-        ['$\\eta^{(7,1)}$', '`η71`', '$\\mathrm{diag}(-1,1,1,1,1,1,1,1)$', '7+1 metric in the sign convention of 4+4.nb; signature (7,1)'],
-        ['$\\eta^{(1,7)}$', '`η17`', '$-\\eta^{(7,1)}=\\mathrm{diag}(1,-1,-1,-1,-1,-1,-1,-1)$', '7+1 metric, octonionic convention: $x^{\\mathsf T}\\eta^{(1,7)}x=\\mathrm{Re}(xx)$'],
+        ['$\\eta^{(7,1)}$', '`η71`', '$\\mathrm{diag}(-1,1,1,1,1,1,1,1)$', '7+1 metric in the sign convention of 4+4.nb (space-like $+1$): seven space-like and one time-like dimension, the xAct declaration $\\{7,1,0\\}$; generates $Cl(7,1)$'],
+        ['$\\eta^{(1,7)}$', '`η17`', '$-\\eta^{(7,1)}=\\mathrm{diag}(1,-1,-1,-1,-1,-1,-1,-1)$', 'simply the squares of the octonion basis: $\\eta^{(1,7)}_{AB}=\\mathrm{Re}(e_Ae_B)$, $e_0^2=+1$, $e_i^2=-1$; $x^{\\mathsf T}\\eta^{(1,7)}x=\\mathrm{Re}(xx)$; generates $Cl(1,7)$'],
+        ['$\\{7,1,0\\}$', '`DefMetric[{7, 1, 0}, g71[-a, -b], CD, …]`', 'xAct signature list (section 12 of 7+1.nb, as in Einstein-Lovelock-7+1-Nash.nb)', 'seven space-like dimensions, one time-like dimension, none degenerate'],
         ['$\\eta_{(1,7)}^{AB}$', '`η17inv`', '$(\\eta^{(1,7)})^{-1}=\\eta^{(1,7)}$', 'inverse metric, raises indices'],
         ['$g^{O}$', '`gO`', '$1_8$', 'norm metric of the octonions, $N(x)=x^{\\mathsf T}g^{O}x$'],
         ['$g$', '`gAB44`', '$\\eta^{(4,4)}$', 'norm metric of the split octonions (4+4.nb: `g_AB`)'],
         ['$\\eta^{(5,3)}$', '`η53`', '$\\mathrm{diag}(1,-1,-1,-1,1,1,1,1)$', '$\\mathrm{Re}(xx)$ of the split octonions'],
     ], widths=[0.12, 0.17, 0.33, 0.32])
+    signature_block(d, eta=r'\eta^{(1,7)}', eta71=r'\eta^{(7,1)}', gam=r'\Gamma^{(1,7)}')
 
     d.h1('3. Objects reproduced from 4+4.nb')
     d.table(['symbol', 'Mathematica', 'definition', 'meaning (4+4.nb name)'], [

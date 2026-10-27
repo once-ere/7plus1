@@ -4,6 +4,7 @@ neutrino flavour conversion (sections 17-19 of 7+1.nb).  Every equation used is 
 the evaluated notebook or from the output of tools/ref_sm.py."""
 from docgen import Doc
 from doc_stage3_common import fmt, mnum, nums_in
+from doc_common import signature_block
 
 PY = {
     'ew': "NUM v = (sqrt2 G_F)^(-1/2) [GeV], g, g', sin^2 theta_W (on shell), e, 1/alpha(tree), lambda = m_H^2/(2v^2)",
@@ -107,7 +108,12 @@ def build(D, today):
     d.p('Units $\\hbar=c=1$. The auxiliary coordinates form a torus $T^4$: $x_k\\simeq x_k+L_c$ ($k=4,\\dots,7$; coordinate period $L_c$, proper '
         'size $bL_c$). The Standard Model lives on the world brane')
     d.eq(r'W=\{x_4=x_5=x_6=x_7=0\},\qquad x=(x_0,x_1,x_2,x_3),\quad y=(x_4,\dots,x_7),\\ h_{\mu\nu}(x)=g_{\mu\nu}(x,y=0)\ \ (\mu,\nu=0,\dots,3),')
-    d.p('with the induced metric $h_{\\mu\\nu}$; gravity and dirac16complex live in the whole 7+1 spacetime (the bulk). The total action is')
+    d.p('with the induced metric $h_{\\mu\\nu}$; gravity and dirac16complex live in the whole 7+1 spacetime (the bulk).')
+    signature_block(d, eta=r'\eta', eta71=r'\eta_{71}', gam=r'\Gamma')
+    d.p('The brane has one time-like dimension ($x_0$) and three space-like dimensions ($x_1,x_2,x_3$) — in the counting of xAct the '
+        'list $\\{3,1,0\\}$ — and its flat frame metric $\\mathrm{diag}(+1,-1,-1,-1)$ is $\\eta$ restricted to $x_0,\\dots,x_3$: the squares '
+        'of the basis $e_0=1,e_1,e_2,e_3$ of the quaternion subalgebra $\\mathbb H$ of the octonions (checked in section 17 of 7+1.nb). '
+        'The total action is')
     d.eq(r'S=S_{\rm EL}[g]+S_{\psi}[\psi,g]+\int_Wd^4x\,\sqrt{|h|}\,\big(\mathcal L_{\rm SM}+\mathcal L_{\rm portal}\big)+S_{\rm stab},\qquad '
          r'\int_Wd^4x\,\sqrt{|h|}\,(\dots)=\int d^8X\,\sqrt{|g|}\,\frac{\delta^4(y)}{b^4}\,(\dots),')
     d.p('where the last identity holds for the cosmological metric $ds^2=dx_0^2-a^2\\sum_{i=1}^3dx_i^2-b^2\\sum_{k=4}^7dx_k^2$ '
@@ -217,10 +223,12 @@ def build(D, today):
     d.align([r'\gamma_0&=\mathrm{diag}(1,1,-1,-1),\quad \gamma_i=\begin{pmatrix}0&\sigma_i\\-\sigma_i&0\end{pmatrix},\quad \gamma_5=i\gamma_0\gamma_1\gamma_2\gamma_3,'
              r'\qquad \gamma_\mu\gamma_\nu+\gamma_\nu\gamma_\mu=2\eta_{\mu\nu}1_4,',
              r'\rho_4&=i\gamma_0,\quad \rho_5=-\gamma_1,\quad \rho_6=-\gamma_2,\quad \rho_7=-\gamma_3,\qquad \rho_k\rho_l+\rho_l\rho_k=-2\delta_{kl}1_4,'])
-    d.p('($\\sigma_i$ the Pauli matrices, $\\eta=\\mathrm{diag}(1,-1,-1,-1)$) the sixteen-dimensional matrices')
+    d.p('($\\sigma_i$ the Pauli matrices, $\\eta=\\mathrm{diag}(1,-1,-1,-1)$, the squares of the quaternion basis $1,e_1,e_2,e_3$) the '
+        'sixteen-dimensional matrices')
     d.eq(r'R_\mu=\gamma_\mu\otimes1_4\ \ (\mu=0,\dots,3),\qquad R_k=\gamma_5\otimes\rho_k\ \ (k=4,\dots,7)')
     d.p('satisfy the same Clifford relations as the real Dirac matrices $\\Gamma_A$ of 7+1 spacetime, $R_AR_B+R_BR_A=2\\eta_{AB}1_{16}$ with '
-        '$\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$. Both representations are irreducible, so there is a unitary $U$ with $\\Gamma_AU=UR_A$; it is '
+        '$\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$, the squares of the octonion basis. Both representations are irreducible, so there is a '
+        'unitary $U$ with $\\Gamma_AU=UR_A$; it is '
         'obtained as the Schur average over the 256 Clifford products,')
     d.eq(r'U\propto\sum_{K}\Gamma^{(K)}\,s\,\big(R^{(K)}\big)^{-1},\qquad \Gamma^{(K)}=\Gamma_{A_1}\cdots\Gamma_{A_r},\quad R^{(K)}=R_{A_1}\cdots R_{A_r},')
     d.p('with a fixed matrix $s$ (the first matrix unit for which the sum is non-zero), normalized so that $U^\\dagger U=1_{16}$. Writing '
@@ -327,10 +335,10 @@ def build(D, today):
     d.p('The checks of sections 17–19 of the notebook:')
     d.table(['#', 'check', 'result', 'section'],
             [[str(i + 1), '`' + c[0].replace('`', "'") + '`', c[1], (c[3][:4] if c[3] else c[2][:3])] for i, c in enumerate(ck)],
-            widths=[0.05, 0.75, 0.08, 0.12], small=True)
+            widths=[0.06, 0.74, 0.08, 0.12], small=True)
     d.p('The Python program’s boolean checks:')
     d.table(['#', 'check', 'result'], [[str(i + 1), '`' + k.replace('`', "'") + '`', v_] for i, (k, v_) in enumerate(rb)],
-            widths=[0.05, 0.83, 0.12], small=True)
+            widths=[0.06, 0.82, 0.12], small=True)
 
     d.h1('13. How to reproduce')
     d.ol(['`python3 tools/make_7p1_nb.py` writes 7+1.nb (unevaluated).',

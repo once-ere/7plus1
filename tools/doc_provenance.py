@@ -71,6 +71,8 @@ def build(D, runs):
           'over $\\mathbb C$, the scalars); $Cl_8(\\mathbb C)\\cong\\mathbb C(16)$ has a unique irreducible module $\\mathbb C^{16}$; '
           'Hurwitz\'s theorem (a unital composition algebra of dimension 8 is the octonions if its norm is positive definite and '
           'the split octonions if the norm is indefinite); Degen\'s eight-square identity.'])
+    d.h2('1.4 The signature: the author’s explanation of 27 October 2026')
+    signature_provenance(d, eta=r'\eta^{(1,7)}', eta71=r'\eta^{(7,1)}', gam=r'\Gamma^{(1,7)}')
 
     d.h1('2. Derivations: how each new object was obtained')
     d.h2('2.1 Octonion matrices $\\tau^{O}$')
@@ -102,7 +104,8 @@ def build(D, runs):
     d.align([r'\Gamma^{(1,7)}_0&=T^{O}_0,\qquad \Gamma^{(1,7)}_i=T^{O}_0T^{O}_i,\qquad (T^{O}_0T^{O}_i)^2=-(T^{O}_0)^2(T^{O}_i)^2=-1_{16},',
              r'\lbrace T^{O}_0,T^{O}_0T^{O}_i\rbrace&=T^{O}_i+T^{O}_0T^{O}_iT^{O}_0=T^{O}_i-T^{O}_i=0,\qquad '
              r'\lbrace T^{O}_0T^{O}_i,T^{O}_0T^{O}_j\rbrace=-\lbrace T^{O}_i,T^{O}_j\rbrace=-2\delta_{ij}1_{16}.'])
-    d.p('Hence $\\lbrace\\Gamma^{(1,7)}_A,\\Gamma^{(1,7)}_B\\rbrace=2\\eta^{(1,7)}_{AB}1_{16}$, and $\\Gamma^{(1,7)}(x)^2=\\mathrm{Re}(xx)1_{16}$.')
+    d.p('Hence $\\lbrace\\Gamma^{(1,7)}_A,\\Gamma^{(1,7)}_B\\rbrace=2\\eta^{(1,7)}_{AB}1_{16}$ — the generators square like the octonion '
+        'basis, since $\\eta^{(1,7)}_{AB}=\\mathrm{Re}(e_Ae_B)$ ($e_0^2=+1$, $e_i^2=-1$) — and $\\Gamma^{(1,7)}(x)^2=\\mathrm{Re}(xx)1_{16}$.')
     d.h2('2.6 Complexified generators $\\Gamma^{(7,1)}$')
     d.p('Origin: the task\'s instruction to use the complexification of the 4+4 matrices if real numbers fail. Only the time '
         'block is multiplied by $i$: $\\tau^{C}_0=\\bar\\tau^{C}_0=i1_8$, $\\tau^{C}_k=\\tau^{O}_k$; then '
@@ -258,11 +261,12 @@ def build(D, runs):
           'Complete, checked documentation (every document with a provenance file and a symbol file, Markdown and LaTeX, compiled '
           'to PDF, each self-contained); every completed stage pushed to github.com/once-ere/7plus1 (the repository was renamed from '
           '7+1 to 7plus1); only the Wolfram front end 15.0.1 is used.'])
-    d.h2('6.2 The first part of the notebook is unchanged')
+    d.h2('6.2 The first part of the notebook')
     if D.get('sha_backup'):
         d.p('The evaluated notebook of the first stage was copied, in the workspace, to the file below (the folder backups/ is excluded '
             'from the repository by its .gitignore). `tools/verify_7p1_nb.py` compares every input, text and section cell of sections 0–6 '
-            'of the new 7+1.nb with that copy: all are identical.')
+            'of the new 7+1.nb with that copy: every cell is present, and each is identical except the cells changed or added by the '
+            'explanation of the signature of 27 October 2026 (section 1.4).')
         d.code('backups/7+1_2026-10-26_before_dirac16complex.nb\n%d bytes\nSHA-256 %s' % (D['size_backup'], D['sha_backup']), 'text')
     d.h2('6.3 Derivations and decisions')
     d.p('**Dirac matrices.** The real generators $\\Gamma^{(1,7)}_A$ of section 2.5 are used unchanged: '

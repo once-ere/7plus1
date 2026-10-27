@@ -5,7 +5,10 @@ Lovelock tensors, the generalized frame matrices, the canonical spin connection 
 covariant derivative of the frame matrices, the covariant Dirac equation of dirac16complex, and the
 three cosmological epochs (primordial near x0 = 0, modern, far future) with the pair creation of dirac16complex.
 
-Conventions (as in 7+1.nb):  metric signature (+,-,-,-,-,-,-,-);  Christoffel symbols chr[l][m][n] = {l; m n};
+Conventions (as in 7+1.nb):  one time-like dimension x0 and seven space-like dimensions x1 ... x7 (declared in xAct, as in
+the reference notebook Einstein-Lovelock-7+1-Nash.nb, with the signature list {7, 1, 0}: seven space-like, one time-like,
+none degenerate);  metric components with the signs of eta17 = diag(+1, -1, ..., -1), which is simply the squares of the
+octonion basis (e_0^2 = +1, e_i^2 = -1), so g_00 > 0;  Christoffel symbols chr[l][m][n] = {l; m n};
 Riemann tensor (Landau-Lifshitz)  R^r_{s m n} = d_m chr^r_{s n} - d_n chr^r_{s m} + chr^r_{m l} chr^l_{s n} - chr^r_{n l} chr^l_{s m};
 Ricci R_{s n} = R^r_{s r n};  Einstein G^m_n = R^m_n - delta^m_n R/2;  frame indices A, B = 0..7 with eta17.
 
@@ -26,6 +29,18 @@ Gup = {A: eta17[A, A]*G[A] for A in range(8)}
 I16, Z16 = sp.eye(16), sp.zeros(16)
 
 from lovelock71 import geometry, ricci, rud, perm_sign, pair_sets, ordered_seqs, lovelockE, lovelockL, D, X
+
+# ======================================================================= 0. eta17: the squares of the octonion basis
+# The spacetime has one time-like dimension (x0) and seven space-like dimensions (x1..x7); xAct declares it with the
+# signature {7, 1, 0} (section 12.2 of 7+1.nb). The matrix eta17 = diag(+1, -1, ..., -1) is simply the squares of the
+# octonion basis: e_0^2 = +1, e_i^2 = -1, i.e. eta_AB = Re(e_A e_B), and Re(x x) = x0^2 - x1^2 - ... - x7^2.
+from ref71 import omul
+from octalg import basis
+R['eta17 is simply the squares of the octonion basis: eta_AB = Re(e_A e_B), e_0^2 = +1, e_i^2 = -1 (i = 1..7)'] = (
+    sp.Matrix(8, 8, lambda A, B: omul(basis(A), basis(B))[0]) == eta17)
+_xq = sp.symbols('q0:8', real=True)
+R['the quadratic form of the octonions has the signs of the squares of the octonion basis: Re(x x) = x0^2 - x1^2 - ... - x7^2 = x.eta17.x'] = (
+    sp.expand(omul(list(_xq), list(_xq))[0] - sum(eta17[A, A]*_xq[A]**2 for A in range(8))) == 0)
 
 # ======================================================================= 1. the cosmological metric
 t = X[0]

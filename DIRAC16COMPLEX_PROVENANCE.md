@@ -26,7 +26,7 @@ The coordinates are those of 7+1.nb and were not renamed: $`X=(x_0,x_1,\dots,x_7
 
 | # | how it was met | where in 7+1.nb |
 |---|---|---|
-| 1 | the evaluated notebook of the first stage was copied to backups/7+1_2026-10-26_before_dirac16complex.nb (section 2.1); sections 0–6 of the new notebook are cell for cell identical to it (section 4.3) | sections 0–6 unchanged |
+| 1 | the evaluated notebook of the first stage was copied to backups/7+1_2026-10-26_before_dirac16complex.nb (section 2.1); sections 0–6 of the new notebook are cell for cell identical to it (section 4.3), except for the cells of the signature explanation of 27 October 2026 (section 3.16) | sections 0–6 unchanged (but for 3.16) |
 | 2 | $`(i\Gamma^A\partial_A-m)\psi=0`$ for `dirac16complex = Table[ψ16[a] @@ X, {a, 1, 16}]`; Klein–Gordon, Hamiltonian, plane waves, Grassmann algebra, mode expansion, canonical anticommutators, charge conjugation and Lorentz covariance (section 3.2–3.6) | 7.1–7.9 |
 | 3 | $`\Gamma_0=\left(\begin{smallmatrix}0&1_8\\1_8&0\end{smallmatrix}\right)`$, $`\Gamma_i=\left(\begin{smallmatrix}\tau^{O}_i&0\\0&-\tau^{O}_i\end{smallmatrix}\right)`$: the real generators `Γ17[A]` of the first stage; every entry $`0`$ or $`\pm1`$ (section 3.1) | 7.1 |
 | 4 | complex chirality $`\chi=i\Gamma_0\cdots\Gamma_7`$ (no real one exists), $`P_{L,R}=\frac12(1\mp\chi)`$, and the two coupled equations $`(i\partial_0\pm\tau^{O}_i\partial_i)\phi_{L,R}=m\,\phi_{R,L}`$ (section 3.7) | 7.10–7.11 |
@@ -133,7 +133,7 @@ Each subsection states a decision or a derived result, the equations behind it, 
 \Gamma_A\Gamma_B+\Gamma_B\Gamma_A=2\,\eta_{AB}\,1_{16},\qquad \eta=\mathrm{diag}(+1,-1,-1,-1,-1,-1,-1,-1):\qquad \Gamma_0^2=1_{16},\quad \Gamma_i^2=-1_{16}.
 ```
 
-**Reason.** The task requires real matrices, and only this overall sign allows them. With the opposite sign $`\eta'=-\eta`$ the relations $`R_AR_B+R_BR_A=2\eta'_{AB}1_{16}`$ define $`Cl(7,1)\cong\mathbb H(8)`$. If real 16×16 matrices $`R_A`$ satisfied them, then, because $`Cl_8(\mathbb C)\cong\mathbb C(16)`$ has only one irreducible module, $`R_A=T(i\Gamma_A)T^{-1}`$ for an invertible complex $`T`$ ($`i\Gamma_A`$ satisfy the same relations). $`R_A=\overline{R_A}`$ gives $`Y\overline{(i\Gamma_A)}=(i\Gamma_A)Y`$ with $`Y=T^{-1}\overline T`$, $`Y\overline Y=1_{16}`$; since $`\overline{(i\Gamma_A)}=-i\Gamma_A`$ this is $`Y\Gamma_A=-\Gamma_AY`$, so $`Y\omega`$ commutes with all $`\Gamma_A`$ and $`Y=c\,\omega`$ (Schur), whence $`Y\overline Y=|c|^2\omega^2=-|c|^21_{16}\neq1_{16}`$. Renaming, reordering or re-signing the indices does not change the signature. The first stage proved this in 7+1.nb.
+**Reason.** The task requires real matrices, and only this overall sign allows them; it is the sign pattern of the octonion basis, $`\eta`$ being simply the squares $`e_0^2=+1`$, $`e_i^2=-1`$ of the octonion units. With the opposite sign $`\eta'=-\eta`$ the relations $`R_AR_B+R_BR_A=2\eta'_{AB}1_{16}`$ define $`Cl(7,1)\cong\mathbb H(8)`$. If real 16×16 matrices $`R_A`$ satisfied them, then, because $`Cl_8(\mathbb C)\cong\mathbb C(16)`$ has only one irreducible module, $`R_A=T(i\Gamma_A)T^{-1}`$ for an invertible complex $`T`$ ($`i\Gamma_A`$ satisfy the same relations). $`R_A=\overline{R_A}`$ gives $`Y\overline{(i\Gamma_A)}=(i\Gamma_A)Y`$ with $`Y=T^{-1}\overline T`$, $`Y\overline Y=1_{16}`$; since $`\overline{(i\Gamma_A)}=-i\Gamma_A`$ this is $`Y\Gamma_A=-\Gamma_AY`$, so $`Y\omega`$ commutes with all $`\Gamma_A`$ and $`Y=c\,\omega`$ (Schur), whence $`Y\overline Y=|c|^2\omega^2=-|c|^21_{16}\neq1_{16}`$. Renaming, reordering or re-signing the indices does not change the signature of the relation (the numbers of generators squaring to $`+1`$ and to $`-1`$). The first stage proved this in 7+1.nb.
 
 **The Dirac matrices with upper index, $`\alpha`$, $`\beta`$, $`\omega`$** (checks 1–5 of section 7.1 of 7+1.nb):
 
@@ -446,6 +446,20 @@ g<g_c=-\frac1{8J(0)}=-\frac{90\pi^4}{\Lambda^6},\qquad J(0)=\frac{\Lambda^6}{720
 - The matrices of the two proofs are $`Y`$ (no real realization for $`\eta'`$) and $`Z`$ (no real chirality); $`J`$ and $`K`$ are only the sea integrals; Euler’s Gamma function is $`\Gamma_{\rm E}`$, to distinguish it from the Dirac matrices $`\Gamma_A`$.
 - Mathematica names: `Γ17[A]`, `βD`, `αD[i]`, `ω17`, `χ17`, `EL`, `ER`, `Wch`, `ϕL`, `ϕR`, `σW[i]`, `dirac16complex`, `hKS`, `hChiKS`, and so on; in the notebook text cells the same symbols are written in plain Unicode.
 
+### 3.16 The signature: the author’s explanation of 27 October 2026
+
+**Source.** On 27 October 2026 the author of the project explained that the xAct list $`\{7,1,0\}`$ declares seven space-like dimensions and one time-like dimension, while $`\mathrm{diag}(+1,-1,\dots,-1)`$ is simply the squares of the octonion basis, and asked that this be made clear in all documentation, examples and provenance records. **What it corrected.** The version of 7+1.nb pushed in the commits 52d8729 to dc2f178 of github.com/once-ere/7plus1 declared the xAct metric of section 12 with `DefMetric[{1, 7, 0}, …]`, reading the list as the signs of $`\eta`$; since then section 12 declares `DefMetric[{7, 1, 0}, g71[-a, -b], CD, …]`, exactly as the author’s notebook Einstein-Lovelock-7+1-Nash.nb does. **What was added.** Checks in 7+1.nb — section 4.7: $`\eta`$ is the squares of the octonion basis, $`e_Ae_A=\eta_{AA}e_0`$ and $`\mathrm{Re}(e_Ae_B)=\eta_{AB}`$; section 12.2: `SignatureOfMetric[g71]` $`=\{7,1,0\}`$ with `SignDetOfMetric[g71]` $`=-1`$, $`\mathrm{Re}(e_Ae_B)=\eta_{AB}`$, and $`\mathrm{Re}(x\,x)=\eta_{AB}x^Ax^B`$; section 17: the flat metric $`\mathrm{diag}(+1,-1,-1,-1)`$ of the world brane is the squares of the basis $`e_0,e_1,e_2,e_3`$ of the quaternion subalgebra — and the same statements in the Python programs `tools/ref71.py`, `tools/ref_gravity.py` and `tools/ref_sm.py`; the explanation itself in the text of 7+1.nb (sections 1.2, 1.4, 4.2, 4.7, 7, 11, 12.2, 13, 15.1, 17) and in every document, symbol file and provenance file of the repository. **What did not change.** No result. Compared output by output with the backup below, every output of 7+1.nb is the same, except the declared list itself, the new checks and the check counts (and, as in every run, the name of the private context and the measured times); in particular every component of every Lovelock tensor is unchanged. The components follow from the component matrix of the metric, and the sign of the determinant, `SignDetOfMetric`, is $`-1`$ for both lists. **Backup.** The evaluated notebook as it was before is kept in the workspace as `backups/7+1_2026-10-27_before_signature.nb` (the folder backups/ is excluded from the repository by .gitignore), 1034401 bytes, SHA-256 `060942488caf4f45120ffd37be0123e96992a31cd7fdbde09ee4dc4ced4f5d3a`; `tools/verify_7p1_nb.py` compares every input, text and section cell of 7+1.nb with it and finds every cell present, each one unchanged or changed by this explanation, and it compares every output in the same way.
+
+**The explanation, in full.** The 7+1 spacetime has one time-like dimension ($`x_0`$, the direction of the octonion unit $`e_0=1`$) and seven space-like dimensions ($`x_1,x_2,x_3`$ ordinary space, $`x_4,\dots,x_7`$ auxiliary space). Two different objects describe this, and neither may be replaced by the other. (i) The tensor package xAct, used in section 12 of 7+1.nb exactly as in the author’s notebook Einstein-Lovelock-7+1-Nash.nb, declares the metric with `DefMetric[{7, 1, 0}, g71[-a, -b], CD, …]`: the list $`\{7,1,0\}`$ declares seven space-like dimensions, one time-like dimension and no degenerate dimension — the numbers of entries $`+1`$ and $`-1`$ of $`\eta'=\mathrm{diag}(-1,+1,\dots,+1)`$ (`η71`), the same spacetime written in the sign convention of 4+4.nb (space-like $`=+1`$, time-like $`=-1`$). (ii) The matrix $`\eta=-\eta'=\mathrm{diag}(+1,-1,\dots,-1)`$ (`η17`) is simply the squares of the octonion basis: $`e_0^2=+1`$ for the unit $`e_0=1`$ (time) and $`e_i^2=-1`$ for the seven imaginary units $`e_1,\dots,e_7`$ (space); more generally it is the real part of the product of two basis units, and it gives the quadratic form of the octonions:
+
+```math
+\begin{gathered}
+\eta_{AB}=\mathrm{Re}(e_Ae_B),\qquad e_0^2=+1,\qquad e_i^2=-1\ \ (i=1,\dots,7),\\ \mathrm{Re}(x\,x)=x_0^2-x_1^2-\cdots-x_7^2=\eta_{AB}\,x^Ax^B\qquad (x=x^Ae_A\in\mathbb O).
+\end{gathered}
+```
+
+$`\eta`$ gives the signs of the Clifford relation $`\Gamma_A\Gamma_B+\Gamma_B\Gamma_A=2\,\eta_{AB}\,1_{16}`$ of the real 16×16 Dirac matrices: time squares to $`+1_{16}`$ and each of the seven space directions to $`-1_{16}`$, exactly like the octonion units (in the notation $`Cl(p,q)`$, with $`p`$ generators squaring to $`+1`$ and $`q`$ to $`-1`$, the algebra $`Cl(1,7)\cong\mathbb R(16)`$). It also gives the signs of the metric components: $`g_{00}>0`$ along the time-like direction, negative squares along the space-like directions. Every component computed by 7+1.nb follows from the component matrix of the metric; the declared list fixes for xAct the sign of the determinant of the metric, `SignDetOfMetric[g71]` $`=-1`$, which is the same in both sign conventions, since $`\det \eta=\det \eta'=-1`$. 7+1.nb checks `SignatureOfMetric[g71]` $`=\{7,1,0\}`$, `SignDetOfMetric[g71]` $`=-1`$, $`\mathrm{Re}(e_Ae_B)=\eta_{AB}`$ and $`\mathrm{Re}(x\,x)=\eta_{AB}x^Ax^B`$.
+
 ## 4. Verification record
 
 ### 4.1 The Mathematica run
@@ -455,14 +469,14 @@ g<g_c=-\frac1{8J(0)}=-\frac{90\pi^4}{\Lambda^6},\qquad J(0)=\frac{\Lambda^6}{720
 | program | `C:\Program Files\Wolfram Research\Wolfram\15.0.1\WolframNB.exe` |
 | $Version | 15.0.1 for Microsoft Windows (64-bit) (July 2, 2026) |
 | method | `tools/run_eval.wl`: all cells evaluated in a fresh kernel (front-end kernel configuration "Eval71"; time limit 3600 s), then `NotebookSave`; requested through `tools/watch_requests.wl` (job `eval`) |
-| finished | Tue 27 Oct 2026 14:15:35 |
-| evaluation time of the whole notebook | 225.3 s |
-| private context of the notebook | `Notebook$$41$124309` |
-| input cells / output cells / message cells | 145 / 382 / 0 |
+| finished | Tue 27 Oct 2026 16:10:34 |
+| evaluation time of the whole notebook | 228.954 s |
+| private context of the notebook | `Notebook$$47$131205` |
+| input cells / output cells / message cells | 147 / 387 / 0 |
 | checks in sections 7–9 / True | 74 / 74 |
-| checks in the whole notebook / True | 346 / 346 |
-| summary of section 10 | `Length[checks]` = `202`, `failedChecks` = `{}`, `allChecksPassed` = `True` |
-| SHA-256 of the evaluated 7+1.nb (1034401 bytes) | `060942488caf4f45120ffd37be0123e96992a31cd7fdbde09ee4dc4ced4f5d3a` |
+| checks in the whole notebook / True | 351 / 351 |
+| summary of section 10 | `Length[checks]` = `203`, `failedChecks` = `{}`, `allChecksPassed` = `True` |
+| SHA-256 of the evaluated 7+1.nb (1047471 bytes) | `8ef9fed74c1c887a51945dfaa670cd1e32a2b07e4964f2f5ae59ac0e9747aa0c` |
 
 Before the final evaluation, every input cell of sections 7–9 was developed with `tools/eval_cells_log.wl`, which evaluates a generated notebook expression by expression in a fresh context, records the time, the messages and the result of every check, and stops at the first failure.
 
@@ -786,47 +800,49 @@ The numbers it computes (30-digit arithmetic). `tools/verify_7p1_nb.py`, whose o
 **tools/verify_7p1_nb.py (parses the evaluated 7+1.nb; exit code 0)**
 
 ```text
-input cells                                                                                                                                            : 145
-output cells                                                                                                                                           : 382
-message cells (must be 0)                                                                                                                              : 0
-check outputs                                                                                                                                          : 310
-check outputs that are True                                                                                                                            : 310
-check["..."] calls in the input cells                                                                                                                  : 310
-$Version output                                                                                                                                        : ['{"15.0.1 for Microsoft Windows (64-bit) (July 2, 2026)","Notebook$$41$124309`"}']
-private notebook context                                                                                                                               : True
-Length[checks]                                                                                                                                         : 346
-failedChecks == {}                                                                                                                                     : True
-allChecksPassed output True                                                                                                                            : True
-tau[A] printed == 4+4 tau[A] (python)                                                                                                                  : True
-tauO[A] printed == python tauO[A]                                                                                                                      : True
-Gamma17[A] printed == python G17[A]                                                                                                                    : True
-gridO printed == python octonion table                                                                                                                 : True
-gridx44 printed == python split table (4+4.nb)                                                                                                         : True
-Lambda boost/rotation printed                                                                                                                          : True
-8 real on-shell spinors printed solve (pslash - m) w = 0 (python check)                                                                                : True
-classification table printed                                                                                                                           : True
-section 7: check outputs (all True)                                                                                                                    : 35 (True)
-section 8: check outputs (all True)                                                                                                                    : 23 (True)
-section 9: check outputs (all True)                                                                                                                    : 16 (True)
-section 7: printed Sqrt[5] u_s(p) == python (5 e_s; M^T e_s) and (pslash - m) u_s == 0                                                                 : True
-section 8: printed closed forms of int k^6 m*/E and int k^6 E: d/dkF == integrands, zero at kF = 0 (sympy)                                             : True
-sections 8-9: 23 printed numbers agree with tools/ref_dirac16.py to 17 digits                                                                          : True
-sections 8-9: G_S == -98750, G_V == 20000 printed                                                                                                      : True
-tools/ref_dirac16.py: all its boolean checks True                                                                                                      : True
-sections 0-6: the 166 input and text cells equal those of the backup                                                                                   : True
-section 11: check outputs (all True)                                                                                                                   : 7 (True)
-section 12: check outputs (all True)                                                                                                                   : 25 (True)
-section 13: check outputs (all True)                                                                                                                   : 15 (True)
-section 14: check outputs (all True)                                                                                                                   : 14 (True)
-section 15: check outputs (all True)                                                                                                                   : 16 (True)
-section 16: check outputs (all True)                                                                                                                   : 8 (True)
-section 17: check outputs (all True)                                                                                                                   : 10 (True)
-section 18: check outputs (all True)                                                                                                                   : 7 (True)
-section 19: check outputs (all True)                                                                                                                   : 6 (True)
-summary table: entries == Length[checks], all True                                                                                                     : True
-summary table: every printed check is listed                                                                                                           : True
-sections 0-10: the 368 input and text cells equal those of the backup taken before sections 11-20                                                      : True
-sections 14-19: 27 groups of printed numbers agree with the Python programs (relative 1e-6; rounded prints 1e-4; ODE and ill-conditioned results 1e-5) : True
+input cells                                                                                                                                                                                                                                                                                             : 147
+output cells                                                                                                                                                                                                                                                                                            : 387
+message cells (must be 0)                                                                                                                                                                                                                                                                               : 0
+check outputs                                                                                                                                                                                                                                                                                           : 315
+check outputs that are True                                                                                                                                                                                                                                                                             : 315
+check["..."] calls in the input cells                                                                                                                                                                                                                                                                   : 315
+$Version output                                                                                                                                                                                                                                                                                         : ['{"15.0.1 for Microsoft Windows (64-bit) (July 2, 2026)","Notebook$$47$131205`"}']
+private notebook context                                                                                                                                                                                                                                                                                : True
+Length[checks]                                                                                                                                                                                                                                                                                          : 351
+failedChecks == {}                                                                                                                                                                                                                                                                                      : True
+allChecksPassed output True                                                                                                                                                                                                                                                                             : True
+tau[A] printed == 4+4 tau[A] (python)                                                                                                                                                                                                                                                                   : True
+tauO[A] printed == python tauO[A]                                                                                                                                                                                                                                                                       : True
+Gamma17[A] printed == python G17[A]                                                                                                                                                                                                                                                                     : True
+gridO printed == python octonion table                                                                                                                                                                                                                                                                  : True
+gridx44 printed == python split table (4+4.nb)                                                                                                                                                                                                                                                          : True
+Lambda boost/rotation printed                                                                                                                                                                                                                                                                           : True
+8 real on-shell spinors printed solve (pslash - m) w = 0 (python check)                                                                                                                                                                                                                                 : True
+classification table printed                                                                                                                                                                                                                                                                            : True
+section 7: check outputs (all True)                                                                                                                                                                                                                                                                     : 35 (True)
+section 8: check outputs (all True)                                                                                                                                                                                                                                                                     : 23 (True)
+section 9: check outputs (all True)                                                                                                                                                                                                                                                                     : 16 (True)
+section 7: printed Sqrt[5] u_s(p) == python (5 e_s; M^T e_s) and (pslash - m) u_s == 0                                                                                                                                                                                                                  : True
+section 8: printed closed forms of int k^6 m*/E and int k^6 E: d/dkF == integrands, zero at kF = 0 (sympy)                                                                                                                                                                                              : True
+sections 8-9: 23 printed numbers agree with tools/ref_dirac16.py to 17 digits                                                                                                                                                                                                                           : True
+sections 8-9: G_S == -98750, G_V == 20000 printed                                                                                                                                                                                                                                                       : True
+tools/ref_dirac16.py: all its boolean checks True                                                                                                                                                                                                                                                       : True
+sections 0-6: the 166 input and text cells of the backup are all present, 159 unchanged, 7 changed and 1 added by the signature explanation of 27 October 2026                                                                                                                                          : True
+section 11: check outputs (all True)                                                                                                                                                                                                                                                                    : 7 (True)
+section 12: check outputs (all True)                                                                                                                                                                                                                                                                    : 28 (True)
+section 13: check outputs (all True)                                                                                                                                                                                                                                                                    : 15 (True)
+section 14: check outputs (all True)                                                                                                                                                                                                                                                                    : 14 (True)
+section 15: check outputs (all True)                                                                                                                                                                                                                                                                    : 16 (True)
+section 16: check outputs (all True)                                                                                                                                                                                                                                                                    : 8 (True)
+section 17: check outputs (all True)                                                                                                                                                                                                                                                                    : 11 (True)
+section 18: check outputs (all True)                                                                                                                                                                                                                                                                    : 7 (True)
+section 19: check outputs (all True)                                                                                                                                                                                                                                                                    : 6 (True)
+summary table: entries == Length[checks], all True                                                                                                                                                                                                                                                      : True
+summary table: every printed check is listed                                                                                                                                                                                                                                                            : True
+sections 0-10: the 368 input and text cells of the backup taken before sections 11-20 are all present, 360 unchanged, 8 changed and 1 added by the signature explanation of 27 October 2026                                                                                                             : True
+sections 0-20: the 601 input and text cells of the backup taken before the signature explanation are all present, 586 unchanged, 15 changed and 4 added by that explanation                                                                                                                             : True
+sections 0-20, outputs: of the 382 outputs of the backup taken before the signature explanation 373 are identical; the others differ only in the check counts and tables of the summary sections, the declared list {7,1,0}, the private context name and measured times; 5 new check outputs, all True : True
+sections 14-19: 27 groups of printed numbers agree with the Python programs (relative 1e-6; rounded prints 1e-4; ODE and ill-conditioned results 1e-5)                                                                                                                                                  : True
 
 VERDICT: ALL CROSS-CHECKS PASSED
 ```
@@ -954,58 +970,58 @@ VERDICT: ALL CHECKS PASSED
 
 | file | SHA-256 |
 |---|---|
-| `7+1.nb` (evaluated) | `060942488caf4f45120ffd37be0123e96992a31cd7fdbde09ee4dc4ced4f5d3a` |
+| `7+1.nb` (evaluated) | `8ef9fed74c1c887a51945dfaa670cd1e32a2b07e4964f2f5ae59ac0e9747aa0c` |
 | `4+4.nb` | `740023233eaa0cd24ca0e2e7010094671b1d314b698114c08db94050d3e0aed5` |
 | `7+1_2026-10-26_before_dirac16complex.nb` (in backups/, workspace only) | `f7abe7279b5540e914de876dc055c199bd491b9c2d9522bf28dbc23689e237ce` |
 | `tools/cayley_dickson_formulas.py` | `bdde8c4c8199b09ef36ae4e15d5d53bc62744fc85b4c5ba52eab5516f77b5d5f` |
 | `tools/cayley_dickson_match.py` | `73f2cc584bbe1a3620c50890ffe5fb299857b04a14bc34fed2f9eaefd2e36c4e` |
 | `tools/classify_clifford.py` | `42291276f46b046183fdbb7b62be7c5cedfd695fe9da96ac256afa23580930a9` |
-| `tools/doc_common.py` | `eb63a44f3da35fc75dae8420186867f85fecfa15415eefa108b5b0f23c646385` |
-| `tools/doc_dirac16.py` | `7916c204596a471015e9408616aaca1b7b89575adc774b808c468f337e8418de` |
+| `tools/doc_common.py` | `1e37b140f8334aa813418f4a79b7d0a8e67740b2c4a3fe4d5f4e34abde690d3e` |
+| `tools/doc_dirac16.py` | `3f81df5fe2237843edd29116e5676679527b80e946623890e6289a1487f754f1` |
 | `tools/doc_dirac16_common.py` | `9324b4fae59e51019125ebe09157f3c8c9489560e1383a697fe6c22a3a93e208` |
-| `tools/doc_dirac16_provenance.py` | `9ac843eac503c8f3d1417a67e82765c0f896422171a897a3200b67f80d420dfe` |
-| `tools/doc_dirac16_symbols.py` | `70cee4b84501c0f7a7a02105e39acfa6e21c61835a667eca28e43e6ad65cf674` |
-| `tools/doc_gravity.py` | `6d0da11131b4f0473855658cdb1c2a34afbdac630cfcf528a9ecbe5cf5ef3d90` |
-| `tools/doc_gravity_provenance.py` | `2809bf6cc4f6c44c4f9a66422321329103bb4d231cbc3c1e7eea794026fe77f4` |
-| `tools/doc_gravity_symbols.py` | `da852b5feb4a7d68b44da53eb254471d1c8546d305b6dda3c8e59440e1372ae8` |
-| `tools/doc_ks_gravity.py` | `e62dffaadee563428788e9600ba14c92acc346186d58d70a9b41193e917f9ff8` |
-| `tools/doc_ks_gravity_provenance.py` | `1a97d4be904ff2921c426ae92dee4ef3a3eb9dde20f2f9ef55babb5a9923e4f1` |
-| `tools/doc_ks_gravity_symbols.py` | `afa9b5b30b13e5ab90a2cf74bd6ae5ef8a5dbaa34c25ce33a1ce6011033f9fbd` |
-| `tools/doc_provenance.py` | `49e7b60c6ce31ad7869b3b9c3eaefd28517e8b4ffd7e4d8c0e9651d461bb56a1` |
-| `tools/doc_readme.py` | `1b99079a18c39f9ba7a73465982787c9b9139079d3a4af98e65a261bb5eaacff` |
-| `tools/doc_readme_stage3.py` | `8076bbaf4f0c8854a9411f95cd1637fc1dcfeae1fc45f2701d88ff7f356a67d6` |
-| `tools/doc_sm.py` | `faa244fed5ec09465f576661ad601def9e815e56389361e037e98fd5b45553c0` |
-| `tools/doc_sm_provenance.py` | `ab0f9d1cce27f2250bfa278ff72670bd40339cfa8ca0ecc025c3e099a2d4118a` |
-| `tools/doc_sm_symbols.py` | `353df4989623fed65925777ce46759ff296f3cec3bd42797123b7b4b0b3d9766` |
+| `tools/doc_dirac16_provenance.py` | `daf12ff5757d0c4ca8857840d027907f21429e7340b2f02c3b50fbf8edb2d663` |
+| `tools/doc_dirac16_symbols.py` | `69224cd370206759e31abd225fc556630455d6d99226db0bc46068eae9b27db0` |
+| `tools/doc_gravity.py` | `184c7aa38742a2057449a98037a8521842fc81072613611c228c63c17083af0c` |
+| `tools/doc_gravity_provenance.py` | `3845317cdef374106b60524416eda8e3a81fd5d2a8e35c327c3f1ae32925b0f4` |
+| `tools/doc_gravity_symbols.py` | `fcff3b16ea23fa62fe205e66310552f7d3e119c619c150379e67bd17150b5d22` |
+| `tools/doc_ks_gravity.py` | `9aa73527f90318ee3444fcf97af41d2255a5d8fb1697d9fa0128ca671e94e51f` |
+| `tools/doc_ks_gravity_provenance.py` | `112b51528ab67acd8ed110b57c347352c602c984eae1408d7dd36e41c74fc0ea` |
+| `tools/doc_ks_gravity_symbols.py` | `2acdf7f901b9cb7c3047b6de6895d32385be37d16789df9d9124f976c6d5a515` |
+| `tools/doc_provenance.py` | `b7fab7b6147c23db63ab09566781920e2117ef760178d4f49ecdb60e24990896` |
+| `tools/doc_readme.py` | `0d52ed557785c4ddf6a445b5e9f4db5171894111047131e4b972ae82d193b9dc` |
+| `tools/doc_readme_stage3.py` | `89e02b3b0e07ff99efc3f19d503043a98c47b7eda5b35a0dac7d9ca29a5e2b54` |
+| `tools/doc_sm.py` | `d7245d8c5f5dfd2687e987d43d9d544d0a1a46538901066e244fe0261bd427c3` |
+| `tools/doc_sm_provenance.py` | `742dec7e9ea7214a8921777a260838830c18204223b5cbb37b57962ab522d01c` |
+| `tools/doc_sm_symbols.py` | `a019dcbf5e68f3f00f41613f5c592b84eafa8b48d4023208516fd5d93b8893f8` |
 | `tools/doc_stage3_common.py` | `2364ce6eff9533051a9b56a5435e59039cf9417c03a477d75d40f68c8dd4b1d6` |
-| `tools/doc_symbols.py` | `f5bf59d7962459f7e8bc06581852e0be3b695f7cec7513b01a9e91fcfa1fa507` |
+| `tools/doc_symbols.py` | `2c56ea7234b0c490f30ce7b6dd01adf5ee0dbc1bddc99fb626e64b8b510c4e9b` |
 | `tools/docgen.py` | `5db6f40cb1eb10e48da5b69c3893829737c3d8d2e90edcb28311a980c1aa5fea` |
 | `tools/eval_cells_log.wl` | `833b6bd854cab253e5bb935c28f28ab50b286f409d130f433fa5dfb9b9236bbe` |
 | `tools/extra71.py` | `9935ef99cd9300f2a7d4f06d36cf7e173912ebae61b6feff448ebe0588853168` |
 | `tools/git_push.wl` | `ac05a6d0256834b48cc9fa943fa247bccc574f723e68f053d00bfba9aca2e21a` |
 | `tools/lovelock71.py` | `d93ecbd0f82adb972218d59dfe32999a4af944945ca9758607f3a633e1af95a1` |
-| `tools/make_7p1_nb.py` | `2fac94dfd0c9fcf3aed8d6e90a77fbbb8ab1c8450819ff591b7e5cf7b5787d6f` |
+| `tools/make_7p1_nb.py` | `7407dbef711b841fa0adb7817c6fb5bfe5018bc02a603100a46dd2169b93c4fe` |
 | `tools/make_docs.py` | `2c71a87dc93d5612106129a671af4f67b351d4f290e586388f42106a39b74f81` |
-| `tools/nb_part_gravity.py` | `55d16f735e16df7a7cd2aa70d322969bc6cf82c777965f112b5a9acf46a6ad5f` |
-| `tools/nb_part_ks_gravity.py` | `886814fedc4cd015c63b950ee83724025ba21fd6c3e56b68dcb7f2f07afdc205` |
-| `tools/nb_part_sm.py` | `20782f1fe557fd3f3dea7417e89ecd42a1602f7a48599fcdcfd0cff77f120ecc` |
+| `tools/nb_part_gravity.py` | `c4caf2ad5c932e8f603341edade5f4b98fa784feb05906c051eab7c884cd68f8` |
+| `tools/nb_part_ks_gravity.py` | `a656c0ad040b4576b75b17e029545109e531c8e656ad99bfdb5cba946e967772` |
+| `tools/nb_part_sm.py` | `43e92beed57453a4b57931de6d603ac6c218efba6e4005133b69b8054a975c5b` |
 | `tools/nbparse.py` | `ad2255a8864be7447a55023840b327f789cb8c9d868d42261b19261653847423` |
 | `tools/nbwrite.py` | `dcbe8ce5b3203c89a1d17fbe946e1b6b7bb7f8895afa944743d651cfefadeffb` |
 | `tools/octalg.py` | `36b50120b69a963e252e07d60ec007755220822b4ad339716ea7aed93d58eb24` |
 | `tools/ref44.py` | `ab100c3ebcc055fbe59c132a02f80ecb17630e934e99d59f88e919ec8064faf5` |
-| `tools/ref71.py` | `4ac783b1ab221317387f2a74e0be60f114fd64940fe3ea96af79b33ee7dcb8b0` |
-| `tools/ref_dirac16.py` | `a6e139ebe5199621a95c8adc772bc3e1e9b452c0ca20a963c536cbfc6539319c` |
-| `tools/ref_gravity.py` | `2bfdc087ed4dc7d84258e04449d11141b415f54b992e65d42fa42cace08ff6bd` |
-| `tools/ref_ks_gravity.py` | `8d082985c5161254d7c6294c0310f7807aa037bff27a8cd3ec4d3f8a9f6e0550` |
-| `tools/ref_sm.py` | `d36d23f472c8339d80f1d0b1eb46c509398562053ead7033d96b054782e73b49` |
+| `tools/ref71.py` | `1a7a06eb0add3f459611776dc9c474a5bb959d947a9db949db4612b1ab9434e0` |
+| `tools/ref_dirac16.py` | `32e8c50de1c480bc4ef50d254d04a9aaa0e56b486198edf0355905c0dda25674` |
+| `tools/ref_gravity.py` | `f07cf8adaff585af89c87d19532f1aaa7db606ad88ae90483b2d1f41341edf36` |
+| `tools/ref_ks_gravity.py` | `b6488ef24b1c16aacd8ff6cf6a5a1ba3f316e082449ad97480022d1a2638327f` |
+| `tools/ref_sm.py` | `f3f80806893f42bbf166e1f1de896ffd611dbfe847685da8e3ee367e9cde6aba` |
 | `tools/run_eval.wl` | `85ba54f18a8362a69c991e66a207230dd001ba18e52639fc1edf7cac761aac30` |
-| `tools/verify_7p1_nb.py` | `d3aaeeeb7f380f63d4e7610c5b4235973cadd1d6db0ebf09ecbd65d561795d17` |
+| `tools/verify_7p1_nb.py` | `4ddecdc6e3718fd77f28e8ed8c4b5835d531cf2d153de5a736583c0120e2c1ab` |
 | `tools/watch_requests.wl` | `d9ceedb0b45ac3cf9b4dd8519ac164953f2c80e5188b1557fe20ef5107ae352d` |
 
 ## 5. Process and environment
 
 - Workspace: `D:\Developer\github\7+1` on Windows. Python and LaTeX ran in a Linux shell with that folder mounted; intermediate files went to `build/`, which the repository’s .gitignore excludes.
-- The notebook is generated by `tools/make_7p1_nb.py` (sections 0–6 by the code of the first stage, unchanged; sections 7–10 appended), with cells written by `tools/nbwrite.py` as pure ASCII (named characters such as `\[CapitalGamma]`, and `\:03d6` for $`\varpi`$).
+- The notebook is generated by `tools/make_7p1_nb.py` (sections 0–6 by the code of the first stage, unchanged except for the signature explanation of 27 October 2026; sections 7–10 appended), with cells written by `tools/nbwrite.py` as pure ASCII (named characters such as `\[CapitalGamma]`, and `\:03d6` for $`\varpi`$).
 - All Wolfram Language work ran in the Wolfram 15.0.1 front end (the program of section 4.1), version 15.0.1 for Microsoft Windows (64-bit) (July 2, 2026). Jobs were requested without keyboard input through `tools/watch_requests.wl`: loaded once in that front end, it reads `build/request.txt` every 10 seconds and evaluates `tools/run_eval.wl` (job `eval`), `tools/git_push.wl` (job `push`) or a development file such as `tools/eval_cells_log.wl` (job `run`).
 - Python 3.13.17 with sympy 1.14.0, mpmath 1.3.0 and numpy 2.5.3; fontTools reads the font coverage for the LaTeX output.
 - This record and the main document and symbol dictionary of this stage are generated by `tools/make_docs.py` from the modules `docgen.py`, `doc_common.py`, `doc_dirac16_common.py`, `doc_dirac16.py`, `doc_dirac16_symbols.py` and `doc_dirac16_provenance.py` of the folder tools/; one source renders Markdown and LaTeX, and every matrix, check list and number is computed by Python or parsed from the evaluated 7+1.nb. The LaTeX is compiled with XeLaTeX (TeX Live 2022, `latexmk -xelatex`, fonts Latin Modern and DejaVu).

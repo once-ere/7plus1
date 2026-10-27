@@ -38,9 +38,13 @@ def build(D):
     d.eq(r'\Gamma^{(1,7)}_0=T_0,\qquad \Gamma^{(1,7)}_i=T_0\,T_i\ \ (i=1,2,3),\qquad \Gamma^{(1,7)}_k=T_0\,T_k\,S_{44}\ \ (k=4,5,6,7),')
     d.eq(r'\Gamma^{(1,7)}_A\Gamma^{(1,7)}_B+\Gamma^{(1,7)}_B\Gamma^{(1,7)}_A=2\,\eta^{(1,7)}_{AB}\,1_{16},\qquad '
          r'\eta^{(1,7)}=\mathrm{diag}(+1,-1,-1,-1,-1,-1,-1,-1).')
-    d.p('All entries are $0,\\pm1$. Time ($x_0$, the octonion unit) squares to $+1$, the seven space directions to $-1$. '
+    d.p('All entries are $0,\\pm1$. Time ($x_0$, the octonion unit) squares to $+1$, the seven space directions to $-1$ — '
+        'exactly like the octonion basis: $\\eta^{(1,7)}$ is simply the squares of the octonion units, $e_0^2=+1$, $e_i^2=-1$, '
+        'and $\\eta^{(1,7)}_{AB}=\\mathrm{Re}(e_Ae_B)$. '
         'The quadratic form is the real part of the octonion square, $\\mathrm{Re}(x\\,x)=x_0^2-x_1^2-\\dots-x_7^2$; the algebra '
-        'is $Cl(1,7)\\cong\\mathbb{R}(16)$ (section 7.2).')
+        'is $Cl(1,7)\\cong\\mathbb{R}(16)$ (section 7.2). The spacetime has one time-like and seven space-like dimensions; the '
+        'tensor package xAct (section 12 of 7+1.nb) declares it, as the author’s notebook Einstein-Lovelock-7+1-Nash.nb does, '
+        'with the signature list $\\{7,1,0\\}$: seven space-like dimensions, one time-like dimension, none degenerate (section 2).')
     d.p('**The sign convention of 4+4.nb.** 4+4.nb writes metrics as "space-like $=+1$, time-like $=-1$". In that convention '
         'the 7+1 metric is $\\eta^{(7,1)}=\\mathrm{diag}(-1,+1,\\dots,+1)=-\\eta^{(1,7)}$ and the relation '
         '$\\Gamma_A\\Gamma_B+\\Gamma_B\\Gamma_A=2\\eta^{(7,1)}_{AB}1_{16}$ defines $Cl(7,1)\\cong\\mathbb{H}(8)$, which has NO '
@@ -77,14 +81,17 @@ def build(D):
     d.p('Metrics (Mathematica names in brackets):')
     d.align([r'\eta^{(4,4)}&=\mathrm{diag}(+1,+1,+1,+1,-1,-1,-1,-1) && [\texttt{η4488}]\ \text{(4+4.nb: space-like }+1\text{, time-like }-1)',
              r'\eta^{(7,1)}&=\mathrm{diag}(-1,+1,+1,+1,+1,+1,+1,+1) && [\texttt{η71}]\ \text{(7+1 in the sign convention of 4+4.nb)}',
-             r'\eta^{(1,7)}&=-\eta^{(7,1)}=\mathrm{diag}(+1,-1,\dots,-1) && [\texttt{η17}]\ \text{(7+1, octonionic convention)}',
+             r'\eta^{(1,7)}&=-\eta^{(7,1)}=\mathrm{diag}(+1,-1,\dots,-1) && [\texttt{η17}]\ \text{(7+1: the squares of the octonion basis)}',
              r'g^{O}&=1_8 && [\texttt{gO}]\ \text{(norm of the octonions)}'])
+    signature_block(d, eta=r'\eta^{(1,7)}', eta71=r'\eta^{(7,1)}', gam=r'\Gamma^{(1,7)}')
     d.p('Conventions. Indices $A,B,K,L\\in\\lbrace0,\\dots,7\\rbrace$ label coordinates, octonion units and Clifford generators; '
         '$i,j\\in\\lbrace1,\\dots,7\\rbrace$ label imaginary units and space directions; $h\\in\\lbrace1,2,3\\rbrace$. $1_n$ is the '
         'identity matrix, $M^{\\mathsf T}$ the transpose, $\\delta_{AB}$ the Kronecker delta, $\\lbrace X,Y\\rbrace=XY+YX$, and '
         '$\\left(\\begin{smallmatrix}a&b\\\\c&d\\end{smallmatrix}\\right)$ a matrix of blocks. The index 8 on a Clifford generator '
         'denotes the ordered product of all eight, as in 4+4.nb ($T_8=T_0T_1\\cdots T_7$). $Cl(p,q)$ always means: $p$ '
-        'generators square to $+1$ and $q$ to $-1$, i.e. $v^2=Q(v)$ with $Q$ of signature $(p,q)$. Mathematica lists are 1-based, '
+        'generators square to $+1$ and $q$ to $-1$, i.e. $v^2=Q(v)$ with $Q$ of signature $(p,q)$ (for the real 7+1 generators the '
+        'signs of the squares of the octonion basis, hence $Cl(1,7)$; this label is not the xAct list $\\{7,1,0\\}$, which counts '
+        'seven space-like and one time-like dimension). Mathematica lists are 1-based, '
         'so the metric entry $\\eta_{AB}$ is written `η[[A+1, B+1]]` in the notebook.')
 
     # ------------------------------------------------------------------------------------------------
@@ -376,7 +383,8 @@ def build(D):
         'applied to the complexified 8×8 matrices; only the time component is complex.')
     d.h2('7.4 Theorem: with $\\eta^{(7,1)}$ there is no real 16×16 realization')
     d.p('**Theorem.** There are no real 16×16 matrices $R_0,\\dots,R_7$ with $R_AR_B+R_BR_A=2\\eta^{(7,1)}_{AB}1_{16}$. Reordering, '
-        'renaming or changing the signs of the indices cannot help, because none of these changes the signature $(7,1)$.')
+        'renaming or changing the signs of the indices cannot help, because none of these changes the signature $(7,1)$ of this '
+        'relation: seven generators square to $+1$ and one to $-1$, the opposite of the squares of the octonion basis.')
     d.p('**Proof.** $Cl_8(\\mathbb C)\\cong\\mathbb C(16)$ has exactly one irreducible module, $\\mathbb C^{16}$. If real $R_A$ '
         'existed, $R_A$ and $\\Gamma^{(7,1)}_A$ would be two 16-dimensional modules, so $R_A=T\\,\\Gamma^{(7,1)}_A\\,T^{-1}$ for some '
         'invertible complex $T$. Since $R_A$ is real, complex conjugation gives')
@@ -508,7 +516,8 @@ def build(D):
         'classification table printed by Mathematica coincide with the Python values. For sections 7–9, `ref_dirac16.py` repeats every '
         'construction (sympy, mpmath with 30 digits, numpy) with %d checks, all True, and `verify_7p1_nb.py` compares the printed spinors, '
         'the printed closed-form integrals and 23 printed numbers with it (agreement to at least 17 digits) and confirms that sections 0–6 '
-        'are cell for cell the notebook of the first stage.' % len(D['ref_bool']))
+        'are cell for cell the notebook of the first stage, except the cells of the explanation of the signature added on 27 October 2026 '
+        '(section 2).' % len(D['ref_bool']))
     if D.get('s3'):
         d.p(S3.verification_text(D['s3']))
 
@@ -545,7 +554,8 @@ def build(D):
     from doc_dirac16 import num as num16
     hs, nj = D['hs'], D['nj']
     d.h1('11. Sections 7–10: the Dirac equation and the Kohn–Sham theories of dirac16complex')
-    d.p('Sections 7–10 of 7+1.nb were appended in a second stage (sections 0–6 are unchanged). They contain the Dirac equation of a '
+    d.p('Sections 7–10 of 7+1.nb were appended in a second stage (sections 0–6 are unchanged, except for the explanation of the signature '
+        'of section 2, added on 27 October 2026). They contain the Dirac equation of a '
         '16-component quantized fermion field named dirac16complex on the real 7+1 spacetime, with eight REAL 16×16 Dirac matrices; '
         'its chiral form as two 8-component equations; and the 16-component and chiral Kohn–Sham theories of that field coupled to '
         'itself. This section states the results with the notation of this document (section 3); %d checks of 7+1.nb verify them.'

@@ -27,7 +27,10 @@ def results_paragraph(d, D3):
     c = counts(D3)
     n = sum(v[0] for v in c.values())
     d.p('**Gravity, the self-coupled field in gravitational fields, and the Standard Model** (sections 11–19 of the notebook; section 12 '
-        'below). On a metric $g_{\\mu\\nu}(X)$ of signature $(+,-,\\dots,-)$ the Lovelock tensors of order $k$, with the generalized Kronecker '
+        'below). On a metric $g_{\\mu\\nu}(X)$ of the 7+1 spacetime — one time-like and seven space-like dimensions, declared in xAct, '
+        'as in the reference notebook Einstein-Lovelock-7+1-Nash.nb, with the signature list $\\{7,1,0\\}$ (seven space-like, one time-like, '
+        'none degenerate), and components with the signs of $\\eta^{(1,7)}=\\mathrm{diag}(+1,-1,\\dots,-1)$, simply the squares of the '
+        'octonion basis ($g_{00}>0$) — the Lovelock tensors of order $k$, with the generalized Kronecker '
         'delta $\\delta^{\\mu_1\\cdots\\mu_n}_{\\nu_1\\cdots\\nu_n}=\\det[\\delta^{\\mu_i}_{\\nu_j}]$ and the Riemann tensor $R^{\\gamma\\delta}{}_{\\alpha\\beta}$, are')
     d.eq(r'E^{(k)\mu}{}_\nu=-\frac{1}{2^{k+1}}\,\delta^{\mu\alpha_1\beta_1\cdots\alpha_k\beta_k}_{\nu\gamma_1\delta_1\cdots\gamma_k\delta_k}\,'
          r'R^{\gamma_1\delta_1}{}_{\alpha_1\beta_1}\cdots R^{\gamma_k\delta_k}{}_{\alpha_k\beta_k}\qquad(E^{(1)}=G,\ E^{(4)}\equiv0\ \text{in eight dimensions}),')
@@ -43,7 +46,7 @@ def results_paragraph(d, D3):
 def notation_rows():
     """rows (symbol, Mathematica, definition) for the notation table of README section 3"""
     return [
-        ['$g_{\\mu\\nu}$, $\\{{}^{\\lambda}_{\\mu\\nu}\\}$', '`cv["g"]`, `cv["chr"]`', 'section 12: metric (signature $(+,-,\\dots,-)$) and Christoffel symbols (never written $\\Gamma$)'],
+        ['$g_{\\mu\\nu}$, $\\{{}^{\\lambda}_{\\mu\\nu}\\}$', '`cv["g"]`, `cv["chr"]`', 'section 12: metric (one time-like and seven space-like dimensions, xAct signature $\\{7,1,0\\}$; components with the signs of $\\eta^{(1,7)}$, $g_{00}>0$) and Christoffel symbols (never written $\\Gamma$)'],
         ['$R^\\rho{}_{\\sigma\\mu\\nu}$, $R_{\\sigma\\nu}$, $R$, $G^\\mu{}_\\nu$', '`cv["riem"]`, `cv["ric"]`, `cv["R"]`, `cv["G"]`', 'Riemann (Landau–Lifshitz), Ricci, scalar curvature, Einstein tensor'],
         ['$E^{(k)\\mu}{}_\\nu$, $L_k$', '`Lovelock1/2/3`, `lovelockE`, `lovelockL`', 'Lovelock tensors and densities ($k=1,2,3$)'],
         ['$\\alpha_k$, $\\bar\\Lambda$, $\\kappa$', '`alf[k]`, `lamb`, `kap`', 'Lovelock couplings ($\\alpha_1=1$), cosmological constant, $8\\pi G_8$'],
@@ -115,10 +118,14 @@ def readme_section(d, D3, secno=12):
     c = counts(D3)
     nm = D3['nums']
     d.h1('%d. Sections 11–19: gravity, the self-coupled dirac16complex in gravitational fields, and the Standard Model' % secno)
-    d.p('Sections 11–19 of 7+1.nb (and the summary section 20) were appended in a third stage; sections 0–10 are unchanged. They rebuild the '
+    d.p('Sections 11–19 of 7+1.nb (and the summary section 20) were appended in a third stage; sections 0–10 are unchanged, except for the '
+        'explanation of the signature added on 27 October 2026 (section 2). They rebuild the '
         'ideas of the repository Dirac_claude on the 7+1 spacetime of this project — ONE time coordinate $x_0$ and SEVEN space coordinates '
         '$x_1,\\dots,x_7$ ($x_1,x_2,x_3$ ordinary space, $x_4,\\dots,x_7$ auxiliary space); the 4+4 metric of Dirac_claude is not used. Here '
-        '$\\Gamma_A=\\Gamma^{(1,7)}_A$, $\\Gamma^A=\\eta_{(1,7)}^{AA}\\Gamma_A$, $\\eta=\\eta^{(1,7)}=\\mathrm{diag}(+1,-1,\\dots,-1)$, $\\chi=i\\Gamma_0\\Gamma_1\\cdots\\Gamma_7$, '
+        '$\\Gamma_A=\\Gamma^{(1,7)}_A$, $\\Gamma^A=\\eta_{(1,7)}^{AA}\\Gamma_A$, $\\eta=\\eta^{(1,7)}=\\mathrm{diag}(+1,-1,\\dots,-1)$ — simply the '
+        'squares of the octonion basis, $e_0^2=+1$, $e_i^2=-1$, $\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$ (the tensor package xAct declares the '
+        'same spacetime, as the reference notebook does, with the signature list $\\{7,1,0\\}$: seven space-like dimensions, one '
+        'time-like dimension, none degenerate) —, $\\chi=i\\Gamma_0\\Gamma_1\\cdots\\Gamma_7$, '
         '$\\Psi$ is the field dirac16complex and $\\bar\\Psi=\\Psi^\\dagger\\Gamma_0$; a prime is $d/dx_0$. The sections contain %d, %d and %d checks '
         '(gravity, Kohn–Sham, Standard Model), of which %d, %d and %d are True.' % (c['grav'][0], c['ks'][0], c['sm'][0],
                                                                               c['grav'][1], c['ks'][1], c['sm'][1]))
@@ -241,7 +248,7 @@ def symbols_section(d, D3, secno=10):
         '$\\eta=\\eta^{(1,7)}$, and Greek indices $\\mu,\\nu,\\lambda,\\rho,\\sigma,\\alpha,\\beta,\\gamma,\\delta\\in\\lbrace0,\\dots,7\\rbrace$ are coordinate indices '
         '(on the brane $\\mu,\\nu\\in\\lbrace0,\\dots,3\\rbrace$).')
     d.table(['symbol', 'Mathematica', 'definition', 'meaning'], [
-        ['$g_{\\mu\\nu}$, $g^{\\mu\\nu}$', '`cv["g"]`, `cv["ginv"]`', 'signature $(+,-,\\dots,-)$', 'metric of 7+1 spacetime and its inverse'],
+        ['$g_{\\mu\\nu}$, $g^{\\mu\\nu}$', '`cv["g"]`, `cv["ginv"]`', 'one time-like, seven space-like dimensions: xAct signature $\\{7,1,0\\}$; components with the signs of $\\eta$ ($g_{00}>0$)', 'metric of 7+1 spacetime and its inverse'],
         ['$\\{{}^{\\lambda}_{\\mu\\nu}\\}$', '`cv["chr"]`', '(10.1)', 'Christoffel symbols'],
         ['$R^\\rho{}_{\\sigma\\mu\\nu}$', '`cv["riem"]`', '(10.1)', 'Riemann tensor'],
         ['$R_{\\sigma\\nu}$, $R$, $G^\\mu{}_\\nu$', '`cv["ric"]`, `cv["R"]`, `cv["G"]`', '(10.1)', 'Ricci tensor, scalar curvature, Einstein tensor'],
@@ -304,7 +311,8 @@ def provenance_section(d, D, D3, runs3, secno=7):
     c = counts(D3)
     d.h1('%d. The third stage: sections 11–20 of 7+1.nb' % secno)
     d.p('This section records the provenance of the gravity, Kohn–Sham and Standard Model sections (11–19) and of the final summary (20). '
-        'Notation: $\\Gamma_A=\\Gamma^{(1,7)}_A$, $\\Gamma^A=\\eta_{(1,7)}^{AA}\\Gamma_A$, $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$, $\\Psi$ the field dirac16complex.')
+        'Notation: $\\Gamma_A=\\Gamma^{(1,7)}_A$, $\\Gamma^A=\\eta_{(1,7)}^{AA}\\Gamma_A$, $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ (simply the squares '
+        'of the octonion basis, $\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$), $\\Psi$ the field dirac16complex.')
     d.h2('%d.1 The task' % secno)
     d.ol(['Rebuild the ideas of github.com/once-ere/Dirac_claude on the 7+1 spacetime of this project (one time coordinate, seven space '
           'coordinates; never the 4+4 metric of Dirac_claude): the Einstein and Lovelock tensors; generalized frame matrices; a canonical spin '
@@ -314,7 +322,10 @@ def provenance_section(d, D, D3, runs3, secno=7):
           'Compute the Lovelock tensors as in the author’s corrected reference notebook Einstein-Lovelock-7+1-Nash.nb, and do not use its '
           'section "FAILED Model metric g71; DO NOT USE!".',
           'Document every stage (documentation, provenance and symbol files; Markdown, LaTeX, PDF; self-contained) and push every completed '
-          'stage to github.com/once-ere/7plus1.'])
+          'stage to github.com/once-ere/7plus1.',
+          'Make clear in all documentation, examples and provenance records that the xAct declaration $\\{7,1,0\\}$ declares seven space-like '
+          'dimensions and one time-like dimension, while $\\mathrm{diag}(+1,-1,\\dots,-1)$ is simply the squares of the octonion basis (the '
+          'author’s instruction of 27 October 2026).'])
     d.h2('%d.2 Inputs and how they were used' % secno)
     d.p('The reference notebook Einstein-Lovelock-7+1-Nash.nb (P. L. Nash, 2022, GPL; the author’s corrected version) supplied: the xAct '
         'packages xCoba and xTras; the manifold with abstract indices $a$, $b$, $c$, $d$, $f$, $i$, $j$, $k$, $l$, $m$, $n$, $p$, $q$, $r$, $s$, $y$; the chart with coordinate scalars '
@@ -322,15 +333,22 @@ def provenance_section(d, D, D3, runs3, secno=7):
     d.eq(r'\mathrm{Lovelock}_k=-\frac1{2^{k+1}}\,R_{c_1d_1}{}^{f_1i_1}\cdots R_{c_kd_k}{}^{f_ki_k}\,\delta^{b\,c_1d_1\cdots c_kd_k}_{a\,f_1i_1\cdots f_ki_k}\quad(k=1,2,3);')
     d.p('the evaluation of components by `CD = LC[g]`; and the vacuum field equations $0=-\\Lambda\\delta+H^{-2}w_1\\mathrm{Lovelock}_1+H^{-4}w_2\\mathrm{Lovelock}_2'
         '+H^{-6}w_3\\mathrm{Lovelock}_3$ with the procedure of solving them for $w_2,w_3$. The model metric of its FAILED section was not used anywhere. '
-        'The only change: the signature declaration $\\{7,1,0\\}$ became $\\{1,7,0\\}$ to match $\\eta$ of this notebook (it does not enter the '
-        'Lovelock tensors with mixed indices, and `SignDetOfMetric` is $-1$ for both declarations, as checked with xTensor 1.2.0). xAct versions as printed by the notebook: %s.' % (D3.get('xact_versions') or '?'))
+        'Taken unchanged as well: the signature declaration `DefMetric[{7, 1, 0}, g71[-a, -b], CD, …]` — in xAct the list $\\{7,1,0\\}$ '
+        'declares seven space-like dimensions, one time-like dimension and no degenerate dimension, exactly the 7+1 spacetime of this project. '
+        'It is not to be confused with the matrix $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$, which is simply the squares of the octonion basis '
+        '($e_0^2=+1$, $e_i^2=-1$, $\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$) and gives the signs of the metric components ($g_{00}>0$). '
+        '**A correction (27 October 2026):** an earlier version of 7+1.nb declared $\\{1,7,0\\}$, reading the list as the signs of $\\eta$; '
+        'the author pointed out that $\\{7,1,0\\}$ declares seven space-like and one time-like dimension while $\\mathrm{diag}(+1,-1,\\dots,-1)$ '
+        'is simply the squares of the octonion basis, and 7+1.nb now declares $\\{7,1,0\\}$ as the reference notebook does. No Lovelock '
+        'component changed: they follow from the component matrix of the metric, and `SignDetOfMetric` is $-1$ for both lists (checked with '
+        'xTensor 1.2.0). xAct versions as printed by the notebook: %s.' % (D3.get('xact_versions') or '?'))
     if D3.get('sha_reference'):
         d.code('Einstein-Lovelock-7+1-Nash.nb   SHA-256 %s\nEinstein-Lovelock-7+1-Nash.pdf  SHA-256 %s' % D3['sha_reference'], 'text')
     d.p('Data of the Standard Model part: Particle Data Group 2024/2025 ($G_F$, boson masses, quark masses, CKM parameters), NuFit-6.0 (PMNS '
         'parameters, normal ordering, without Super-Kamiokande atmospheric data), Planck 2018 (cosmological parameters).')
     d.h2('%d.3 Decisions' % secno)
     d.table(['#', 'decision', 'reason'], [
-        ['1', 'Christoffel symbols written $\\{{}^{\\lambda}_{\\mu\\nu}\\}$; Landau–Lifshitz curvature', '$\\Gamma$ is reserved for Dirac matrices; with $(+,-,\\dots,-)$, $G^\\mu{}_\\nu-\\bar\\Lambda\\delta^\\mu_\\nu=\\kappa T^\\mu{}_\\nu$, $T^0{}_0>0$'],
+        ['1', 'Christoffel symbols written $\\{{}^{\\lambda}_{\\mu\\nu}\\}$; Landau–Lifshitz curvature', '$\\Gamma$ is reserved for Dirac matrices; with the signs of $\\eta$ ($g_{00}>0$), $G^\\mu{}_\\nu-\\bar\\Lambda\\delta^\\mu_\\nu=\\kappa T^\\mu{}_\\nu$, $T^0{}_0>0$'],
         ['2', 'the Lovelock tensors are computed twice (xAct; pair-set sums)', 'exact agreement is an independent check of the reference method'],
         ['3', 'the exponential solutions are obtained from the xAct components of the cosmological metric', 'a new xAct run with symbolic exponentials does not finish in reasonable time'],
         ['4', 'the canonical (Levi-Civita) spin connection, $\\Omega_\\mu=\\frac14\\omega_{\\mu AB}\\Gamma^A\\Gamma^B$', 'it is the connection with $\\nabla_\\mu\\Gamma_\\nu=0$'],

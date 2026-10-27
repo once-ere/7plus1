@@ -39,6 +39,10 @@ T16O[8]=I16
 for A in range(8): T16O[8]=T16O[8]*T16O[A]
 S44=T16A[4]*T16A[5]*T16A[6]*T16A[7]
 # ---------------- 7+1 real (Cl_{1,7}) ----------------
+# eta17 = diag(+1,-1,...,-1) is simply the squares of the octonion basis: e_0^2 = +1 (the time direction x0),
+# e_i^2 = -1 (the seven space directions), eta17_AB = Re(e_A e_B).  The spacetime has one time-like and seven
+# space-like dimensions; the tensor package xAct (section 12 of 7+1.nb) declares it with the signature list {7, 1, 0}:
+# seven space-like, one time-like, none degenerate -- the counts of +1 and -1 in eta71 = -eta17 (4+4.nb convention).
 eta17=sp.diag(1,-1,-1,-1,-1,-1,-1,-1)
 eta71=-eta17
 G17={0: T16O[0]}
@@ -94,6 +98,7 @@ if __name__=='__main__':
     R['T16O[k]==T16A44[k].S44 (k>=4)']=all(T16O[k]==T16A[k]*S44 for k in range(4,8))
     R['S44==diag(sigma,sigma)']=S44==blk(sigma,Z8,Z8,sigma)
     R['T16O[8] diag']=list(T16O[8].diagonal())
+    R['eta17 = squares of the octonion basis: Re(e_A e_B) = eta17_AB']=sp.Matrix(8,8,lambda A,B: omul(basis(A),basis(B))[0])==eta17
     R['G17 Cl(1,7)']=anticomm_ok(G17,eta17,16)
     R['G17 real']=all(all(x.is_integer for x in G17[A]) for A in range(8))
     R['G17[0] sym, G17[i] antisym']=G17[0].T==G17[0] and all(G17[i].T==-G17[i] for i in range(1,8))

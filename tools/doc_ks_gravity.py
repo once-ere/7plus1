@@ -5,6 +5,7 @@ Kohn-Sham theory of dirac16complex in the primordial, modern and far-future epoc
 from the output of tools/ref_ks_gravity.py, or computed here."""
 from docgen import Doc
 from doc_stage3_common import fmt, mnum, nums_in, fierz_matrix, break_sum
+from doc_common import signature_block
 
 KEYS_PY = {
     'flat': 'NUM flat: m*, rho, eps, p',
@@ -95,8 +96,9 @@ def build(D, today):
     # ==============================================================================================
     d.h1('2. Conventions and objects used')
     d.p('Units $\\hbar=c=1$; coordinates $X=(x_0,\\dots,x_7)$ ($x_0$ time, $x_1,x_2,x_3$ ordinary space, $x_4,\\dots,x_7$ auxiliary space); '
-        'frame metric $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$; repeated indices are summed. The real 16×16 Dirac matrices and their '
-        'properties:')
+        'frame metric $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$, simply the squares of the octonion basis; repeated indices are summed.')
+    signature_block(d, eta=r'\eta', eta71=r'\eta_{71}', gam=r'\Gamma')
+    d.p('The real 16×16 Dirac matrices and their properties:')
     d.eq(r'\Gamma_0=\begin{pmatrix}0&1_8\\1_8&0\end{pmatrix},\quad \Gamma_i=\begin{pmatrix}\tau^O_i&0\\0&-\tau^O_i\end{pmatrix},\quad '
          r'\Gamma_A\Gamma_B+\Gamma_B\Gamma_A=2\eta_{AB}1_{16},\quad \Gamma^A=\eta^{AA}\Gamma_A,\quad \bar\psi=\psi^\dagger\Gamma_0,')
     d.p('with real antisymmetric 8×8 matrices $\\tau^O_i$ ($i=1,\\dots,7$; $(\\tau^O_i)^2=-1_8$, mutually anticommuting). The volume element '
@@ -294,10 +296,10 @@ def build(D, today):
     d.p('The checks of sections 15–16 of the notebook:')
     d.table(['#', 'check', 'result', 'section'],
             [[str(i + 1), '`' + c[0].replace('`', "'") + '`', c[1], (c[3][:4] if c[3] else c[2][:3])] for i, c in enumerate(ck)],
-            widths=[0.05, 0.75, 0.08, 0.12], small=True)
+            widths=[0.06, 0.74, 0.08, 0.12], small=True)
     d.p('The Python program’s boolean checks:')
     d.table(['#', 'check', 'result'], [[str(i + 1), '`' + k.replace('`', "'") + '`', v] for i, (k, v) in enumerate(rb)],
-            widths=[0.05, 0.83, 0.12], small=True)
+            widths=[0.06, 0.82, 0.12], small=True)
     d.h1('10. How to reproduce')
     d.ol(['`python3 tools/make_7p1_nb.py` writes 7+1.nb (unevaluated).',
           'Evaluate 7+1.nb in a fresh kernel of Wolfram 15.0.1 (Evaluation ▸ Quit Kernel, then Evaluation ▸ Evaluate Notebook; or `Get["D:/Developer/github/7+1/tools/run_eval.wl"]`) and save it; the last section summarizes all checks.',

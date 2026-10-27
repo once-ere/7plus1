@@ -2,6 +2,7 @@
 7+1 spacetime, dirac16complex at the brane, the portals and neutrino flavour conversion (sections 17-19 of 7+1.nb), with its
 definition and its Mathematica name.  Self-contained: every equation needed to define a symbol is written here."""
 from docgen import Doc
+from doc_common import signature_block
 
 W4 = [0.16, 0.20, 0.36, 0.28]
 HEAD4 = ['symbol', 'Mathematica', 'definition', 'meaning']
@@ -25,8 +26,13 @@ def build(D, today):
           'Indices: $\\mu,\\nu\\in\\lbrace0,1,2,3\\rbrace$ on the brane; $A,B\\in\\lbrace0,\\dots,7\\rbrace$ frame indices of 7+1 spacetime; $k,l\\in\\lbrace4,\\dots,7\\rbrace$ '
           'transverse; $i,j\\in\\lbrace1,2,3\\rbrace$ generations or mass eigenstates; $\\alpha,\\beta\\in\\lbrace e,\\mu,\\tau\\rbrace$ flavours; '
           '$a\\in\\lbrace1,\\dots,4\\rbrace$ transverse spinor index (sections 5–6) or colour index $a=1,\\dots,8$ of the gluons (section 2).',
-          'Metrics: $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ in 7+1 dimensions (`η17`), $\\eta=\\mathrm{diag}(1,-1,-1,-1)$ on the brane.',
+          'Metrics: $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ in 7+1 dimensions (`η17`), simply the squares of the octonion basis '
+          '($\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$); $\\eta=\\mathrm{diag}(1,-1,-1,-1)$ on the brane, its restriction to $x_0,\\dots,x_3$: the '
+          'squares of the basis $e_0=1,e_1,e_2,e_3$ of the quaternion subalgebra $\\mathbb H$ of the octonions.',
+          'Signature: the bulk has one time-like and seven space-like dimensions (in xAct the list $\\{7,1,0\\}$), the brane one time-like '
+          'and three space-like dimensions (in the same counting $\\{3,1,0\\}$).',
           'Matrices: $1_n$ identity, $^\\dagger$ conjugate transpose, $^*$ complex conjugate, $\\otimes$ Kronecker product (`KroneckerProduct`).'])
+    signature_block(d, eta=r'\eta', eta71=r'\eta_{71}', gam=r'\Gamma')
 
     d.h1('2. Spacetime, brane and gauge fields')
     d.table(HEAD4, [
@@ -160,7 +166,7 @@ def build(D, today):
         ['$\\gamma_\\mu$ (4×4, brane)', '$\\Gamma_A$ (16×16, 7+1 spacetime)'],
         ['$\\rho_k$ (transverse matrices)', '$\\rho$ (mass density), $\\bar\\rho$ (Wolfenstein parameter), $\\rho_4$ (energy density)'],
         ['$U$ (intertwiner, section 6)', '$U$, $U_{\\rm PMNS}$ (lepton mixing matrix), $U_L$, $U_R$ (singular vectors)'],
-        ['$\\eta$ (metric)', '$\\eta$ (deviation from unitarity), $\\bar\\eta$ (Wolfenstein parameter)'],
+        ['$\\eta$ (metric: the squares of the octonion basis)', '$\\eta$ (deviation from unitarity), $\\bar\\eta$ (Wolfenstein parameter), $\\{7,1,0\\}$ (xAct signature list: seven space-like dimensions, one time-like)'],
         ['$\\lambda$ (Higgs self-coupling)', '$\\lambda_P$ (Higgs portal coupling), $\\lambda=s_{12}$ (Wolfenstein)'],
         ['$\\mu^2$ (Higgs mass parameter)', '$\\mu_{ia}$ (portal Dirac mass), $\\mu$ (muon flavour)'],
         ['$\\chi_f$ (chirality sign of a field)', '$\\chi$ (eight-dimensional chirality matrix)'],

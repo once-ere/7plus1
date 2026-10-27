@@ -22,11 +22,22 @@
 \date{}
 \maketitle
 \begin{abstract}
-This record states what was asked, which experimental data were used and where they come from, every decision taken with the equation behind it, how each result was derived and how it was checked: the 23 checks of sections 17–19 of 7+1.nb (23 True), the 32 boolean checks of the independent Python program tools/ref\_sm.py (32 True), the comparison of every number printed by both programs, and the SHA-256 hashes of the files.
+This record states what was asked, which experimental data were used and where they come from, every decision taken with the equation behind it, how each result was derived and how it was checked: the 24 checks of sections 17–19 of 7+1.nb (24 True), the 33 boolean checks of the independent Python program tools/ref\_sm.py (33 True), the comparison of every number printed by both programs, and the SHA-256 hashes of the files.
 \end{abstract}
 \tableofcontents
 \Needspace{12\baselineskip}\section*{1. The task}\addcontentsline{toc}{section}{1. The task}
-This stage of the project asked (summarized; the original wording is the author’s private working material) for the TOTALITY of the Standard Model together with gravity and the field dirac16complex on the 7+1 spacetime of this project (one time coordinate $x_0$, seven space coordinates $x_1,\dots,x_7$), following the ideas of the repository github.com/once-ere/Dirac\_claude — there the Standard Model lives on a seven-dimensional fold of a 4+4 spacetime — but not its metric. Here the Standard Model lives on the 3+1-dimensional world brane $x_4=\dots=x_7=0$, the auxiliary coordinates form a torus, and gravity and dirac16complex live in the whole spacetime. Every documentation file has a companion provenance file and a symbol file, in Markdown and LaTeX with PDFs; no document refers the reader to another one, and every equation used is written in the document that uses it.
+This stage of the project asked (summarized; the original wording is the author’s private working material) for the TOTALITY of the Standard Model together with gravity and the field dirac16complex on the 7+1 spacetime of this project (one time coordinate $x_0$, seven space coordinates $x_1,\dots,x_7$), following the ideas of the repository github.com/once-ere/Dirac\_claude — there the Standard Model lives on a seven-dimensional fold of a 4+4 spacetime — but not its metric. Here the Standard Model lives on the 3+1-dimensional world brane $x_4=\dots=x_7=0$, the auxiliary coordinates form a torus, and gravity and dirac16complex live in the whole spacetime. Every documentation file has a companion provenance file and a symbol file, in Markdown and LaTeX with PDFs; no document refers the reader to another one, and every equation used is written in the document that uses it. On 27 October 2026 the author added: make clear in all documentation, examples and provenance records that the xAct list $\{7,1,0\}$ declares seven space-like dimensions and one time-like dimension, while $\mathrm{diag}(+1,-1,\dots,-1)$ is simply the squares of the octonion basis (section 1.1).
+
+\Needspace{8\baselineskip}\subsection*{1.1 The signature: the author’s explanation of 27 October 2026}\addcontentsline{toc}{subsection}{1.1 The signature: the author’s explanation of 27 October 2026}
+\textbf{Source.} On 27 October 2026 the author of the project explained that the xAct list $\{7,1,0\}$ declares seven space-like dimensions and one time-like dimension, while $\mathrm{diag}(+1,-1,\dots,-1)$ is simply the squares of the octonion basis, and asked that this be made clear in all documentation, examples and provenance records. \textbf{What it corrected.} The version of 7+1.nb pushed in the commits 52d8729 to dc2f178 of github.com/once-ere/7plus1 declared the xAct metric of section 12 with \texttt{DefMetric[\{1, 7, 0\}, …]}, reading the list as the signs of $\eta$; since then section 12 declares \texttt{DefMetric[\{7, 1, 0\}, g71[-a, -b], CD, …]}, exactly as the author’s notebook Einstein-Lovelock-7+1-Nash.nb does. \textbf{What was added.} Checks in 7+1.nb — section 4.7: $\eta$ is the squares of the octonion basis, $e_Ae_A=\eta_{AA}e_0$ and $\mathrm{Re}(e_Ae_B)=\eta_{AB}$; section 12.2: \texttt{SignatureOfMetric[g71]} $=\{7,1,0\}$ with \texttt{SignDetOfMetric[g71]} $=-1$, $\mathrm{Re}(e_Ae_B)=\eta_{AB}$, and $\mathrm{Re}(x\,x)=\eta_{AB}x^Ax^B$; section 17: the flat metric $\mathrm{diag}(+1,-1,-1,-1)$ of the world brane is the squares of the basis $e_0,e_1,e_2,e_3$ of the quaternion subalgebra — and the same statements in the Python programs \texttt{tools/ref71.py}, \texttt{tools/ref\_gravity.py} and \texttt{tools/ref\_sm.py}; the explanation itself in the text of 7+1.nb (sections 1.2, 1.4, 4.2, 4.7, 7, 11, 12.2, 13, 15.1, 17) and in every document, symbol file and provenance file of the repository. \textbf{What did not change.} No result. Compared output by output with the backup below, every output of 7+1.nb is the same, except the declared list itself, the new checks and the check counts (and, as in every run, the name of the private context and the measured times); in particular every component of every Lovelock tensor is unchanged. The components follow from the component matrix of the metric, and the sign of the determinant, \texttt{SignDetOfMetric}, is $-1$ for both lists. \textbf{Backup.} The evaluated notebook as it was before is kept in the workspace as \texttt{backups/7+1\_2026-10-27\_before\_signature.nb} (the folder backups/ is excluded from the repository by .gitignore), 1034401 bytes, SHA-256 \texttt{060942488caf4f45120ffd37be0123e96992a31cd7fdbde09ee4dc4ced4f5d3a}; \texttt{tools/verify\_7p1\_nb.py} compares every input, text and section cell of 7+1.nb with it and finds every cell present, each one unchanged or changed by this explanation, and it compares every output in the same way.
+
+\textbf{The explanation, in full.} The 7+1 spacetime has one time-like dimension ($x_0$, the direction of the octonion unit $e_0=1$) and seven space-like dimensions ($x_1,x_2,x_3$ ordinary space, $x_4,\dots,x_7$ auxiliary space). Two different objects describe this, and neither may be replaced by the other. (i) The tensor package xAct, used in section 12 of 7+1.nb exactly as in the author’s notebook Einstein-Lovelock-7+1-Nash.nb, declares the metric with \texttt{DefMetric[\{7, 1, 0\}, g71[-a, -b], CD, …]}: the list $\{7,1,0\}$ declares seven space-like dimensions, one time-like dimension and no degenerate dimension — the numbers of entries $+1$ and $-1$ of $\eta_{71}=\mathrm{diag}(-1,+1,\dots,+1)$ (\texttt{η71}), the same spacetime written in the sign convention of 4+4.nb (space-like $=+1$, time-like $=-1$). (ii) The matrix $\eta=-\eta_{71}=\mathrm{diag}(+1,-1,\dots,-1)$ (\texttt{η17}) is simply the squares of the octonion basis: $e_0^2=+1$ for the unit $e_0=1$ (time) and $e_i^2=-1$ for the seven imaginary units $e_1,\dots,e_7$ (space); more generally it is the real part of the product of two basis units, and it gives the quadratic form of the octonions:
+\begin{gather*}
+\eta_{AB}=\mathrm{Re}(e_Ae_B),\qquad e_0^2=+1,\qquad e_i^2=-1\ \ (i=1,\dots,7),\\ \mathrm{Re}(x\,x)=x_0^2-x_1^2-\cdots-x_7^2=\eta_{AB}\,x^Ax^B\qquad (x=x^Ae_A\in\mathbb O).
+\end{gather*}
+$\eta$ gives the signs of the Clifford relation $\Gamma_A\Gamma_B+\Gamma_B\Gamma_A=2\,\eta_{AB}\,1_{16}$ of the real 16×16 Dirac matrices: time squares to $+1_{16}$ and each of the seven space directions to $-1_{16}$, exactly like the octonion units (in the notation $Cl(p,q)$, with $p$ generators squaring to $+1$ and $q$ to $-1$, the algebra $Cl(1,7)\cong\mathbb R(16)$). It also gives the signs of the metric components: $g_{00}>0$ along the time-like direction, negative squares along the space-like directions. Every component computed by 7+1.nb follows from the component matrix of the metric; the declared list fixes for xAct the sign of the determinant of the metric, \texttt{SignDetOfMetric[g71]} $=-1$, which is the same in both sign conventions, since $\det \eta=\det \eta_{71}=-1$. 7+1.nb checks \texttt{SignatureOfMetric[g71]} $=\{7,1,0\}$, \texttt{SignDetOfMetric[g71]} $=-1$, $\mathrm{Re}(e_Ae_B)=\eta_{AB}$ and $\mathrm{Re}(x\,x)=\eta_{AB}x^Ax^B$.
+
+On the world brane the same reading holds: one time-like and three space-like dimensions (in the counting of xAct the list $\{3,1,0\}$), and the flat frame metric $\mathrm{diag}(+1,-1,-1,-1)$ is $\eta$ restricted to $x_0,\dots,x_3$, the squares of the basis $e_0=1,e_1,e_2,e_3$ of the quaternion subalgebra $\mathbb H$ of the octonions (a check of section 17 of 7+1.nb and of \texttt{tools/ref\_sm.py}).
 
 \Needspace{12\baselineskip}\section*{2. Data and their sources}\addcontentsline{toc}{section}{2. Data and their sources}
 {\footnotesize
@@ -110,7 +121,7 @@ P(\alpha\to\beta)=\delta_{\alpha\beta}-4\sum_{i>j}\mathrm{Re}\,X_{ij}\sin^2\Delt
 \textbf{MSW angle.} Diagonalizing $\frac{\Delta m^2}{4E}\begin{pmatrix}-\cos2\theta&\sin2\theta\\\sin2\theta&\cos2\theta\end{pmatrix}+\mathrm{diag}(V,0)$ gives $\tan2\theta_m=\sin2\theta/(\cos2\theta-2EV/\Delta m^2)$.
 
 \Needspace{12\baselineskip}\section*{5. Verification}\addcontentsline{toc}{section}{5. Verification}
-\textbf{Evaluation of 7+1.nb}: Wolfram 15.0.1 for Microsoft Windows (64-bit) (July 2, 2026); finished Tue 27 Oct 2026 14:15:35; message cells 0. The checks of sections 17–19:
+\textbf{Evaluation of 7+1.nb}: Wolfram 15.0.1 for Microsoft Windows (64-bit) (July 2, 2026); finished Tue 27 Oct 2026 16:10:34; message cells 0. The checks of sections 17–19:
 
 {\footnotesize
 \begin{longtable}{>{\raggedright\arraybackslash}p{\dimexpr 0.0550\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.7450\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.0800\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.1200\linewidth-2\tabcolsep\relax}}
@@ -122,29 +133,30 @@ P(\alpha\to\beta)=\delta_{\alpha\beta}-4\sum_{i>j}\mathrm{Re}\,X_{ij}\sin^2\Delt
 \midrule\endhead
 \endfoot
 \bottomrule\endlastfoot
-1 & \texttt{anomaly cancellation per generation (with nu\_R): SU(3)\textasciicircum{}2U(1), SU(2)\textasciicircum{}2U(1), U(1)\textasciicircum{}3, grav\textasciicircum{}2U(1), SU(3)\textasciicircum{}3 all vanish; doublets per generation even} & True & 17.1 \\
-2 & \texttt{electric charges Q = T3 + Y: (u, d) = (2/3, -1/3), (nu, e) = (0, -1), u\_R 2/3, d\_R -1/3, e\_R -1, nu\_R 0} & True & 17.1 \\
-3 & \texttt{g* = 28 + (7/8) 90 = 106.75 for the Standard Model fields (without nu\_R)} & True & 17.1 \\
-4 & \texttt{gauge-boson mass matrix: eigenvalues g\textasciicircum{}2 v\textasciicircum{}2/4 (twice), (g\textasciicircum{}2 + g'\textasciicircum{}2) v\textasciicircum{}2/4 and 0 (photon)} & True & 17.3 \\
-5 & \texttt{tree level: m\_W == g v/2, m\_Z == Sqrt[g\textasciicircum{}2 + g'\textasciicircum{}2] v/2, rho == m\_W\textasciicircum{}2/(m\_Z\textasciicircum{}2 cos\textasciicircum{}2 theta\_W) == 1, m\_H\textasciicircum{}2 == 2 lambda v\textasciicircum{}2} & True & 17.3 \\
-6 & \texttt{CKM: unitary; Jarlskog invariant J = 3.12 x 10\textasciicircum{}-5 (PDG 2024: 3.12 +0.13 -0.12 x 10\textasciicircum{}-5); A, rhobar, etabar within the PDG uncertainties} & True & 17.4 \\
-7 & \texttt{Yukawa matrices: singular values x v/Sqrt[2] are the quark masses and |U\_uL\textasciicircum{}dag.U\_dL| == |V\_CKM|} & True & 17.4 \\
-8 & \texttt{PMNS unitary; Dirac neutrino Yukawa Sqrt[2] U.diag(m)/v reproduces the masses (singular values)} & True & 17.4 \\
-9 & \texttt{age of the universe from the brane Friedmann equation: 13.79 Gyr (Planck 2018: 13.787 +- 0.020 Gyr)} & True & 17.5 \\
-10 & \texttt{ADD relation: kappa8 rho4/V\_perp == 8 Pi G4 rho4 with G4 = G8/V\_perp (kappa8 = 8 Pi G8)} & True & 17.5 \\
-11 & \texttt{brane representation: R\_A R\_B + R\_B R\_A == 2 eta17\_AB ID16 for R = (gamma\_mu (x) 1\_4, gamma5 (x) rho\_k)} & True & 18. \\
-12 & \texttt{intertwiner: Gamma17[A].U == U.R\_A for A = 0..7, and U is unitary} & True & 18. \\
-13 & \texttt{chi17 == U.(gamma5 (x) rho4567).U\textasciicircum{}dag; rho4567 Hermitian with eigenvalues \{-1, -1, 1, 1\}} & True & 18. \\
-14 & \texttt{bilinears at the brane: psibar psi' == Sum\_a psibar\_a psi'\_a and psibar Gamma\textasciicircum{}mu psi' == Sum\_a psibar\_a gamma\textasciicircum{}mu psi'\_a (mu = 0..3)} & True & 18. \\
-15 & \texttt{KK operator: X.X == -|q|\textasciicircum{}2/b0\textasciicircum{}2 ID16 and X anticommutes with gamma\_mu (x) 1\_4} & True & 18.1 \\
-16 & \texttt{KK masses: Det[gamma.p (x) 1 + X - m] vanishes on p0\textasciicircum{}2 - |p|\textasciicircum{}2 == m\textasciicircum{}2 + |q|\textasciicircum{}2/b0\textasciicircum{}2 (40-digit arithmetic) and not off shell} & True & 18.1 \\
-17 & \texttt{portal mixing: 1 - N.N\textasciicircum{}dag == mu.mu\textasciicircum{}dag/m\textasciicircum{}2 to second order (non-unitary light mixing)} & True & 18.2 \\
-18 & \texttt{vacuum: P(a->b) doubly stochastic; equals delta - 4 Sum Re X sin\textasciicircum{}2 Delta + 2 Sum Im X sin 2Delta; CPT P(a->b) == P(bbar->abar)} & True & 19. \\
-19 & \texttt{V\_CC(rho Y\_e = 1 g/cm\textasciicircum{}3) == 7.63 x 10\textasciicircum{}-14 eV; matter evolution doubly stochastic; a flavour-universal potential has no effect} & True & 19. \\
-20 & \texttt{two-flavour MSW: sin\textasciicircum{}2 theta\_m from diagonalization == formula, and sin\textasciicircum{}2 2theta\_m == 1 at 2 E V == dm\textasciicircum{}2 cos 2theta} & True & 19. \\
-21 & \texttt{Sun: numerical P\_ee == adiabatic MSW formula to 2 x 10\textasciicircum{}-3 at 0.3, 1, 5 and 10 MeV; P\_ee(0.3 MeV) within 0.03 of the vacuum average; P\_ee falls with energy} & True & 19. \\
-22 & \texttt{cosmic neutrino background: T\_nu == 1.945 K and n == 112 cm\textasciicircum{}-3 per flavour} & True & 19. \\
-23 & \texttt{dirac16complex portal: non-unitary oscillations, Sum\_b P(a->b) < 1 (zero-distance effect); decoupled limit == three-flavour vacuum result} & True & 19. \\*
+1 & \texttt{brane frame metric diag(+1, -1, -1, -1) == eta17 restricted to x0..x3: the squares of the octonion basis e[0], e[1], e[2], e[3] of the quaternion subalgebra (Re(e[A] e[B]), A, B = 0..3), which is closed under the octonion product} & True & 17. \\
+2 & \texttt{anomaly cancellation per generation (with nu\_R): SU(3)\textasciicircum{}2U(1), SU(2)\textasciicircum{}2U(1), U(1)\textasciicircum{}3, grav\textasciicircum{}2U(1), SU(3)\textasciicircum{}3 all vanish; doublets per generation even} & True & 17.1 \\
+3 & \texttt{electric charges Q = T3 + Y: (u, d) = (2/3, -1/3), (nu, e) = (0, -1), u\_R 2/3, d\_R -1/3, e\_R -1, nu\_R 0} & True & 17.1 \\
+4 & \texttt{g* = 28 + (7/8) 90 = 106.75 for the Standard Model fields (without nu\_R)} & True & 17.1 \\
+5 & \texttt{gauge-boson mass matrix: eigenvalues g\textasciicircum{}2 v\textasciicircum{}2/4 (twice), (g\textasciicircum{}2 + g'\textasciicircum{}2) v\textasciicircum{}2/4 and 0 (photon)} & True & 17.3 \\
+6 & \texttt{tree level: m\_W == g v/2, m\_Z == Sqrt[g\textasciicircum{}2 + g'\textasciicircum{}2] v/2, rho == m\_W\textasciicircum{}2/(m\_Z\textasciicircum{}2 cos\textasciicircum{}2 theta\_W) == 1, m\_H\textasciicircum{}2 == 2 lambda v\textasciicircum{}2} & True & 17.3 \\
+7 & \texttt{CKM: unitary; Jarlskog invariant J = 3.12 x 10\textasciicircum{}-5 (PDG 2024: 3.12 +0.13 -0.12 x 10\textasciicircum{}-5); A, rhobar, etabar within the PDG uncertainties} & True & 17.4 \\
+8 & \texttt{Yukawa matrices: singular values x v/Sqrt[2] are the quark masses and |U\_uL\textasciicircum{}dag.U\_dL| == |V\_CKM|} & True & 17.4 \\
+9 & \texttt{PMNS unitary; Dirac neutrino Yukawa Sqrt[2] U.diag(m)/v reproduces the masses (singular values)} & True & 17.4 \\
+10 & \texttt{age of the universe from the brane Friedmann equation: 13.79 Gyr (Planck 2018: 13.787 +- 0.020 Gyr)} & True & 17.5 \\
+11 & \texttt{ADD relation: kappa8 rho4/V\_perp == 8 Pi G4 rho4 with G4 = G8/V\_perp (kappa8 = 8 Pi G8)} & True & 17.5 \\
+12 & \texttt{brane representation: R\_A R\_B + R\_B R\_A == 2 eta17\_AB ID16 for R = (gamma\_mu (x) 1\_4, gamma5 (x) rho\_k)} & True & 18. \\
+13 & \texttt{intertwiner: Gamma17[A].U == U.R\_A for A = 0..7, and U is unitary} & True & 18. \\
+14 & \texttt{chi17 == U.(gamma5 (x) rho4567).U\textasciicircum{}dag; rho4567 Hermitian with eigenvalues \{-1, -1, 1, 1\}} & True & 18. \\
+15 & \texttt{bilinears at the brane: psibar psi' == Sum\_a psibar\_a psi'\_a and psibar Gamma\textasciicircum{}mu psi' == Sum\_a psibar\_a gamma\textasciicircum{}mu psi'\_a (mu = 0..3)} & True & 18. \\
+16 & \texttt{KK operator: X.X == -|q|\textasciicircum{}2/b0\textasciicircum{}2 ID16 and X anticommutes with gamma\_mu (x) 1\_4} & True & 18.1 \\
+17 & \texttt{KK masses: Det[gamma.p (x) 1 + X - m] vanishes on p0\textasciicircum{}2 - |p|\textasciicircum{}2 == m\textasciicircum{}2 + |q|\textasciicircum{}2/b0\textasciicircum{}2 (40-digit arithmetic) and not off shell} & True & 18.1 \\
+18 & \texttt{portal mixing: 1 - N.N\textasciicircum{}dag == mu.mu\textasciicircum{}dag/m\textasciicircum{}2 to second order (non-unitary light mixing)} & True & 18.2 \\
+19 & \texttt{vacuum: P(a->b) doubly stochastic; equals delta - 4 Sum Re X sin\textasciicircum{}2 Delta + 2 Sum Im X sin 2Delta; CPT P(a->b) == P(bbar->abar)} & True & 19. \\
+20 & \texttt{V\_CC(rho Y\_e = 1 g/cm\textasciicircum{}3) == 7.63 x 10\textasciicircum{}-14 eV; matter evolution doubly stochastic; a flavour-universal potential has no effect} & True & 19. \\
+21 & \texttt{two-flavour MSW: sin\textasciicircum{}2 theta\_m from diagonalization == formula, and sin\textasciicircum{}2 2theta\_m == 1 at 2 E V == dm\textasciicircum{}2 cos 2theta} & True & 19. \\
+22 & \texttt{Sun: numerical P\_ee == adiabatic MSW formula to 2 x 10\textasciicircum{}-3 at 0.3, 1, 5 and 10 MeV; P\_ee(0.3 MeV) within 0.03 of the vacuum average; P\_ee falls with energy} & True & 19. \\
+23 & \texttt{cosmic neutrino background: T\_nu == 1.945 K and n == 112 cm\textasciicircum{}-3 per flavour} & True & 19. \\
+24 & \texttt{dirac16complex portal: non-unitary oscillations, Sum\_b P(a->b) < 1 (zero-distance effect); decoupled limit == three-flavour vacuum result} & True & 19. \\*
 \end{longtable}}
 \textbf{The independent Python program} tools/ref\_sm.py — its boolean checks:
 
@@ -180,16 +192,17 @@ P(\alpha\to\beta)=\delta_{\alpha\beta}-4\sum_{i>j}\mathrm{Re}\,X_{ij}\sin^2\Delt
 20 & \texttt{Sun: numerical P\_ee = adiabatic MSW formula to 2e-3 at E = 0.3, 1, 5, 10 MeV} & True \\
 21 & \texttt{Sun: P\_ee falls from near the vacuum average c13\textasciicircum{}4 (1 - sin\textasciicircum{}2(2 theta12)/2) + s13\textasciicircum{}4 (within 0.03 at 0.3 MeV) to about 0.31 at 10 MeV} & True \\
 22 & \texttt{CNB: T\_nu = 1.945 K and n = 112 cm\textasciicircum{}-3 per flavour} & True \\
-23 & \texttt{brane representation: gamma\_mu (x) 1\_4 (mu = 0..3) and gamma5 (x) rho\_k (k = 4..7) satisfy \{R\_A, R\_B\} = 2 eta\_AB} & True \\
-24 & \texttt{intertwiner U (Schur average over the 256 Clifford products): Gamma17[A] U = U R\_A for A = 0..7, U unitary} & True \\
-25 & \texttt{8D chirality at the brane: chi17 = U (gamma5 (x) rho4567) U\textasciicircum{}dag, rho4567 Hermitian with eigenvalues +1, +1, -1, -1} & True \\
-26 & \texttt{bilinears at the brane: Psibar Psi' = sum\_a psibar\_a psi'\_a and Psibar Gamma\textasciicircum{}mu Psi' = sum\_a psibar\_a gamma\textasciicircum{}mu psi'\_a (mu = 0..3)} & True \\
-27 & \texttt{Kaluza-Klein: the 16x16 operator gamma.p (x) 1 + gamma5 (x) rho.q/b0 - m is singular exactly on p0\textasciicircum{}2 - |p|\textasciicircum{}2 = m\textasciicircum{}2 + |q|\textasciicircum{}2/b0\textasciicircum{}2} & True \\
-28 & \texttt{KK operator: X\textasciicircum{}2 = -|q|\textasciicircum{}2/b0\textasciicircum{}2 and X anticommutes with gamma\textasciicircum{}mu (x) 1} & True \\
-29 & \texttt{non-unitary oscillations: sum\_b P(a->b) = (N N\textasciicircum{}dag)\_aa\textasciicircum{}2-type deficit < 1 (zero-distance effect), complemented by the heavy states} & True \\
-30 & \texttt{portal decoupling: for mu -> 0 the light block becomes the PMNS matrix and the oscillation probabilities the three-flavour vacuum ones (section 19)} & True \\
-31 & \texttt{age 13.79 Gyr (Planck 2018: 13.787 +- 0.020)} & True \\
-32 & \texttt{ADD relation: 3 Ha\textasciicircum{}2 = kappa8 rho4/V\_perp = 8 pi G4 rho4 with G4 = G8/V\_perp} & True \\*
+23 & \texttt{brane frame metric diag(+1,-1,-1,-1) = eta17 on x0..x3 = squares of the quaternion basis 1, e\_1, e\_2, e\_3 (Re(e\_a e\_b)); H closed} & True \\
+24 & \texttt{brane representation: gamma\_mu (x) 1\_4 (mu = 0..3) and gamma5 (x) rho\_k (k = 4..7) satisfy \{R\_A, R\_B\} = 2 eta\_AB} & True \\
+25 & \texttt{intertwiner U (Schur average over the 256 Clifford products): Gamma17[A] U = U R\_A for A = 0..7, U unitary} & True \\
+26 & \texttt{8D chirality at the brane: chi17 = U (gamma5 (x) rho4567) U\textasciicircum{}dag, rho4567 Hermitian with eigenvalues +1, +1, -1, -1} & True \\
+27 & \texttt{bilinears at the brane: Psibar Psi' = sum\_a psibar\_a psi'\_a and Psibar Gamma\textasciicircum{}mu Psi' = sum\_a psibar\_a gamma\textasciicircum{}mu psi'\_a (mu = 0..3)} & True \\
+28 & \texttt{Kaluza-Klein: the 16x16 operator gamma.p (x) 1 + gamma5 (x) rho.q/b0 - m is singular exactly on p0\textasciicircum{}2 - |p|\textasciicircum{}2 = m\textasciicircum{}2 + |q|\textasciicircum{}2/b0\textasciicircum{}2} & True \\
+29 & \texttt{KK operator: X\textasciicircum{}2 = -|q|\textasciicircum{}2/b0\textasciicircum{}2 and X anticommutes with gamma\textasciicircum{}mu (x) 1} & True \\
+30 & \texttt{non-unitary oscillations: sum\_b P(a->b) = (N N\textasciicircum{}dag)\_aa\textasciicircum{}2-type deficit < 1 (zero-distance effect), complemented by the heavy states} & True \\
+31 & \texttt{portal decoupling: for mu -> 0 the light block becomes the PMNS matrix and the oscillation probabilities the three-flavour vacuum ones (section 19)} & True \\
+32 & \texttt{age 13.79 Gyr (Planck 2018: 13.787 +- 0.020)} & True \\
+33 & \texttt{ADD relation: 3 Ha\textasciicircum{}2 = kappa8 rho4/V\_perp = 8 pi G4 rho4 with G4 = G8/V\_perp} & True \\*
 \end{longtable}}
 \textbf{Numbers printed by both programs} (relative differences; the Python program prints $|V|$ with 6 and $|U|$ with 5 decimals):
 
@@ -225,26 +238,26 @@ $T_\nu$, $n_\nu$ & 2 & $1.3\times10^{-16}$ \\*
 \textbf{SHA-256 of the files} (at the time this document was generated):
 
 \begin{Verbatim}[fontsize=\small,frame=single,framesep=2mm]
-7+1.nb                             060942488caf4f45120ffd37be0123e96992a31cd7fdbde09ee4dc4ced4f5
-    ...d3a
-tools/make_7p1_nb.py               2fac94dfd0c9fcf3aed8d6e90a77fbbb8ab1c8450819ff591b7e5cf7b5787
-    ...d6f
-tools/nb_part_gravity.py           55d16f735e16df7a7cd2aa70d322969bc6cf82c777965f112b5a9acf46a6a
-    ...d5f
-tools/nb_part_ks_gravity.py        886814fedc4cd015c63b950ee83724025ba21fd6c3e56b68dcb7f2f07afdc
-    ...205
-tools/nb_part_sm.py                20782f1fe557fd3f3dea7417e89ecd42a1602f7a48599fcdcfd0cff77f120
-    ...ecc
+7+1.nb                             8ef9fed74c1c887a51945dfaa670cd1e32a2b07e4964f2f5ae59ac0e9747a
+    ...a0c
+tools/make_7p1_nb.py               7407dbef711b841fa0adb7817c6fb5bfe5018bc02a603100a46dd2169b93c
+    ...4fe
+tools/nb_part_gravity.py           c4caf2ad5c932e8f603341edade5f4b98fa784feb05906c051eab7c884cd6
+    ...8f8
+tools/nb_part_ks_gravity.py        a656c0ad040b4576b75b17e029545109e531c8e656ad99bfdb5cba946e967
+    ...772
+tools/nb_part_sm.py                43e92beed57453a4b57931de6d603ac6c218efba6e4005133b69b8054a975
+    ...c5b
 tools/lovelock71.py                d93ecbd0f82adb972218d59dfe32999a4af944945ca9758607f3a633e1af9
     ...5a1
-tools/ref_gravity.py               2bfdc087ed4dc7d84258e04449d11141b415f54b992e65d42fa42cace08ff
-    ...6bd
-tools/ref_ks_gravity.py            8d082985c5161254d7c6294c0310f7807aa037bff27a8cd3ec4d3f8a9f6e0
-    ...550
-tools/ref_sm.py                    d36d23f472c8339d80f1d0b1eb46c509398562053ead7033d96b054782e73
-    ...b49
-tools/ref71.py                     4ac783b1ab221317387f2a74e0be60f114fd64940fe3ea96af79b33ee7dcb
-    ...8b0
+tools/ref_gravity.py               f07cf8adaff585af89c87d19532f1aaa7db606ad88ae90483b2d1f41341ed
+    ...f36
+tools/ref_ks_gravity.py            b6488ef24b1c16aacd8ff6cf6a5a1ba3f316e082449ad97480022d1a26383
+    ...27f
+tools/ref_sm.py                    f3f80806893f42bbf166e1f1de896ffd611dbfe847685da8e3ee367e9cde6
+    ...aba
+tools/ref71.py                     1a7a06eb0add3f459611776dc9c474a5bb959d947a9db949db4612b1ab943
+    ...4e0
 tools/ref44.py                     ab100c3ebcc055fbe59c132a02f80ecb17630e934e99d59f88e919ec8064f
     ...af5
 \end{Verbatim}
@@ -318,6 +331,8 @@ NUM supernova MSW resonance densities for E = 20 MeV, Y_e = 0.5: H (dm31, theta1
 NUM cosmic neutrino background: T_nu = (4/11)^(1/3) T_gamma [K], number density per flavour
     ...[cm^-3] : (1.9453688391750839, 112.01641316574336)
 CNB: T_nu = 1.945 K and n = 112 cm^-3 per flavour : True
+brane frame metric diag(+1,-1,-1,-1) = eta17 on x0..x3 = squares of the quaternion basis 1,
+    ...e_1, e_2, e_3 (Re(e_a e_b)); H closed : True
 brane representation: gamma_mu (x) 1_4 (mu = 0..3) and gamma5 (x) rho_k (k = 4..7) satisfy
     ...{R_A, R_B} = 2 eta_AB : True
 intertwiner U (Schur average over the 256 Clifford products): Gamma17[A] U = U R_A for A =
@@ -347,7 +362,7 @@ ADD relation: 3 Ha^2 = kappa8 rho4/V_perp = 8 pi G4 rho4 with G4 = G8/V_perp : T
 NUM ADD example (reduced 8D Planck mass 10 TeV): V_perp [GeV^-4], V_perp^(1/4) [m], lowest KK
     ...mass 2 pi/V_perp^(1/4) [MeV] : (5929225000000.0, 3.079186208511254e-13,
     ...4.026524867292262)
-boolean checks: 32   failed: 0
+boolean checks: 33   failed: 0
 VERDICT: ALL CHECKS PASSED
 \end{Verbatim}
 \end{document}

@@ -3,6 +3,7 @@ dirac16complex, the Fierz matrix, the covariant nonlinear field equation, chiral
 Kohn-Sham theory in the three epochs (sections 15-16 of 7+1.nb), with its defining equation and its Mathematica name.
 Self-contained: every equation needed to define a symbol is written in this document."""
 from docgen import Doc
+from doc_common import signature_block
 
 W4 = [0.15, 0.21, 0.36, 0.28]
 HEAD4 = ['symbol', 'Mathematica', 'definition', 'meaning']
@@ -25,13 +26,17 @@ def build(D, today):
     d.ul(['Units: $\\hbar=c=1$; a prime is $d/dx_0$.',
           'Coordinates $X=(x_0,x_1,\\dots,x_7)$ (`X = {x0, …, x7}`): $x_0$ time, $x_1,x_2,x_3$ ordinary space, $x_4,\\dots,x_7$ auxiliary '
           'space.',
-          'Frame indices $A,B\\in\\lbrace0,\\dots,7\\rbrace$, raised and lowered with $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ (`η17`); coordinate '
+          'Frame indices $A,B\\in\\lbrace0,\\dots,7\\rbrace$, raised and lowered with $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ (`η17`), simply the '
+          'squares of the octonion basis ($\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$); coordinate '
           'indices $\\mu,\\nu\\in\\lbrace0,\\dots,7\\rbrace$; $i\\in\\lbrace1,2,3\\rbrace$ ordinary, $k\\in\\lbrace4,\\dots,7\\rbrace$ auxiliary space. '
           'Repeated indices are summed.',
           'Multi-indices $K,J$ are strictly increasing lists of frame indices; $|K|$ is the rank (the length of $K$); $K\\in r$ means $|K|=r$.',
           'Matrices: $1_n$ identity, $M^{\\mathsf T}$ transpose, $M^\\dagger$ conjugate transpose, $\\mathrm{tr}$ trace, $[X,Y]=XY-YX$.',
           'Mathematica names with Greek letters are written with named characters: `\\[CapitalTheta]up` is `Θup`, `\\[Eta]K` is `ηK`, '
-          '`\\[Chi]17` is `χ17`, `\\[Omega]17` is `ω17`.'])
+          '`\\[Chi]17` is `χ17`, `\\[Omega]17` is `ω17`.',
+          'Signature: one time-like dimension ($x_0$) and seven space-like dimensions; the xAct list $\\{7,1,0\\}$ declares seven '
+          'space-like dimensions and one time-like dimension, the matrix $\\eta$ lists the squares of the octonion basis (below).'])
+    signature_block(d, eta=r'\eta', eta71=r'\eta_{71}', gam=r'\Gamma')
 
     d.h1('2. Dirac matrices, chirality, and the field')
     d.table(HEAD4, [
@@ -126,6 +131,7 @@ def build(D, today):
 
     d.h1('6. Symbols that look alike')
     d.table(['symbol', 'not to be confused with'], [
+        ['$\\{7,1,0\\}$ (xAct signature list: seven space-like dimensions, one time-like)', '$\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ (simply the squares of the octonion basis, $\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$)'],
         ['$\\omega=\\Gamma_0\\cdots\\Gamma_7$ (volume element)', '$\\omega$ (single-particle energy), $\\omega_\\mu{}^A{}_B$ (spin connection)'],
         ['$\\chi$ (chirality)', '$\\chi_k$ (rescaled mode, $\\psi=(a^3b^4)^{-1/2}\\chi_k$)'],
         ['$\\Theta^K$ (upper multi-index)', '$\\Theta_K=\\eta_K\\Theta^K$ (lower multi-index)'],
