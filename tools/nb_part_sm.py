@@ -52,7 +52,7 @@ text('With ⟨Φ⟩ = (0, v/√2) the term |D_μ⟨Φ⟩|² is a mass matrix for
      'm_H = 125.20 GeV (PDG 2025) fix v = (√2 G_F)^(−1/2), g = 2m_W/v, cosθ_W = m_W/m_Z (on shell), g′ = g tanθ_W, e = g sinθ_W and '
      'λ = m_H²/(2v²) at tree level.')
 inp(r'''
-wF = {w1, w2, w3, bB}; tauP = {PauliMatrix[1], PauliMatrix[2], PauliMatrix[3]};
+wF = {wW1, wW2, wW3, bB};       (* the components W^1, W^2, W^3 and B of the electroweak gauge fields *) tauP = {PauliMatrix[1], PauliMatrix[2], PauliMatrix[3]};
 dPhi = -I (gW Sum[wF[[i]] tauP[[i]]/2, {i, 3}] + gY/2 bB IdentityMatrix[2]).{0, vH/Sqrt[2]};
 massTerm = Expand[ComplexExpand[Conjugate[dPhi].dPhi]];
 mGB = Table[D[massTerm, wF[[i]], wF[[j]]], {i, 4}, {j, 4}];
@@ -184,16 +184,16 @@ mFull = ArrayFlatten[{{mDnu, muPortal}, {ConstantArray[0, {4, 3}], mPsi Identity
 {ulP, svP, vrP} = SingularValueDecomposition[mFull];
 ordP = Ordering[Diagonal[svP]]; ulP = ulP[[All, ordP]]; svL = Diagonal[svP][[ordP]];
 nAct = ulP[[1 ;; 3, 1 ;; 3]];
-etaNu = IdentityMatrix[3] - nAct.ConjugateTranspose[nAct];
-check["portal mixing: 1 - N.N^dag == mu.mu^dag/m^2 to second order (non-unitary light mixing)", Norm[etaNu - muPortal.ConjugateTranspose[muPortal]/mPsi^2] < 10^-14]
-{"light masses (eV)" -> svL[[1 ;; 3]], "heavy masses (GeV)" -> svL[[4 ;; 7]] 10^-9, "eta_ee" -> Re[etaNu[[1, 1]]]}
+devNN = IdentityMatrix[3] - nAct.ConjugateTranspose[nAct];
+check["portal mixing: 1 - N.N^dag == mu.mu^dag/m^2 to second order (non-unitary light mixing)", Norm[devNN - muPortal.ConjugateTranspose[muPortal]/mPsi^2] < 10^-14]
+{"light masses (eV)" -> svL[[1 ;; 3]], "heavy masses (GeV)" -> svL[[4 ;; 7]] 10^-9, "(1 - N.N^dag)_ee" -> Re[devNN[[1, 1]]]}
 ''')
 
 # =====================================================================================
 section('19. Neutrino flavour and flavour conversion')
 text('A neutrino of flavour α produced with energy E is the superposition Σ_i U*_αi |ν_i⟩. In vacuum, with ħc = 1.973269804 × 10⁻¹⁶ GeV m, '
      'the amplitude after a distance L is A(α → β) = Σ_i U_βi U*_αi exp(−i m_i² L/(2E)), so')
-text('      P(α → β) = δαβ − 4 Σ_{i>j} Re X_ij sin²Δ_ij + 2 Σ_{i>j} Im X_ij sin 2Δ_ij,   X_ij = U_αi U*_βi U*_αj U_βj,   Δ_ij = Δm²_ij L/(4E).')
+text('      P(α → β) = δαβ − 4 Σ_{i>j} Re X_ij sin²Δ_ij + 2 Σ_{i>j} Im X_ij sin 2Δ_ij,   X_ij = U*_αi U_βi U_αj U*_βj,   Δ_ij = Δm²_ij L/(4E),   Δm²_ij = m_i² − m_j².')
 text('In matter of electron density n_e the forward scattering on electrons adds V_CC = √2 G_F n_e to the ν_e row of the flavour '
      'Hamiltonian H = U diag(0, Δm²21, Δm²31) U†/(2E) + diag(V_CC, 0, 0) (V_CC → −V_CC and U → U* for antineutrinos; a common potential '
      'drops out). In two flavours the mixing angle in matter obeys tan 2θ_m = sin 2θ/(cos 2θ − 2EV/Δm²): it is maximal at the MSW '
@@ -205,7 +205,7 @@ hbarcGeVmN = 1.973269804*^-16; NAv = 6.02214076*^23; hbarcEVcm = 1.973269804*^-5
 phaseF[L_, en_] := 10^-18 L 10^3/(2 en hbarcGeVmN);
 pVac[u_, L_, en_] := Abs[Transpose[u.DiagonalMatrix[Exp[-I {0, dm21, dm31} phaseF[L, en]]].ConjugateTranspose[u]]]^2;
 pD = pVac[uPMNS, 1300., 2.5]; pDbar = pVac[Conjugate[uPMNS], 1300., 2.5];
-xFormula[u_, a_, b_, L_, en_] := Boole[a == b] + Sum[With[{xx = u[[a, i]] Conjugate[u[[b, i]]] Conjugate[u[[a, j]]] u[[b, j]], dd = {0, dm21, dm31}[[i]] - {0, dm21, dm31}[[j]]},
+xFormula[u_, a_, b_, L_, en_] := Boole[a == b] + Sum[With[{xx = Conjugate[u[[a, i]]] u[[b, i]] u[[a, j]] Conjugate[u[[b, j]]], dd = {0, dm21, dm31}[[i]] - {0, dm21, dm31}[[j]]},
      -4 Re[xx] Sin[dd phaseF[L, en]/2]^2 + 2 Im[xx] Sin[dd phaseF[L, en]]], {i, 3}, {j, i - 1}];
 check["vacuum: P(a->b) doubly stochastic; equals delta - 4 Sum Re X sin^2 Delta + 2 Sum Im X sin 2Delta; CPT P(a->b) == P(bbar->abar)",
   Norm[Total[pD, {2}] - 1] < 10^-13 && Norm[Total[pD] - 1] < 10^-13 && Max[Abs[Table[xFormula[uPMNS, a, b, 1300., 2.5] - pD[[a, b]], {a, 3}, {b, 3}]]] < 10^-13 &&

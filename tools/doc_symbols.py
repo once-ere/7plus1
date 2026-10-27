@@ -1,6 +1,7 @@
 """Content of README_SYMBOLS: every symbol of 7+1.nb and of the documentation, with its definition."""
 from docgen import Doc, pmat
 from doc_common import *
+import doc_readme_stage3 as S3
 
 def build(D):
     d = Doc('7+1: symbols and their definitions',
@@ -10,7 +11,9 @@ def build(D):
             'This is a self-contained dictionary. For each symbol it gives the mathematical notation, the Mathematica name in '
             '7+1.nb, the defining equation and its meaning, and, where it exists, the name used in the earlier notebook 4+4.nb. '
             'Sections 2–8 cover the octonions and the Clifford algebras (sections 0–6 of 7+1.nb); section 9 covers the Dirac equation '
-            'and the Kohn–Sham theories of the field dirac16complex (sections 7–10 of 7+1.nb).')
+            'and the Kohn–Sham theories of the field dirac16complex (sections 7–10 of 7+1.nb)%s.'
+            % ('; section 10 covers gravity, the self-coupled field in gravitational fields and the Standard Model (sections 11–19 of 7+1.nb)'
+               if D.get('s3') else ''))
 
     d.h1('1. Conventions used in every definition below')
     d.ul(['Indices $A,B,K,L\\in\\lbrace0,1,\\dots,7\\rbrace$ label the coordinates $x_A$, the octonion units $e_A$ and the Clifford '
@@ -238,4 +241,6 @@ def build(D):
              r'&\big[\mathcal V^L_0-\tau^{O}_i\partial_i-i\tau^{O}_i\mathcal V^L_i\big]\Phi_L+\mathcal M\Phi_R=\lambda\Phi_L,\qquad \mathcal M^*\Phi_L+\big[\mathcal V^R_0+\tau^{O}_i\partial_i+i\tau^{O}_i\mathcal V^R_i\big]\Phi_R=\lambda\Phi_R .'])
     d.p('In $H_0+H_{\\rm int}$, $H_0=\\int:\\Psi^\\dagger H_{\\rm D}\\Psi:\\,d^7x$ and $H_{\\rm int}=\\int\\big[\\frac{g_S}2:\\rho_S^2:+\\frac{g_P}2:\\rho_P^2:'
         '+\\frac{g_V}2:j^Aj_A:+\\frac{g_A}2:j_5^Aj_{5A}:\\big]d^7x$ (normal ordered); $\\min_{\\Psi\\to n}$ runs over the states with densities $n$.')
+    if D.get('s3'):
+        S3.symbols_section(d, D['s3'], 10)
     return d

@@ -621,7 +621,7 @@ def sec11(d, D):
     nbinfo = D['nb']; log = D['log']; ref = D['ref']
     d.h1('11. Verification')
     d.h2('11.1 In Mathematica')
-    d.p('7+1.nb was evaluated with Wolfram Language %s, by `NotebookEvaluate[..., InsertResults -> True]` (tools/run_eval.wl), in %s s, with %d message '
+    d.p('7+1.nb was evaluated with Wolfram Language %s, by tools/run_eval.wl (all cells evaluated in a fresh kernel, then saved), in %s s, with %d message '
         'cells. Every claim is a cell `check["name", test]`; sections 7–9 contain %d of them and the whole notebook %d. All are True; '
         'the summary of section 10 prints `Length[checks]` $=%s$, `failedChecks` $=\\lbrace\\rbrace$ and `allChecksPassed` $=$ True. The checks '
         'of sections 7–9:' % (nbinfo['version'], log.get('seconds', '?'), D['messages_all'], len(D['checks79']), len(nbinfo['checks']),
@@ -685,8 +685,9 @@ def sec12(d, D):
         'sections 7–10 were appended is kept in the workspace folder backups/ (file 7+1_2026-10-26_before_dirac16complex.nb), a folder '
         'excluded from the repository by .gitignore. Section 6 summarizes the checks of sections 1–5 (it is evaluated before sections 7–9); '
         'section 10 summarizes all checks.')
-    d.p('**To re-evaluate.** Open 7+1.nb in Wolfram 15.0.1 and choose Evaluation ▸ Evaluate Notebook (about %s seconds), or evaluate the '
-        'following line in any notebook of Wolfram 15.0.1; it evaluates 7+1.nb in place, saves it and writes build/eval_log.txt:'
+    d.p('**To re-evaluate.** Open 7+1.nb in Wolfram 15.0.1, start from a fresh kernel (Evaluation ▸ Quit Kernel ▸ Local, if the kernel has been '
+        'used) and choose Evaluation ▸ Evaluate Notebook (about %s seconds), or evaluate the following line in any notebook of Wolfram 15.0.1; it '
+        'evaluates 7+1.nb in place in a fresh kernel, saves it and writes build/eval_log.txt:'
         % ('%.0f' % float(D['log'].get('seconds', '0') or 0)))
     d.code('Get["D:/Developer/github/7+1/tools/run_eval.wl"]')
     d.p('The Wolfram front end used is')

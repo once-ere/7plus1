@@ -119,14 +119,15 @@ def P_vac(U, L, E, anti=False):
 Pd = P_vac(Upmns, 1300.0, 2.5)
 R['vacuum: probabilities P(a -> b) form a doubly stochastic matrix (rows and columns sum to 1)'] = np.allclose(Pd.sum(1), 1) and np.allclose(Pd.sum(0), 1)
 def P_formula(U, a, b, L, E):
-    dms = {(1, 0): dm21, (2, 0): dm31, (2, 1): dm31 - dm21}
+    m2 = (0.0, dm21, dm31)                                        # m_i^2 - m_1^2, i = 1, 2, 3
     s = 1.0 if a == b else 0.0
-    for (j, i), d in dms.items():
-        X = U[a, i]*np.conj(U[b, i])*np.conj(U[a, j])*U[b, j]
-        D_ = d*phase_factor(L, E)/2
-        s += -4*X.real*math.sin(D_)**2 + 2*X.imag*math.sin(2*D_)
+    for i in range(3):
+        for j in range(i):                                        # i > j
+            X = np.conj(U[a, i])*U[b, i]*U[a, j]*np.conj(U[b, j])
+            D_ = (m2[i] - m2[j])*phase_factor(L, E)/2             # Delta_ij = Delta m^2_ij L/(4E)
+            s += -4*X.real*math.sin(D_)**2 + 2*X.imag*math.sin(2*D_)
     return s
-R['vacuum: amplitude result = delta_ab - 4 sum Re(X) sin^2 Delta + 2 sum Im(X) sin 2Delta, X = U_ai U_bi* U_aj* U_bj'] = all(
+R['vacuum: amplitude result = delta_ab - 4 sum_{i>j} Re(X_ij) sin^2 Delta_ij + 2 sum_{i>j} Im(X_ij) sin 2Delta_ij, X_ij = U_ai* U_bi U_aj U_bj*'] = all(
     abs(P_formula(Upmns, a, b, 1300.0, 2.5) - Pd[a, b]) < 1e-13 for a in range(3) for b in range(3))
 Pbar = P_vac(Upmns, 1300.0, 2.5, anti=True)
 R['NUM DUNE vacuum (L = 1300 km, E = 2.5 GeV): P(mu->e), P(mubar->ebar), P(mu->mu)'] = (Pd[1, 0], Pbar[1, 0], Pd[1, 1])
@@ -278,7 +279,7 @@ order = np.argsort(sv); sv = sv[order]; UL = UL[:, order]
 Nact = UL[:3, :3]                                                  # active flavours x light mass states
 eta_nu = np.eye(3) - Nact @ Nact.conj().T
 R['portal mixing: light masses (eV) and heavy masses (GeV) of the 7x7 Dirac mass matrix'] = (sv[:3].tolist(), (sv[3:]/1e9).tolist())
-R['portal mixing: N N^dag = 1 - mu mu^dag/m^2 to second order (non-unitary light mixing), eta_ee'] = (
+R['portal mixing: N N^dag = 1 - mu mu^dag/m^2 to second order (non-unitary light mixing), (1 - N N^dag)_ee'] = (
     np.allclose(eta_nu, muP @ muP.conj().T/mPs**2, atol=1e-14), eta_nu[0, 0].real)
 def P_nonunitary(N_, masses, L, E):
     ph = np.exp(-1j*masses**2*phase_factor(L, E))
@@ -287,7 +288,7 @@ def P_nonunitary(N_, masses, L, E):
 Pnu = P_nonunitary(Nact, sv[:3], 1300.0, 2.5)
 R['non-unitary oscillations: sum_b P(a->b) = (N N^dag)_aa^2-type deficit < 1 (zero-distance effect), complemented by the heavy states'] = all(
     Pnu[a].sum() < 1 for a in range(3)) and np.allclose(P_nonunitary(Nact, sv[:3], 0.0, 2.5).diagonal(), np.abs(np.diag(Nact @ Nact.conj().T))**2)
-R['portal decoupling: for mu -> 0 the light block becomes the PMNS matrix and the oscillation probabilities those of section 19.1'] = (
+R['portal decoupling: for mu -> 0 the light block becomes the PMNS matrix and the oscillation probabilities the three-flavour vacuum ones (section 19)'] = (
     np.allclose(P_nonunitary(Upmns, np.array([m1, m2, m3]), 1300.0, 2.5), P_vac(Upmns, 1300.0, 2.5), atol=1e-14))
 # vector portal: potential from a dirac16complex background n_Psi (forward scattering), non-universal couplings
 epsP = np.array([1.0, 0.0, 0.0])*Vcc(2.848, 0.5)*0.2                # V_P^alpha = G_P^alpha n_Psi, 20% of V_CC for nu_e only
