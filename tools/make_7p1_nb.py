@@ -905,6 +905,761 @@ Grid[Prepend[KeyValueMap[{#1, #2} &, checks], {Style["check", Bold], Style["resu
 ''')
 
 # =====================================================================================
+# Sections 7-10, appended on 2026-10-26 (the dirac16complex stage)
+# =====================================================================================
+section('7. The Dirac equation of the quantized 16-component field dirac16complex')
+text([('About sections 7–10. ', B),
+      'Sections 7–10 were appended to this notebook on 26 October 2026. The notebook as it was before the addition '
+      '(sections 0–6, evaluated) is kept in the workspace as backups/7+1_2026-10-26_before_dirac16complex.nb; that folder '
+      'is excluded from the repository by .gitignore. Section 6 above summarizes the checks of sections 1–5 (it is evaluated '
+      'before sections 7–9); section 10 summarizes all checks of sections 1–9. The repository is now github.com/once-ere/7plus1.'])
+text([('Task of sections 7–9. ', B),
+      '(i) A valid, checked Dirac equation on the real 7+1 spacetime — one time coordinate x0 and seven space coordinates '
+      'x1 … x7 — for a 16-component quantized fermion field named dirac16complex, whose components are complex-valued '
+      'Grassmann (anticommuting) operators, with eight anticommuting REAL 16×16 Dirac matrices taken from this notebook; '
+      '(ii) the chiral projections that turn the 16-component equation into two 8-component equations, coupled when the '
+      'mass is not zero; (iii) a 16-component Kohn–Sham theory of the self-coupled field (section 8) and (iv) its chiral '
+      'version built with the chiral projections (section 9).'])
+text([('Units and conventions. ', B),
+      'ħ = c = 1. Coordinates X = {x0, …, x7} as everywhere in this notebook; ∂_A = ∂/∂xA. Indices A, B = 0 … 7 are raised '
+      'and lowered with η17 = diag(+1, −1, …, −1); i, j = 1 … 7 are space indices, and repeated indices are summed. '
+      'A space vector such as the momentum is written p⃗ = (p1, …, p7), p⃗·x⃗ = p1 x1 + … + p7 x7. '
+      'm is the mass (mD in the code, a positive symbol); a symbol that has a value elsewhere in this notebook (mass, β, θ) '
+      'is never reused with a different meaning.'])
+
+subsection('7.1 The eight real Dirac matrices and the Dirac α, β')
+text('The Dirac matrices are the real matrices Γ17[0], …, Γ17[7] of section 4.2 (every entry 0 or ±1):')
+text('      Γ17[A].Γ17[B] + Γ17[B].Γ17[A] = 2 η17[[A+1,B+1]] ID16,   so Γ17[0]² = +ID16 (time) and Γ17[i]² = −ID16 (space).')
+text('They are the only possible choice: section 4.4 proves that the opposite sign convention (time squaring to −1) has no real '
+     '16×16 realization, so η17 is the 7+1 convention with real 16×16 Dirac matrices. With the index raised, '
+     'Γ17up[A] = η17[[A+1,A+1]] Γ17[A] (section 5.3), i.e. Γ17up[0] = Γ17[0] and Γ17up[i] = −Γ17[i]. '
+     'Because Γ17[0] is symmetric and the Γ17[i] are antisymmetric (and all are real), the Hermitian conjugate of a Dirac matrix is again '
+     'a Dirac matrix: Γ17up[A]† = Γ17[0].Γ17up[A].Γ17[0].')
+text('The Hamiltonian (Dirac) matrices are βD = Γ17up[0] = Γ17[0] and αD[i] = Γ17up[0].Γ17up[i] = −Γ17[0].Γ17[i]. '
+     'In 8×8 blocks')
+text('      βD = {{0, ID8}, {ID8, 0}},   αD[i] = {{0, τO[i]}, {−τO[i], 0}}   (i = 1 … 7),')
+text('all real and symmetric, with αD[i].αD[j] + αD[j].αD[i] = 2 δij ID16, αD[i].βD + βD.αD[i] = 0, βD² = ID16. '
+     'The volume element ω17 = Γ17[8] = Γ17[0].Γ17[1] ⋯ Γ17[7] = {{0, −ID8}, {ID8, 0}} is real, anticommutes with every Γ17[A] '
+     'and squares to −ID16 (section 4.6).')
+inp(r'''
+\[Beta]D = \[CapitalGamma]17up[0];
+Do[\[Alpha]D[i] = \[CapitalGamma]17up[0].\[CapitalGamma]17up[i], {i, 1, 7}];
+\[Omega]17 = \[CapitalGamma]17[8];
+check["Dirac matrices: \[CapitalGamma]17up[0] == \[CapitalGamma]17[0], \[CapitalGamma]17up[i] == -\[CapitalGamma]17[i]; all REAL, every entry 0 or \[PlusMinus]1",
+  \[CapitalGamma]17up[0] == \[CapitalGamma]17[0] && And @@ Table[\[CapitalGamma]17up[i] == -\[CapitalGamma]17[i], {i, 1, 7}] &&
+  And @@ Table[SubsetQ[{-1, 0, 1}, Union[Flatten[\[CapitalGamma]17up[A]]]], {A, 0, 7}]]
+check["Dirac adjoint: ConjugateTranspose[\[CapitalGamma]17up[A]] == \[CapitalGamma]17[0].\[CapitalGamma]17up[A].\[CapitalGamma]17[0] for A = 0..7",
+  And @@ Table[ConjugateTranspose[\[CapitalGamma]17up[A]] == \[CapitalGamma]17[0].\[CapitalGamma]17up[A].\[CapitalGamma]17[0], {A, 0, 7}]]
+check["\[Beta]D == {{0,ID8},{ID8,0}} and \[Alpha]D[i] == {{0,\[Tau]O[i]},{-\[Tau]O[i],0}}: real and symmetric",
+  \[Beta]D == ArrayFlatten[{{0, ID8}, {ID8, 0}}] &&
+  And @@ Table[\[Alpha]D[i] == ArrayFlatten[{{0, \[Tau]O[i]}, {-\[Tau]O[i], 0}}] && Transpose[\[Alpha]D[i]] == \[Alpha]D[i], {i, 1, 7}]]
+check["\[Alpha]D[i].\[Alpha]D[j] + \[Alpha]D[j].\[Alpha]D[i] == 2 \[Delta]ij ID16, \[Alpha]D[i].\[Beta]D + \[Beta]D.\[Alpha]D[i] == 0, \[Beta]D.\[Beta]D == ID16",
+  And @@ Flatten[Table[\[Alpha]D[i].\[Alpha]D[j] + \[Alpha]D[j].\[Alpha]D[i] == 2 KroneckerDelta[i, j] ID16, {i, 1, 7}, {j, 1, 7}]] &&
+  And @@ Table[\[Alpha]D[i].\[Beta]D + \[Beta]D.\[Alpha]D[i] == Zero16, {i, 1, 7}] && \[Beta]D.\[Beta]D == ID16]
+check["\[Omega]17 = \[CapitalGamma]17[8] == {{0,-ID8},{ID8,0}} is real, \[Omega]17.\[Omega]17 == -ID16, and \[Omega]17 anticommutes with every \[CapitalGamma]17[A]",
+  \[Omega]17 == ArrayFlatten[{{0, -ID8}, {ID8, 0}}] && \[Omega]17.\[Omega]17 == -ID16 && And @@ Table[\[Omega]17.\[CapitalGamma]17[A] == -\[CapitalGamma]17[A].\[Omega]17, {A, 0, 7}]]
+''')
+
+subsection('7.2 The field dirac16complex and its Dirac equation')
+text('The field is the column of 16 components')
+text('      dirac16complex(x) = ψ(x) = (ψ_1(x), …, ψ_16(x)),   x = (x0, x1, …, x7).')
+text('Each component is a complex (non-Hermitian, ψ_a† ≠ ψ_a) Grassmann-odd operator field: at equal times '
+     'ψ_a ψ_b = −ψ_b ψ_a (so ψ_a² = 0) and ψ_a ψ_b† + ψ_b† ψ_a = δ_ab δ⁷(x⃗ − y⃗) (section 7.7). The Dirac equation of the field is')
+text('      (i Γ17up[A] ∂_A − m) ψ = 0,   that is   i Γ17[0] ∂_0 ψ − i Σ_i Γ17[i] ∂_i ψ − m ψ = 0.')
+text('The matrices are real; the factor i in front of them is unavoidable and harmless. With real Γ17 the first-order operator '
+     'Γ17up[A] ∂_A squares to +(∂_0² − ∂_1² − … − ∂_7²) ID16 (section 5.3), hence')
+text('      (i Γ17up[A] ∂_A + m)(i Γ17up[A] ∂_A − m) = −(∂_0² − ∂_1² − … − ∂_7² + m²) ID16:')
+text('every component of a solution obeys the 7+1 Klein–Gordon equation. The equation is linear, so it reads the same for '
+     'operator-valued, Grassmann-valued or ordinary complex components; the checks below use 16 arbitrary functions '
+     'ψ16[a](x0, …, x7) for the components of dirac16complex.')
+inp(r'''
+dirac16complex = Table[\[Psi]16[a] @@ X, {a, 1, 16}];
+DiracEq16[\[Psi]\[Psi]_, mm_] := I DiracOp17[\[Psi]\[Psi]] - mm \[Psi]\[Psi];
+check["(I \[CapitalGamma]17up[A] \[PartialD]_A + m)(I \[CapitalGamma]17up[A] \[PartialD]_A - m) dirac16complex == -(\[PartialD]0^2 - \[PartialD]1^2 - ... - \[PartialD]7^2 + m^2) dirac16complex (16 arbitrary functions)",
+  Simplify[I DiracOp17[DiracEq16[dirac16complex, mD]] + mD DiracEq16[dirac16complex, mD] + waveOp17[dirac16complex] + mD^2 dirac16complex] === ConstantArray[0, 16]]
+''')
+
+subsection('7.3 Hamiltonian form')
+text('Multiplying the Dirac equation from the left by Γ17[0] (Γ17[0].Γ17[0] = ID16) gives the Schrödinger form')
+text('      i ∂_0 ψ = h ψ,   h = −i αD[i] ∂_i + βD m.')
+text('αD[i] and βD are real symmetric and −i∂_i is Hermitian, so h is Hermitian: the time evolution is unitary and the charge '
+     'Q = ∫ ψ†ψ d⁷x is conserved.')
+inp(r'''
+hD[\[Psi]\[Psi]_, mm_] := Sum[-I \[Alpha]D[i].D[\[Psi]\[Psi], X[[i + 1]]], {i, 1, 7}] + mm \[Beta]D.\[Psi]\[Psi];
+check["\[CapitalGamma]17[0].(I \[CapitalGamma]17up[A] \[PartialD]_A - m) \[Psi] == I \[PartialD]0 \[Psi] - h \[Psi] with h = -I \[Alpha]D[i] \[PartialD]_i + \[Beta]D m (16 arbitrary functions)",
+  Simplify[\[CapitalGamma]17[0].DiracEq16[dirac16complex, mD] - (I D[dirac16complex, x0] - hD[dirac16complex, mD])] === ConstantArray[0, 16]]
+''')
+
+subsection('7.4 Plane waves and the real spinors u_s, v_s')
+text('For a plane wave e^{−i(E x0 − p⃗·x⃗)} the operator −i∂_i becomes pi and h becomes the REAL symmetric 16×16 matrix')
+text('      h(p⃗) = pi αD[i] + m βD = {{0, M}, {Transpose[M], 0}},   M(p⃗) = m ID8 + pi τO[i]   (a real 8×8 matrix).')
+text('The τO[i] are antisymmetric and anticommute, so M.Transpose[M] = Transpose[M].M = (m² + p⃗²) ID8 = E² ID8 with '
+     'E = √(m² + p⃗²), and h(p⃗)² = E² ID16: the eigenvalues are +E and −E, each eight times. The eigenvectors are REAL. '
+     'For s = 1 … 8 (e_s = UnitVector[8, s]):')
+text('      u_s(p⃗) = (E e_s, Transpose[M].e_s)/√E,      h(p⃗).u_s = +E u_s,')
+text('      v_s(p⃗) = (E e_s, −M.e_s)/√E,                h(−p⃗).v_s = −E v_s,')
+text('normalized as u_s.u_r = v_s.v_r = 2E δsr. With the 8-momentum p = (E, p⃗) and the real matrix '
+     'pslash = E Γ17[0] + pi Γ17[i] (Γ17 with lower index, p with upper index) these are the Dirac equations in momentum space, '
+     '(pslash − m).u_s = 0 and (pslash + m).v_s = 0; the plane waves u_s e^{−i(E x0 − p⃗·x⃗)} and v_s e^{+i(E x0 − p⃗·x⃗)} '
+     'solve (i Γ17up[A] ∂_A − m) ψ = 0. M(−p⃗) = Transpose[M(p⃗)], so the spinors of −p⃗ need no new formula. '
+     'The checks use a completely symbolic momentum p⃗ = (p1, …, p7).')
+inp(r'''
+pv7 = {p1, p2, p3, p4, p5, p6, p7};
+asm7 = mD > 0 && And @@ (Element[#, Reals] & /@ pv7);
+Ep = Sqrt[mD^2 + pv7.pv7];
+Mp = mD ID8 + Sum[pv7[[i]] \[Tau]O[i], {i, 1, 7}];
+hp[q_List, mm_] := Sum[q[[i]] \[Alpha]D[i], {i, 1, 7}] + mm \[Beta]D;
+uS[s_, M_, En_] := Join[En UnitVector[8, s], Transpose[M].UnitVector[8, s]]/Sqrt[En];
+vS[s_, M_, En_] := Join[En UnitVector[8, s], -M.UnitVector[8, s]]/Sqrt[En];
+slash17[En_, q_List] := En \[CapitalGamma]17[0] + Sum[q[[i]] \[CapitalGamma]17[i], {i, 1, 7}];
+check["h(p) == {{0, M}, {Transpose[M], 0}} with the REAL 8\[Times]8 matrix M = m ID8 + p_i \[Tau]O[i]", Expand[hp[pv7, mD] - ArrayFlatten[{{0, Mp}, {Transpose[Mp], 0}}]] === Zero16]
+check["M.Transpose[M] == Transpose[M].M == E^2 ID8 and h(p).h(p) == E^2 ID16, E^2 = m^2 + p^2",
+  Expand[Mp.Transpose[Mp] - Ep^2 ID8] === Zero8 && Expand[Transpose[Mp].Mp - Ep^2 ID8] === Zero8 && Expand[hp[pv7, mD].hp[pv7, mD] - Ep^2 ID16] === Zero16]
+check["h(p).u_s == E u_s and h(-p).v_s == -E v_s for s = 1..8",
+  And @@ Table[Simplify[hp[pv7, mD].uS[s, Mp, Ep] - Ep uS[s, Mp, Ep], asm7] === ConstantArray[0, 16] &&
+    Simplify[hp[-pv7, mD].vS[s, Mp, Ep] + Ep vS[s, Mp, Ep], asm7] === ConstantArray[0, 16], {s, 1, 8}]]
+check["(pslash - m).u_s == 0 and (pslash + m).v_s == 0, pslash = E \[CapitalGamma]17[0] + p_i \[CapitalGamma]17[i]",
+  And @@ Table[Simplify[(slash17[Ep, pv7] - mD ID16).uS[s, Mp, Ep], asm7] === ConstantArray[0, 16] &&
+    Simplify[(slash17[Ep, pv7] + mD ID16).vS[s, Mp, Ep], asm7] === ConstantArray[0, 16], {s, 1, 8}]]
+check["u_s.u_r == v_s.v_r == 2E \[Delta]sr, and u_s(p).v_r(-p) == 0",
+  Simplify[Table[uS[s, Mp, Ep].uS[r, Mp, Ep] - 2 Ep KroneckerDelta[s, r], {s, 8}, {r, 8}], asm7] === Zero8 &&
+  Simplify[Table[vS[s, Mp, Ep].vS[r, Mp, Ep] - 2 Ep KroneckerDelta[s, r], {s, 8}, {r, 8}], asm7] === Zero8 &&
+  Simplify[Table[uS[s, Mp, Ep].vS[r, Transpose[Mp], Ep], {s, 8}, {r, 8}], asm7] === Zero8]
+check["plane waves: u_s Exp[-I(E x0 - p.x)] and v_s Exp[+I(E x0 - p.x)] solve (I \[CapitalGamma]17up[A] \[PartialD]_A - m) \[Psi] == 0",
+  And @@ Table[Simplify[DiracEq16[uS[s, Mp, Ep] Exp[-I (Ep x0 - pv7.Rest[X])], mD], asm7] === ConstantArray[0, 16] &&
+    Simplify[DiracEq16[vS[s, Mp, Ep] Exp[I (Ep x0 - pv7.Rest[X])], mD], asm7] === ConstantArray[0, 16], {s, 1, 8}]]
+''')
+inp(r'''
+(* an explicit example: p = (2, 2, 4, 0, 0, 0, 0), m = 1, E = 5; the eight real spinors u_s as the columns of a matrix *)
+p0v = {2, 2, 4, 0, 0, 0, 0}; M0 = ID8 + Sum[p0v[[i]] \[Tau]O[i], {i, 1, 7}];
+u0Matrix = Transpose[Table[uS[s, M0, 5], {s, 1, 8}]];
+check["example p = (2,2,4,0,0,0,0), m = 1: E = 5 and the eight u_s are real (entries in Sqrt[5] \[DoubleStruckCapitalQ]) and solve h(p).u_s == 5 u_s",
+  Sqrt[1 + p0v.p0v] == 5 && FreeQ[u0Matrix, _Complex] && Simplify[hp[p0v, 1].u0Matrix - 5 u0Matrix] === ConstantArray[0, {16, 8}]]
+MatrixForm[Sqrt[5] u0Matrix]
+''')
+
+subsection('7.5 Spin sums, completeness, and the diagonalization of h')
+text('With ubar_s = u_s.Γ17[0] (the spinors are real, so the Dirac adjoint is just a transpose times Γ17[0]):')
+text('      Σ_s u_s ubar_s = pslash + m,      Σ_s v_s vbar_s = pslash − m,')
+text('      Σ_s u_s(p⃗) u_s(p⃗)ᵀ + Σ_s v_s(−p⃗) v_s(−p⃗)ᵀ = 2E ID16   (completeness).')
+text('Equivalently, the real orthogonal matrix U(p⃗) = (u_1(p⃗), …, u_8(p⃗), v_1(−p⃗), …, v_8(−p⃗))/√(2E) diagonalizes h(p⃗): '
+     'Transpose[U].h(p⃗).U = diag(E ID8, −E ID8). This is what makes the mode expansion of section 7.7 work.')
+inp(r'''
+USmat = Transpose[Table[uS[s, Mp, Ep], {s, 1, 8}]]; VSmat = Transpose[Table[vS[s, Mp, Ep], {s, 1, 8}]];
+VSmatMinus = Transpose[Table[vS[s, Transpose[Mp], Ep], {s, 1, 8}]];   (* v_s(-p): M(-p) == Transpose[M(p)] *)
+check["spin sums: \[Sum]_s u_s ubar_s == pslash + m and \[Sum]_s v_s vbar_s == pslash - m",
+  Simplify[USmat.Transpose[USmat].\[CapitalGamma]17[0] - slash17[Ep, pv7] - mD ID16, asm7] === Zero16 &&
+  Simplify[VSmat.Transpose[VSmat].\[CapitalGamma]17[0] - slash17[Ep, pv7] + mD ID16, asm7] === Zero16]
+check["completeness: \[Sum]_s u_s(p) u_s(p)^T + \[Sum]_s v_s(-p) v_s(-p)^T == 2E ID16",
+  Simplify[USmat.Transpose[USmat] + VSmatMinus.Transpose[VSmatMinus] - 2 Ep ID16, asm7] === Zero16]
+Umat = Join[USmat, VSmatMinus, 2]/Sqrt[2 Ep];
+check["U = (u_1..u_8, v_1(-p)..v_8(-p))/Sqrt[2E] is orthogonal and Transpose[U].h(p).U == diag(E ID8, -E ID8)",
+  Simplify[Transpose[Umat].Umat - ID16, asm7] === Zero16 &&
+  Simplify[Transpose[Umat].hp[pv7, mD].Umat - ArrayFlatten[{{Ep ID8, 0}, {0, -Ep ID8}}], asm7] === Zero16]
+''')
+
+subsection('7.6 Grassmann algebra: anticommuting components, Lagrangian, conserved current')
+text('The components of dirac16complex anticommute. A minimal Grassmann algebra makes this explicit: generators θ1, θ2, … with '
+     'θk θl = −θl θk (so θk² = 0); in the code θk is θg[k] = grass[{k}]. An element is a linear combination of ordered monomials grass[{k1, k2, …}] '
+     '(k1 < k2 < …; grass[{}] = 1). The product of two monomials is 0 if they share a generator; otherwise it is the sorted '
+     'monomial times the signature of the sorting permutation (gMul). The left derivative ∂/∂θk (gD) moves θk to the front '
+     '(sign (−1)^(number of generators in front of it)) and removes it.')
+text('The Dirac adjoint is ψbar = ψ†.Γ17[0], the Lagrangian density and the current are')
+text('      L = ψbar (i Γ17up[A] ∂_A − m) ψ,      j^A = ψbar Γ17up[A] ψ,      ∂_A j^A = 0.')
+text('Conservation follows from the Dirac equation and its adjoint −i ∂_A ψbar Γ17up[A] − m ψbar = 0, which uses exactly the '
+     'adjoint property Γ17up[A]† = Γ17[0].Γ17up[A].Γ17[0] of section 7.1. The check below uses a genuinely Grassmann-valued '
+     'solution ψ = θ1 U1 + θ2 U2 + θ3 U3 with three plane-wave solutions Uk (m = 1) and the conjugate generators θbar_k = θ(3+k) '
+     'in ψbar.')
+inp(r'''
+gTerms[x_] := With[{e = Expand[x]}, Which[e === 0, {}, Head[e] === Plus, List @@ e, True, {e}]];
+gSplit[t_] := With[{g = Cases[{t}, _grass, Infinity]}, If[g === {}, {t, grass[{}]}, {t/First[g], First[g]}]];
+gProd[grass[s1_List], grass[s2_List]] := If[Intersection[s1, s2] =!= {}, 0, Signature[Join[s1, s2]] grass[Sort[Join[s1, s2]]]];
+gMul[x_, y_] := Expand[Sum[With[{a1 = gSplit[t1], b1 = gSplit[t2]}, a1[[1]] b1[[1]] gProd[a1[[2]], b1[[2]]]], {t1, gTerms[x]}, {t2, gTerms[y]}]];
+gD[k_, x_] := Expand[Sum[With[{a1 = gSplit[t]}, With[{s = a1[[2, 1]]},
+      If[MemberQ[s, k], (-1)^(First[FirstPosition[s, k]] - 1) a1[[1]] grass[DeleteCases[s, k]], 0]]], {t, gTerms[x]}]];
+\[Theta]g[k_] := grass[{k}];
+conjR[expr_] := expr /. Complex[r_, s_] :> Complex[r, -s];   (* complex conjugation of an expression whose symbols are all real *)
+check["Grassmann: \[Theta]1 \[Theta]2 == -\[Theta]2 \[Theta]1, \[Theta]1 \[Theta]1 == 0, associativity, and \[PartialD]/\[PartialD]\[Theta]2 (\[Theta]1 \[Theta]2 \[Theta]3) == -\[Theta]1 \[Theta]3",
+  gMul[\[Theta]g[1], \[Theta]g[2]] == -gMul[\[Theta]g[2], \[Theta]g[1]] && gMul[\[Theta]g[1], \[Theta]g[1]] === 0 &&
+  gMul[gMul[\[Theta]g[1] + 2 \[Theta]g[3], \[Theta]g[2]], \[Theta]g[4] + \[Theta]g[1]] == gMul[\[Theta]g[1] + 2 \[Theta]g[3], gMul[\[Theta]g[2], \[Theta]g[4] + \[Theta]g[1]]] &&
+  gD[2, gMul[gMul[\[Theta]g[1], \[Theta]g[2]], \[Theta]g[3]]] == -gMul[\[Theta]g[1], \[Theta]g[3]]]
+''')
+inp(r'''
+mom5 = {{2, 2, 4, 0, 0, 0, 0}, {-2, -2, -4, 0, 0, 0, 0}, {0, 0, 0, 2, 2, 0, 0}, {0, 0, 0, -2, -2, 0, 0}, {0, 0, 0, 0, 0, 0, 0}};
+E5 = Sqrt[1 + #.#] & /@ mom5;                                  (* m = 1: E = 5, 5, 3, 3, 1 *)
+M5 = (ID8 + Sum[#[[i]] \[Tau]O[i], {i, 1, 7}]) & /@ mom5;
+Ugr = {uS[1, M5[[1]], 5] Exp[-I (5 x0 - mom5[[1]].Rest[X])], vS[3, M5[[3]], 3] Exp[I (3 x0 - mom5[[3]].Rest[X])], uS[5, M5[[5]], 1] Exp[-I x0]};
+check["the three plane waves U1, U2, U3 solve the Dirac equation with m = 1", And @@ Table[Simplify[DiracEq16[Ugr[[k]], 1]] === ConstantArray[0, 16], {k, 1, 3}]]
+\[Psi]G = Table[Sum[Ugr[[k, a]] grass[{k}], {k, 1, 3}], {a, 1, 16}];                          (* psi = theta_k U_k *)
+\[Psi]barG = Table[Sum[(conjR[Ugr[[k]]].\[CapitalGamma]17[0])[[a]] grass[{3 + k}], {k, 1, 3}], {a, 1, 16}];    (* psibar = thetabar_k Ubar_k *)
+check["Grassmann field: \[Psi]_a \[Psi]_b + \[Psi]_b \[Psi]_a == 0 for all a, b (in particular \[Psi]_a^2 == 0)",
+  And @@ Flatten[Table[Simplify[gMul[\[Psi]G[[a]], \[Psi]G[[b]]] + gMul[\[Psi]G[[b]], \[Psi]G[[a]]]] === 0, {a, 1, 16}, {b, a, 16}]]]
+jG = Table[Expand[Sum[If[\[CapitalGamma]17up[A][[a, b]] === 0, 0, \[CapitalGamma]17up[A][[a, b]] gMul[\[Psi]barG[[a]], \[Psi]G[[b]]]], {a, 1, 16}, {b, 1, 16}]], {A, 0, 7}];
+check["current conservation \[PartialD]_A (\[Psi]bar \[CapitalGamma]17up[A] \[Psi]) == 0 for the Grassmann-valued solution \[Psi] = \[Theta]1 U1 + \[Theta]2 U2 + \[Theta]3 U3",
+  Simplify[Sum[D[jG[[A + 1]], X[[A + 1]]], {A, 0, 7}]] === 0]
+''')
+
+subsection('7.7 Quantization: mode expansion and canonical anticommutators')
+text('In a box of volume V with periodic boundary conditions the quantized field dirac16complex is')
+text('      ψ(x0, x⃗) = Σ_p⃗ Σ_s (2 E V)^(−1/2) [ b_s(p⃗) u_s(p⃗) e^{−i(E x0 − p⃗·x⃗)} + d_s(p⃗)† v_s(p⃗) e^{+i(E x0 − p⃗·x⃗)} ],')
+text('with b_s(p⃗)b_r(q⃗)† + b_r(q⃗)†b_s(p⃗) = δsr δp⃗q⃗, the same for d, and all other anticommutators of b, b†, d, d† equal to zero. '
+     'b_s(p⃗) annihilates a particle, d_s(p⃗)† creates an antiparticle; each has 8 spin states s. The components ψ_a are '
+     'complex Grassmann-odd operators. Completeness (section 7.5) turns the mode algebra into the canonical anticommutators')
+text('      ψ_a(x0, x⃗) ψ_b(x0, y⃗)† + ψ_b(x0, y⃗)† ψ_a(x0, x⃗) = δab (1/V) Σ_p⃗ e^{i p⃗·(x⃗ − y⃗)} = δab δ⁷(x⃗ − y⃗),')
+text('      ψ_a(x0, x⃗) ψ_b(x0, y⃗) + ψ_b(x0, y⃗) ψ_a(x0, x⃗) = 0   (only b and d† occur in ψ).')
+text('Because Transpose[U].h.U = diag(E, −E) (section 7.5), the normal-ordered Hamiltonian and charge are '
+     'H = ∫ :ψ† h ψ: d⁷x = Σ_p⃗,s E (b†b + d†d) and Q = ∫ :ψ†ψ: d⁷x = Σ_p⃗,s (b†b − d†d): particles and antiparticles '
+     'both have positive energy E = √(m² + p⃗²) and opposite charge. The check sums the mode algebra exactly for the '
+     'symmetric set of five momenta ±(2,2,4,0,0,0,0), ±(0,0,0,2,2,0,0), 0 (m = 1), with symbolic x⃗ and y⃗.')
+inp(r'''
+yv7 = Array[y7, 7]; xv7 = Rest[X];
+modeB[n_, s_, xx_] := uS[s, M5[[n]], E5[[n]]] Exp[-I E5[[n]] x0 + I mom5[[n]].xx]/Sqrt[2 E5[[n]] Vbox];   (* coefficient of b_s(p_n) *)
+modeD[n_, s_, xx_] := vS[s, M5[[n]], E5[[n]]] Exp[I E5[[n]] x0 - I mom5[[n]].xx]/Sqrt[2 E5[[n]] Vbox];    (* coefficient of d_s(p_n)^dagger *)
+carMatrix = Sum[Outer[Times, modeB[n, s, xv7], conjR[modeB[n, s, yv7]]] + Outer[Times, modeD[n, s, xv7], conjR[modeD[n, s, yv7]]], {n, 1, 5}, {s, 1, 8}];
+check["canonical anticommutator from the mode algebra: {\[Psi]_a(x0,x), \[Psi]_b(x0,y)^\[Dagger]} == \[Delta]ab (1/V) \[Sum]_p Exp[I p.(x - y)] (five momenta, symbolic x, y)",
+  Simplify[ExpandAll[carMatrix - (Sum[Exp[I mom5[[n]].(xv7 - yv7)], {n, 1, 5}]/Vbox) ID16]] === Zero16]
+''')
+
+subsection('7.8 Charge conjugation')
+text('Because the Γ17[A] are real, complex conjugation of the Dirac equation gives (−i Γ17up[A] ∂_A − m) ψ* = 0, and since '
+     'ω17 = Γ17[8] is real and anticommutes with every Γ17[A],')
+text('      ψc = ω17.ψ*   solves the same equation:   (i Γ17up[A] ∂_A − m) ω17.ψ* = ω17.(−i Γ17up[A] ∂_A − m) ψ* = 0.')
+text('For the quantized field ψc = ω17.(ψ†)ᵀ exchanges particles and antiparticles: ω17.u_s(p⃗) = Σ_r v_r(p⃗) (−Transpose[M]/E)_rs. '
+     'Applied twice, (ψc)c = ω17.ω17.ψ = −ψ, so the Majorana condition ψc = ψ has no non-zero solution with 16 components '
+     '(in agreement with section 5.5: a real massive spinor field needs 32 real components).')
+inp(r'''
+\[Psi]reF = Table[\[Psi]re[a] @@ X, {a, 1, 16}]; \[Psi]imF = Table[\[Psi]im[a] @@ X, {a, 1, 16}];   (* real and imaginary parts: arbitrary real functions *)
+check["\[Psi] -> \[Psi]c = \[Omega]17.\[Psi]^*: (I \[CapitalGamma]17up[A] \[PartialD]_A - m)(\[Omega]17.\[Psi]^*) == \[Omega]17.((I \[CapitalGamma]17up[A] \[PartialD]_A - m) \[Psi])^* for arbitrary \[Psi] = \[Psi]re + I \[Psi]im",
+  Expand[DiracEq16[\[Omega]17.(\[Psi]reF - I \[Psi]imF), mD] - \[Omega]17.conjR[DiracEq16[\[Psi]reF + I \[Psi]imF, mD]]] === ConstantArray[0, 16]]
+check["(pslash + m).\[Omega]17.u_s == 0 and \[Omega]17.u_s == \[Sum]_r v_r (-Transpose[M]/E)_rs; \[Omega]17.\[Omega]17 == -ID16 (no Majorana spinors)",
+  And @@ Table[Simplify[(slash17[Ep, pv7] + mD ID16).\[Omega]17.uS[s, Mp, Ep], asm7] === ConstantArray[0, 16], {s, 1, 8}] &&
+  Simplify[\[Omega]17.USmat - VSmat.(-Transpose[Mp]/Ep), asm7] === ConstantArray[0, {16, 8}] && \[Omega]17.\[Omega]17 == -ID16]
+''')
+
+subsection('7.9 Lorentz covariance')
+text('The real spinor boost S(β) = cosh(β/2) ID16 + sinh(β/2) Γ17[0].Γ17[1] of section 5.2 satisfies '
+     'S.Γ17[K].S⁻¹ = Σ_B Λboost[[B+1,K+1]] Γ17[B]. Hence ψ′(x) = S.ψ(Λ⁻¹x) solves the Dirac equation whenever ψ does, '
+     'and in momentum space S.u_s(p⃗) is a positive-energy spinor of the boosted momentum p′ = Λboost.p. Example: '
+     'β = 2 log 2 (cosh(β/2) = 5/4, sinh(β/2) = 3/4), p = (5, 2, 2, 4, 0, 0, 0, 0), m = 1, so p′ = Λboost.p = (55/8, −41/8, 2, 4, 0, 0, 0, 0).')
+inp(r'''
+Sb0 = Simplify[S\[Beta] /. \[Beta] -> 2 Log[2]]; \[CapitalLambda]b0 = Simplify[\[CapitalLambda]boost /. \[Beta] -> 2 Log[2]];
+pPrime = \[CapitalLambda]b0.Join[{5}, p0v];
+check["boost at \[Beta] = 2 log 2: S == 5/4 ID16 + 3/4 \[CapitalGamma]17[0].\[CapitalGamma]17[1], p' = \[CapitalLambda].p == (55/8, -41/8, 2, 4, 0, 0, 0, 0) is on shell, (pslash' - m).S.u_s(p) == 0",
+  Sb0 == 5/4 ID16 + 3/4 \[CapitalGamma]17[0].\[CapitalGamma]17[1] && pPrime == {55/8, -41/8, 2, 4, 0, 0, 0, 0} && pPrime.\[Eta]17.pPrime == 1 &&
+  And @@ Table[Simplify[(slash17[First[pPrime], Rest[pPrime]] - ID16).Sb0.uS[s, M0, 5]] === ConstantArray[0, 16], {s, 1, 8}]]
+''')
+
+subsection('7.10 Chirality: no real chirality matrix, complex chiral projections')
+text('In 7+1 dimensions the volume element ω17 squares to −ID16, and the REAL matrices that anticommute with every Γ17[A] are '
+     'exactly its multiples (section 5.5). Therefore there is NO real chirality matrix. Chirality needs the complex matrix '
+     'χ17 = i ω17 of section 4.6 — Hermitian, χ17² = ID16, anticommuting with every Γ17[A] and commuting with every Σ17[A,B] '
+     '(so chirality is Lorentz invariant) — and the chiral projections PL17 = (ID16 − χ17)/2, PR17 = (ID16 + χ17)/2 are '
+     'complex. The Dirac matrices stay real; only the projections are complex. Γ17[A].PL17 = PR17.Γ17[A]: every Dirac matrix '
+     'flips the chirality.')
+text('In 8×8 blocks χ17 = {{0, −i ID8}, {i ID8, 0}}. Its eigenvectors give two 16×8 isometries')
+text('      EL = (1/√2) {{ID8}, {−i ID8}}   (χ17.EL = −EL),      ER = (1/√2) {{−i ID8}, {ID8}}   (χ17.ER = +ER),')
+text('with EL†.EL = ER†.ER = ID8, EL†.ER = 0, EL.EL† = PL17, ER.ER† = PR17. The chiral components of the field are the '
+     '8-component fields')
+text('      φL = EL†.ψ = (ψ_up + i ψ_down)/√2,      φR = ER†.ψ = (i ψ_up + ψ_down)/√2,')
+text('where ψ_up and ψ_down are the first and the last 8 components of ψ; PL17.ψ = EL.φL, PR17.ψ = ER.φR and ψ = EL.φL + ER.φR. '
+     'W = (EL, ER) is a 16×16 unitary matrix.')
+inp(r'''
+EL = Join[ID8, -I ID8]/Sqrt[2]; ER = Join[-I ID8, ID8]/Sqrt[2]; Wch = Join[EL, ER, 2];
+check["\[Chi]17 = I \[Omega]17: Hermitian, \[Chi]17.\[Chi]17 == ID16, anticommutes with every \[CapitalGamma]17[A], commutes with every \[CapitalSigma]17[A,B]",
+  ConjugateTranspose[\[Chi]17] == \[Chi]17 && \[Chi]17 == I \[Omega]17 && \[Chi]17.\[Chi]17 == ID16 && And @@ Table[\[Chi]17.\[CapitalGamma]17[A] == -\[CapitalGamma]17[A].\[Chi]17, {A, 0, 7}] &&
+  And @@ Table[\[Chi]17.(\[CapitalSigma]17 @@ q) == (\[CapitalSigma]17 @@ q).\[Chi]17, {q, Subsets[Range[0, 7], {2}]}]]
+check["PL17, PR17 are complex (not real); \[CapitalGamma]17[A].PL17 == PR17.\[CapitalGamma]17[A]; ConjugateTranspose[PL17].\[CapitalGamma]17[0] == \[CapitalGamma]17[0].PR17",
+  ! FreeQ[PL17, Complex] && ! FreeQ[PR17, Complex] && And @@ Table[\[CapitalGamma]17[A].PL17 == PR17.\[CapitalGamma]17[A], {A, 0, 7}] &&
+  ConjugateTranspose[PL17].\[CapitalGamma]17[0] == \[CapitalGamma]17[0].PR17]
+check["EL, ER: \[Chi]17.EL == -EL, \[Chi]17.ER == ER, EL^\[Dagger].EL == ER^\[Dagger].ER == ID8, EL^\[Dagger].ER == 0, EL.EL^\[Dagger] == PL17, ER.ER^\[Dagger] == PR17, W unitary",
+  \[Chi]17.EL == -EL && \[Chi]17.ER == ER && ConjugateTranspose[EL].EL == ID8 && ConjugateTranspose[ER].ER == ID8 &&
+  ConjugateTranspose[EL].ER == Zero8 && EL.ConjugateTranspose[EL] == PL17 && ER.ConjugateTranspose[ER] == PR17 &&
+  ConjugateTranspose[Wch].Wch == ID16]
+\[Phi]L = ConjugateTranspose[EL].dirac16complex; \[Phi]R = ConjugateTranspose[ER].dirac16complex;
+check["\[Phi]L == (\[Psi]up + I \[Psi]down)/Sqrt[2], \[Phi]R == (I \[Psi]up + \[Psi]down)/Sqrt[2], PL17.\[Psi] == EL.\[Phi]L, PR17.\[Psi] == ER.\[Phi]R, \[Psi] == EL.\[Phi]L + ER.\[Phi]R",
+  Expand[\[Phi]L - (dirac16complex[[1 ;; 8]] + I dirac16complex[[9 ;; 16]])/Sqrt[2]] === zero8 &&
+  Expand[\[Phi]R - (I dirac16complex[[1 ;; 8]] + dirac16complex[[9 ;; 16]])/Sqrt[2]] === zero8 &&
+  Expand[PL17.dirac16complex - EL.\[Phi]L] === ConstantArray[0, 16] && Expand[PR17.dirac16complex - ER.\[Phi]R] === ConstantArray[0, 16] &&
+  Expand[EL.\[Phi]L + ER.\[Phi]R - dirac16complex] === ConstantArray[0, 16]]
+''')
+
+subsection('7.11 The two coupled 8-component equations')
+text('Let σW[i] = i τO[i] (i = 1 … 7): Hermitian 8×8 matrices with σW[i].σW[j] + σW[j].σW[i] = 2 δij ID8, the analogues of the '
+     'Pauli matrices for 7 space dimensions. The unitary W = (EL, ER) brings h(p⃗) to chiral (Weyl) form,')
+text('      W†.h(p⃗).W = {{−σW·p⃗, m ID8}, {m ID8, σW·p⃗}},   σW·p⃗ = pi σW[i],')
+text('and projecting the Dirac equation with EL†.Γ17[0] and ER†.Γ17[0] gives the two 8-component field equations')
+text('      (i ∂_0 + τO[i] ∂_i) φL = m φR,')
+text('      (i ∂_0 − τO[i] ∂_i) φR = m φL.')
+text('Only the REAL 8×8 matrices τO[i] occur; the only i is the one in i∂_0. With σ^A = (ID8, σW[i]) and σbar^A = (ID8, −σW[i]) '
+     'the covariant form is i σbar^A ∂_A φL = m φR and i σ^A ∂_A φR = m φL. The mass couples the two 8-component fields; for '
+     'm = 0 they decouple into two independent 8-component Weyl equations. Each 8-component field obeys the Klein–Gordon '
+     'equation, because (i ∂_0 − τO[i] ∂_i)(i ∂_0 + τO[j] ∂_j) = −(∂_0² − ∂_1² − … − ∂_7²) ID8. For a plane wave with momentum p⃗ '
+     'and energy E the chiral equations read (E + σW·p⃗) φL = m φR and (E − σW·p⃗) φR = m φL.')
+inp(r'''
+Do[\[Sigma]W[i] = I \[Tau]O[i], {i, 1, 7}];
+\[Sigma]Wp[q_List] := Sum[q[[i]] \[Sigma]W[i], {i, 1, 7}];
+check["\[Sigma]W[i] = I \[Tau]O[i]: Hermitian, \[Sigma]W[i].\[Sigma]W[j] + \[Sigma]W[j].\[Sigma]W[i] == 2 \[Delta]ij ID8",
+  And @@ Table[ConjugateTranspose[\[Sigma]W[i]] == \[Sigma]W[i], {i, 1, 7}] &&
+  And @@ Flatten[Table[\[Sigma]W[i].\[Sigma]W[j] + \[Sigma]W[j].\[Sigma]W[i] == 2 KroneckerDelta[i, j] ID8, {i, 1, 7}, {j, 1, 7}]]]
+check["chiral (Weyl) form: W^\[Dagger].h(p).W == {{-\[Sigma]W.p, m ID8}, {m ID8, \[Sigma]W.p}} (symbolic p)",
+  Expand[ConjugateTranspose[Wch].hp[pv7, mD].Wch - ArrayFlatten[{{-\[Sigma]Wp[pv7], mD ID8}, {mD ID8, \[Sigma]Wp[pv7]}}]] === Zero16]
+tauD[f_] := Sum[\[Tau]O[i].D[f, X[[i + 1]]], {i, 1, 7}];
+check["EL^\[Dagger].\[CapitalGamma]17[0].(I \[CapitalGamma]17up[A] \[PartialD]_A - m) \[Psi] == (I \[PartialD]0 + \[Tau]O[i] \[PartialD]_i) \[Phi]L - m \[Phi]R (16 arbitrary functions)",
+  Simplify[ConjugateTranspose[EL].\[CapitalGamma]17[0].DiracEq16[dirac16complex, mD] - (I D[\[Phi]L, x0] + tauD[\[Phi]L] - mD \[Phi]R)] === zero8]
+check["ER^\[Dagger].\[CapitalGamma]17[0].(I \[CapitalGamma]17up[A] \[PartialD]_A - m) \[Psi] == (I \[PartialD]0 - \[Tau]O[i] \[PartialD]_i) \[Phi]R - m \[Phi]L (16 arbitrary functions)",
+  Simplify[ConjugateTranspose[ER].\[CapitalGamma]17[0].DiracEq16[dirac16complex, mD] - (I D[\[Phi]R, x0] - tauD[\[Phi]R] - mD \[Phi]L)] === zero8]
+f8 = Table[f8c[a] @@ X, {a, 1, 8}];
+check["Klein-Gordon for each 8-component field: (I \[PartialD]0 - \[Tau]O[i] \[PartialD]_i)(I \[PartialD]0 + \[Tau]O[j] \[PartialD]_j) f == -(\[PartialD]0^2 - \[PartialD]1^2 - ... - \[PartialD]7^2) f (8 arbitrary functions)",
+  Simplify[I D[I D[f8, x0] + tauD[f8], x0] - tauD[I D[f8, x0] + tauD[f8]] + waveOp17[f8]] === zero8]
+check["plane-wave example p = (2,2,4,0,0,0,0), m = 1, E = 5: (E + \[Sigma]W.p) \[Phi]L == m \[Phi]R and (E - \[Sigma]W.p) \[Phi]R == m \[Phi]L for all eight u_s",
+  And @@ Table[With[{fL = ConjugateTranspose[EL].uS[s, M0, 5], fR = ConjugateTranspose[ER].uS[s, M0, 5]},
+     Simplify[(5 ID8 + \[Sigma]Wp[p0v]).fL - fR] === zero8 && Simplify[(5 ID8 - \[Sigma]Wp[p0v]).fR - fL] === zero8], {s, 1, 8}]]
+''')
+# =====================================================================================
+section('8. A 16-component Kohn–Sham theory of the self-coupled field dirac16complex')
+subsection('8.1 The self-coupled field: Lagrangian, densities, Hamiltonian')
+text('The field couples to itself through the four Lorentz-invariant contact (point) interactions that can be built from bilinears '
+     'without derivatives, and to four external real c-number sources s(x), p(x), v_A(x), a_A(x):')
+text('      L = ψbar (i Γ17up[A] ∂_A − m) ψ − ψbar (s + iχ17 p + Γ17up[A] (v_A + χ17 a_A)) ψ')
+text('            − (gS/2) (ψbar ψ)² − (gP/2) (ψbar iχ17 ψ)² − (gV/2) (ψbar Γ17up[A] ψ)(ψbar Γ17[A] ψ) − (gA/2) (ψbar Γ17up[A] χ17 ψ)(ψbar Γ17[A] χ17 ψ).')
+text('The four densities are the scalar ρS = ψbar ψ, the pseudoscalar ρP = ψbar iχ17 ψ, the vector current j^A = ψbar Γ17up[A] ψ '
+     '(with the charge density j^0 = ψ†ψ) and the axial current j5^A = ψbar Γ17up[A] χ17 ψ. A lower index is obtained with '
+     'Γ17[A] = η17[[A+1,A+1]] Γ17up[A], so (ψbar Γ17up[A] ψ)(ψbar Γ17[A] ψ) = j^A j_A = (j^0)² − Σ_i (j^i)². All four densities are '
+     'real (Hermitian operators), because Γ17[0].o is a Hermitian matrix for o = ID16, iχ17, Γ17up[A], Γ17up[A].χ17. '
+     'The couplings gS, gP, gV, gA are real constants.')
+text('The interaction contains no time derivatives, so it enters the Hamiltonian density with the opposite sign (normal ordered, : :):')
+text('      H = :ψ† (−i αD[i] ∂_i + βD m) ψ: + :ψbar (s + iχ17 p + Γ17up[A] (v_A + χ17 a_A)) ψ:')
+text('            + (gS/2) :(ψbar ψ)²: + (gP/2) :(ψbar iχ17 ψ)²: + (gV/2) :(ψbar Γ17up[A] ψ)(ψbar Γ17[A] ψ): + (gA/2) :(ψbar Γ17up[A] χ17 ψ)(ψbar Γ17[A] χ17 ψ):.')
+text('Hence gS < 0 is attractive (it lowers the effective mass) and gV > 0 is repulsive for the charge density. Dimensions '
+     '(ħ = c = 1): ψ has mass dimension 7/2 and every coupling g has mass dimension −6, so the contact couplings are not '
+     'renormalizable in 7+1 dimensions. The model is an effective theory: it needs a momentum cutoff Λ when the Dirac sea is '
+     'included (section 9.6), or the no-sea approximation of relativistic point-coupling models (section 8.4). '
+     'In the code the 18 vertex pairs (coupling, upper vertex, lower vertex) are collected in vPairs.')
+inp(r'''
+vPairs = Join[{{gS, ID16, ID16}, {gP, I \[Chi]17, I \[Chi]17}},
+   Table[{gV, \[CapitalGamma]17up[A], \[CapitalGamma]17[A]}, {A, 0, 7}], Table[{gA, \[CapitalGamma]17up[A].\[Chi]17, \[CapitalGamma]17[A].\[Chi]17}, {A, 0, 7}]];
+check["the densities \[Rho]S, \[Rho]P, j^A, j5^A are real: \[CapitalGamma]17[0].op is Hermitian for op = ID16, I \[Chi]17, \[CapitalGamma]17up[A], \[CapitalGamma]17up[A].\[Chi]17",
+  And @@ Table[ConjugateTranspose[\[CapitalGamma]17[0].op] == \[CapitalGamma]17[0].op,
+    {op, Join[{ID16, I \[Chi]17}, Table[\[CapitalGamma]17up[A], {A, 0, 7}], Table[\[CapitalGamma]17up[A].\[Chi]17, {A, 0, 7}]]}]]
+check["18 vertex pairs; lower vertex == \[Eta]17[[A+1,A+1]] upper vertex in the V and A channels", Length[vPairs] == 18 &&
+  And @@ Table[vPairs[[2 + A + 1, 3]] == \[Eta]17[[A + 1, A + 1]] vPairs[[2 + A + 1, 2]] && vPairs[[10 + A + 1, 3]] == \[Eta]17[[A + 1, A + 1]] vPairs[[10 + A + 1, 2]], {A, 0, 7}]]
+''')
+
+subsection('8.2 The nonlinear field equation (Grassmann left derivatives)')
+text('The Euler–Lagrange equation ∂L/∂ψbar_a = 0 with the Grassmann LEFT derivative (ψbar_a is moved to the front, then removed; '
+     'the bilinears are Grassmann-even, so no other signs occur) is the nonlinear Dirac equation of the self-coupled field:')
+text('      (i Γ17up[A] ∂_A − m − s − iχ17 p − Γ17up[A] (v_A + χ17 a_A)) ψ')
+text('            = gS (ψbar ψ) ψ + gP (ψbar iχ17 ψ) iχ17 ψ + gV (ψbar Γ17[A] ψ) Γ17up[A] ψ + gA (ψbar Γ17[A] χ17 ψ) Γ17up[A] χ17 ψ.')
+text('The check differentiates the interaction Lagrangian in the Grassmann algebra of section 7.6 with 32 generators: '
+     'ψ_a = θa and ψbar_a = θ(16+a), a = 1 … 16.')
+inp(r'''
+\[Psi]P = Table[grass[{a}], {a, 1, 16}]; \[Psi]barP = Table[grass[{16 + a}], {a, 1, 16}];
+gBil[M_] := Expand[Sum[If[M[[a, b]] === 0, 0, M[[a, b]] gMul[\[Psi]barP[[a]], \[Psi]P[[b]]]], {a, 1, 16}, {b, 1, 16}]];   (* psibar.M.psi *)
+LintG = Expand[Sum[-v[[1]]/2 gMul[gBil[v[[2]]], gBil[v[[3]]]], {v, vPairs}]];
+check["nonlinear field equation: left derivative \[PartialD]L_int/\[PartialD]\[Psi]bar_a == -[gS (\[Psi]bar \[Psi]) \[Psi] + gP (\[Psi]bar I\[Chi]17 \[Psi]) I\[Chi]17 \[Psi] + gV (\[Psi]bar \[CapitalGamma]17[A] \[Psi]) \[CapitalGamma]17up[A] \[Psi] + gA (\[Psi]bar \[CapitalGamma]17[A]\[Chi]17 \[Psi]) \[CapitalGamma]17up[A]\[Chi]17 \[Psi]]_a (32 Grassmann generators)",
+  And @@ Table[Expand[gD[16 + a, LintG] + Sum[v[[1]] gMul[gBil[v[[3]]], Expand[(v[[2]].\[Psi]P)[[a]]]], {v, vPairs}]] === 0, {a, 1, 16}]]
+''')
+
+subsection('8.3 Densities, sources and the Hohenberg–Kohn theorem')
+text('Collect the densities into n = (ρS, ρP, j^A, j5^A) — 1 + 1 + 8 + 8 = 18 real fields on space — and the sources into '
+     'w = (s, p, v_A, a_A). For static sources the Hamiltonian is H[w] = H0 + H_int + ∫ w·n d⁷x with')
+text('      w·n = s ρS + p ρP + v_A j^A + a_A j5^A,   H0 = ∫ :ψ† (−i αD[i] ∂_i + βD m) ψ: d⁷x,   H_int = the contact interaction.')
+text('The charge Q = ∫ j^0 d⁷x commutes with H[w]; the theory is formulated in the sector of fixed charge Q = N.')
+text([('Hohenberg–Kohn theorem (relativistic form). ', B),
+      'Let |Ψ⟩ be the non-degenerate ground state of H[w] in the sector Q = N, with densities n. Suppose a second source w′ '
+      'with a different ground state |Ψ′⟩ had the same densities n. The variational principle gives'])
+text('      E = ⟨Ψ|H[w]|Ψ⟩ < ⟨Ψ′|H[w]|Ψ′⟩ = E′ + ∫ (w − w′)·n d⁷x   and   E′ < E + ∫ (w′ − w)·n d⁷x,')
+text('and adding the two inequalities gives E + E′ < E + E′, a contradiction. Hence the ground-state densities determine the '
+     'ground state and therefore every ground-state property; they determine w up to changes that do not change the ground state '
+     '(for example v_0 → v_0 + constant, which only adds constant × N to the energy). The energy is')
+text('      E[w] = min_n ( F[n] + ∫ w·n d⁷x ),      F[n] = min over states |Ψ⟩ with densities n of ⟨Ψ| H0 + H_int |Ψ⟩,')
+text('with the universal (w-independent) functional F defined by the Levy–Lieb constrained search. Standing assumptions, as usual in '
+     'relativistic density-functional theory (Rajagopal and Callaway 1973; MacDonald and Vosko 1979; Dreizler and Gross 1990, '
+     'chapter 8): the theory is regularized (cutoff or no-sea), H[w] is bounded below in the sector Q = N, and the densities '
+     'considered are ground-state densities of some w (v-representability).')
+
+subsection('8.4 The 16-component Kohn–Sham equations')
+text('The Kohn–Sham reference system consists of N non-interacting 16-component fermions φ_k (k = 1 … N, orthonormal: '
+     '∫ φ_k†φ_l d⁷x = δkl) in effective sources w_KS = (S, P, V_A, A_A), chosen such that its ground state has the same '
+     'densities n as the interacting system. Split F[n] = T_s[n] + E_H[n] + E_xc[n] with')
+text('      T_s = Σ_k ∫ φ_k† (−i αD[i] ∂_i + βD m) φ_k d⁷x   (kinetic plus rest energy of the KS orbitals),')
+text('      E_H = ∫ [ (gS/2) ρS² + (gP/2) ρP² + (gV/2) j^A j_A + (gA/2) j5^A j5_A ] d⁷x   (Hartree, the direct term),')
+text('and E_xc = F − T_s − E_H (exchange and correlation). Minimizing E = T_s + ∫ w·n + E_H + E_xc over orthonormal orbitals '
+     '(Lagrange multipliers ε_k) gives the Kohn–Sham equations')
+text('      h_KS φ_k = ε_k φ_k,')
+text('      h_KS = αD[i] (−i ∂_i + V_i) + βD (m + S) + V_0 + βD iχ17 P + χ17 A_0 + αD[i] χ17 A_i,')
+text('      S = s + gS ρS + δE_xc/δρS,   P = p + gP ρP + δE_xc/δρP,   V_A = v_A + gV j_A + δE_xc/δj^A,   A_A = a_A + gA j5_A + δE_xc/δj5^A,')
+text('      ρS = Σ_k φbar_k φ_k,   ρP = Σ_k φbar_k iχ17 φ_k,   j^A = Σ_k φbar_k Γ17up[A] φ_k,   j5^A = Σ_k φbar_k Γ17up[A] χ17 φ_k.')
+text('V_A and A_A carry a LOWER index (V_i = −V^i). Equivalently, every orbital φ_k e^{−i ε_k x0} solves the Dirac equation '
+     '(i Γ17up[A] ∂_A − m − S − iχ17 P − Γ17up[A] (V_A + χ17 A_A)) φ = 0 with the self-consistent potentials. h_KS is Hermitian '
+     'for real potentials.')
+text([('No-sea approximation. ', B),
+      'The occupied orbitals are the N lowest POSITIVE-energy eigenvectors of h_KS; the Dirac sea is not included and its effects are '
+      'absorbed in the couplings, as in relativistic mean-field and point-coupling models of nuclei. Section 9.6 shows what the sea does '
+      'when it is kept with a cutoff.'])
+text([('Total energy. ', B), 'E = Σ_k ε_k − ∫ [ (S − s) ρS + (P − p) ρP + (V_A − v_A) j^A + (A_A − a_A) j5^A ] d⁷x + E_H + E_xc; '
+      'in the Hartree approximation (E_xc = 0) simply E = Σ_k ε_k − E_H (the double-counting correction).'])
+text([('Self-consistency loop. ', B), 'Guess the potentials → solve h_KS φ_k = ε_k φ_k → occupy the N lowest positive levels → '
+      'compute n → compute the new potentials → repeat until the potentials no longer change.'])
+text('The checks: h_KS is Hermitian; it is the Dirac operator of the KS potentials in Hamiltonian form; and the Hartree potentials are '
+     'the derivatives of E_H with respect to φ* (Wirtinger calculus: φ_a and φ_a* are treated as independent variables orb[a], orbc[a]).')
+inp(r'''
+VKS = Array[Vks, 8, 0]; AKS = Array[Aks, 8, 0];          (* V_A and A_A, LOWER index, A = 0..7 *)
+hKS[q_List] := Sum[\[Alpha]D[i] (q[[i]] + VKS[[i + 1]]), {i, 1, 7}] + \[Beta]D (mD + Sks) + VKS[[1]] ID16 + \[Beta]D.(I \[Chi]17) Pks +
+   \[Chi]17 AKS[[1]] + Sum[\[Alpha]D[i].\[Chi]17 AKS[[i + 1]], {i, 1, 7}];
+check["h_KS(p) is Hermitian for real S, P, V_A, A_A (symbolic momentum and potentials)", ComplexExpand[ConjugateTranspose[hKS[pv7]] - hKS[pv7]] === Zero16]
+check["plane wave: \[CapitalGamma]17[0].(pslash(\[Epsilon],p) - m - S - I \[Chi]17 P - \[CapitalGamma]17up[A](V_A + \[Chi]17 A_A)) == \[Epsilon] ID16 - h_KS(p)",
+  Expand[\[CapitalGamma]17[0].(slash17[\[Epsilon]s, pv7] - (mD + Sks) ID16 - I \[Chi]17 Pks - Sum[\[CapitalGamma]17up[A].(VKS[[A + 1]] ID16 + \[Chi]17 AKS[[A + 1]]), {A, 0, 7}]) - (\[Epsilon]s ID16 - hKS[pv7])] === Zero16]
+''')
+inp(r'''
+orbV = Array[orb, 16]; orbcV = Array[orbc, 16];          (* phi and phi^*: independent variables *)
+dens16[M_] := Expand[orbcV.M.orbV];                       (* phi^dagger.M.phi *)
+EHfun[d_] := gS/2 d[\[CapitalGamma]17[0]]^2 + gP/2 d[\[CapitalGamma]17[0].(I \[Chi]17)]^2 +
+   gV/2 Sum[\[Eta]17[[A + 1, A + 1]] d[\[CapitalGamma]17[0].\[CapitalGamma]17up[A]]^2, {A, 0, 7}] +
+   gA/2 Sum[\[Eta]17[[A + 1, A + 1]] d[\[CapitalGamma]17[0].\[CapitalGamma]17up[A].\[Chi]17]^2, {A, 0, 7}];
+EH16 = Expand[EHfun[dens16]];
+vH16 = gS dens16[\[CapitalGamma]17[0]] \[Beta]D + gP dens16[\[CapitalGamma]17[0].(I \[Chi]17)] \[Beta]D.(I \[Chi]17) +
+   Sum[gV \[Eta]17[[A + 1, A + 1]] dens16[\[CapitalGamma]17[0].\[CapitalGamma]17up[A]] \[CapitalGamma]17[0].\[CapitalGamma]17up[A], {A, 0, 7}] +
+   Sum[gA \[Eta]17[[A + 1, A + 1]] dens16[\[CapitalGamma]17[0].\[CapitalGamma]17up[A].\[Chi]17] \[CapitalGamma]17[0].\[CapitalGamma]17up[A].\[Chi]17, {A, 0, 7}];
+check["Hartree potentials: \[PartialD]E_H/\[PartialD]\[Phi]_a^* == (v_H.\[Phi])_a, v_H = h_KS - h with S = gS \[Rho]S, P = gP \[Rho]P, V_A = gV j_A, A_A = gA j5_A (32 variables)",
+  And @@ Table[Expand[D[EH16, orbc[a]] - (vH16.orbV)[[a]]] === 0, {a, 1, 16}]]
+''')
+
+subsection('8.5 Exchange: Wick’s theorem for contact couplings')
+text('For a Slater determinant |Φ⟩ of N orthonormal orbitals (no sea), Wick’s theorem gives for every pair of vertices o1, o2, '
+     'all fields at the same point (contact interaction):')
+text('      ⟨Φ| :(ψbar o1 ψ)(ψbar o2 ψ): |Φ⟩ = tr(o1 R) tr(o2 R) − tr(o1 R o2 R),      R = Σ_k φ_k φbar_k   (a 16×16 matrix).')
+text('The first term is the Hartree (direct) energy, the second the exchange (Fock) term; its minus sign comes from the anticommuting '
+     'fields. The exact exchange energy of the model is therefore an explicit functional of the occupied orbitals:')
+text('      E_x = −(gS/2) tr(R R) − (gP/2) tr(iχ17 R iχ17 R) − (gV/2) Σ_A tr(Γ17up[A] R Γ17[A] R) − (gA/2) Σ_A tr(Γ17up[A] χ17 R Γ17[A] χ17 R).')
+text('Its variation δE_x = tr(Σ_x δR) defines the exchange self-energy')
+text('      Σ_x = −gS R − gP (iχ17) R (iχ17) − gV Σ_A Γ17[A] R Γ17up[A] − gA Σ_A Γ17[A] χ17 R Γ17up[A] χ17,      E_x = ½ tr(Σ_x R),')
+text('which enters the orbital equations as (i Γ17up[A] ∂_A − m − Σ_H − Σ_x) φ = 0 with the Hartree part '
+     'Σ_H = S + iχ17 P + Γ17up[A] (V_A + χ17 A_A). Exact exchange with E_c = 0 is relativistic Hartree–Fock; E_xc = 0 is the '
+     'relativistic Hartree (mean-field) approximation.')
+text('Check of Wick’s theorem: three orthonormal orbitals in the 16-dimensional spinor space at one point. Their Slater determinant '
+     'lives in the 3-particle Fock space of 16 modes (dimension C(16,3) = 560), where every c_a† c_b is an explicit sparse matrix; '
+     'the expectation values are computed directly and compared with the trace formula for all 18 vertex pairs.')
+inp(r'''
+basis3 = Subsets[Range[16], {3}]; idx3 = AssociationThread[basis3 -> Range[Length[basis3]]];
+cdc[a_, b_] := cdc[a, b] = SparseArray[Flatten[Table[With[{st = basis3[[n]]},
+       If[MemberQ[st, b] && (a == b || ! MemberQ[st, a]),
+        With[{tt3 = DeleteCases[st, b]}, {{idx3[Sort[Append[tt3, a]]], n} -> (-1)^(First[FirstPosition[st, b]] - 1) (-1)^Count[tt3, k_ /; k < a]}], {}]],
+      {n, Length[basis3]}], 1], {Length[basis3], Length[basis3]}];          (* c_a^dagger c_b on the 3-particle states *)
+Bop[M_] := Sum[If[M[[a, b]] === 0, 0, M[[a, b]] cdc[a, b]], {a, 1, 16}, {b, 1, 16}];   (* psi^dagger.M.psi *)
+gsOrth[vs_] := Fold[Function[{us, v}, With[{w = v - Sum[(Conjugate[u].v) u, {u, us}]}, Append[us, w/Sqrt[Conjugate[w].w]]]], {}, vs];
+SeedRandom[71];
+orbs3 = gsOrth[RandomComplex[{-1 - I, 1 + I}, {3, 16}, WorkingPrecision -> 40]];      (* three orthonormal orbitals (rows) *)
+\[CapitalPhi]3 = Table[Det[orbs3[[All, st]]], {st, basis3}];                          (* the Slater determinant *)
+Rorb = Transpose[orbs3].Conjugate[orbs3].\[CapitalGamma]17[0];                            (* R = sum_k phi_k phibar_k *)
+wickLHS[o1_, o2_] := With[{M1 = \[CapitalGamma]17[0].o1, M2 = \[CapitalGamma]17[0].o2},
+   Conjugate[\[CapitalPhi]3].(Bop[M1].(Bop[M2].\[CapitalPhi]3)) - Conjugate[\[CapitalPhi]3].(Bop[M1.M2].\[CapitalPhi]3)];   (* normal ordering removes Bop[M1.M2] *)
+check["Wick's theorem in the 560-dimensional Fock space: <\[CapitalPhi]| :(\[Psi]bar o1 \[Psi])(\[Psi]bar o2 \[Psi]): |\[CapitalPhi]> == tr(o1 R) tr(o2 R) - tr(o1 R o2 R) for all 18 vertex pairs",
+  Length[basis3] == 560 && Abs[Conjugate[\[CapitalPhi]3].\[CapitalPhi]3 - 1] < 10^-30 &&
+  And @@ Table[Abs[wickLHS[v[[2]], v[[3]]] - (Tr[v[[2]].Rorb] Tr[v[[3]].Rorb] - Tr[v[[2]].Rorb.v[[3]].Rorb])] < 10^-25, {v, vPairs}]]
+''')
+
+subsection('8.6 The exchange self-energy and the Fierz identities')
+text('The 256 products Γ_K = Γ17[A1].….Γ17[Ak] (A1 < … < Ak; products256 of section 4.2) are orthogonal matrices, '
+     'Γ_K⁻¹ = Transpose[Γ_K], with tr(Γ_K⁻¹.Γ_L) = 16 δKL. They are a basis of all 16×16 matrices, which is the Fierz completeness relation')
+text('      Σ_K (Γ_K)_ab (Γ_K⁻¹)_cd = 16 δad δcb.')
+text('Consequently every exchange term is a sum of direct terms (Fierz rearrangement),')
+text('      tr(o1 R o2 R) = (1/16) Σ_K tr(Γ_K⁻¹ R) tr(o1 Γ_K o2 R),')
+text('so for contact couplings Hartree–Fock is a Hartree theory with Fierz-transformed couplings (section 8.7 shows this for uniform '
+     'matter). The checks use a random complex 16×16 matrix R and symbolic couplings.')
+inp(r'''
+SeedRandom[1771];
+Rr = RandomInteger[{-3, 3}, {16, 16}] + I RandomInteger[{-3, 3}, {16, 16}];
+Dr = RandomInteger[{-3, 3}, {16, 16}] + I RandomInteger[{-3, 3}, {16, 16}];
+Exfun[R_] := Sum[-v[[1]]/2 Tr[v[[2]].R.v[[3]].R], {v, vPairs}];                  (* exchange energy *)
+Sigmax[R_] := Sum[-v[[1]] v[[3]].R.v[[2]], {v, vPairs}];                         (* exchange self-energy *)
+check["exchange self-energy: d/dt E_x(R + t dR) at t = 0 == tr(\[CapitalSigma]_x.dR) and E_x == tr(\[CapitalSigma]_x.R)/2 (random complex R, dR; symbolic couplings)",
+  Expand[(D[Exfun[Rr + tt Dr], tt] /. tt -> 0) - Tr[Sigmax[Rr].Dr]] === 0 && Expand[Exfun[Rr] - Tr[Sigmax[Rr].Rr]/2] === 0]
+F256 = Flatten /@ products256;
+check["the 256 products \[CapitalGamma]_K are orthogonal matrices with tr(Inverse[\[CapitalGamma]_K].\[CapitalGamma]_L) == 16 \[Delta]KL",
+  And @@ Table[Transpose[g].g == ID16, {g, products256}] && F256.Transpose[F256] == 16 IdentityMatrix[256]]
+check["Fierz completeness: \[Sum]_K (\[CapitalGamma]_K)_ab (Inverse[\[CapitalGamma]_K])_cd == 16 \[Delta]ad \[Delta]cb (as the 256\[Times]256 matrix identity Transpose[F].F == 16 ID)",
+  Transpose[F256].F256 == 16 IdentityMatrix[256]]
+check["Fierz rearrangement of every exchange term: tr(o1 R o2 R) == (1/16) \[Sum]_K tr(Inverse[\[CapitalGamma]_K].R) tr(o1.\[CapitalGamma]_K.o2.R) for all 18 vertex pairs (random complex R)",
+  And @@ Table[Tr[v[[2]].Rr.v[[3]].Rr] == Sum[Tr[Transpose[g].Rr] Tr[v[[2]].g.v[[3]].Rr], {g, products256}]/16, {v, vPairs}]]
+''')
+
+subsection('8.7 Example: uniform matter (no sea), Hartree and Hartree–Fock')
+text('Static, uniform, spin-saturated matter at rest, no external sources. By symmetry the KS potentials are constants, S = m* − m '
+     'and V_0, with P = A_A = V_i = 0; the orbitals are plane waves u_s(p⃗) e^{i p⃗·x⃗}/√(2E* V) with the effective mass m* '
+     '(E* = √(p⃗² + m*²)), eigenvalues ε = V_0 + E*, all 8 spin states filled up to the Fermi momentum kF. With the area of the unit '
+     'sphere S⁶ ⊂ ℝ⁷, |S⁶| = 2π^(7/2)/Γ(7/2) = 16π³/15, and 8 spin states, 8 ∫ d⁷k/(2π)⁷ f(|k⃗|) = c7 ∫_0^∞ k⁶ f(k) dk with c7 = 1/(15π⁴):')
+text('      ρ = j^0 = c7 kF⁷/7 = kF⁷/(105 π⁴),   ρS = c7 ∫_0^kF k⁶ m*/√(k² + m*²) dk,   ε_kin = c7 ∫_0^kF k⁶ √(k² + m*²) dk,')
+text('(ρP = 0, j5 = 0, j^i = 0), and the KS density matrix is R = (ρS ID16 + ρ Γ17[0])/16. The Hartree self-consistency conditions and '
+     'the energy density are')
+text('      m* = m + gS ρS(m*),   V_0 = gV ρ,   ε = ε_kin(m*) − (m* − m) ρS + (gS/2) ρS² + (gV/2) ρ² = ε_kin(m*) − (m* − m)²/(2 gS) + (gV/2) ρ²,')
+text('and the Fermi energy is ε_F = V_0 + √(kF² + m*²). ε is stationary in m* (∂ε/∂m* = ρS − (m* − m)/gS = 0 is the gap equation), so '
+     'dε/dkF = ∂ε/∂kF, which gives the Hugenholtz–Van Hove theorem: the chemical potential μ = dε/dρ equals ε_F at every density, and '
+     'at the saturation point (the minimum of the energy per particle ε/ρ) ε/ρ = ε_F.')
+text('With the exchange (Fock) term of section 8.5 the uniform density matrix gives')
+text('      E_x = −(gS/32)(ρS² + ρ²) + (gP/32)(ρS² − ρ²) − (gV/32)(8ρS² − 6ρ²) + (gA/32)(8ρS² + 6ρ²),')
+text('      Σ_x = S_x ID16 + V_x Γ17[0],   S_x = (ρS/16)(−gS + gP − 8gV + 8gA),   V_x = (ρ/16)(−gS − gP + 6gV + 6gA),')
+text('so uniform Hartree–Fock is Hartree with the Fierz-transformed couplings G_S = gS + (−gS + gP − 8gV + 8gA)/16 and '
+     'G_V = gV + (−gS − gP + 6gV + 6gA)/16. Example in units m = 1: gS = −10^5, gV = 10^4 (gP = gA = 0). In the Hartree approximation this '
+     'matter is bound and saturates; Hartree–Fock is evaluated at kF = 3/4.')
+inp(r'''
+Runi = (\[Rho]Ssym ID16 + \[Rho]sym \[CapitalGamma]17[0])/16;
+check["uniform matter: tr R == \[Rho]S, tr(\[CapitalGamma]17up[0].R) == \[Rho], and the densities \[Rho]P, j^i, j5^A vanish",
+  Tr[Runi] == \[Rho]Ssym && Tr[\[CapitalGamma]17up[0].Runi] == \[Rho]sym && Tr[I \[Chi]17.Runi] === 0 &&
+  And @@ Table[Tr[\[CapitalGamma]17up[i].Runi] === 0, {i, 1, 7}] && And @@ Table[Tr[\[CapitalGamma]17up[A].\[Chi]17.Runi] === 0, {A, 0, 7}]]
+check["the occupied plane waves give this R: (1/2) \[Sum]_s [u_s(p) ubar_s(p) + u_s(-p) ubar_s(-p)]/(2E) == (E \[CapitalGamma]17[0] + m ID16)/(2E)",
+  Simplify[(USmat.Transpose[USmat].\[CapitalGamma]17[0] + Transpose[Table[uS[s, Transpose[Mp], Ep], {s, 1, 8}]].Table[uS[s, Transpose[Mp], Ep], {s, 1, 8}].\[CapitalGamma]17[0])/(4 Ep) -
+     (Ep \[CapitalGamma]17[0] + mD ID16)/(2 Ep), asm7] === Zero16]
+ExUni = -gS/32 (\[Rho]Ssym^2 + \[Rho]sym^2) + gP/32 (\[Rho]Ssym^2 - \[Rho]sym^2) - gV/32 (8 \[Rho]Ssym^2 - 6 \[Rho]sym^2) + gA/32 (8 \[Rho]Ssym^2 + 6 \[Rho]sym^2);
+check["uniform exchange energy: E_x(R) == -gS/32 (\[Rho]S^2 + \[Rho]^2) + gP/32 (\[Rho]S^2 - \[Rho]^2) - gV/32 (8\[Rho]S^2 - 6\[Rho]^2) + gA/32 (8\[Rho]S^2 + 6\[Rho]^2)",
+  Expand[Exfun[Runi] - ExUni] === 0]
+check["uniform exchange self-energy: \[CapitalSigma]_x == S_x ID16 + V_x \[CapitalGamma]17[0] with S_x == \[PartialD]E_x/\[PartialD]\[Rho]S and V_x == \[PartialD]E_x/\[PartialD]\[Rho]",
+  Expand[Sigmax[Runi] - (D[ExUni, \[Rho]Ssym] ID16 + D[ExUni, \[Rho]sym] \[CapitalGamma]17[0])] === Zero16 &&
+  Expand[D[ExUni, \[Rho]Ssym] - \[Rho]Ssym/16 (-gS + gP - 8 gV + 8 gA)] === 0 && Expand[D[ExUni, \[Rho]sym] - \[Rho]sym/16 (-gS - gP + 6 gV + 6 gA)] === 0]
+GSeff[gs_, gp_, gv_, ga_] := gs + (-gs + gp - 8 gv + 8 ga)/16; GVeff[gs_, gp_, gv_, ga_] := gv + (-gs - gp + 6 gv + 6 ga)/16;
+check["uniform Hartree-Fock == Hartree with the Fierz-transformed couplings: gS/2 \[Rho]S^2 + gV/2 \[Rho]^2 + E_x == G_S/2 \[Rho]S^2 + G_V/2 \[Rho]^2 (gP, gA arbitrary)",
+  Expand[gS/2 \[Rho]Ssym^2 + gV/2 \[Rho]sym^2 + ExUni - GSeff[gS, gP, gV, gA]/2 \[Rho]Ssym^2 - GVeff[gS, gP, gV, gA]/2 \[Rho]sym^2] === 0]
+''')
+inp(r'''
+c7 = 1/(15 Pi^4);
+rho7[kF_] := kF^7/(105 Pi^4);
+iS7[ms_, kF_] = Integrate[k^6 ms/Sqrt[k^2 + ms^2], {k, 0, kF}, Assumptions -> ms > 0 && kF > 0];
+iE7[ms_, kF_] = Integrate[k^6 Sqrt[k^2 + ms^2], {k, 0, kF}, Assumptions -> ms > 0 && kF > 0];
+check["c7 == 8 |S^6|/(2 Pi)^7 == 1/(15 Pi^4), |S^6| == 2 Pi^(7/2)/Gamma[7/2] == 16 Pi^3/15, and \[Rho] == c7 kF^7/7 == kF^7/(105 Pi^4)",
+  2 Pi^(7/2)/Gamma[7/2] == 16 Pi^3/15 && 8 (16 Pi^3/15)/(2 Pi)^7 == c7 && Integrate[c7 k^6, {k, 0, kF}] == rho7[kF]]
+check["closed forms: d/dkF of the integrals gives the integrands, both vanish at kF = 0, and d\[Epsilon]_kin/dm* == \[Rho]S",
+  Simplify[D[iS7[ms, kF], kF] - kF^6 ms/Sqrt[kF^2 + ms^2], ms > 0 && kF > 0] === 0 && Simplify[D[iE7[ms, kF], kF] - kF^6 Sqrt[kF^2 + ms^2], ms > 0 && kF > 0] === 0 &&
+  Simplify[iS7[ms, kF] /. kF -> 0] === 0 && Simplify[iE7[ms, kF] /. kF -> 0] === 0 && Simplify[D[iE7[ms, kF], ms] - iS7[ms, kF], ms > 0 && kF > 0] === 0]
+{iS7[ms, kF], iE7[ms, kF]}
+''')
+inp(r'''
+gS0 = -10^5; gV0 = 10^4; wp = 50;          (* the inner root-finding works with 50 digits *)
+gap7[g_?NumericQ, kF_?NumericQ] := With[{k1 = SetPrecision[kF, wp + 10]},
+   ms /. FindRoot[ms - 1 - g c7 iS7[ms, k1], {ms, 10^-8, 1}, Method -> "Brent", WorkingPrecision -> wp, AccuracyGoal -> wp - 5, PrecisionGoal -> wp - 5]];
+eps7[g_?NumericQ, gv_?NumericQ, kF_?NumericQ] := With[{m1 = gap7[g, kF], k1 = SetPrecision[kF, wp + 10]}, c7 iE7[m1, k1] - (m1 - 1)^2/(2 g) + gv/2 rho7[k1]^2];
+fermi7[g_?NumericQ, gv_?NumericQ, kF_?NumericQ] := With[{k1 = SetPrecision[kF, wp + 10]}, gv rho7[k1] + Sqrt[k1^2 + gap7[g, kF]^2]];
+dEdrho7[g_, gv_, k0_] := With[{h = 10^-12}, (eps7[g, gv, k0 + h] - eps7[g, gv, k0 - h])/(rho7[k0 + h] - rho7[k0 - h])];
+kF0 = SetPrecision[kF /. FindRoot[eps7[gS0, gV0, kF]/rho7[kF] - fermi7[gS0, gV0, kF], {kF, 7/10, 8/10}, Method -> "Brent",
+     WorkingPrecision -> 40, AccuracyGoal -> 32, PrecisionGoal -> 32], wp + 10];
+ms0 = gap7[gS0, kF0]; rho0 = rho7[kF0]; rhoS0 = c7 iS7[ms0, kF0]; V00 = gV0 rho0; eps0 = eps7[gS0, gV0, kF0];
+hartreeSaturation = {"kF0" -> N[kF0, 20], "rho0" -> N[rho0, 20], "mstar" -> N[ms0, 20], "rhoS" -> N[rhoS0, 20], "V0" -> N[V00, 20],
+  "E/A - m" -> N[eps0/rho0 - 1, 20], "epsF" -> N[fermi7[gS0, gV0, kF0], 20]}
+''')
+inp(r'''
+check["Hartree gap equation m* == m + gS \[Rho]S(m*) solved to 45 digits; m* is a stationary point of \[Epsilon](m*) at fixed kF",
+  Abs[ms0 - 1 - gS0 rhoS0] < 10^-30 && Abs[D[c7 iE7[ms, kF0] - (ms - 1)^2/(2 gS0), ms] /. ms -> ms0] < 10^-30]
+check["total energy == sum of KS eigenvalues - E_H (double counting) == \[Epsilon]_kin - (m* - m) \[Rho]S + E_H",
+  Abs[eps0 - (V00 rho0 + c7 iE7[ms0, kF0] - gS0/2 rhoS0^2 - gV0/2 rho0^2)] < 10^-30 &&
+  Abs[eps0 - (c7 iE7[ms0, kF0] - (ms0 - 1) rhoS0 + gS0/2 rhoS0^2 + gV0/2 rho0^2)] < 10^-30]
+check["Hugenholtz-Van Hove at saturation: E/A == \[Epsilon]_F == d\[Epsilon]/d\[Rho]; E/A - m < 0 and E/A at 0.95 kF0 and 1.05 kF0 is higher",
+  Abs[eps0/rho0 - fermi7[gS0, gV0, kF0]] < 10^-25 && Abs[dEdrho7[gS0, gV0, kF0] - fermi7[gS0, gV0, kF0]] < 10^-15 && eps0/rho0 - 1 < 0 &&
+  eps7[gS0, gV0, 95/100 kF0]/rho7[95/100 kF0] > eps0/rho0 && eps7[gS0, gV0, 105/100 kF0]/rho7[105/100 kF0] > eps0/rho0]
+check["Hugenholtz-Van Hove away from saturation: \[Mu] == d\[Epsilon]/d\[Rho] == \[Epsilon]_F at kF = 1", Abs[dEdrho7[gS0, gV0, 1] - fermi7[gS0, gV0, 1]] < 10^-15]
+hartreeKF1 = {"mstar" -> N[gap7[gS0, 1], 20], "E/A - m" -> N[eps7[gS0, gV0, 1]/rho7[1] - 1, 20], "epsF" -> N[fermi7[gS0, gV0, 1], 20]}
+''')
+inp(r'''
+GS1 = GSeff[gS0, 0, gV0, 0]; GV1 = GVeff[gS0, 0, gV0, 0];
+msHF = gap7[GS1, 3/4]; rhoHF = rho7[3/4]; rhoSHF = c7 iS7[msHF, 3/4];
+check["Hartree-Fock at kF = 3/4 (gP = gA = 0): G_S == -98750, G_V == 20000; m* - m == gS \[Rho]S + S_x, V_0 == gV \[Rho] + V_x; \[Mu] == \[Epsilon]_F",
+  GS1 == -98750 && GV1 == 20000 && Abs[msHF - 1 - (gS0 rhoSHF + rhoSHF/16 (-gS0 - 8 gV0))] < 10^-30 &&
+  Abs[GV1 rhoHF - (gV0 rhoHF + rhoHF/16 (-gS0 + 6 gV0))] < 10^-30 && Abs[dEdrho7[GS1, GV1, 3/4] - fermi7[GS1, GV1, 3/4]] < 10^-15]
+hartreeFock34 = {"G_S" -> GS1, "G_V" -> GV1, "HF mstar" -> N[msHF, 20], "HF V0" -> N[GV1 rhoHF, 20], "HF E/A - m" -> N[eps7[GS1, GV1, 3/4]/rhoHF - 1, 20],
+  "Hartree mstar" -> N[gap7[gS0, 3/4], 20], "Hartree E/A - m" -> N[eps7[gS0, gV0, 3/4]/rhoHF - 1, 20]}
+''')
+inp(r'''
+(* energy per particle E/A - m in units of m, Hartree (saturating) and Hartree-Fock *)
+eAcurve[g_, gv_] := Table[N[{kF, eps7[g, gv, kF]/rho7[kF] - 1}], {kF, 3/10, 1, 1/40}];
+ListLinePlot[{eAcurve[gS0, gV0], eAcurve[GS1, GV1]},
+ PlotLegends -> {"Hartree (gS = -10^5, gV = 10^4)", "Hartree-Fock (G_S = -98750, G_V = 20000)"}, AxesLabel -> {"kF", "E/A - m"},
+ Epilog -> {Red, PointSize[Medium], Point[{N[kF0], N[eps0/rho0 - 1]}]}, PlotRange -> {-0.06, 0.25}, ImageSize -> 600, GridLines -> {None, {0}}]
+''')
+# =====================================================================================
+section('9. The chiral Kohn–Sham theory (8 + 8 components)')
+subsection('9.1 Chiral densities')
+text('With the chiral components φ_kL = EL†.φ_k and φ_kR = ER†.φ_k of the KS orbitals (section 7.10) the 18 densities become one '
+     'complex scalar density and two 8-currents:')
+text('      κ = Σ_k φ_kL† φ_kR,      j_L^A = Σ_k φ_kL† σbar^A φ_kL,      j_R^A = Σ_k φ_kR† σ^A φ_kR,')
+text('      ρS = κ + κ* = 2 Re κ,   ρP = i (κ − κ*) = −2 Im κ,   j^A = j_L^A + j_R^A,   j5^A = j_R^A − j_L^A,')
+text('with σ^A = (ID8, σW[i]) and σbar^A = (ID8, −σW[i]) as in section 7.11. The scalar and pseudoscalar densities pair the two '
+     'chiralities; the currents do not. The sources become a complex scalar source μ = s + i p and two chiral vector sources: '
+     's ρS + p ρP = μ κ + μ* κ*,   v_A j^A + a_A j5^A = (v − a)_A j_L^A + (v + a)_A j_R^A.')
+inp(r'''
+orbLV = Array[orbL, 8]; orbLcV = Array[orbLc, 8]; orbRV = Array[orbR, 8]; orbRcV = Array[orbRc, 8];   (* phi_L, phi_L^*, phi_R, phi_R^* *)
+psiChi = EL.orbLV + ER.orbRV; psiChiDag = orbLcV.ConjugateTranspose[EL] + orbRcV.ConjugateTranspose[ER];
+densChi[M_] := Expand[psiChiDag.M.psiChi];
+\[Kappa]c = Expand[orbLcV.orbRV]; \[Kappa]cc = Expand[orbRcV.orbLV];                                   (* kappa and kappa^* *)
+\[Sigma]Up = Join[{ID8}, Table[\[Sigma]W[i], {i, 1, 7}]]; \[Sigma]barUp = Join[{ID8}, Table[-\[Sigma]W[i], {i, 1, 7}]];
+jLc = Table[Expand[orbLcV.\[Sigma]barUp[[A + 1]].orbLV], {A, 0, 7}]; jRc = Table[Expand[orbRcV.\[Sigma]Up[[A + 1]].orbRV], {A, 0, 7}];
+check["chiral densities: \[Rho]S == \[Kappa] + \[Kappa]^*, \[Rho]P == I(\[Kappa] - \[Kappa]^*), j^A == jL^A + jR^A, j5^A == jR^A - jL^A (symbolic chiral orbitals)",
+  Expand[densChi[\[CapitalGamma]17[0]] - \[Kappa]c - \[Kappa]cc] === 0 && Expand[densChi[\[CapitalGamma]17[0].(I \[Chi]17)] - I (\[Kappa]c - \[Kappa]cc)] === 0 &&
+  And @@ Table[Expand[densChi[\[CapitalGamma]17[0].\[CapitalGamma]17up[A]] - jLc[[A + 1]] - jRc[[A + 1]]] === 0 &&
+    Expand[densChi[\[CapitalGamma]17[0].\[CapitalGamma]17up[A].\[Chi]17] - jRc[[A + 1]] + jLc[[A + 1]]] === 0, {A, 0, 7}]]
+check["the chiral blocks behind these densities: EL^\[Dagger].\[Beta]D.ER == ID8, EL^\[Dagger].\[Beta]D.EL == 0, EL^\[Dagger].\[Alpha]D[i].EL == -\[Sigma]W[i], ER^\[Dagger].\[Alpha]D[i].ER == \[Sigma]W[i], EL^\[Dagger].\[Alpha]D[i].ER == 0",
+  ConjugateTranspose[EL].\[Beta]D.ER == ID8 && ConjugateTranspose[EL].\[Beta]D.EL == Zero8 &&
+  And @@ Table[ConjugateTranspose[EL].\[Alpha]D[i].EL == -\[Sigma]W[i] && ConjugateTranspose[ER].\[Alpha]D[i].ER == \[Sigma]W[i] && ConjugateTranspose[EL].\[Alpha]D[i].ER == Zero8, {i, 1, 7}]]
+''')
+
+subsection('9.2 The Hartree energy in chiral variables')
+text('In chiral variables the Hartree energy density is')
+text('      e_H = (gS/2)(κ + κ*)² − (gP/2)(κ − κ*)² + ((gV + gA)/2)(j_L^A j_LA + j_R^A j_RA) + (gV − gA) j_L^A j_RA')
+text('          = ((gS − gP)/2)(κ² + κ*²) + (gS + gP) κ κ* + … .')
+text('The scalar–pseudoscalar part depends on κ only through |κ|² exactly when gP = gS; then it is 2 gS |κ|², the Nambu–Jona-Lasinio form. '
+     'The vector–axial part couples the two currents only through gV − gA.')
+inp(r'''
+EHchiAbs[k_, kc_, jl_List, jr_List] := gS/2 (k + kc)^2 - gP/2 (k - kc)^2 +
+   (gV + gA)/2 Sum[\[Eta]17[[A + 1, A + 1]] (jl[[A + 1]]^2 + jr[[A + 1]]^2), {A, 0, 7}] + (gV - gA) Sum[\[Eta]17[[A + 1, A + 1]] jl[[A + 1]] jr[[A + 1]], {A, 0, 7}];
+EHchi = Expand[EHchiAbs[\[Kappa]c, \[Kappa]cc, jLc, jRc]];
+check["E_H (16-component form, chiral orbitals) == gS/2 (\[Kappa] + \[Kappa]^*)^2 - gP/2 (\[Kappa] - \[Kappa]^*)^2 + (gV + gA)/2 (jL.jL + jR.jR) + (gV - gA) jL.jR",
+  Expand[EHfun[densChi] - EHchi] === 0]
+''')
+
+subsection('9.3 The chiral Kohn–Sham equations')
+text('In chiral components the Kohn–Sham equation h_KS φ = ε φ becomes the 8 + 8 block system (W†.h_KS.W):')
+text('      [V^L_0 − σW[i] (−i ∂_i + V^L_i)] φL + M φR = ε φL,')
+text('      M* φL + [V^R_0 + σW[i] (−i ∂_i + V^R_i)] φR = ε φR,')
+text('with the complex Kohn–Sham mass M = m + S + i P and the chiral vector potentials V^L_A = V_A − A_A, V^R_A = V_A + A_A. '
+     'Since σW[i](−i∂_i) = τO[i] ∂_i, the derivative terms contain only the real τO[i], exactly as in section 7.11; the mass M couples '
+     'the two chiralities. The potentials are Wirtinger derivatives of the energy:')
+text('      M − m = μ + ∂(E_H + E_xc)/∂κ,   V^L_A = (v − a)_A + ∂(E_H + E_xc)/∂j_L^A,   V^R_A = (v + a)_A + ∂(E_H + E_xc)/∂j_R^A;')
+text('Hartree:   M − m − μ = gS (κ + κ*) − gP (κ − κ*) = gS ρS + i gP ρP,   V^L_A − (v − a)_A = (gV + gA) j_LA + (gV − gA) j_RA,   '
+     'V^R_A − (v + a)_A = (gV + gA) j_RA + (gV − gA) j_LA.')
+text('The densities κ, j_L, j_R are computed from the occupied chiral orbitals (no sea, as in section 8.4), and the total energy is')
+text('      E = Σ_k ε_k − ∫ [ 2 Re((M − m − μ) κ) + (V^L − v + a)_A j_L^A + (V^R − v − a)_A j_R^A ] d⁷x + E_H + E_xc.')
+inp(r'''
+VLks = VKS - AKS; VRks = VKS + AKS; Mks = mD + Sks + I Pks;
+hChiKS[q_List] := ArrayFlatten[{{VLks[[1]] ID8 - Sum[\[Sigma]W[i] (q[[i]] + VLks[[i + 1]]), {i, 1, 7}], Mks ID8},
+    {(mD + Sks - I Pks) ID8, VRks[[1]] ID8 + Sum[\[Sigma]W[i] (q[[i]] + VRks[[i + 1]]), {i, 1, 7}]}}];
+check["chiral KS Hamiltonian: W^\[Dagger].h_KS(p).W == {{V^L_0 - \[Sigma]W.(p + V^L), M}, {M^*, V^R_0 + \[Sigma]W.(p + V^R)}}, M = m + S + I P, V^L = V - A, V^R = V + A",
+  Expand[ConjugateTranspose[Wch].hKS[pv7].Wch - hChiKS[pv7]] === Zero16]
+VLc = Table[(gV + gA) \[Eta]17[[A + 1, A + 1]] jLc[[A + 1]] + (gV - gA) \[Eta]17[[A + 1, A + 1]] jRc[[A + 1]], {A, 0, 7}];   (* V^L_A, lower index *)
+VRc = Table[(gV + gA) \[Eta]17[[A + 1, A + 1]] jRc[[A + 1]] + (gV - gA) \[Eta]17[[A + 1, A + 1]] jLc[[A + 1]], {A, 0, 7}];
+dEHdk = gS (\[Kappa]c + \[Kappa]cc) - gP (\[Kappa]c - \[Kappa]cc); dEHdkc = gS (\[Kappa]c + \[Kappa]cc) + gP (\[Kappa]c - \[Kappa]cc);
+check["Hartree (Wirtinger): M - m == \[PartialD]e_H/\[PartialD]\[Kappa] == gS \[Rho]S + I gP \[Rho]P, V^L_A == \[PartialD]e_H/\[PartialD]jL^A; V^L_A == V_A - A_A and V^R_A == V_A + A_A with V_A = gV j_A, A_A = gA j5_A",
+  With[{jlA = Array[jl, 8, 0], jrA = Array[jr, 8, 0]},
+    Expand[D[EHchiAbs[kk, kkc, jlA, jrA], kk] - (gS (kk + kkc) - gP (kk - kkc))] === 0 &&
+    And @@ Table[Expand[D[EHchiAbs[kk, kkc, jlA, jrA], jl[A]] - ((gV + gA) \[Eta]17[[A + 1, A + 1]] jl[A] + (gV - gA) \[Eta]17[[A + 1, A + 1]] jr[A])] === 0, {A, 0, 7}]] &&
+  Expand[dEHdk - (gS densChi[\[CapitalGamma]17[0]] + I gP densChi[\[CapitalGamma]17[0].(I \[Chi]17)])] === 0 &&
+  And @@ Table[Expand[VLc[[A + 1]] - (gV \[Eta]17[[A + 1, A + 1]] densChi[\[CapitalGamma]17[0].\[CapitalGamma]17up[A]] - gA \[Eta]17[[A + 1, A + 1]] densChi[\[CapitalGamma]17[0].\[CapitalGamma]17up[A].\[Chi]17])] === 0 &&
+    Expand[VRc[[A + 1]] - (gV \[Eta]17[[A + 1, A + 1]] densChi[\[CapitalGamma]17[0].\[CapitalGamma]17up[A]] + gA \[Eta]17[[A + 1, A + 1]] densChi[\[CapitalGamma]17[0].\[CapitalGamma]17up[A].\[Chi]17])] === 0, {A, 0, 7}]]
+check["chiral KS potentials are derivatives: \[PartialD]E_H/\[PartialD]\[Phi]L^* == (V^L_0 - \[Sigma]W[i] V^L_i) \[Phi]L + (M - m) \[Phi]R and \[PartialD]E_H/\[PartialD]\[Phi]R^* == (V^R_0 + \[Sigma]W[i] V^R_i) \[Phi]R + (M - m)^* \[Phi]L",
+  And @@ Table[Expand[D[EHchi, orbLc[a]] - (Sum[VLc[[A + 1]] \[Sigma]barUp[[A + 1]], {A, 0, 7}].orbLV + dEHdk orbRV)[[a]]] === 0 &&
+    Expand[D[EHchi, orbRc[a]] - (Sum[VRc[[A + 1]] \[Sigma]Up[[A + 1]], {A, 0, 7}].orbRV + dEHdkc orbLV)[[a]]] === 0, {a, 1, 8}]]
+''')
+
+subsection('9.4 Chiral symmetry')
+text('Because χ17 = i ω17, the chiral transformation ψ → e^{iθχ17} ψ = (cos θ ID16 − sin θ ω17) ψ is a REAL rotation of the 16 components. '
+     'It acts as φL → e^{−iθ} φL, φR → e^{iθ} φR and κ → e^{2iθ} κ; the currents j_L and j_R (hence j and j5) are invariant, while '
+     '(ρS, ρP) rotate by the angle 2θ. Therefore')
+text('      E_H(e^{iθχ17} ψ) − E_H(ψ) = ((gS − gP)/2) [ (e^{4iθ} − 1) κ² + (e^{−4iθ} − 1) κ*² ]:')
+text('the interaction is chirally (U(1)_A) symmetric if and only if gP = gS. The mass term m(κ + κ*) in T_s breaks the symmetry '
+     'explicitly. For m = 0, gP = gS and μ = 0 the whole chiral KS theory is invariant: with κ = 0 the chiral KS equations decouple into '
+     'separate 8-component equations for φL and φR, while a self-consistent solution with κ ≠ 0 breaks the symmetry spontaneously (section 9.6). '
+     'The check uses cos θ = 3/5, sin θ = 4/5.')
+inp(r'''
+U\[Theta] = 3/5 ID16 + I 4/5 \[Chi]17; e2\[Theta] = (3/5 + 4/5 I)^2;
+check["e^(I\[Theta]\[Chi]17) == cos\[Theta] ID16 - sin\[Theta] \[Omega]17 is REAL and orthogonal; U.EL == e^(-I\[Theta]) EL, U.ER == e^(I\[Theta]) ER",
+  U\[Theta] == 3/5 ID16 - 4/5 \[Omega]17 && FreeQ[U\[Theta], Complex] && Transpose[U\[Theta]].U\[Theta] == ID16 &&
+  U\[Theta].EL == (3/5 - 4/5 I) EL && U\[Theta].ER == (3/5 + 4/5 I) ER]
+check["U^\[Dagger].\[Beta]D.U == \[Beta]D.(cos 2\[Theta] ID16 + I sin 2\[Theta] \[Chi]17); vector and axial densities invariant",
+  ConjugateTranspose[U\[Theta]].\[Beta]D.U\[Theta] == \[Beta]D.(Re[e2\[Theta]] ID16 + I Im[e2\[Theta]] \[Chi]17) &&
+  And @@ Table[ConjugateTranspose[U\[Theta]].\[CapitalGamma]17[0].\[CapitalGamma]17up[A].U\[Theta] == \[CapitalGamma]17[0].\[CapitalGamma]17up[A] &&
+    ConjugateTranspose[U\[Theta]].\[CapitalGamma]17[0].\[CapitalGamma]17up[A].\[Chi]17.U\[Theta] == \[CapitalGamma]17[0].\[CapitalGamma]17up[A].\[Chi]17, {A, 0, 7}]]
+EHrot = Expand[EHfun[dens16[ConjugateTranspose[U\[Theta]].#.U\[Theta]] &]];
+\[Kappa]16 = dens16[EL.ConjugateTranspose[ER]]; \[Kappa]16c = dens16[ER.ConjugateTranspose[EL]];
+check["E_H(e^(I\[Theta]\[Chi]17) \[Psi]) - E_H(\[Psi]) == (gS - gP)/2 [(e^(4I\[Theta]) - 1) \[Kappa]^2 + (e^(-4I\[Theta]) - 1) \[Kappa]^*2]: U(1)_A symmetric iff gP == gS",
+  Expand[EHrot - EH16 - (gS - gP)/2 ((e2\[Theta]^2 - 1) \[Kappa]16^2 + (Conjugate[e2\[Theta]]^2 - 1) \[Kappa]16c^2)] === 0 &&
+  Expand[(EHrot - EH16) /. gP -> gS] === 0 && Expand[EHrot - EH16] =!= 0]
+''')
+
+subsection('9.5 Uniform matter in chiral form')
+text('For the uniform matter of section 8.7 the chiral densities are κ = ρS/2 (real), j_L^0 = j_R^0 = ρ/2 and j_L^i = j_R^i = 0; the '
+     'chiral KS potentials are M = m* (real) and V^L_0 = V^R_0 = V_0. The chiral KS Hamiltonian {{V_0 − σW·p⃗, m*}, {m*, V_0 + σW·p⃗}} '
+     'has the eigenvalues V_0 ± √(p⃗² + m*²), each eight times — the spectrum of the 16-component form, as it must be.')
+inp(r'''
+kappaUni = Tr[EL.ConjugateTranspose[ER].Runi.\[CapitalGamma]17[0]];          (* kappa = tr(EL.ER^dagger.sum psi psi^dagger), sum psi psi^dagger = R.Gamma17[0] *)
+jLUni = Table[Tr[EL.\[Sigma]barUp[[A + 1]].ConjugateTranspose[EL].Runi.\[CapitalGamma]17[0]], {A, 0, 7}];
+jRUni = Table[Tr[ER.\[Sigma]Up[[A + 1]].ConjugateTranspose[ER].Runi.\[CapitalGamma]17[0]], {A, 0, 7}];
+check["uniform matter in chiral form: \[Kappa] == \[Rho]S/2, jL^0 == jR^0 == \[Rho]/2, jL^i == jR^i == 0",
+  Expand[kappaUni - \[Rho]Ssym/2] === 0 && Expand[jLUni - Join[{\[Rho]sym/2}, ConstantArray[0, 7]]] === ConstantArray[0, 8] &&
+  Expand[jRUni - Join[{\[Rho]sym/2}, ConstantArray[0, 7]]] === ConstantArray[0, 8]]
+hChiUni = ArrayFlatten[{{V0s ID8 - \[Sigma]Wp[pv7], mst ID8}, {mst ID8, V0s ID8 + \[Sigma]Wp[pv7]}}];
+check["(h_\[Chi] - V_0)^2 == (p^2 + m*^2) ID16: eigenvalues V_0 \[PlusMinus] Sqrt[p^2 + m*^2], eight times each",
+  Expand[(hChiUni - V0s ID16).(hChiUni - V0s ID16) - (pv7.pv7 + mst^2) ID16] === Zero16 && Tr[hChiUni - V0s ID16] === 0]
+chiralUniform = {"kappa = rhoS/2" -> N[rhoS0/2, 20], "jL^0 = jR^0 = rho/2" -> N[rho0/2, 20], "M = m*" -> N[ms0, 20], "V^L_0 = V^R_0 = V0" -> N[V00, 20]}
+''')
+
+subsection('9.6 The chiral vacuum with the Dirac sea: spontaneous chiral symmetry breaking')
+text('Now keep the Dirac sea — all negative-energy KS orbitals occupied, with a momentum cutoff |p⃗| < Λ — and take gP = gS = g, μ = 0, '
+     'V = A = 0 and no matter (the vacuum). With a uniform complex KS mass M the chiral KS Hamiltonian h_χ(p⃗) = {{−σW·p⃗, M ID8}, '
+     '{M* ID8, σW·p⃗}} (plus m on the off-diagonal blocks when m ≠ 0, absorbed in M) satisfies h_χ² = (p⃗² + |M|²) ID16. Its eigenvalues are ±E, '
+     'E = √(p⃗² + |M|²), and the projector on the filled sea is Π−(p⃗) = (ID16 − h_χ(p⃗)/E)/2, whose RL block is −M*/(2E) ID8. Hence')
+text('      κ = −4 M* J(|M|),   J(M) = ∫_{|p⃗|<Λ} d⁷p/(2π)⁷ 1/√(p² + M²) = (1/(120 π⁴)) ∫_0^Λ p⁶/√(p² + M²) dp')
+text('(the angular integral gives |S⁶|/(2π)⁷ = 1/(120 π⁴)). The Hartree KS mass M = m + 2g κ* gives the gap equation')
+text('      M = m − 8 g J(|M|) M.')
+text('For m = 0 a solution M ≠ 0 exists if and only if 1 + 8 g J(|M|) = 0 has a root, i.e. iff g < g_c = −1/(8 J(0)) = −90 π⁴/Λ⁶. '
+     'The vacuum energy density of the KS state (sum of the sea eigenvalues minus double counting) is')
+text('      E(M) = −8 K(|M|) + 8 J(|M|) Re[(M − m) M*] + 32 g |M|² J(|M|)²,   K(M) = (1/(120 π⁴)) ∫_0^Λ p⁶ √(p² + M²) dp,')
+text('and its stationarity condition is the gap equation (for m = 0: dE/d|M| = 8|M| (1 + 8gJ)(J + |M| J′)). For m = 0, E depends only on |M|: '
+     'the broken vacua M = |M| e^{iφ} are degenerate and related by chiral rotations; the phase φ is the Goldstone direction. '
+     'A small explicit mass m > 0 selects the real positive M. Example: Λ = 1, g = (6/5) g_c; for m > 0, m = 1/100.')
+inp(r'''
+\[CapitalLambda]c = 1;
+Jsea[M_] = Integrate[q^6/Sqrt[q^2 + M^2], {q, 0, \[CapitalLambda]c}, Assumptions -> M > 0]/(120 Pi^4);
+Ksea[M_] = Integrate[q^6 Sqrt[q^2 + M^2], {q, 0, \[CapitalLambda]c}, Assumptions -> M > 0]/(120 Pi^4);
+J0sea = Integrate[q^5, {q, 0, \[CapitalLambda]c}]/(120 Pi^4); K0sea = Integrate[q^7, {q, 0, \[CapitalLambda]c}]/(120 Pi^4);
+gcrit = -1/(8 J0sea);
+check["|S^6|/(2 Pi)^7 == 1/(120 Pi^4); J(0) == \[CapitalLambda]^6/(720 Pi^4); g_c == -1/(8 J(0)) == -90 Pi^4/\[CapitalLambda]^6; J(M) -> J(0) and K(M) -> K(0) as M -> 0",
+  (16 Pi^3/15)/(2 Pi)^7 == 1/(120 Pi^4) && J0sea == 1/(720 Pi^4) && gcrit == -90 Pi^4 &&
+  Limit[Jsea[M], M -> 0, Direction -> "FromAbove"] == J0sea && Limit[Ksea[M], M -> 0, Direction -> "FromAbove"] == K0sea]
+Esea[Mz_, mq_, g_] := -8 Ksea[Abs[Mz]] + 8 Jsea[Abs[Mz]] Re[(Mz - mq) Conjugate[Mz]] + 32 g Abs[Mz]^2 Jsea[Abs[Mz]]^2;
+E0sea = -8 K0sea;                                              (* E(M = 0), m = 0 *)
+gNJL = 6/5 gcrit;
+gapNJL[M_?NumericQ, mq_] := With[{M1 = SetPrecision[M, 60]}, M1 - mq + 8 gNJL Jsea[M1] M1];     (* M - m + 8 g J(M) M, real M > 0 *)
+M0NJL = SetPrecision[M /. FindRoot[gapNJL[M, 0]/M, {M, 1/10, 1}, Method -> "Brent", WorkingPrecision -> 40, AccuracyGoal -> 32, PrecisionGoal -> 32], 60];
+check["m = 0, g = 6/5 g_c: the gap equation 1 + 8 g J(|M|) == 0 has the root |M| (32 digits); M == 2 g \[Kappa]^* with \[Kappa] == -4 M J; E is stationary there and lower than E(0)",
+  Abs[1 + 8 gNJL Jsea[M0NJL]] < 10^-25 && Abs[M0NJL - 2 gNJL (-4 M0NJL Jsea[M0NJL])] < 10^-25 &&
+  Abs[D[-8 Ksea[M] + 8 Jsea[M] M^2 + 32 gNJL M^2 Jsea[M]^2, M] /. M -> M0NJL] < 10^-25 && Esea[M0NJL, 0, gNJL] < E0sea]
+check["degenerate chiral vacua for m = 0: E(|M| e^(I \[CurlyPhi])) == E(|M|) for \[CurlyPhi] = 1, 2, 4 (the phase is the Goldstone direction)",
+  And @@ Table[Abs[Esea[M0NJL Exp[I phi], 0, gNJL] - Esea[M0NJL, 0, gNJL]] < 10^-25, {phi, {1, 2, 4}}]]
+mq0 = 1/100;
+MmNJL = SetPrecision[M /. FindRoot[gapNJL[M, mq0], {M, 1/10, 1}, Method -> "Brent", WorkingPrecision -> 40, AccuracyGoal -> 32, PrecisionGoal -> 32], 60];
+check["explicit breaking m = 1/100: the real M == m - 8 g J(M) M solves the gap equation, E is stationary there, and every complex phase raises E",
+  Abs[MmNJL - mq0 + 8 gNJL Jsea[MmNJL] MmNJL] < 10^-25 && Abs[D[-8 Ksea[M] + 8 Jsea[M] (M^2 - mq0 M) + 32 gNJL M^2 Jsea[M]^2, M] /. M -> MmNJL] < 10^-25 &&
+  And @@ Table[Esea[MmNJL Exp[I phi], mq0, gNJL] > Esea[MmNJL, mq0, gNJL], {phi, {1/50, 1/2, 1, 3}}]]
+njlVacuum = {"g_c" -> N[gcrit, 20], "g" -> N[gNJL, 20], "|M| (m = 0)" -> N[M0NJL, 20], "kappa (m = 0, M real)" -> N[-4 M0NJL Jsea[M0NJL], 20],
+  "E(M) - E(0)" -> N[Esea[M0NJL, 0, gNJL] - E0sea, 20], "M (m = 1/100)" -> N[MmNJL, 20]}
+''')
+inp(r'''
+(* the filled sea at one momentum, with a complex M: an explicit check of kappa_p and of the sea energy *)
+pS = {3/10, -1/5, 1/10, 1/4, 0, -3/20, 1/20}; Mz7 = M0NJL Exp[7 I/10];
+hChiSea = ArrayFlatten[{{-\[Sigma]Wp[pS], Mz7 ID8}, {Conjugate[Mz7] ID8, \[Sigma]Wp[pS]}}];
+Esp = Sqrt[pS.pS + Abs[Mz7]^2]; PiMinus = (ID16 - hChiSea/Esp)/2;
+h0Chi = ArrayFlatten[{{-\[Sigma]Wp[pS], Zero8}, {Zero8, \[Sigma]Wp[pS]}}];       (* m = 0 *)
+check["the sea at one momentum: h_\[Chi]^2 == E^2 ID16; \[CapitalPi]_- is a projector of rank 8; \[Kappa]_p == tr(\[CapitalPi]_- RL block) == -4 M^*/E; tr(\[CapitalPi]_-.h0) == -8E + 8 Re[(M - m) M^*]/E",
+  Max[Abs[hChiSea.hChiSea - Esp^2 ID16]] < 10^-20 && Max[Abs[PiMinus.PiMinus - PiMinus]] < 10^-20 && Abs[Tr[PiMinus] - 8] < 10^-20 &&
+  Abs[Tr[PiMinus[[9 ;; 16, 1 ;; 8]]] + 4 Conjugate[Mz7]/Esp] < 10^-20 && Abs[Tr[PiMinus.h0Chi] - (-8 Esp + 8 Abs[Mz7]^2/Esp)] < 10^-20]
+Plot[{Esea[Mx, 0, gNJL] - E0sea, Esea[Mx, 0, gcrit] - E0sea, Esea[Mx, 0, 4/5 gcrit] - E0sea}, {Mx, 0.001, 0.9},
+ PlotLegends -> {"g = 6/5 g_c (broken)", "g = g_c", "g = 4/5 g_c (symmetric)"}, AxesLabel -> {"|M|", "E(M) - E(0)"},
+ Epilog -> {Red, PointSize[Medium], Point[{N[M0NJL], N[Esea[M0NJL, 0, gNJL] - E0sea]}]}, ImageSize -> 600]
+''')
+
+# =====================================================================================
+section('10. Summary of all checks (sections 1–9)')
+text('The four cells below repeat the summary of section 6 after sections 7–9 have been evaluated, so they cover every check of the notebook.')
+inp(r'''
+Length[checks]
+''')
+inp(r'''
+failedChecks = Keys[Select[checks, ! TrueQ[#] &]]
+''')
+inp(r'''
+allChecksPassed = AllTrue[Values[checks], TrueQ]
+''')
+inp(r'''
+Grid[Prepend[KeyValueMap[{#1, #2} &, checks], {Style["check", Bold], Style["result", Bold]}], Frame -> All, Alignment -> Left]
+''')
+
+# =====================================================================================
 if __name__ == '__main__':
     here = os.path.dirname(os.path.abspath(__file__))
     out = os.path.join(os.path.dirname(here), '7+1.nb')

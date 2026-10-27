@@ -14,7 +14,7 @@ Module[{root, target, norm, nb, t0, t1, msgs, closed = 0},
   t0 = AbsoluteTime[];
   nb = NotebookOpen[target];
   NotebookDelete[Cells[nb, CellStyle -> {"Output", "Message", "Print", "Echo"}]];
-  NotebookEvaluate[nb, InsertResults -> True];
+  TimeConstrained[NotebookEvaluate[nb, InsertResults -> True], 3600];        (* safety net: at most one hour *)
   msgs = Length[Cells[nb, CellStyle -> "Message"]];
   NotebookSave[nb];
   NotebookClose[nb];
