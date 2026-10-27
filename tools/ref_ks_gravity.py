@@ -208,7 +208,7 @@ R['primordial (Einstein-Kasner background, comoving kF = kF0 at x0 = 1): m*(x0) 
 R['primordial: rho(x0) x0 = kF0^7/(105 pi^4) (density grows like 1/x0)'] = all(abs(prim[x]['rho']*x - kF0**7/(105*math.pi**4)) < 1e-12 for x in prim)
 R['primordial: m* decreases toward 0 as x0 -> 0 (blue-shifted ordinary momenta, attractive scalar coupling)'] = (
     prim[1e-4]['M'] < prim[1e-3]['M'] < prim[1e-2]['M'] < prim[1e-1]['M'] < prim[1.0]['M'] and prim[1e-4]['M'] < 0.05)
-R['primordial: anisotropic pressure pa/pb at x0 = 1e-3, 1, 10'] = tuple(prim[x]['pa']/prim[x]['pb'] for x in (1e-3, 1.0, 10.0))
+R['primordial: anisotropic pressure pa/pb at x0 = 1e-3, 1e-1, 10'] = tuple(prim[x]['pa']/prim[x]['pb'] for x in (1e-3, 1e-1, 10.0))
 mod = {aa: stress(aa, 1.0, kF0) for aa in (1.0, 2.0, 4.0, 10.0, 100.0)}
 R['modern (static auxiliary space b = 1): m*(a) for a = 1, 2, 4, 10, 100'] = tuple(mod[aa]['M'] for aa in sorted(mod))
 R['modern: eps a^3 -> constant and pa/eps -> 0 (dirac16complex behaves as pressureless matter in ordinary space)'] = (
@@ -231,7 +231,7 @@ Ecl = {
  (3, 0): 360*Ha**2*Hb**3*(4*Ha + 3*Hb)}
 from lovelock71 import cosmological_closed_forms
 CF = cosmological_closed_forms()
-R['the 00 closed forms of E^(1), E^(2), E^(3) (pair-set algorithm, tools/lovelock71.py) agree with section 12.3'] = all(
+R['the 00 closed forms of E^(1), E^(2), E^(3) (pair-set algorithm, tools/lovelock71.py) agree with the closed forms of section 12.6 of 7+1.nb'] = all(
     sp.expand(CF[(kk, 0)] - Ecl[(kk, 0)]) == 0 for kk in (1, 2, 3)) and all(sp.expand(CF[(1, c)] - Ecl[(1, c)]) == 0 for c in (1, 4))
 for kk in (2, 3):
     for c in (1, 4):

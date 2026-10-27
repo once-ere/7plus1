@@ -191,7 +191,7 @@ check["modern (b = 1): eps a^3 tends to a constant and pa/eps -> 0 (pressureless
 futKS = Table[x -> ksStress[Exp[0.1 x], 1., kFsat], {x, {0., 10., 20., 40., 80.}}];
 check["far future (de Sitter, H = 0.1): rho == rho0 e^{-3 H x0} and 1 - m* decays like rho",
   Abs[futKS[[4, 2]]["rho"]/futKS[[1, 2]]["rho"] - Exp[-12.]] < 10^-12 && Abs[(1 - futKS[[5, 2]]["M"])/(1 - futKS[[4, 2]]["M"])/Exp[-12.] - 1] < 0.05]
-{"primordial m*(x0), x0 = 1e-4 .. 10" -> primKS[[All, 2]][[All, Key["M"]]], "primordial pa/pb at x0 = 1e-3, 1, 10" -> (#["pa"]/#["pb"] & /@ primKS[[{2, 5, 6}, 2]]),
+{"primordial m*(x0), x0 = 1e-4 .. 10" -> primKS[[All, 2]][[All, Key["M"]]], "primordial pa/pb at x0 = 1e-3, 1e-1, 10" -> (#["pa"]/#["pb"] & /@ primKS[[{2, 4, 6}, 2]]),
  "modern m*(a), a = 1, 2, 4, 10, 100" -> modKS[[All, 2]][[All, Key["M"]]], "modern pb/eps at a = 100" -> modKS[[5, 2]]["pb"]/modKS[[5, 2]]["eps"],
  "far future m*(x0), x0 = 0, 10, 20, 40, 80" -> futKS[[All, 2]][[All, Key["M"]]]}
 ''')
@@ -220,7 +220,8 @@ evolveEL[al2_, al3_, kap_, ha0_] := Module[{st = ksStress[1., 1., kFsat], cpol, 
    sol = NDSolve[{aE'[x] == hE[x] aE[x], bE'[x] == kE[x] bE[x],
        hE'[x] == dHaF[al2, al3, kap, aE[x], bE[x], hE[x], kE[x]], kE'[x] == dHbF[al2, al3, kap, aE[x], bE[x], hE[x], kE[x]],
        aE[0] == 1, bE[0] == 1, hE[0] == ha0, kE[0] == N[hb0]}, {aE, bE, hE, kE}, {x, 0, 20},
-      Method -> {"ExplicitRungeKutta", "DifferenceOrder" -> 8}, PrecisionGoal -> 10, AccuracyGoal -> 13, MaxSteps -> 10^6][[1]];
+      Method -> {"ExplicitRungeKutta", "DifferenceOrder" -> 8}, PrecisionGoal -> 10, AccuracyGoal -> 13, MaxSteps -> 10^6,
+      InterpolationOrder -> All][[1]];      (* InterpolationOrder -> All: the dense output has the order of the method between the steps *)
    viol = Max[Table[With[{aa = aE[x] /. sol, bb = bE[x] /. sol, ha = hE[x] /. sol, hb = kE[x] /. sol},
        Abs[((con00 /. {alf[1] -> 1, alf[2] -> al2, alf[3] -> al3, lamb -> 0, Ha -> ha, Hb -> hb}) - kap ksStress[aa, bb, kFsat]["eps"])/(kap ksStress[aa, bb, kFsat]["eps"])]], {x, 0, 20, 4}]];
    {N[hb0], {aE[20], bE[20], hE[20], kE[20]} /. sol, viol}];
