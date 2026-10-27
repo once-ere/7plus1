@@ -13,7 +13,7 @@ def build(D, runs):
             'the literature), the equation that defines it, how it was derived, and how it was checked: the full list of the %d checks '
             'and their results, the independent Python cross-checks, and the hashes of the files. Sections 1–3 concern the first stage '
             '(sections 0–6 of the notebook: octonions and Clifford algebras), section 6 the second stage (sections 7–10: the Dirac equation '
-            'and the Kohn–Sham theories of the field dirac16complex)%s.' % (len(nbinfo['checks']),
+            'and the Kohn–Sham theories of the field dirac16complex)%s.' % (len(all_checks(D)),
             ', section 7 the third stage (sections 11–20: gravity, the self-coupled field in gravitational fields, the Standard Model)' if D.get('s3') else ''))
 
     d.h1('1. Sources')
@@ -175,15 +175,19 @@ def build(D, runs):
         ['evaluation time', log.get('seconds', '?') + ' s'],
         ['private context of the notebook', '`' + nbinfo['context'] + '`'],
         ['input cells / output cells / message cells', '%d / %d / %d' % (nbinfo['inputs'], nbinfo['outputs'], nbinfo['messages'])],
-        ['checks / True', '%d / %d' % (len(nbinfo['checks']), sum(1 for c in nbinfo['checks'] if c[1] == 'True'))],
+        ['checks / True', '%d / %d (%d printed where they stand, %d by `frameChecks` in the summary table)' % (len(all_checks(D)), sum(1 for c in all_checks(D) if c[1] == 'True'), len(nbinfo['checks']), len(all_checks(D)) - len(nbinfo['checks']))],
         ['commutant computation (8192×1024 sparse `NullSpace`)', nbinfo['commutant_time'] + ' s'],
         ['SHA-256 of the evaluated 7+1.nb (%d bytes)' % D['size71'], '`' + D['sha']['7+1.nb'] + '`'],
     ], widths=[0.34, 0.60], small=True)
     d.h2('4.2 All checks of 7+1.nb and their results')
-    d.p('Each row is one cell `check["name", test]` of the notebook, in order, grouped by the section of the notebook in which '
-        'it stands; the test is the Wolfram Language expression in that cell, and the result is what Wolfram 15.0.1 returned.')
+    d.p('Each row is one check `check["name", test]` of the notebook, in the order in which the notebook makes them (the order of '
+        'the summary table of its last section), grouped by the section of the notebook in which it stands; the test is the Wolfram '
+        'Language expression of that check, and the result is what Wolfram 15.0.1 returned. The %d checks of the generalized frame '
+        'matrices are made by the function `frameChecks` of section 13.1, nine for each of four metrics, in sections 13.2 (cosmological '
+        'metric), 13.3 (pp-wave, inhomogeneous metric) and 13.5 (static radial metric), where they are listed; only the summary table of '
+        'section 20 prints them.' % (len(all_checks(D)) - len(nbinfo['checks'])))
     groups = []
-    for i, (name, res, sec, sub) in enumerate(nbinfo['checks'], 1):
+    for i, (name, res, sec, sub) in enumerate(all_checks(D), 1):
         key = sub or sec
         if not groups or groups[-1][0] != key: groups.append((key, []))
         groups[-1][1].append([str(i), '`' + name.replace('`', "'") + '`', res])

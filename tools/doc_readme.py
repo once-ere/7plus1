@@ -23,7 +23,7 @@ def build(D):
             'test everything; (v) in sections 7–10 of the notebook, the Dirac equation of the 16-component quantized fermion field '
             'dirac16complex with these real Dirac matrices, its chiral form as two coupled 8-component equations, and the 16-component '
             'and chiral Kohn–Sham theories of that field coupled to itself (section 11)%s. All %d checks of the notebook are True.'
-            % (S3.abstract_text(D['s3']) if D.get('s3') else '', len(nbinfo['checks'])))
+            % (S3.abstract_text(D['s3']) if D.get('s3') else '', len(all_checks(D))))
 
     # ------------------------------------------------------------------------------------------------
     d.h1('1. Results at a glance')
@@ -62,7 +62,7 @@ def build(D):
         S3.results_paragraph(d, D['s3'])
     d.p('**Verification.** The notebook 7+1.nb contains %d checks; evaluated in %s it returns True for every one of them, '
         'with %d message cells, in %s s. Independent Python programs reproduce every matrix, table and number that the notebook '
-        'prints (section 9).' % (len(nbinfo['checks']), nbinfo['version'], nbinfo['messages'], log.get('seconds', '?')))
+        'prints (section 9).' % (len(all_checks(D)), nbinfo['version'], nbinfo['messages'], log.get('seconds', '?')))
 
     # ------------------------------------------------------------------------------------------------
     d.h1('2. Coordinates, metrics and conventions')
@@ -488,14 +488,17 @@ def build(D):
 
     # ------------------------------------------------------------------------------------------------
     d.h1('9. Verification')
-    d.p('**In Mathematica.** 7+1.nb was evaluated in %s with `NotebookEvaluate` and `InsertResults -> True`, in the private context `%s`. '
-        'It contains %d input cells and %d checks of the form `check["name", test]`; all %d returned True, the summary cells '
-        'printed `failedChecks = {}` and `allChecksPassed = True`, there were %d message cells, and the evaluation took %s s.'
-        % (nbinfo['version'], nbinfo['context'], nbinfo['inputs'], len(nbinfo['checks']),
-           sum(1 for c in nbinfo['checks'] if c[1] == 'True'), nbinfo['messages'], log.get('seconds', '?')))
+    allc = all_checks(D)
+    d.p('**In Mathematica.** 7+1.nb was evaluated in %s by `tools/run_eval.wl` (all cells evaluated in a fresh kernel, then saved), '
+        'in the private context `%s`. It contains %d input cells and %d checks `check["name", test]`: %d print their result where '
+        'they stand, and %d are made by the function `frameChecks` of section 13.1 (nine checks for each of four metrics) and printed '
+        'by the summary table of section 20. All %d returned True, the summary cells printed `failedChecks = {}` and '
+        '`allChecksPassed = True`, there were %d message cells, and the evaluation took %s s.'
+        % (nbinfo['version'], nbinfo['context'], nbinfo['inputs'], len(allc), len(nbinfo['checks']), len(allc) - len(nbinfo['checks']),
+           sum(1 for c in allc if c[1] == 'True'), nbinfo['messages'], log.get('seconds', '?')))
     from collections import OrderedDict
     by = OrderedDict()
-    for name, res, sec, sub in nbinfo['checks']:
+    for name, res, sec, sub in allc:
         by.setdefault(sec, [0, 0]); by[sec][0] += 1; by[sec][1] += (res == 'True')
     d.table(['notebook section', 'checks', 'True'], [[k, str(v[0]), str(v[1])] for k, v in by.items()], widths=[0.66, 0.12, 0.12])
     d.p('**Independently in Python** (exact arithmetic with sympy, in `tools/`): `ref44.py` rebuilds every 4+4.nb object and '

@@ -69,6 +69,28 @@ def eval_log():
                 k, v = line.split(':', 1); d[k.strip()] = v.strip()
     return d
 
+def all_checks(D):
+    """Every check of 7+1.nb, in the order of the summary table of its last section: the cells check["name", test] that print
+    their result where they stand (D['nb']['checks']), and the checks that the function frameChecks of section 13.1 makes for
+    four metrics (nine each), which only that summary table prints (taken from the third-stage data D['s3'])."""
+    printed = list(D['nb']['checks'])
+    s3 = D.get('s3') or {}
+    grid = s3.get('all_checks_grid') or []
+    if not grid:
+        return printed
+    byname = {c[0]: c for c in printed}
+    # the subsection in which frameChecks runs for each metric (its printed title where the subsection has printed checks)
+    titles = {'13.3': '13.3 The pp-wave and the inhomogeneous metric: frames that are not diagonal and not homogeneous'}
+    for c in printed:
+        if c[3]: titles.setdefault(c[3].split(' ')[0], c[3])
+    where = (('cosmological metric:', '13.2'), ('pp-wave:', '13.3'), ('inhomogeneous metric', '13.3'), ('static radial metric:', '13.5'))
+    extra = {}
+    for c in s3.get('checks', {}).get('grav', []):
+        if c[0] in byname: continue
+        num = next((w for p, w in where if c[0].startswith(p)), None)
+        extra[c[0]] = (c[0], c[1], c[2], titles.get(num, c[3]) if num else c[3])
+    return [byname.get(n) or extra.get(n) or (n, r, '?', '?') for n, r in grid]
+
 def gather():
     D = {}
     D['s4'] = s4; D['t4'] = t4; D['tau'] = tau; D['tauO'] = tauO; D['EO'] = EAaO; D['E44'] = EAa(8)

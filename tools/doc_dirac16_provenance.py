@@ -3,10 +3,11 @@ decisions taken, the equations used, how everything was checked, and with which 
 equation used is written in this document."""
 import sympy as sp
 from docgen import Doc, pmat
+from doc_common import all_checks
 
 def build(D, runs):
     nbinfo = D['nb']; log = D['log']; ref = D['ref']
-    n79 = len(D['checks79']); nall = len(nbinfo['checks'])
+    n79 = len(D['checks79']); nall = len(all_checks(D))
     d = Doc('dirac16complex: provenance',
             'Sources, decisions, derivations and the verification record of the Dirac equation and the Kohn–Sham theories of the '
             '16-component field dirac16complex — sections 7–10 of the notebook 7+1.nb',
@@ -370,7 +371,7 @@ def build(D, runs):
         ['private context of the notebook', '`' + nbinfo['context'] + '`'],
         ['input cells / output cells / message cells', '%d / %d / %d' % (nbinfo['inputs'], nbinfo['outputs'], nbinfo['messages'])],
         ['checks in sections 7–9 / True', '%d / %d' % (n79, sum(1 for c in D['checks79'] if c[1] == 'True'))],
-        ['checks in the whole notebook / True', '%d / %d' % (nall, sum(1 for c in nbinfo['checks'] if c[1] == 'True'))],
+        ['checks in the whole notebook / True', '%d / %d' % (nall, sum(1 for c in all_checks(D) if c[1] == 'True'))],
         ['summary of section 10', '`Length[checks]` = `%s`, `failedChecks` = `%s`, `allChecksPassed` = `%s`' % tuple(
             (D['summary10'] + ['?', '?', '?'])[:3])],
         ['SHA-256 of the evaluated 7+1.nb (%d bytes)' % D['size71'], '`' + D['sha']['7+1.nb'] + '`'],

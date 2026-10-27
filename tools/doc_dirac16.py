@@ -4,6 +4,7 @@ theories of the self-coupled field (sections 7-10 of 7+1.nb).  Every equation us
 import sympy as sp
 from docgen import Doc, pmat
 from collections import OrderedDict
+from doc_common import all_checks
 
 def num(x, n=12):
     """LaTeX decimal string of x with n significant digits"""
@@ -20,7 +21,7 @@ def num(x, n=12):
 
 def build(D):
     nbinfo = D['nb']; log = D['log']; ref = D['ref']
-    n79 = len(D['checks79']); nall = len(nbinfo['checks'])
+    n79 = len(D['checks79']); nall = len(all_checks(D))
     d = Doc('dirac16complex: the Dirac equation and Kohn–Sham theory of a 16-component fermion field on 7+1 spacetime',
             'Real 16×16 Dirac matrices, the chiral 8-component equations, and the 16-component and chiral Kohn–Sham theories of '
             'the self-coupled field — sections 7–10 of the notebook 7+1.nb',
@@ -624,7 +625,7 @@ def sec11(d, D):
     d.p('7+1.nb was evaluated with Wolfram Language %s, by tools/run_eval.wl (all cells evaluated in a fresh kernel, then saved), in %s s, with %d message '
         'cells. Every claim is a cell `check["name", test]`; sections 7–9 contain %d of them and the whole notebook %d. All are True; '
         'the summary of section 10 prints `Length[checks]` $=%s$, `failedChecks` $=\\lbrace\\rbrace$ and `allChecksPassed` $=$ True. The checks '
-        'of sections 7–9:' % (nbinfo['version'], log.get('seconds', '?'), D['messages_all'], len(D['checks79']), len(nbinfo['checks']),
+        'of sections 7–9:' % (nbinfo['version'], log.get('seconds', '?'), D['messages_all'], len(D['checks79']), len(all_checks(D)),
                               D['summary10'][0] if D['summary10'] else '?'))
     rows = []
     for name, res, sec, sub in D['checks79']:
