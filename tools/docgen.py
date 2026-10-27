@@ -125,8 +125,39 @@ def pdf_plain(math):
     t = t.replace('{', '').replace('}', '').replace('^', '').replace('_', '')
     return re.sub(r'\s+', ' ', t).strip()
 
+SCI = re.compile(r'(?<![\w.\\])(-?\d+(?:\.\d+)?\\times10\^\{-?\d+\})')
+
+def sci_math(s):
+    r"""A number written as 1.2\times10^{-5} outside inline mathematics is set as mathematics ($1.2\times10^{-5}$)."""
+    if '\\times10^{' not in s: return s
+    parts = []
+    for tok in INLINE.split(s):
+        if tok and not (tok.startswith('`') or tok.startswith('$')):
+            tok = SCI.sub(r'$\1$', tok)
+        parts.append(tok)
+    return ''.join(parts)
+
+def top_breaks(latex):
+    r"""True if the display latex contains a line break \\ outside braces and outside \begin...\end environments."""
+    depth = env = 0; i = 0; n = len(latex)
+    while i < n:
+        for key, d in ((r'\begin{', 1), (r'\end{', -1)):
+            if latex.startswith(key, i):
+                env += d; i = latex.index('}', i) + 1
+                break
+        else:
+            c = latex[i]
+            if c == '\\':
+                if latex.startswith('\\\\', i) and depth == 0 and env == 0: return True
+                i += 2; continue
+            if c == '{': depth += 1
+            elif c == '}': depth -= 1
+            i += 1
+    return False
+
 def tex_inline(s, pdf=False):
     """Inline markup -> LaTeX.  pdf=True (headings): inline mathematics gets a plain-text twin for the PDF bookmarks."""
+    s = sci_math(s)
     out = []
     for tok in INLINE.split(s):
         if not tok: continue
@@ -147,9 +178,10 @@ def guard(t):
     return '{}' + t if t.lstrip().startswith('[') else t
 
 def md_inline(s):
-    """Inline markup -> GitHub Markdown.  Inline mathematics $...$ is written $`...`$, GitHub's delimiter for
-    expressions that contain characters with a meaning in Markdown (backslash escapes such as \\, \{ or \\\\
+    r"""Inline markup -> GitHub Markdown.  Inline mathematics $...$ is written $`...`$, GitHub's delimiter for
+    expressions that contain characters with a meaning in Markdown (backslash escapes such as \, \{ or \\
     would otherwise be eaten before the mathematics is rendered)."""
+    s = sci_math(s)
     out = []
     for tok in INLINE.split(s):
         if not tok: continue
@@ -239,7 +271,9 @@ class Doc:
             elif k == 'h3': L += ['#### ' + md_inline(b[1]), '']
             elif k == 'p': L += [md_inline(b[1]), '']
             elif k == 'quote': L += ['> ' + md_inline(b[1]), '']
-            elif k == 'eq': L += ['```math', b[1].strip(), '```', '']
+            elif k == 'eq':
+                # a display with line breaks \\ is a gathered block (centred lines)
+                L += ['```math'] + ([r'\begin{gathered}', b[1].strip(), r'\end{gathered}'] if top_breaks(b[1]) else [b[1].strip()]) + ['```', '']
             elif k == 'align':
                 L += ['```math', r'\begin{aligned}'] + [ln + r' \\' if i < len(b[1]) - 1 else ln for i, ln in enumerate(b[1])] + [r'\end{aligned}', '```', '']
             elif k == 'ul': L += ['- ' + md_inline(it) for it in b[1]] + ['']
@@ -272,7 +306,7 @@ class Doc:
              r'\usepackage{needspace}',
              r'\usepackage{tocloft}\setlength{\cftbeforesecskip}{0.45em}',
              r'\setlength{\parindent}{0pt}\setlength{\parskip}{0.55em}',
-             r'\setlength{\emergencystretch}{3em}',
+             r'\setlength{\emergencystretch}{8em}',
              r'\renewcommand{\arraystretch}{1.15}',
              r'\allowdisplaybreaks',
              r'\begin{document}',
@@ -292,7 +326,9 @@ class Doc:
                 # a paragraph that introduces a display stays in the same TeX paragraph (no page break before the display)
                 T.append(tex_inline(b[1]) + ('' if nxt in ('eq', 'align') else '\n'))
             elif k == 'quote': T += [r'\begin{quote}', tex_inline(b[1]), r'\end{quote}']
-            elif k == 'eq': T += [r'\begin{equation*}', b[1].strip(), r'\end{equation*}']
+            elif k == 'eq':
+                env = 'gather*' if top_breaks(b[1]) else 'equation*'
+                T += [r'\begin{%s}' % env, b[1].strip(), r'\end{%s}' % env]
             elif k == 'align':
                 T += [r'\begin{align*}'] + [guard(ln) + r' \\' if i < len(b[1]) - 1 else guard(ln) for i, ln in enumerate(b[1])] + [r'\end{align*}']
             elif k in ('ul', 'ol'):

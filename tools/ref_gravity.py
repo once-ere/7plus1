@@ -206,6 +206,33 @@ R['static T^4 (Hb = 0): E^(1) = (3Ha^2, 2Ha\'+3Ha^2, 3Ha\'+6Ha^2), E^(2) = (0, 0
     sp.expand(mod[(1, 0)] - 3*Ha**2) == 0 and sp.expand(mod[(1, 1)] - 2*dHa - 3*Ha**2) == 0 and sp.expand(mod[(1, 4)] - 3*dHa - 6*Ha**2) == 0
     and mod[(2, 0)] == 0 and mod[(2, 1)] == 0 and sp.expand(mod[(2, 4)] + 12*Ha**2*(dHa + Ha**2)) == 0 and all(mod[(3, c)] == 0 for c in (0, 1, 4)))
 
+# ======================================================================= 6b. exponential vacuum solutions (constant Hubble rates)
+# Vacuum equations in the form of Einstein-Lovelock-7+1-Nash.nb: 0 = -Lambda + H^-2 w1 E1 + H^-4 w2 E2 + H^-6 w3 E3 (mixed components),
+# for a = e^{H x0}, b = e^{q H x0}: three distinct equations (00, 11, 44) with one linear relation (divergence identity).
+from lovelock71 import cosmological_closed_forms
+CFx = cosmological_closed_forms()
+HaS, HbS, dHaS, dHbS = sp.symbols('H_a H_b dH_a dH_b', real=True)
+Hc = sp.Symbol('H', positive=True); qS = sp.Symbol('q', real=True)
+w1S, w2S, w3S, LamS = sp.symbols('w1 w2 w3 Lambda')
+tExp = X[0]
+gExp = sp.diag(1, *([-sp.exp(2*Hc*tExp)]*3), *([-sp.exp(2*qS*Hc*tExp)]*4))
+giE, chrE, RiemE = geometry(gExp)
+RudE = rud(RiemE, giE)
+EExp = {k: [sp.simplify(lovelockE(RudE, k, c, c)) for c in (0, 1, 4)] for k in (1, 2, 3)}
+R['exponential expansion a = e^{H x0}, b = e^{q H x0}: E^(k) (00, 11, 44) = closed forms with Ha = H, Hb = q H, Ha\' = Hb\' = 0 (k = 1, 2, 3)'] = all(
+    sp.simplify(EExp[k][i] - CFx[(k, c)].subs({HaS: Hc, HbS: qS*Hc, dHaS: 0, dHbS: 0})) == 0 for k in (1, 2, 3) for i, c in enumerate((0, 1, 4)))
+eqsX = [sp.expand(-LamS + w1S*EExp[1][i]/Hc**2 + w2S*EExp[2][i]/Hc**4 + w3S*EExp[3][i]/Hc**6) for i in range(3)]
+R['exponential expansion: 3 Ha (eq00 - eq11) + 4 Hb (eq00 - eq44) = 0 identically (the three vacuum equations have rank 2)'] = sp.expand(
+    3*Hc*(eqsX[0] - eqsX[1]) + 4*qS*Hc*(eqsX[0] - eqsX[2])) == 0
+solX = sp.solve(eqsX, [w2S, w3S], dict=True)
+R['exponential vacuum solutions: one solution (w2, w3) for given w1, Lambda, q, satisfying all three equations'] = (
+    len(solX) == 1 and all(sp.simplify(e.subs(solX[0])) == 0 for e in eqsX))
+solID = {k_: sp.simplify(v.subs({qS: -1})) for k_, v in solX[0].items()}
+R['eternal inflation a = e^{H x0} with deflation b = e^{-H x0}: w2 = Lambda/4 - w1/2, w3 = w1/24 - Lambda/36 (Lambda = 0: w2/w1 = -1/2, w3/w1 = 1/24)'] = (
+    sp.simplify(solID[w2S] - (LamS/4 - w1S/2)) == 0 and sp.simplify(solID[w3S] - (w1S/24 - LamS/36)) == 0)
+R['NUM exponential vacuum solution (w2, w3) for general q'] = (sp.factor(solX[0][w2S]), sp.factor(solX[0][w3S]))
+R['NUM eq00, eq11, eq44 for q = -1'] = tuple(sp.expand(e.subs({qS: -1})) for e in eqsX)
+
 # ======================================================================= 7. frame matrices, spin connection, total covariant derivative
 def frame_checks(g, e, name, simp=sp.simplify):
     gi, chr_, Riem = geometry(g, simp)
@@ -272,6 +299,51 @@ Bn = sp.Function('B', real=True, positive=True)(X[0], X[4])
 gIn = sp.diag(Nn**2, -An**2, -An**2, -An**2, -Bn**2, -Bn**2, -Bn**2, -Bn**2)
 eIn = sp.diag(Nn, An, An, An, Bn, Bn, Bn, Bn)
 frame_checks(gIn, eIn, 'inhomogeneous metric N, A, B (x0, x4)')
+
+# ======================================================================= 7b. Cartan's first structure equation; a static metric with a radial coordinate
+def cartan_ok(e, om):
+    """de^A + omega^A_B ^ e^B = 0 in components: d_m e^A_n - d_n e^A_m + omega_m^A_B e^B_n - omega_n^A_B e^B_m = 0"""
+    return all(sp.simplify(sp.diff(e[A, n], X[m]) - sp.diff(e[A, m], X[n]) + sum(om[m][A, B]*e[B, n] - om[n][A, B]*e[B, m] for B in range(D))) == 0
+               for A in range(D) for m in range(D) for n in range(m + 1, D))
+R["Cartan's first structure equation de^A + omega^A_B ^ e^B = 0 (torsion-free) for the cosmological frame"] = cartan_ok(eC, omC)
+rr = X[1]
+fR = sp.Function('f', positive=True)(rr); hR = sp.Function('h', positive=True)(rr)
+gR = sp.diag(fR, -hR, *([-rr**2]*6))
+eR = sp.diag(sp.sqrt(fR), sp.sqrt(hR), *([rr]*6))
+giR_, chrR_, RiemR_, RsR_, eR_, ER_, GamR_, GamuR_, omR_, OmR_ = frame_checks(gR, eR, 'static radial metric f(r) dx0^2 - h(r) dr^2 - r^2 (dx2^2 + ... + dx7^2)')
+R["Cartan's first structure equation for the static radial metric"] = cartan_ok(eR, omR_)
+Cst = {(A, B, Cc): sp.simplify(sum(ER_[m, B]*ER_[n, Cc]*(sp.diff(eR[A, n], X[m]) - sp.diff(eR[A, m], X[n])) for m in range(D) for n in range(D)))
+       for A in range(D) for B in range(D) for Cc in range(D)}
+Cstl = {k_: eta17[k_[0], k_[0]]*v_ for k_, v_ in Cst.items()}
+R['structure coefficients: de^A = (1/2) C^A_BC e^B ^ e^C and omega_C,AB (form index C) = -(1/2)(C_ACB + C_BAC - C_CBA) (static radial metric)'] = all(
+    sp.simplify(sum(ER_[m, Cc]*sum(eta17[A, K]*omR_[m][K, B] for K in range(D)) for m in range(D))
+                + sp.Rational(1, 2)*(Cstl[(A, Cc, B)] + Cstl[(B, A, Cc)] - Cstl[(Cc, B, A)])) == 0 for A in range(D) for B in range(D) for Cc in range(D))
+R['static radial metric: Omega_0 = (f\'/(4 sqrt(f h))) Gamma17[1] Gamma17[0], Omega_1 = 0, Omega_k = (1/(2 sqrt h)) Gamma17[1] Gamma17[k] (k = 2..7)'] = (
+    (OmR_[0] - sp.diff(fR, rr)/(4*sp.sqrt(fR*hR))*G[1]*G[0]).applyfunc(sp.simplify) == Z16 and OmR_[1] == Z16
+    and all((OmR_[k] - 1/(2*sp.sqrt(hR))*G[1]*G[k]).applyfunc(sp.simplify) == Z16 for k in range(2, 8)))
+R['static radial metric: Gamma^mu Omega_mu = (1/sqrt h)(f\'/(4f) + 3/r) Gamma17up[1], so (i Gamma^mu D_mu - m) psi = [i Gamma17up[0] d0/sqrt f + i Gamma17up[1] (d_r + f\'/(4f) + 3/r)/sqrt h + sum_k i Gamma17up[k] d_k/r - m] psi'] = (
+    (sum((GamuR_[m]*OmR_[m] for m in range(D)), Z16) - (sp.diff(fR, rr)/(4*fR) + 3/rr)/sp.sqrt(hR)*Gup[1]).applyfunc(sp.simplify) == Z16)
+chiR = sp.Matrix([sp.Function('r%d' % i)(X[0], X[1], X[5]) for i in range(16)])
+DslR = lambda f_: sum((GamuR_[m]*(f_.diff(X[m]) + OmR_[m]*f_) for m in range(D)), sp.zeros(16, 1))
+wR = fR**sp.Rational(-1, 4)*rr**-3
+R['static radial metric: psi = f^(-1/4) r^(-3) chi removes the spin connection: Gamma^mu D_mu psi = f^(-1/4) r^(-3) Gamma^mu d_mu chi'] = (
+    DslR(wR*chiR) - wR*sum((GamuR_[m]*chiR.diff(X[m]) for m in range(D)), sp.zeros(16, 1))).applyfunc(sp.simplify) == sp.zeros(16, 1)
+# minimal coupling of dirac16complex to an abelian gauge field (cosmological metric)
+qc = sp.Symbol('q', real=True)
+YY = (X[0], X[1], X[5])
+Af = [sp.Function('A%d' % m_)(*YY) for m_ in range(D)]
+alf = sp.Function('alpha')(*YY)
+psiG = sp.Matrix([sp.Function('u%d' % i)(*YY) for i in range(16)])
+DslA = lambda f_, Avec: sum((GamuC[m]*(f_.diff(X[m]) + OmC[m]*f_ - sp.I*qc*Avec[m]*f_) for m in range(D)), sp.zeros(16, 1))
+Ash = [Af[m] + sp.diff(alf, X[m]) for m in range(D)]
+R['U(1) gauge covariance: Gamma^mu (D_mu - i q A\'_mu)(e^{i q alpha} psi) = e^{i q alpha} Gamma^mu (D_mu - i q A_mu) psi with A\' = A + d alpha'] = (
+    (DslA(sp.exp(sp.I*qc*alf)*psiG, Ash) - sp.exp(sp.I*qc*alf)*DslA(psiG, Af)).applyfunc(sp.simplify) == sp.zeros(16, 1))
+psbG = sp.Matrix([[sp.Function('w%d' % i)(*YY) for i in range(16)]])
+DpsiA = {m: psiG.diff(X[m]) + OmC[m]*psiG - sp.I*qc*Af[m]*psiG for m in range(D)}
+DpsbA = {m: psbG.diff(X[m]) - psbG*OmC[m] + sp.I*qc*Af[m]*psbG for m in range(D)}
+lhsA = sum((sp.diff(a**3*b**4*(psbG*GamuC[m]*psiG)[0, 0], X[m]) for m in range(D)), 0)
+rhsA = a**3*b**4*sum(((DpsbA[m]*GamuC[m]*psiG)[0, 0] + (psbG*GamuC[m]*DpsiA[m])[0, 0] for m in range(D)), 0)
+R['current identity with the gauge field: d_mu(sqrt|g| psibar Gamma^mu psi) = sqrt|g| [(D_mu psibar) Gamma^mu psi + psibar Gamma^mu D_mu psi], D including -i q A_mu'] = sp.simplify(sp.expand(lhsA - rhsA)) == 0
 
 # ======================================================================= 8. the covariant Dirac equation of dirac16complex
 Y = (X[0], X[1], X[5])

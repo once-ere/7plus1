@@ -74,37 +74,63 @@ check["scalar curvature R = -2 (3Ha' + 6Ha^2 + 4Hb' + 10Hb^2 + 12 Ha Hb)", toH[c
 ''')
 
 subsection('11.3 Symmetries of the Riemann tensor and the contracted Bianchi identity')
-text('An inhomogeneous test metric with three arbitrary positive functions of x0 and x4 (nI, aI, bI) checks the engine away from '
-     'homogeneity: ds² = nI² dx0² − aI² (dx1² + dx2² + dx3²) − bI² (dx4² + … + dx7²). With R_ρσμν = g_ρλ R^λ_σμν the Riemann tensor '
-     'is antisymmetric in each pair, symmetric under exchange of the pairs, satisfies the first Bianchi identity, and the Einstein '
-     'tensor is divergence-free: ∇_μ G^μ_ν = ∂_μ G^μ_ν + {μ μλ} G^λ_ν − {λ μν} G^μ_λ = 0 (contracted Bianchi identity).')
+text('An INHOMOGENEOUS test metric checks the engine away from homogeneity: ds² = n² dx0² − a² (dx1² + dx2² + dx3²) − b² (dx4² + … + dx7²) '
+     'with the explicit polynomials n = 1 + x0 x4/5 + x0²/11, a = 1 + x0/3 + x4²/7, b = 2 − x0 x4/4 + x0²/9 + x4/13 (code nP, aP, bP), '
+     'so that n, a, b depend on BOTH x0 and x4. With R_ρσμν = g_ρλ R^λ_σμν the Riemann tensor is antisymmetric in each pair, '
+     'symmetric under exchange of the pairs and satisfies the first Bianchi identity, and the Einstein tensor is divergence-free: '
+     '∇_μ G^μ_ν = ∂_μ G^μ_ν + {μ μλ} G^λ_ν − {λ μν} G^μ_λ = 0 (contracted Bianchi identity). The checks are EXACT (rational numbers) at '
+     'the point x0 = 1/2, x4 = 1/3; the symbolic checks for arbitrary a(x0), b(x0) are those of the cosmological metric.')
 inp(r'''
-gInh = DiagonalMatrix[{nI[x0, x4]^2, -aI[x0, x4]^2, -aI[x0, x4]^2, -aI[x0, x4]^2, -bI[x0, x4]^2, -bI[x0, x4]^2, -bI[x0, x4]^2, -bI[x0, x4]^2}];
-cvInh = curvature[gInh, Together];
+nP = 1 + x0 x4/5 + x0^2/11; aP = 1 + x0/3 + x4^2/7; bP = 2 - x0 x4/4 + x0^2/9 + x4/13;
+gPoly = DiagonalMatrix[{nP^2, -aP^2, -aP^2, -aP^2, -bP^2, -bP^2, -bP^2, -bP^2}];
+cvPoly = curvature[gPoly, Together];
+ptP = {x0 -> 1/2, x4 -> 1/3};
 riemLow[cv_] := Table[Sum[cv["g"][[r, l]] cv["riem"][[l, s, m, n]], {l, 8}], {r, 8}, {s, 8}, {m, 8}, {n, 8}];
-rlInh = riemLow[cvInh];
-check["inhomogeneous metric: R_rsmn = -R_srmn = -R_rsnm = R_mnrs and R^r_[smn] = 0 (first Bianchi identity)",
-  AllTrue[Flatten[Table[Together[{rlInh[[r, s, m, n]] + rlInh[[s, r, m, n]], rlInh[[r, s, m, n]] + rlInh[[r, s, n, m]], rlInh[[r, s, m, n]] - rlInh[[m, n, r, s]],
-      cvInh["riem"][[r, s, m, n]] + cvInh["riem"][[r, m, n, s]] + cvInh["riem"][[r, n, s, m]]]], {r, 8}, {s, 8}, {m, 8}, {n, 8}]], # === 0 &]]
-check["inhomogeneous metric: contracted Bianchi identity nabla_mu G^mu_nu = 0", AllTrue[Together[divergenceMixed[cvInh, cvInh["G"]]], # === 0 &]]
-check["cosmological metric: contracted Bianchi identity nabla_mu G^mu_nu = 0", AllTrue[Simplify[divergenceMixed[cvCos, cvCos["G"]]], # === 0 &]]
+riemAtP = cvPoly["riem"] /. ptP; rlAtP = Table[Sum[(gPoly /. ptP)[[r, l]] riemAtP[[l, s, m, n]], {l, 8}], {r, 8}, {s, 8}, {m, 8}, {n, 8}];
+check["inhomogeneous metric, exactly at (x0, x4) = (1/2, 1/3): R_rsmn = -R_srmn = -R_rsnm = R_mnrs and R^r_[smn] = 0 (first Bianchi identity)",
+  AllTrue[Flatten[Table[{rlAtP[[r, s, m, n]] + rlAtP[[s, r, m, n]], rlAtP[[r, s, m, n]] + rlAtP[[r, s, n, m]], rlAtP[[r, s, m, n]] - rlAtP[[m, n, r, s]],
+      riemAtP[[r, s, m, n]] + riemAtP[[r, m, n, s]] + riemAtP[[r, n, s, m]]}, {r, 8}, {s, 8}, {m, 8}, {n, 8}]], # == 0 &]]
+divGPoly = Table[Sum[(D[cvPoly["G"][[m, n]], X[[m]]] /. ptP) + Sum[(cvPoly["chr"][[m, m, l]] cvPoly["G"][[l, n]] - cvPoly["chr"][[l, m, n]] cvPoly["G"][[m, l]]) /. ptP, {l, 8}], {m, 8}], {n, 8}];
+check["inhomogeneous metric: contracted Bianchi identity nabla_mu G^mu_nu == 0, exactly at (x0, x4) = (1/2, 1/3)", divGPoly == ConstantArray[0, 8]]
+check["cosmological metric: contracted Bianchi identity nabla_mu G^mu_nu = 0 (arbitrary a, b)", AllTrue[Simplify[divergenceMixed[cvCos, cvCos["G"]]], # === 0 &]]
 ''')
 
 # =====================================================================================
 section('12. The Lovelock tensors of 7+1 spacetime')
 text('The generalized Kronecker delta δ^{μ1…μn}_{ν1…νn} is the determinant of the n×n matrix of ordinary Kronecker deltas '
      'δ^{μi}_{νj}: it is +1 (−1) if the lower indices are an even (odd) permutation of the upper ones, all different, and 0 '
-     'otherwise. In eight dimensions it vanishes for n > 8. The Lovelock density of order k and the Lovelock tensor of order k are')
-text('      L_k = (1/2^k) δ^{α1β1…αkβk}_{γ1δ1…γkδk} R^{γ1δ1}_{α1β1} ⋯ R^{γkδk}_{αkβk},')
-text('      E^(k)μ_ν = −(1/2^(k+1)) δ^{μ α1β1…αkβk}_{ν γ1δ1…γkδk} R^{γ1δ1}_{α1β1} ⋯ R^{γkδk}_{αkβk}.')
+     'otherwise. In eight dimensions it vanishes for n > 8.')
+text([('Lovelock’s theorem. ', B),
+      'In n dimensions the most general tensor A^{lh} that is symmetric, divergence-free and built from the metric and its first and '
+      'second derivatives is (D. Lovelock and H. Rund, Tensors, Differential Forms, and Variational Principles, Dover; Remark 2 after '
+      'Eq. (4.38))'])
+text('      A^{lh} = √|g| Σ_{k=1}^{m−1} α_(k) g^{jl} δ^{h h1…h2k}_{j j1…j2k} R^{j1 j2}_{h1 h2} ⋯ R^{j2k−1 j2k}_{h2k−1 h2k} + λ √|g| g^{lh},'
+     '      m = n/2 (n even), m = (n + 1)/2 (n odd),')
+text('with arbitrary constants α_(k) and λ. For n = 8, m − 1 = 8/2 − 1 = 3: there are exactly three curvature terms, the Einstein (k = 1), '
+     'Gauss–Bonnet (k = 2) and cubic (k = 3) Lovelock tensors. With the normalization of the reference notebook '
+     'Einstein-Lovelock-7+1-Nash.nb (P. L. Nash, under the GNU GPL), which this section follows, the Lovelock tensors and densities are')
+text('      Lovelock_k ≡ E^(k)μ_ν = −(1/2^(k+1)) δ^{μ α1β1…αkβk}_{ν γ1δ1…γkδk} R^{γ1δ1}_{α1β1} ⋯ R^{γkδk}_{αkβk},')
+text('      L_k = (1/2^k) δ^{α1β1…αkβk}_{γ1δ1…γkδk} R^{γ1δ1}_{α1β1} ⋯ R^{γkδk}_{αkβk}.')
 text('L_0 = 1 and E^(0)μ_ν = −δ^μ_ν/2 (the cosmological term); L_1 = R and E^(1) = G (Einstein); L_2 = R² − 4R_μνR^μν + R_μνρσR^μνρσ '
      '(Gauss–Bonnet) and E^(2) is the Lanczos tensor; L_3 and E^(3) are cubic. E^(k) contains 2k+1 different upper indices, so '
      'E^(4) = 0 identically in eight dimensions; L_4, the Euler density, is not zero, but √|g| L_4 is a total derivative. The trace '
      'is E^(k)μ_μ = −((8 − 2k)/2) L_k. Each E^(k) is symmetric (with both indices down) and divergence-free for every metric, and '
-     'δ(√|g| L_k) = √|g| E^(k)_μν δg^μν. The Einstein–Lovelock action and field equations of 7+1 spacetime are therefore')
-text('      S = −(1/(2κ)) ∫ d⁸X √|g| Σ_{k=0}^{3} α_k L_k + S_matter,    Σ_{k=0}^{3} α_k E^(k)μ_ν = κ T^μ_ν,')
-text('with α_0 = 2Λ (Λ the cosmological constant), α_1 = 1 (Einstein), α_2 and α_3 the Gauss–Bonnet and cubic couplings '
-     '(dimensions length² and length⁴), δS_matter = (1/2) ∫ √|g| T_μν δg^μν. For α_2 = α_3 = 0 this is G^μ_ν − Λ δ^μ_ν = κ T^μ_ν.')
+     'δ(√|g| L_k) = √|g| E^(k)_μν δg^μν.')
+text([('Field equations. ', B),
+      'The Einstein–Lovelock VACUUM field equations of the reference notebook are'])
+text('      0 = −Λ δ^μ_ν + H^(−2) w1 Lovelock1 + H^(−4) w2 Lovelock2 + H^(−6) w3 Lovelock3,')
+text('where w1, w2, w3 and Λ are pure numbers and H is a fundamental inverse length, which exists because the Lovelock tensors of '
+     'different orders have different dimensions (length^(−2k)). With matter, sections 14–16 use the equivalent dimensional form')
+text('      S = −(1/(2κ)) ∫ d⁸X √|g| Σ_{k=0}^{3} α_k L_k + S_matter,    Σ_{k=0}^{3} α_k E^(k)μ_ν = κ T^μ_ν,    α_0 = 2Λ̄,')
+text('with κ = 8πG8, δS_matter = (1/2) ∫ √|g| T_μν δg^μν, α_1 = 1 (Einstein), α_2 and α_3 the Gauss–Bonnet and cubic couplings '
+     '(dimensions length² and length⁴) and Λ̄ the cosmological constant (dimension length^(−2); it is written Λ in sections 14–16). '
+     'For T = 0 the two forms are the same equation: divide the first by w1/H², so α_2 = w2/(w1 H²), α_3 = w3/(w1 H⁴) and Λ̄ = Λ H²/w1. '
+     'For α_2 = α_3 = 0 the field equations are G^μ_ν − Λ̄ δ^μ_ν = κ T^μ_ν.')
+text([('Two independent computations. ', B),
+      'The Lovelock tensors are computed twice in this notebook: (1) exactly as in the reference notebook, with the tensor packages '
+      'xAct (xTensor, xCoba, xTras; J. M. Martín-García et al., GPL), the generalized Kronecker delta kδ and abstract indices, the '
+      'components of a given metric following from CD = LC[g] (sections 12.2–12.4); (2) by an explicit sum over sets of index pairs '
+      'in plain Wolfram Language (section 12.5). Every comparison below is exact.'])
 
 subsection('12.1 The generalized Kronecker delta')
 inp(r'''
@@ -117,14 +143,107 @@ check["generalized Kronecker delta with 9 upper indices vanishes in 8 dimensions
   And @@ Table[gKD[RandomInteger[{0, 7}, 9], RandomInteger[{0, 7}, 9]] == 0, {100}]]
 ''')
 
-subsection('12.2 Computing the Lovelock tensors: the pair-set algorithm')
+subsection('12.2 The tensor packages xAct: manifold, metric and chart (as in Einstein-Lovelock-7+1-Nash.nb)')
+text('The packages xAct`xCoba` (components in a basis; it loads xPerm and xTensor) and xAct`xTras` (it provides Simplification) are '
+     'loaded exactly as in the reference notebook. Two kinds of output are suppressed while they load: the package banners, and the '
+     'warnings that xTensor cannot attach rules to Commutator and Anticommutator, which are protected built-in symbols of Wolfram 15 '
+     '(the reference notebook shows the same warnings; these two symbols are not used here). The manifold M8 has dimension 8 and the '
+     'abstract indices a, b, c, d, f, i, j, k, l, m, n, p, q, r, s, y (the list of the reference notebook); the metric g71 has '
+     'signature {1, 7, 0} in the xAct notation (one plus sign, seven minus signs: x0 is time) and its Levi-Civita covariant derivative '
+     'is CD; the chart chartM8 has the coordinate scalars x0[], …, x7[] (the coordinates X = {x0, …, x7} of this notebook; a component '
+     'computed by xAct is turned into a function of x0, …, x7 by x0[] → x0, …). The reference notebook declares the signature '
+     '{7, 1, 0} (the mostly-plus convention); the declaration does not enter the Lovelock tensors with mixed indices, which follow from '
+     'the component matrix alone, and {1, 7, 0} matches the metric η17 = diag(+1, −1, …, −1) of this notebook. The scale factors and '
+     'profiles of the metrics below are declared scalar functions and H a constant symbol. The guard If[! MemberQ[$Manifolds, M8], …] and the final Unset make the '
+     'cell safe to evaluate twice while the notebook stays open. xAct keeps its definitions in the kernel, while a notebook that is closed '
+     'and opened again gets a new private context; to evaluate the notebook again after reopening it, start from a fresh kernel '
+     '(Evaluation ▸ Quit Kernel), as tools/run_eval.wl does.')
+inp(r'''
+Quiet[Block[{Print = (Null &)}, Needs["xAct`xCoba`"]; Needs["xAct`xTras`"]],
+  {Commutator::argtu, Anticommutator::argtu, UpSetDelayed::write, SetDelayed::write, General::stop}];
+$DefInfoQ = False; $CVVerbose = False;
+SetOptions[ToCanonical, UseMetricOnVBundle -> None, Verbose -> False];
+If[! MemberQ[$Manifolds, M8],
+  DefManifold[M8, 8, {a, b, c, d, f, i, j, k, l, m, n, p, q, r, s, y}];
+  DefMetric[{1, 7, 0}, g71[-a, -b], CD, {";", "D"}, WeightedWithBasis -> AIndex];
+  DefChart[chartM8, M8, {0, 1, 2, 3, 4, 5, 6, 7}, {x0[], x1[], x2[], x3[], x4[], x5[], x6[], x7[]},
+    ExtendedCoordinateDerivatives -> True, FormatBasis -> {"Partials", "Differentials"}];
+  DefScalarFunction /@ {a3, b4, fPP};
+  DefConstantSymbol[H]];
+Quiet[g71 =.; CD =.; RiemannCD =.; RicciCD =.; RicciScalarCD =.; EinsteinCD =.];
+MyArrayComponents[expr_] := expr // ToBasis[chartM8] // ComponentArray // ToValues // ToValues // Simplify;
+toXc = Thread[X -> Through[X[]]]; fromXc = Thread[Through[X[]] -> X];
+{"xPerm" -> xAct`xPerm`$Version, "xTensor" -> xAct`xTensor`$Version, "xCoba" -> xAct`xCoba`$Version, "xTras" -> xAct`xTras`$Version,
+ "SignatureOfMetric[g71]" -> SignatureOfMetric[g71], "DimOfManifold[M8]" -> DimOfManifold[M8]}
+''')
+
+subsection('12.3 The Lovelock tensors with abstract indices: the generalized Kronecker delta kδ')
+text('kδ[lower, upper] is the determinant of the matrix of xAct Kronecker deltas delta[lower_i, upper_j], i.e. the generalized '
+     'Kronecker delta δ^{upper}_{lower} with abstract indices. The three Lovelock tensors are then typed exactly as in the reference '
+     'notebook and reduced to curvature monomials by Simplification (xTras):')
+text('      Lovelock1 = −(1/4) R_cd^fi δ^{bcd}_{afi},   Lovelock2 = −(1/8) R_cd^fi R_jk^lm δ^{bcdjk}_{afilm},   '
+     'Lovelock3 = −(1/16) R_cd^fi R_jk^lm R_np^qr δ^{bcdjknp}_{afilmqr},')
+text('with R_cd^fi = RiemannCD[-c, -d, f, i]; the free indices are a (down) and b (up), so Lovelock_k = E^(k)b_a. The checks: Lovelock1 '
+     'is the Einstein tensor R_a^b − (1/2) δ_a^b R, and the trace of Lovelock2 is −2 L_2 with the Gauss–Bonnet density '
+     'L_2 = R² − 4 R_cd R^cd + R_cdfi R^cdfi (both with abstract indices, by ToCanonical). The reference notebook sets the option '
+     'UseMetricOnVBundle -> None of ToCanonical, so that indices are not moved up and down; for the trace identity the metric must be '
+     'used to identify the dummy pairs R_cd R^cd and R^c_d R_c^d, so that one call uses UseMetricOnVBundle -> All.')
+inp(r'''
+k\[Delta][lower_, upper_] /; Length[lower] == Length[upper] := Det[Outer[delta, lower, upper]];
+{k\[Delta][{-a}, {b}], k\[Delta][{-a, -f}, {b, c}]}
+''')
+inp(r'''
+Lovelock1 = -(1/4) RiemannCD[-c, -d, f, i] k\[Delta][{-a, -f, -i}, {b, c, d}] // Simplification
+''')
+inp(r'''
+Lovelock2 = -(1/8) RiemannCD[-c, -d, f, i] RiemannCD[-j, -k, l, m] k\[Delta][{-a, -f, -i, -l, -m}, {b, c, d, j, k}] // Simplification
+''')
+inp(r'''
+Lovelock3 = -(1/16) RiemannCD[-c, -d, f, i] RiemannCD[-j, -k, l, m] RiemannCD[-n, -p, q, r] k\[Delta][{-a, -f, -i, -l, -m, -q, -r}, {b, c, d, j, k, n, p}] // Simplification
+''')
+inp(r'''
+check["xAct: Lovelock1 == R_a^b - (1/2) delta_a^b R, the Einstein tensor (abstract indices)", ToCanonical[Lovelock1 - (RicciCD[-a, b] - delta[-a, b] RicciScalarCD[]/2)] === 0]
+check["xAct: trace of Lovelock2 == -2 L_2 with L_2 = R^2 - 4 R_cd R^cd + R_cdfi R^cdfi (abstract indices)",
+  ToCanonical[ContractMetric[Lovelock2 delta[-b, a] + 2 (RicciScalarCD[]^2 - 4 RicciCD[-c, -d] RicciCD[c, d] + RiemannCD[-c, -d, -f, -i] RiemannCD[c, d, f, i])],
+    UseMetricOnVBundle -> All] === 0]
+{"Lovelock1 (InputForm)" -> ToString[Lovelock1, InputForm], "Lovelock2 (InputForm)" -> ToString[Lovelock2, InputForm],
+ "Lovelock3 (InputForm)" -> ToString[Lovelock3, InputForm]}
+''')
+
+subsection('12.4 Components with xAct: CD = LC[g]')
+text('For a metric given as an 8×8 matrix of components with lower indices, the reference notebook makes it a CTensor in the basis '
+     'of chartM8, lets MetricCompute compute and simplify its Christoffel symbols and curvature, and then sets CD = LC[g] ("xAct '
+     'magic": the abstract covariant derivative becomes the Levi-Civita connection of the component metric). After RiemannCD = '
+     'Riemann[CD], RicciCD = Ricci[CD], RicciScalarCD = RicciScalar[CD] and EinsteinCD = Einstein[CD] every abstract expression, in '
+     'particular Lovelock1, Lovelock2 and Lovelock3, evaluates to components, and MyArrayComponents turns them into arrays. '
+     'xActLovelock[gm] does exactly these steps and returns the matrices E^(k)μ_ν (k = 1, 2, 3, row μ, column ν; the array of '
+     'MyArrayComponents has the lower index a first, hence the Transpose) and G^μ_ν, as functions of x0, …, x7. It is applied here to '
+     'the cosmological metric of section 11.2, and in sections 12.8 and 12.9 to the pp-wave and to exponential expansion.')
+inp(r'''
+asMat8[mat_] := If[mat === 0, ConstantArray[0, {8, 8}], mat];
+xActLovelock[gm_] := Module[{res},
+   g71 = CTensor[gm /. toXc, {-chartM8, -chartM8}];
+   MetricCompute[g71, chartM8, All, Parallelize -> False, Verbose -> False];
+   CD = LC[g71];
+   RiemannCD = Riemann[CD]; RicciCD = Ricci[CD]; RicciScalarCD = RicciScalar[CD]; EinsteinCD = Einstein[CD];
+   res = Transpose[asMat8[MyArrayComponents[#]]] & /@ {Lovelock1, Lovelock2, Lovelock3, EinsteinCD[-a, b]};
+   res /. fromXc];
+xlCos = xActLovelock[gCos];
+check["xAct, cosmological metric: Lovelock1 == EinsteinCD == the Einstein tensor of the curvature engine of section 11.1",
+  Simplify[xlCos[[1]] - xlCos[[4]]] == ConstantArray[0, {8, 8}] && Simplify[xlCos[[1]] - cvCos["G"]] == ConstantArray[0, {8, 8}]]
+Grid[Prepend[Table[{k, toH[xlCos[[k, 1, 1]]], toH[xlCos[[k, 2, 2]]], toH[xlCos[[k, 5, 5]]]}, {k, 1, 3}], {"k", "Lovelock_k 0_0", "Lovelock_k 1_1", "Lovelock_k 4_4"}], Frame -> All]
+''')
+
+subsection('12.5 An independent computation: the pair-set algorithm')
 text('Because the generalized delta is antisymmetric in its upper and in its lower indices and every curvature factor is antisymmetric '
      'in each of its index pairs, the sum over all index values can be organized by sets of index pairs. Let U run over the sets of k '
      'disjoint pairs (α<β) not containing μ, and L over the ORDERED sequences of k disjoint pairs (γ<δ) of the remaining indices of '
      'U ∪ {μ} without ν. Then')
 text('      E^(k)μ_ν = −2^(k−1) k! Σ_U Σ_L sgn(μ U → ν L) Π_i R^{L_i}_{U_i},      L_k = 2^k k! Σ_U Σ_L sgn(U → L) Π_i R^{L_i}_{U_i},')
 text('where sgn is the sign of the permutation that takes the upper index sequence to the lower one (Signature[up] Signature[dn]). '
-     'The check compares E^(1) with the brute-force δ-contraction −(1/4) δ^{μαβ}_{νγδ} R^γδ_αβ.')
+     'The checks compare E^(1) with the brute-force δ-contraction −(1/4) δ^{μαβ}_{νγδ} R^γδ_αβ, and E^(1), E^(2), E^(3) of the '
+     'cosmological metric with the xAct computation of section 12.4. This second method works with any curvature table, including '
+     'the exact rational numbers of section 12.7.')
 inp(r'''
 pairSets[idx_List, 0] := {{}};
 pairSets[idx_List, k_Integer?Positive] := pairSets[idx, k] = If[Length[idx] < 2 k, {},
@@ -154,9 +273,11 @@ inp(r'''
 rudCos = rudAssoc[cvCos["rud"]];
 E1brute = Table[-1/4 Sum[gKD[{mu, a, b}, {nu, c, d}] cvCos["rud"][[c + 1, d + 1, a + 1, b + 1]], {a, 0, 7}, {b, 0, 7}, {c, 0, 7}, {d, 0, 7}], {mu, 0, 7}, {nu, 0, 7}];
 check["pair-set algorithm == brute-force generalized-delta contraction for E^(1) (cosmological metric)", Simplify[E1brute - lovelockE[rudCos, 1]] == ConstantArray[0, {8, 8}]]
+check["pair-set algorithm == xAct (section 12.4) for E^(1), E^(2), E^(3) of the cosmological metric (two independent computations)",
+  And @@ Table[Simplify[lovelockE[rudCos, k] - xlCos[[k]]] == ConstantArray[0, {8, 8}], {k, 1, 3}]]
 ''')
 
-subsection('12.3 The Lovelock tensors of the cosmological metric')
+subsection('12.6 The Lovelock tensors of the cosmological metric')
 text('The checks: E^(1) = G and L_1 = R; the trace identity for k = 0 … 4; E^(4) = 0 while L_4 ≠ 0; every E^(k) is diagonal with '
      'equal entries inside ordinary space and inside the auxiliary space; E^(2) equals the Lanczos tensor '
      'H_μν = 2(R R_μν − 2R_μα R^α_ν − 2R^αβ R_μανβ + R_μ^αβγ R_ναβγ) − (1/2) g_μν L_2; and the closed forms below. '
@@ -200,16 +321,12 @@ check["variation of nL a^3 b^4 L_k: EL_nL = -2 a^3 b^4 E^(k)0_0, EL_a = -6 a^2 b
   And @@ Table[miniCheck[k] === {0, 0, 0}, {k, 1, 4}]]
 ''')
 
-subsection('12.4 An inhomogeneous metric: the Lovelock tensors are divergence-free (exact check at a point)')
-text('For an inhomogeneous metric with the explicit polynomials nP, aP, bP of x0 and x4 below, the divergence of E^(k) is evaluated '
+subsection('12.7 An inhomogeneous metric: the Lovelock tensors are divergence-free (exact check at a point)')
+text('For the inhomogeneous metric of section 11.3 (explicit polynomials nP, aP, bP of x0 and x4) the divergence of E^(k) is evaluated '
      'EXACTLY (rational numbers) at the point x0 = 1/2, x4 = 1/3. The derivative of E^(k), a polynomial of degree k in the curvature, is '
      'obtained from the curvature at the point and its first derivatives there: ∂_λ E^(k) = d/dε E^(k)[R + ε ∂_λR] at ε = 0.')
 inp(r'''
-nP = 1 + x0 x4/5 + x0^2/11; aP = 1 + x0/3 + x4^2/7; bP = 2 - x0 x4/4 + x0^2/9 + x4/13;
-gPoly = DiagonalMatrix[{nP^2, -aP^2, -aP^2, -aP^2, -bP^2, -bP^2, -bP^2, -bP^2}];
-cvPoly = curvature[gPoly, Together];
-ptP = {x0 -> 1/2, x4 -> 1/3};
-rudPoly = rudAssoc[cvPoly["rud"]];
+rudPoly = rudAssoc[cvPoly["rud"]];          (* cvPoly, ptP: section 11.3 *)
 rudAt = Map[(# /. ptP) &, rudPoly];
 dRud[lam_] := Map[(D[#, X[[lam + 1]]] /. ptP) &, rudPoly];
 chrAt = cvPoly["chr"] /. ptP;
@@ -225,11 +342,12 @@ check["inhomogeneous metric: E^(2) == Lanczos tensor at the point (exact)", lzPo
 {"E^(3)0_4 at the point" -> lovelockE[rudAt, 3][[1, 5]]}
 ''')
 
-subsection('12.5 A plane gravitational wave: only the Einstein tensor survives')
+subsection('12.8 A plane gravitational wave: only the Einstein tensor survives')
 text('The pp-wave ds² = dx0² − dx1² − … − dx7² + fPP(x0 − x1, x2, x3) (dx0 − dx1)² with an arbitrary profile fPP is not diagonal. '
      'With the null vector l_μ = (1, −1, 0, …, 0): E^(1)_μν = +(1/2)(∂2² + ∂3²) fPP l_μ l_ν (so the wave is a vacuum solution when '
      'the profile is harmonic in the transverse directions), and E^(2) = E^(3) = 0 for EVERY profile: plane waves solve the '
-     'Einstein–Lovelock equations with any α_2, α_3.')
+     'Einstein–Lovelock equations with any α_2, α_3. Because E^μ_ν of this metric is not symmetric as a matrix (E^0_1 = −E^1_0), it '
+     'also fixes the index order of the xAct arrays: both methods agree.')
 inp(r'''
 gPP = DiagonalMatrix[{1, -1, -1, -1, -1, -1, -1, -1}] + fPP[x0 - x1, x2, x3] Outer[Times, {1, -1, 0, 0, 0, 0, 0, 0}, {1, -1, 0, 0, 0, 0, 0, 0}];
 cvPP = curvature[gPP];
@@ -238,6 +356,49 @@ lNull = {1, -1, 0, 0, 0, 0, 0, 0};
 check["pp-wave: E^(1)_mu nu == +(1/2)(d2^2 + d3^2) fPP l_mu l_nu",
   Simplify[gPP.lovelockE[rudPP, 1] - (D[fPP[x0 - x1, x2, x3], {x2, 2}] + D[fPP[x0 - x1, x2, x3], {x3, 2}])/2 Outer[Times, lNull, lNull]] == ConstantArray[0, {8, 8}]]
 check["pp-wave: E^(2) == E^(3) == 0 for every profile fPP", Simplify[lovelockE[rudPP, 2]] == ConstantArray[0, {8, 8}] && Simplify[lovelockE[rudPP, 3]] == ConstantArray[0, {8, 8}]]
+xlPP = xActLovelock[gPP];
+check["pp-wave: xAct (section 12.4) == pair-set algorithm for E^(1), E^(2), E^(3) (a metric that is not diagonal; arbitrary profile fPP)",
+  And @@ Table[Simplify[xlPP[[k]] - lovelockE[rudPP, k]] == ConstantArray[0, {8, 8}], {k, 1, 3}]]
+''')
+
+subsection('12.9 Exponential vacuum solutions: eternal inflation of ordinary space and deflation of the auxiliary space')
+text('The reference notebook solves the vacuum equations 0 = −Λ δ^μ_ν + H^(−2) w1 Lovelock1 + H^(−4) w2 Lovelock2 + H^(−6) w3 Lovelock3 '
+     'for w2, w3 and Λ. (Its "Model metric" is marked there FAILED, DO NOT USE, by its author: it never worked for the 7+1 signature, and '
+     'it is not used anywhere in this notebook.) The same procedure is applied here to the cosmological metric of section 11.2 with '
+     'constant Hubble rates, a = e^{Ha x0}, b = e^{Hb x0} (Ha = H and Hb = qH H with a pure number qH; the letter q alone is an xAct index); its xAct components are those of section '
+     '12.4 (xlCos) evaluated for these scale factors. All Lovelock tensors are '
+     'then constant diagonal matrices (E^(k) ∝ H^{2k}, from the closed forms of section 12.6 with Ha′ = Hb′ = 0), and the 64 field '
+     'equations reduce to three distinct ones (components 00, 11 = 22 = 33, 44 = 55 = 66 = 77). They are not independent: for constant '
+     'Hubble rates the divergence identity of section 12.6, d0 E^0_0 + 3Ha (E^0_0 − E^1_1) + 4Hb (E^0_0 − E^4_4) = 0, becomes the linear '
+     'relation 3Ha (eq00 − eq11) + 4Hb (eq00 − eq44) = 0. Hence for every (Ha, Hb) there is a one-parameter family of couplings: given '
+     'w1 and Λ, the equations fix w2 and w3.')
+text('For qH = −1 (ordinary space expands as e^{H x0} while the auxiliary space contracts as e^{−H x0}, for every time x0: eternal '
+     'inflation of ordinary space together with eternal deflation of the auxiliary space) the family is')
+text('      w2 = Λ/4 − w1/2,   w3 = w1/24 − Λ/36;      without cosmological constant (Λ = 0): w2/w1 = −1/2, w3/w1 = 1/24,')
+text('i.e. α_2 = −1/(2H²), α_3 = 1/(24 H⁴) in the α-form. The components are computed with xAct (section 12.4) and compared with the '
+     'closed forms of section 12.6.')
+inp(r'''
+xlExp = Simplify[xlCos /. {a3 -> (Exp[H #] &), b4 -> (Exp[qH H #] &)}];       (* the xAct components of section 12.4 for a = e^{H x0}, b = e^{qH H x0} *)
+Diagonal /@ xlExp[[1 ;; 3]]
+''')
+inp(r'''
+check["exponential expansion a = e^{H x0}, b = e^{qH H x0}: xAct Lovelock_k == the closed forms of section 12.6 with Ha = H, Hb = qH H, Ha' = Hb' = 0 (k = 1, 2, 3)",
+  And @@ Table[Simplify[xlExp[[kk]] - (toH /@ (Diagonal[ECos[[kk + 1]]]) /. {Ha -> H, Hb -> qH H, dHa -> 0, dHb -> 0} // DiagonalMatrix)] == ConstantArray[0, {8, 8}], {kk, 1, 3}]]
+fieldEqsExp = -\[CapitalLambda] IdentityMatrix[8] + H^-2 w1 xlExp[[1]] + H^-4 w2 xlExp[[2]] + H^-6 w3 xlExp[[3]];
+eqsExp = DeleteCases[Union[Flatten[Expand[fieldEqsExp]]], 0];
+check["exponential expansion: three distinct vacuum equations, related by 3 Ha (eq00 - eq11) + 4 Hb (eq00 - eq44) == 0",
+  Length[eqsExp] == 3 && Expand[3 H (fieldEqsExp[[1, 1]] - fieldEqsExp[[2, 2]]) + 4 qH H (fieldEqsExp[[1, 1]] - fieldEqsExp[[5, 5]])] === 0]
+wsExp = Factor[Solve[{fieldEqsExp[[2, 2]] == 0, fieldEqsExp[[5, 5]] == 0}, {w2, w3}]]      (* eq11 and eq44; eq00 then follows from the relation above *)
+''')
+inp(r'''
+check["exponential vacuum solutions: (w2, w3) solve all 64 components for every qH (generic qH) and every Lambda",
+  Length[wsExp] == 1 && Simplify[fieldEqsExp /. First[wsExp]] == ConstantArray[0, {8, 8}]]
+wsInfDef = Simplify[wsExp /. qH -> -1]
+check["eternal inflation (a = e^{H x0}) with deflation (b = e^{-H x0}): w2 == Lambda/4 - w1/2, w3 == w1/24 - Lambda/36; for Lambda = 0: w2/w1 == -1/2, w3/w1 == 1/24",
+  Simplify[({w2, w3} /. First[wsInfDef]) - {\[CapitalLambda]/4 - w1/2, w1/24 - \[CapitalLambda]/36}] == {0, 0} &&
+  Simplify[({w2, w3}/w1 /. First[wsInfDef]) /. \[CapitalLambda] -> 0] == {-1/2, 1/24}]
+{"eq00, eq11, eq44 (qH = -1)" -> Expand[{fieldEqsExp[[1, 1]], fieldEqsExp[[2, 2]], fieldEqsExp[[5, 5]]} /. qH -> -1],
+ "alpha_2, alpha_3 for Lambda = 0, qH = -1" -> ({w2/(w1 H^2), w3/(w1 H^4)} /. First[wsInfDef] /. \[CapitalLambda] -> 0)}
 ''')
 
 # =====================================================================================
@@ -260,8 +421,8 @@ text('The covariant Dirac equation of dirac16complex and its Lagrangian density 
 text('      (i Γ^μ(X) D_μ − m) ψ = 0,      √|g| ψbar (i Γ^μ D_μ − m) ψ,')
 text('the spin connection Ω_μ being the coupling of gravity to the field. The current J^μ = ψbar Γ^μ ψ is conserved, '
      '∂_μ(√|g| J^μ) = 0, because ∂_μ(√|g| ψbar Γ^μ ψ) = √|g| [(D_μψbar) Γ^μ ψ + ψbar Γ^μ D_μ ψ] and the Dirac equation and its adjoint '
-     'make the bracket vanish. All of this is checked below for three metrics: the cosmological one, the pp-wave (not diagonal) and '
-     'the inhomogeneous one with arbitrary nI, aI, bI.')
+     'make the bracket vanish. All of this is checked below for four metrics: the cosmological one (section 13.2), the pp-wave (not '
+     'diagonal) and the inhomogeneous metric of section 11.3 (section 13.3), and a static metric with a radial coordinate (section 13.5).')
 
 subsection('13.1 The frame data of a metric')
 inp(r'''
@@ -336,14 +497,17 @@ check["mode equation: Gamma17[0].(i Gamma^mu D_mu - m) psi == (a^3 b^4)^(-1/2) e
 ''')
 
 subsection('13.3 The pp-wave and the inhomogeneous metric: frames that are not diagonal and not homogeneous')
-text('pp-wave frame: e^0 = (1 + fPP/2) dx0 − (fPP/2) dx1, e^1 = (fPP/2) dx0 + (1 − fPP/2) dx1, e^A = dx^A otherwise. '
-     'Inhomogeneous frame: e^0 = nI dx0, e^i = aI dx^i, e^k = bI dx^k. Every identity of section 13.1 holds for both.')
+text('pp-wave frame (arbitrary profile fPP): e^0 = (1 + fPP/2) dx0 − (fPP/2) dx1, e^1 = (fPP/2) dx0 + (1 − fPP/2) dx1, e^A = dx^A otherwise. '
+     'Inhomogeneous frame (section 11.3): e^0 = nP dx0, e^i = aP dx^i, e^k = bP dx^k; its identities are checked exactly at x0 = 1/2, '
+     'x4 = 1/3 (the derivatives are taken symbolically first). Every identity of section 13.1 holds for both.')
 inp(r'''
 ePP = IdentityMatrix[8]; ePP[[1, 1]] = 1 + fPP[x0 - x1, x2, x3]/2; ePP[[1, 2]] = -fPP[x0 - x1, x2, x3]/2;
 ePP[[2, 1]] = fPP[x0 - x1, x2, x3]/2; ePP[[2, 2]] = 1 - fPP[x0 - x1, x2, x3]/2;
-frameChecks["pp-wave", cvPP, frameData[cvPP, ePP, Together], Together];
-eInh = DiagonalMatrix[{nI[x0, x4], aI[x0, x4], aI[x0, x4], aI[x0, x4], bI[x0, x4], bI[x0, x4], bI[x0, x4], bI[x0, x4]}];
-frameChecks["inhomogeneous metric", cvInh, frameData[cvInh, eInh, Together], Together];
+fdPP = frameData[cvPP, ePP, Together];
+frameChecks["pp-wave", cvPP, fdPP, Together];
+ePoly = DiagonalMatrix[{nP, aP, aP, aP, bP, bP, bP, bP}];
+fdPoly = frameData[cvPoly, ePoly, Identity];
+frameChecks["inhomogeneous metric (exact at (x0, x4) = (1/2, 1/3))", cvPoly, fdPoly, (Together[# /. ptP] &)];
 ''')
 
 subsection('13.4 Conformal weight 7/2 of the massless field')
@@ -360,13 +524,83 @@ check["conformal weight 7/2: Gamma^mu D_mu (C^(-7/2) f) == C^(-9/2) Gamma17up[A]
      cConf[x0]^(-9/2) Sum[\[CapitalGamma]17up[A].D[kF, X[[A + 1]]], {A, 0, 7}]] === ConstantArray[0, 16]]
 ''')
 
+subsection('13.5 Cartan’s first structure equation, a static metric with a radial coordinate, and the coupling to a gauge field')
+text([('Differential forms. ', B),
+      'With the frame one-forms e^A = e^A_μ dx^μ and the connection one-forms ω^A_B = ω_μ^A_B dx^μ, the vielbein postulate of section 13 '
+      'antisymmetrized in μ and ν is CARTAN’S FIRST STRUCTURE EQUATION (no torsion):'])
+text('      de^A + ω^A_B ∧ e^B = 0,   i.e.   ∂_μ e^A_ν − ∂_ν e^A_μ + ω_μ^A_B e^B_ν − ω_ν^A_B e^B_μ = 0   (the Christoffel terms cancel).')
+text('It determines the canonical spin connection from the frame alone. Write de^A = (1/2) C^A_BC e^B ∧ e^C with the STRUCTURE '
+     'COEFFICIENTS C^A_BC = e_B^μ e_C^ν (∂_μ e^A_ν − ∂_ν e^A_μ) = −C^A_CB, lower the first index with η17 (C_ABC = η17_AD C^D_BC), and write '
+     'the connection with a frame form index, ω_C,AB = e_C^μ ω_μAB. Then')
+text('      ω_C,AB = −(1/2) (C_ACB + C_BAC − C_CBA),')
+text('which is antisymmetric in A, B and is the unique solution of the structure equation with ω_C,AB = −ω_C,BA. The code computes both '
+     'sides for all four frames of this section.')
+text([('A static metric with a radial coordinate. ', B),
+      'Let r = x1 (r > 0) and let f(r), h(r) be arbitrary positive functions (code fR[x1], hR[x1]):'])
+text('      ds² = f(r) dx0² − h(r) dr² − r² (dx2² + dx3² + dx4² + dx5² + dx6² + dx7²),   e^0 = √f dx0,  e^1 = √h dr,  e^k = r dx^k (k = 2 … 7).')
+text('(The six directions x2 … x7 are flat directions scaled by r; this is the 7+1 form of a static "planar" metric, NOT a spherically '
+     'symmetric one.) Cartan’s equation gives de^0 = (f′/(2√f)) dr ∧ dx0 = −ω^0_1 ∧ e^1 and de^k = dr ∧ dx^k = −ω^k_1 ∧ e^1, hence '
+     'ω^0_1 = (f′/(2√(fh))) dx0 and ω^k_1 = (1/√h) dx^k, and the spinor connection is')
+text('      Ω_0 = (f′/(4√f √h)) Γ17[1].Γ17[0],   Ω_1 = 0,   Ω_k = (1/(2√h)) Γ17[1].Γ17[k]   (k = 2 … 7),')
+text('      Γ^μ Ω_μ = (1/√h) (f′/(4f) + 3/r) Γ17up[1]     (the 3/r = 6 × 1/(2r) comes from the six scaled directions).')
+text('The covariant Dirac operator is therefore iΓ^μD_μ − m = i Γ17up[0] ∂0/√f + i Γ17up[1] (∂_r + f′/(4f) + 3/r)/√h + Σ_k i Γ17up[k] ∂_k/r − m, '
+     'and the rescaling ψ = f^(−1/4) r^(−3) χ removes the connection: Γ^μ D_μ ψ = f^(−1/4) r^(−3) Γ^μ ∂_μ χ.')
+text([('Coupling to a gauge field. ', B),
+      'An abelian gauge field A_μ(X) with charge q enters through the gauge-covariant derivative D_μ ψ = ∂_μ ψ + Ω_μ ψ − i q A_μ ψ '
+      '(and D_μ ψbar = ∂_μ ψbar − ψbar Ω_μ + i q A_μ ψbar). Under ψ → e^{i q α} ψ, A_μ → A_μ + ∂_μ α (α(X) arbitrary) the Dirac operator is '
+      'covariant, Γ^μ D′_μ (e^{iqα} ψ) = e^{iqα} Γ^μ D_μ ψ, and the current identity of section 13 still holds, so the electric current '
+      'q ψbar Γ^μ ψ is conserved. The checks use the cosmological frame with arbitrary A_μ(x0, x1, x5), α(x0, x1, x5).'])
+inp(r'''
+cartanEq[fd_, simp_] := And @@ Flatten[Table[simp[D[fd["e"][[A, n]], X[[m]]] - D[fd["e"][[A, m]], X[[n]]] +
+        Sum[fd["om"][[m, A, B]] fd["e"][[B, n]] - fd["om"][[n, A, B]] fd["e"][[B, m]], {B, 8}]] === 0, {A, 8}, {m, 8}, {n, m + 1, 8}]];
+structureC[fd_, simp_] := Table[simp[Sum[fd["ei"][[m, B]] fd["ei"][[n, cc]] (D[fd["e"][[A, n]], X[[m]]] - D[fd["e"][[A, m]], X[[n]]]), {m, 8}, {n, 8}]],
+   {A, 8}, {B, 8}, {cc, 8}];                                   (* structureC[[A+1, B+1, C+1]] = C^A_BC *)
+omegaFrame[fd_, simp_] := Table[simp[Sum[fd["ei"][[m, cc]] fd["omL"][[m, A, B]], {m, 8}]], {cc, 8}, {A, 8}, {B, 8}];   (* [[C+1, A+1, B+1]] = omega_C,AB *)
+structureFormula[fd_, simp_] := Module[{cu = structureC[fd, simp], cl, w = omegaFrame[fd, simp]},
+   cl = Table[\[Eta]17[[A, A]] cu[[A, B, cc]], {A, 8}, {B, 8}, {cc, 8}];
+   And @@ Flatten[Table[simp[w[[cc, A, B]] + (cl[[A, cc, B]] + cl[[B, A, cc]] - cl[[cc, B, A]])/2] === 0, {cc, 8}, {A, 8}, {B, 8}]]];
+check["Cartan's first structure equation de^A + omega^A_B ^ e^B == 0 (no torsion): cosmological, pp-wave and inhomogeneous frames",
+  cartanEq[fdCos, Simplify] && cartanEq[fdPP, Together] && cartanEq[fdPoly, (Together[# /. ptP] &)]]
+check["structure coefficients: omega_C,AB == -(1/2)(C_ACB + C_BAC - C_CBA) with C^A_BC = e_B^mu e_C^nu (d_mu e^A_nu - d_nu e^A_mu): cosmological and inhomogeneous frames",
+  structureFormula[fdCos, Simplify] && structureFormula[fdPoly, (Together[# /. ptP] &)]]
+''')
+inp(r'''
+simpR = Simplify[#, fR[x1] > 0 && hR[x1] > 0 && x1 > 0] &;
+gRad = DiagonalMatrix[{fR[x1], -hR[x1], -x1^2, -x1^2, -x1^2, -x1^2, -x1^2, -x1^2}];
+cvRad = curvature[gRad, simpR];
+eRad = DiagonalMatrix[{Sqrt[fR[x1]], Sqrt[hR[x1]], x1, x1, x1, x1, x1, x1}];
+fdRad = frameData[cvRad, eRad, simpR];
+frameChecks["static radial metric", cvRad, fdRad, simpR];
+check["static radial metric: Cartan's first structure equation and omega_C,AB == -(1/2)(C_ACB + C_BAC - C_CBA)", cartanEq[fdRad, simpR] && structureFormula[fdRad, simpR]]
+check["static radial metric: Omega_0 == (f'/(4 Sqrt[f] Sqrt[h])) Gamma17[1].Gamma17[0], Omega_1 == 0, Omega_k == (1/(2 Sqrt[h])) Gamma17[1].Gamma17[k] (k = 2..7)",
+  simpR[fdRad["Om"][[1]] - fR'[x1]/(4 Sqrt[fR[x1]] Sqrt[hR[x1]]) \[CapitalGamma]17[1].\[CapitalGamma]17[0]] == Zero16 && fdRad["Om"][[2]] == Zero16 &&
+  And @@ Table[simpR[fdRad["Om"][[k + 1]] - 1/(2 Sqrt[hR[x1]]) \[CapitalGamma]17[1].\[CapitalGamma]17[k]] == Zero16, {k, 2, 7}]]
+check["static radial metric: Gamma^mu Omega_mu == (1/Sqrt[h]) (f'/(4 f) + 3/r) Gamma17up[1]",
+  simpR[Sum[fdRad["GamUp"][[m]].fdRad["Om"][[m]], {m, 8}] - (fR'[x1]/(4 fR[x1]) + 3/x1)/Sqrt[hR[x1]] \[CapitalGamma]17up[1]] == Zero16]
+DslRad[f_] := Sum[fdRad["GamUp"][[m]].(D[f, X[[m]]] + fdRad["Om"][[m]].f), {m, 8}];
+chiR = Table[rchi[j][x0, x1, x5], {j, 16}];
+check["static radial metric: psi = f^(-1/4) r^(-3) chi removes the spin connection, Gamma^mu D_mu psi == f^(-1/4) r^(-3) Gamma^mu d_mu chi",
+  simpR[DslRad[fR[x1]^(-1/4) x1^-3 chiR] - fR[x1]^(-1/4) x1^-3 Sum[fdRad["GamUp"][[m]].D[chiR, X[[m]]], {m, 8}]] === ConstantArray[0, 16]]
+{"Gamma^mu Omega_mu (static radial metric), coefficient of Gamma17up[1]" -> simpR[(Sum[fdRad["GamUp"][[m]].fdRad["Om"][[m]], {m, 8}].\[CapitalGamma]17up[1])[[1, 1]]],
+ "Ricci scalar R (static radial metric)" -> cvRad["R"]}
+''')
+inp(r'''
+AG = Table[aGauge[m][x0, x1, x5], {m, 8}]; alphaG = alGauge[x0, x1, x5];
+DslA[f_, av_] := Sum[fdCos["GamUp"][[m]].(D[f, X[[m]]] + fdCos["Om"][[m]].f - I qG av[[m]] f), {m, 8}];
+check["U(1) gauge covariance: Gamma^mu (D_mu - i q A'_mu)(e^{i q alpha} psi) == e^{i q alpha} Gamma^mu (D_mu - i q A_mu) psi with A'_mu = A_mu + d_mu alpha",
+  Together[Expand[Exp[-I qG alphaG] DslA[Exp[I qG alphaG] psiF, AG + Table[D[alphaG, X[[m]]], {m, 8}]] - DslA[psiF, AG]]] === ConstantArray[0, 16]]
+DpsiA = Table[DpsiCos[[m]] - I qG AG[[m]] psiF, {m, 8}]; DpsibA = Table[DpsibCos[[m]] + I qG AG[[m]] psibF, {m, 8}];
+check["current identity with the gauge field: d_mu(sqrt|g| psibar Gamma^mu psi) == sqrt|g| [(D_mu psibar) Gamma^mu psi + psibar Gamma^mu D_mu psi], D including -i q A_mu",
+  Together[Sum[D[sqgCos psibF.fdCos["GamUp"][[m]].psiF, X[[m]]], {m, 8}] - sqgCos Sum[DpsibA[[m]].fdCos["GamUp"][[m]].psiF + psibF.fdCos["GamUp"][[m]].DpsiA[[m]], {m, 8}]] === 0]
+''')
+
 # =====================================================================================
 section('14. The three epochs: primordial (near x0 = 0), modern, far future')
 text('For the cosmological metric with a homogeneous source T^μ_ν = diag(ε, −pa, −pa, −pa, −pb, −pb, −pb, −pb) (energy density ε, '
      'pressure pa along ordinary space and pb along the auxiliary space) the Einstein–Lovelock equations of section 12 are three '
      'ordinary differential equations,')
 text('      Σ_k α_k E^(k)0_0 = κ ε,    Σ_k α_k E^(k)1_1 = −κ pa,    Σ_k α_k E^(k)4_4 = −κ pb,')
-text('with the closed forms of section 12.3, and the conservation law ε′ + 3Ha (ε + pa) + 4Hb (ε + pb) = 0 follows from them. '
+text('with the closed forms of section 12.6, and the conservation law ε′ + 3Ha (ε + pa) + 4Hb (ε + pb) = 0 follows from them. '
      'The three epochs of this notebook are exact solutions or limits of these equations.')
 
 subsection('14.1 Primordial epoch near x0 = 0: Kasner solutions')
@@ -379,7 +613,7 @@ item('Gauss–Bonnet (k = 2): 3p + 4q = 3 and a cubic equation for p with three 
 item('Cubic Lovelock (k = 3): the non-degenerate solution (p, q) = (−15/7, 20/7) with 3p + 4q = 5, and the degenerate families '
      'q = 0 (static auxiliary space) and p = 0, for which E^(3) vanishes identically.')
 inp(r'''
-(* a = x0^pK, b = x0^qK: Ha = pK/x0, Hb = qK/x0, Ha' = -pK/x0^2, Hb' = -qK/x0^2 in the closed forms of section 12.3 *)
+(* a = x0^pK, b = x0^qK: Ha = pK/x0, Hb = qK/x0, Ha' = -pK/x0^2, Hb' = -qK/x0^2 in the closed forms of section 12.6 *)
 EKas = Table[Factor[Expand[x0^(2 k) toH[ECos[[k + 1, c, c]]] /. {Ha -> pK/x0, Hb -> qK/x0, dHa -> -pK/x0^2, dHb -> -qK/x0^2}]], {k, 1, 3}, {c, {1, 2, 5}}];
 gKas = DiagonalMatrix[{1, -x0^(2 pK), -x0^(2 pK), -x0^(2 pK), -x0^(2 qK), -x0^(2 qK), -x0^(2 qK), -x0^(2 qK)}];
 check["Kasner metric: the Einstein tensor computed directly from the metric equals the closed form (x0^2 G^mu_mu, mu = 0, 1, 4)",

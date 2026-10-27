@@ -9,6 +9,10 @@ Sections 7-9 (dirac16complex, Kohn-Sham, chiral Kohn-Sham): every check of each 
 u_s(p) are recomputed; the printed closed forms of the uniform-matter integrals are differentiated with sympy; every printed
 number (uniform matter in the Hartree and Hartree-Fock approximations, chiral form, NJL vacuum) is compared with the
 independent Python computation of tools/ref_dirac16.py.
+Sections 11-19 (gravity, Kohn-Sham in gravitational fields, Standard Model): every check of each section is True; the
+summary table of the last section lists Length[checks] checks, all True; sections 0-10 equal the backup taken before they
+were extended; the printed numbers of sections 14-19 are compared with tools/ref_gravity.py, tools/ref_ks_gravity.py and
+tools/ref_sm.py (their outputs are computed by running them, or read from build/docs/runs.json when it exists).
 """
 import os, re, sys
 sys.setrecursionlimit(100000)
@@ -174,14 +178,76 @@ if os.path.exists(bk):
 else:
     R['sections 0-6: backup not present, comparison skipped'] = 'skipped'
 
+# ---------------- sections 11-19: gravity, Kohn-Sham in gravitational fields, Standard Model ----------------
+stage3 = any(q in ('11', '12', '13', '14', '15', '16', '17', '18', '19') for q in outsec)
+if stage3:
+    for sec in ('11', '12', '13', '14', '15', '16', '17', '18', '19'):
+        so = [o for o, q in zip(outs, outsec) if q == sec and chk_re.fullmatch(o.strip())]
+        R['section %s: check outputs (all True)' % sec] = '%d (%s)' % (len(so), all(o.strip().endswith('->True') for o in so))
+    grid = outs[-1] if outs else ''
+    allc = re.findall(r'"((?:[^"\\]|\\.)+)",\s*(True|False)', grid)
+    R['summary table: entries == Length[checks], all True'] = (str(len(allc)) == str(R['Length[checks]']) and all(r == 'True' for n_, r in allc))
+    names = set(n_ for n_, r in allc)
+    printed = [re.match(r'"(.*)"->(True|False)$', o.strip(), flags=re.S).group(1) for o in chk]
+    R['summary table: every printed check is listed'] = all(n_ in names for n_ in printed)
+    bk3 = os.path.join(os.path.dirname(here), 'backups', '7+1_2026-10-26_before_gravity.nb')
+    if os.path.exists(bk3):
+        def _cells3(pth):
+            out = []
+            for d0, c0 in P.iter_cells(P.parse_notebook(pth)):
+                st0, ct0, op0 = P.cell_info(c0)
+                if st0 not in ('Output', 'Message', 'Print'): out.append((st0, P.box_to_text(ct0)))
+            return out
+        _a3 = _cells3(bk3); _b3 = _cells3(path)
+        _k3 = next((i for i, (s0, t0) in enumerate(_b3) if s0 == 'Section' and t0.strip('"').startswith('11.')), len(_b3))
+        R['sections 0-10: the %d input and text cells equal those of the backup taken before sections 11-20' % len(_a3)] = (_a3 == _b3[:_k3])
+    else:
+        R['sections 0-10: backup not present, comparison skipped'] = 'skipped'
+    # printed numbers versus the independent Python programs
+    import json, subprocess
+    rfile = os.path.join(os.path.dirname(here), 'build', 'docs', 'runs.json')
+    pyout = {}
+    if os.path.exists(rfile):
+        for t_, o_, c_ in json.load(open(rfile, encoding='utf-8')):
+            pyout[t_.split(' ')[0]] = o_
+    for f_ in ('ref_gravity.py', 'ref_ks_gravity.py', 'ref_sm.py'):
+        if 'tools/' + f_ not in pyout:
+            p_ = subprocess.run([sys.executable, '-B', os.path.join(here, f_)], capture_output=True, text=True, cwd=os.path.dirname(here))
+            pyout['tools/' + f_] = p_.stdout
+    from doc_stage3_common import gather3, parse_ref
+    runs_ = [['tools/%s (x)' % f_, pyout['tools/' + f_], 0] for f_ in ('ref_gravity.py', 'ref_ks_gravity.py', 'ref_sm.py')]
+    D3 = gather3(runs_)
+    import doc_ks_gravity, doc_sm
+    worst = []
+    for lab, a_, b_ in doc_ks_gravity.compare(D3):
+        r_ = doc_ks_gravity.max_rel(a_, b_)
+        worst.append(('KS ' + lab, r_, 1e-6))
+    for lab, a_, b_, note in doc_sm.compare(D3):
+        r_ = doc_sm.max_rel(a_, b_)
+        # rounded prints: 1e-4; ODE integration through the Sun and the singular values of a matrix with entries from 1e-2 eV
+        # to 1e9 eV (machine precision times the condition number): 1e-5; everything else 1e-6
+        tol = 1e-4 if note else (1e-5 if ('Sun' in lab or 'portal' in lab or 'N^' in lab) else 1e-6)
+        worst.append(('SM ' + lab, r_, tol))
+    g_ = D3['nums']['grav']; refg = D3['ref'].get('grav', ('', '', {}))[2]
+    from doc_stage3_common import nums_in, mnum
+    kb_nb = [mnum(g_.get(k_, '') or '') for k_ in ('Kasner beta2 (1,1)', 'Kasner beta2 (2,1)', 'Kasner beta2 (1,3)')]
+    kb_py = nums_in(refg.get('Kasner (Einstein branch), massless: |beta|^2 for (|p|, |q|) = (1,1), (2,1), (1,3)', ''))
+    worst.append(('gravity: Kasner |beta|^2', doc_ks_gravity.max_rel(kb_nb, kb_py), 1e-5))
+    bad = [(l_, r_) for l_, r_, tol in worst if r_ is None or r_ > tol]
+    R['sections 14-19: %d groups of printed numbers agree with the Python programs (relative 1e-6; rounded prints 1e-4; ODE and ill-conditioned results 1e-5)' % len(worst)] = not bad
+    if bad:
+        R['  disagreeing groups'] = bad
+
 width = max(len(k) for k in R)
 for k, v in R.items(): print(f'{k:{width}s} : {v}')
 good = (R['message cells (must be 0)'] == 0 and R['check outputs'] == R['check outputs that are True'] and R['check outputs'] > 0
-        and R['check["..."] calls in the input cells'] == R['check outputs']
-        and str(R['Length[checks]']) == str(R['check outputs']) and R['failedChecks == {}'] and R['allChecksPassed output True']
+        and (stage3 or (R['check["..."] calls in the input cells'] == R['check outputs'] and str(R['Length[checks]']) == str(R['check outputs'])))
+        and R['failedChecks == {}'] and R['allChecksPassed output True']
         and all(R[k] for k in R if k.endswith('(python)') or 'printed' in k or k.startswith('private'))
         and all(str(R[k]).endswith('(True)') for k in R if k.startswith('section ') and 'check outputs' in k)
         and all(R[k] for k in R if k.startswith('section 7:') or k.startswith('section 8:') or k.startswith('sections 8-9') or k.startswith('tools/ref_dirac16'))
-        and all(R[k] is True or R[k] == 'skipped' for k in R if k.startswith('sections 0-6')))
+        and all(R[k] is True or R[k] == 'skipped' for k in R if k.startswith('sections 0-6'))
+        and all(R[k] is True or R[k] == 'skipped' for k in R if k.startswith('sections 0-10') or k.startswith('summary table')
+                or k.startswith('sections 14-19')))
 print('\nVERDICT:', 'ALL CROSS-CHECKS PASSED' if good else 'SOMETHING FAILED')
 sys.exit(0 if good else 1)
