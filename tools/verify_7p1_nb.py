@@ -158,6 +158,22 @@ R['sections 8-9: 23 printed numbers agree with tools/ref_dirac16.py to 17 digits
 R['sections 8-9: G_S == -98750, G_V == 20000 printed'] = hf.get('G_S') is not None and float(hf['G_S']) == -98750.0 and float(hf['G_V']) == 20000.0
 R['tools/ref_dirac16.py: all its boolean checks True'] = all(v for v in RR.values() if isinstance(v, bool)) and sum(isinstance(v, bool) for v in RR.values()) >= 80
 
+# sections 0-6 must be exactly the notebook of the first stage: compare every non-output cell with the backup that was
+# taken before sections 7-10 were appended (the backup is kept in backups/, which .gitignore excludes)
+bk = os.path.join(os.path.dirname(here), 'backups', '7+1_2026-10-26_before_dirac16complex.nb')
+if os.path.exists(bk):
+    def _cells(pth):
+        out = []
+        for d0, c0 in P.iter_cells(P.parse_notebook(pth)):
+            st0, ct0, op0 = P.cell_info(c0)
+            if st0 not in ('Output', 'Message', 'Print'): out.append((st0, P.box_to_text(ct0)))
+        return out
+    _a = _cells(bk); _b = _cells(path)
+    _k = next((i for i, (s0, t0) in enumerate(_b) if s0 == 'Section' and t0.strip('"').startswith('7.')), len(_b))
+    R['sections 0-6: the %d input and text cells equal those of the backup' % len(_a)] = (_a == _b[:_k])
+else:
+    R['sections 0-6: backup not present, comparison skipped'] = 'skipped'
+
 width = max(len(k) for k in R)
 for k, v in R.items(): print(f'{k:{width}s} : {v}')
 good = (R['message cells (must be 0)'] == 0 and R['check outputs'] == R['check outputs that are True'] and R['check outputs'] > 0
@@ -165,6 +181,7 @@ good = (R['message cells (must be 0)'] == 0 and R['check outputs'] == R['check o
         and str(R['Length[checks]']) == str(R['check outputs']) and R['failedChecks == {}'] and R['allChecksPassed output True']
         and all(R[k] for k in R if k.endswith('(python)') or 'printed' in k or k.startswith('private'))
         and all(str(R[k]).endswith('(True)') for k in R if k.startswith('section ') and 'check outputs' in k)
-        and all(R[k] for k in R if k.startswith('section 7:') or k.startswith('section 8:') or k.startswith('sections 8-9') or k.startswith('tools/ref_dirac16')))
+        and all(R[k] for k in R if k.startswith('section 7:') or k.startswith('section 8:') or k.startswith('sections 8-9') or k.startswith('tools/ref_dirac16'))
+        and all(R[k] is True or R[k] == 'skipped' for k in R if k.startswith('sections 0-6')))
 print('\nVERDICT:', 'ALL CROSS-CHECKS PASSED' if good else 'SOMETHING FAILED')
 sys.exit(0 if good else 1)

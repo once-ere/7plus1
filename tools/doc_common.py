@@ -82,7 +82,11 @@ def gather():
                       if os.path.isfile(os.path.join(HERE, name)) and (name.endswith('.py') or name.endswith('.wl'))}
     D['size44'] = os.path.getsize(os.path.join(ROOT, '4+4.nb'))
     D['size71'] = os.path.getsize(os.path.join(ROOT, '7+1.nb'))
-    D['today'] = datetime.date.today().isoformat()
+    try:
+        from zoneinfo import ZoneInfo
+        D['today'] = datetime.datetime.now(ZoneInfo('America/Los_Angeles')).date().isoformat()   # the user's time zone
+    except Exception:
+        D['today'] = datetime.date.today().isoformat()
     # numerical octonion example of section 3.4 of the notebook
     def ecomb(v):
         terms = []

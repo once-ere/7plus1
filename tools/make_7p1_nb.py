@@ -1481,8 +1481,8 @@ text('With the chiral components φ_kL = EL†.φ_k and φ_kR = ER†.φ_k of th
 text('      κ = Σ_k φ_kL† φ_kR,      j_L^A = Σ_k φ_kL† σbar^A φ_kL,      j_R^A = Σ_k φ_kR† σ^A φ_kR,')
 text('      ρS = κ + κ* = 2 Re κ,   ρP = i (κ − κ*) = −2 Im κ,   j^A = j_L^A + j_R^A,   j5^A = j_R^A − j_L^A,')
 text('with σ^A = (ID8, σW[i]) and σbar^A = (ID8, −σW[i]) as in section 7.11. The scalar and pseudoscalar densities pair the two '
-     'chiralities; the currents do not. The sources become a complex scalar source μ = s + i p and two chiral vector sources: '
-     's ρS + p ρP = μ κ + μ* κ*,   v_A j^A + a_A j5^A = (v − a)_A j_L^A + (v + a)_A j_R^A.')
+     'chiralities; the currents do not. The sources become a complex scalar source ϖ = s + i p and two chiral vector sources: '
+     's ρS + p ρP = ϖ κ + ϖ* κ*,   v_A j^A + a_A j5^A = (v − a)_A j_L^A + (v + a)_A j_R^A.')
 inp(r'''
 orbLV = Array[orbL, 8]; orbLcV = Array[orbLc, 8]; orbRV = Array[orbR, 8]; orbRcV = Array[orbRc, 8];   (* phi_L, phi_L^*, phi_R, phi_R^* *)
 psiChi = EL.orbLV + ER.orbRV; psiChiDag = orbLcV.ConjugateTranspose[EL] + orbRcV.ConjugateTranspose[ER];
@@ -1520,11 +1520,11 @@ text('      M* φL + [V^R_0 + σW[i] (−i ∂_i + V^R_i)] φR = ε φR,')
 text('with the complex Kohn–Sham mass M = m + S + i P and the chiral vector potentials V^L_A = V_A − A_A, V^R_A = V_A + A_A. '
      'Since σW[i](−i∂_i) = τO[i] ∂_i, the derivative terms contain only the real τO[i], exactly as in section 7.11; the mass M couples '
      'the two chiralities. The potentials are Wirtinger derivatives of the energy:')
-text('      M − m = μ + ∂(E_H + E_xc)/∂κ,   V^L_A = (v − a)_A + ∂(E_H + E_xc)/∂j_L^A,   V^R_A = (v + a)_A + ∂(E_H + E_xc)/∂j_R^A;')
-text('Hartree:   M − m − μ = gS (κ + κ*) − gP (κ − κ*) = gS ρS + i gP ρP,   V^L_A − (v − a)_A = (gV + gA) j_LA + (gV − gA) j_RA,   '
+text('      M − m = ϖ + ∂(E_H + E_xc)/∂κ,   V^L_A = (v − a)_A + ∂(E_H + E_xc)/∂j_L^A,   V^R_A = (v + a)_A + ∂(E_H + E_xc)/∂j_R^A;')
+text('Hartree:   M − m − ϖ = gS (κ + κ*) − gP (κ − κ*) = gS ρS + i gP ρP,   V^L_A − (v − a)_A = (gV + gA) j_LA + (gV − gA) j_RA,   '
      'V^R_A − (v + a)_A = (gV + gA) j_RA + (gV − gA) j_LA.')
 text('The densities κ, j_L, j_R are computed from the occupied chiral orbitals (no sea, as in section 8.4), and the total energy is')
-text('      E = Σ_k ε_k − ∫ [ 2 Re((M − m − μ) κ) + (V^L − v + a)_A j_L^A + (V^R − v − a)_A j_R^A ] d⁷x + E_H + E_xc.')
+text('      E = Σ_k ε_k − ∫ [ 2 Re((M − m − ϖ) κ) + (V^L − v + a)_A j_L^A + (V^R − v − a)_A j_R^A ] d⁷x + E_H + E_xc.')
 inp(r'''
 VLks = VKS - AKS; VRks = VKS + AKS; Mks = mD + Sks + I Pks;
 hChiKS[q_List] := ArrayFlatten[{{VLks[[1]] ID8 - Sum[\[Sigma]W[i] (q[[i]] + VLks[[i + 1]]), {i, 1, 7}], Mks ID8},
@@ -1552,7 +1552,7 @@ text('Because χ17 = i ω17, the chiral transformation ψ → e^{iθχ17} ψ = (
      '(ρS, ρP) rotate by the angle 2θ. Therefore')
 text('      E_H(e^{iθχ17} ψ) − E_H(ψ) = ((gS − gP)/2) [ (e^{4iθ} − 1) κ² + (e^{−4iθ} − 1) κ*² ]:')
 text('the interaction is chirally (U(1)_A) symmetric if and only if gP = gS. The mass term m(κ + κ*) in T_s breaks the symmetry '
-     'explicitly. For m = 0, gP = gS and μ = 0 the whole chiral KS theory is invariant: with κ = 0 the chiral KS equations decouple into '
+     'explicitly. For m = 0, gP = gS and ϖ = 0 the whole chiral KS theory is invariant: with κ = 0 the chiral KS equations decouple into '
      'separate 8-component equations for φL and φR, while a self-consistent solution with κ ≠ 0 breaks the symmetry spontaneously (section 9.6). '
      'The check uses cos θ = 3/5, sin θ = 4/5.')
 inp(r'''
@@ -1589,7 +1589,7 @@ chiralUniform = {"kappa = rhoS/2" -> N[rhoS0/2, 20], "jL^0 = jR^0 = rho/2" -> N[
 ''')
 
 subsection('9.6 The chiral vacuum with the Dirac sea: spontaneous chiral symmetry breaking')
-text('Now keep the Dirac sea — all negative-energy KS orbitals occupied, with a momentum cutoff |p⃗| < Λ — and take gP = gS = g, μ = 0, '
+text('Now keep the Dirac sea — all negative-energy KS orbitals occupied, with a momentum cutoff |p⃗| < Λ — and take gP = gS = g, ϖ = 0, '
      'V = A = 0 and no matter (the vacuum). With a uniform complex KS mass M the chiral KS Hamiltonian h_χ(p⃗) = {{−σW·p⃗, M ID8}, '
      '{M* ID8, σW·p⃗}} (plus m on the off-diagonal blocks when m ≠ 0, absorbed in M) satisfies h_χ² = (p⃗² + |M|²) ID16. Its eigenvalues are ±E, '
      'E = √(p⃗² + |M|²), and the projector on the filled sea is Π−(p⃗) = (ID16 − h_χ(p⃗)/E)/2, whose RL block is −M*/(2E) ID8. Hence')
