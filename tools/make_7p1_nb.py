@@ -1660,6 +1660,29 @@ Grid[Prepend[KeyValueMap[{#1, #2} &, checks], {Style["check", Bold], Style["resu
 ''')
 
 # =====================================================================================
+# Sections 11 and later (stage 3, appended on 26 October 2026) are kept in separate generator files, executed here in order.
+for _part in ('nb_part_gravity.py', 'nb_part_ks_gravity.py', 'nb_part_sm.py'):
+    _f = os.path.join(os.path.dirname(os.path.abspath(__file__)), _part)
+    if os.path.exists(_f):
+        exec(compile(open(_f, encoding='utf-8').read(), _part, 'exec'))
+_last = max(int(c[1].split('.')[0]) for c in C if c[0] == 'Section' and c[1][:1].isdigit())
+if _last >= 11:
+    section('%d. Summary of all checks (sections 1–%d)' % (_last + 1, _last))
+    text('The four cells below summarize every check of the notebook after all sections have been evaluated.')
+    inp(r'''
+Length[checks]
+''')
+    inp(r'''
+failedChecks = Keys[Select[checks, ! TrueQ[#] &]]
+''')
+    inp(r'''
+allChecksPassed = AllTrue[Values[checks], TrueQ]
+''')
+    inp(r'''
+Grid[Prepend[KeyValueMap[{#1, #2} &, checks], {Style["check", Bold], Style["result", Bold]}], Frame -> All, Alignment -> Left]
+''')
+
+# =====================================================================================
 if __name__ == '__main__':
     here = os.path.dirname(os.path.abspath(__file__))
     out = os.path.join(os.path.dirname(here), '7+1.nb')
