@@ -14,6 +14,9 @@ writes, in the repository root, for each NAME of the list below the files NAME.m
     AUXILIARY_TORUS      AUXILIARY_TORUS_PROVENANCE      AUXILIARY_TORUS_SYMBOLS          (the auxiliary torus; section 25 and 14-24)
     WORLD_BRANE          WORLD_BRANE_PROVENANCE          WORLD_BRANE_SYMBOLS              (the world brane; sections 25-26 and 17-24)
     RADION               RADION_PROVENANCE               RADION_SYMBOLS                   (the radion on the 4-torus and the 4-sphere; section 26)
+    7plus1_status_2026-10-28   7plus1_status_2026-10-28_PROVENANCE   7plus1_status_2026-10-28_SYMBOLS
+                         (the state of the repository at commit 102f399: the contents of the spreadsheet 7plus1_status_2026-10-28.xlsx,
+                          which tools/make_status_xlsx.py writes from tools/status_2026-10-28.json)
 Every document is self-contained.  The LaTeX files are compiled with latexmk -xelatex inside build/docs (excluded by .gitignore);
 only the PDFs are copied back.  Every matrix, table, check list and number is computed by the doc_*.py modules or parsed from the
 evaluated 7+1.nb and from the outputs of the independent Python programs, which are run here (or, with --reuse-runs, taken from
@@ -36,6 +39,8 @@ import doc_dark, doc_dark_symbols, doc_dark_provenance
 import doc_torus, doc_torus_symbols, doc_torus_provenance
 import doc_brane, doc_brane_symbols, doc_brane_provenance
 import doc_radion, doc_radion_symbols, doc_radion_provenance
+import doc_status, doc_status_symbols, doc_status_provenance
+from doc_status_common import NAME as STATUS, present as status_present
 
 PROGRAMS = [('verify_7p1_nb.py', 'parses the evaluated 7+1.nb'), ('ref44.py', 'rebuilds 4+4.nb'), ('ref71.py', 'rebuilds 7+1.nb objects'),
             ('extra71.py', 'further identities'), ('ref_dirac16.py', 'independent checks of sections 7-9'),
@@ -128,6 +133,10 @@ def main(argv):
                 'RADION': lambda: doc_radion.build(D3, today),
                 'RADION_SYMBOLS': lambda: doc_radion_symbols.build(D3, today),
                 'RADION_PROVENANCE': lambda: doc_radion_provenance.build(D3, today, runs)}
+    if status_present():
+        builders.update({STATUS: lambda: doc_status.build(today),
+                         STATUS + '_SYMBOLS': lambda: doc_status_symbols.build(today),
+                         STATUS + '_PROVENANCE': lambda: doc_status_provenance.build(D, today, runs)})
     docs = {k: f() for k, f in builders.items() if not only or k in only}
     report = []
     for name, d in docs.items():

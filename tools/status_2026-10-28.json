@@ -1,0 +1,716 @@
+{
+ "title": "7+1 repository after the clean-up of 28 October 2026",
+ "repository": "github.com/once-ere/7plus1",
+ "branch": "main",
+ "described_commit": "102f399",
+ "described_commit_full": "102f399d53720ba9b6bc05c6dbf8d70c68c9ac30",
+ "described_time": "2026-10-28 13:15 PDT",
+ "commits": [
+  {
+   "hash": "0654dcd",
+   "full": "0654dcddc090f5718ecd964c73dbda271f81757a",
+   "time": "2026-10-28 09:51",
+   "title": "Sections 25-26: the auxiliary torus, the world brane, and the radion on the 4-torus and the 4-sphere",
+   "contents": "Sections 25–26 of 7+1.nb and the AUXILIARY_TORUS, WORLD_BRANE and RADION documents (each with its symbols and provenance files)",
+   "files": 122,
+   "added": 24996,
+   "removed": 4890
+  },
+  {
+   "hash": "54862f0",
+   "full": "54862f028eb7d9a3a11b9076d79ff19cf0219f3f",
+   "time": "2026-10-28 10:15",
+   "title": "Documentation tools: keep the evaluation record in tools/eval_log_7p1.txt for fresh-clone rebuilds",
+   "contents": "The record of the evaluation of 7+1.nb, kept in the repository so that a fresh clone rebuilds the documents identically",
+   "files": 12,
+   "added": 66,
+   "removed": 19
+  },
+  {
+   "hash": "93c500f",
+   "full": "93c500ff2ae198889d3d4abd4aafad0ea80f42de",
+   "time": "2026-10-28 12:40",
+   "title": "Documentation: no loose lines left in any PDF; long file names and hashes may break",
+   "contents": "The clean-up of the loose lines of the documents",
+   "files": 44,
+   "added": 210,
+   "removed": 93
+  },
+  {
+   "hash": "102f399",
+   "full": "102f399d53720ba9b6bc05c6dbf8d70c68c9ac30",
+   "time": "2026-10-28 13:15",
+   "title": "Documentation: count every check of tools/ref_coupled.py and tools/ref_torus_brane.py",
+   "contents": "Corrected check counts (50 and 38 instead of 49 and 37), found while this spreadsheet was being prepared",
+   "files": 28,
+   "added": 374,
+   "removed": 355
+  }
+ ],
+ "documents": [
+  {
+   "name": "README",
+   "kind": "Main",
+   "covers": "0–27 (the whole notebook)",
+   "pages": 32,
+   "loose_start": 4,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": true
+  },
+  {
+   "name": "README_SYMBOLS",
+   "kind": "Symbols",
+   "covers": "0–27 (the whole notebook)",
+   "pages": 13,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": false
+  },
+  {
+   "name": "README_PROVENANCE",
+   "kind": "Provenance",
+   "covers": "0–27 (the whole notebook)",
+   "pages": 66,
+   "loose_start": 11,
+   "loose_after_0654dcd": 1,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": true,
+   "changed_102f399": true
+  },
+  {
+   "name": "DIRAC16COMPLEX",
+   "kind": "Main",
+   "covers": "7–10",
+   "pages": 22,
+   "loose_start": 2,
+   "loose_after_0654dcd": 1,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": true,
+   "changed_102f399": false
+  },
+  {
+   "name": "DIRAC16COMPLEX_SYMBOLS",
+   "kind": "Symbols",
+   "covers": "7–10",
+   "pages": 15,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": false
+  },
+  {
+   "name": "DIRAC16COMPLEX_PROVENANCE",
+   "kind": "Provenance",
+   "covers": "7–10",
+   "pages": 27,
+   "loose_start": 6,
+   "loose_after_0654dcd": 1,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": true,
+   "changed_102f399": true
+  },
+  {
+   "name": "GRAVITY",
+   "kind": "Main",
+   "covers": "11–14",
+   "pages": 19,
+   "loose_start": 1,
+   "loose_after_0654dcd": 1,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": true,
+   "changed_102f399": false
+  },
+  {
+   "name": "GRAVITY_SYMBOLS",
+   "kind": "Symbols",
+   "covers": "11–14",
+   "pages": 8,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": false
+  },
+  {
+   "name": "GRAVITY_PROVENANCE",
+   "kind": "Provenance",
+   "covers": "11–14",
+   "pages": 15,
+   "loose_start": 4,
+   "loose_after_0654dcd": 1,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": true,
+   "changed_102f399": false
+  },
+  {
+   "name": "KOHN_SHAM_GRAVITY",
+   "kind": "Main",
+   "covers": "15–16",
+   "pages": 9,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": false
+  },
+  {
+   "name": "KOHN_SHAM_GRAVITY_SYMBOLS",
+   "kind": "Symbols",
+   "covers": "15–16",
+   "pages": 5,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": false
+  },
+  {
+   "name": "KOHN_SHAM_GRAVITY_PROVENANCE",
+   "kind": "Provenance",
+   "covers": "15–16",
+   "pages": 8,
+   "loose_start": 1,
+   "loose_after_0654dcd": 1,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": true,
+   "changed_102f399": false
+  },
+  {
+   "name": "STANDARD_MODEL",
+   "kind": "Main",
+   "covers": "17–19",
+   "pages": 11,
+   "loose_start": 1,
+   "loose_after_0654dcd": 1,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": true,
+   "changed_102f399": false
+  },
+  {
+   "name": "STANDARD_MODEL_SYMBOLS",
+   "kind": "Symbols",
+   "covers": "17–19",
+   "pages": 6,
+   "loose_start": 1,
+   "loose_after_0654dcd": 1,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": true,
+   "changed_102f399": false
+  },
+  {
+   "name": "STANDARD_MODEL_PROVENANCE",
+   "kind": "Provenance",
+   "covers": "17–19",
+   "pages": 8,
+   "loose_start": 1,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": false
+  },
+  {
+   "name": "COUPLED_SOLUTIONS",
+   "kind": "Main",
+   "covers": "20–23",
+   "pages": 19,
+   "loose_start": 2,
+   "loose_after_0654dcd": 1,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": true,
+   "changed_102f399": true
+  },
+  {
+   "name": "COUPLED_SOLUTIONS_SYMBOLS",
+   "kind": "Symbols",
+   "covers": "20–23",
+   "pages": 10,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": false
+  },
+  {
+   "name": "COUPLED_SOLUTIONS_PROVENANCE",
+   "kind": "Provenance",
+   "covers": "20–23",
+   "pages": 16,
+   "loose_start": 3,
+   "loose_after_0654dcd": 2,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": true,
+   "changed_102f399": true
+  },
+  {
+   "name": "DARK_SECTOR",
+   "kind": "Main",
+   "covers": "24",
+   "pages": 15,
+   "loose_start": 1,
+   "loose_after_0654dcd": 1,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": true,
+   "changed_102f399": false
+  },
+  {
+   "name": "DARK_SECTOR_SYMBOLS",
+   "kind": "Symbols",
+   "covers": "24",
+   "pages": 8,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": false
+  },
+  {
+   "name": "DARK_SECTOR_PROVENANCE",
+   "kind": "Provenance",
+   "covers": "24",
+   "pages": 10,
+   "loose_start": 2,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": false
+  },
+  {
+   "name": "AUXILIARY_TORUS",
+   "kind": "Main",
+   "covers": "25, with 14–24 and 26",
+   "pages": 22,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": true
+  },
+  {
+   "name": "AUXILIARY_TORUS_SYMBOLS",
+   "kind": "Symbols",
+   "covers": "25, with 14–24 and 26",
+   "pages": 13,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": false
+  },
+  {
+   "name": "AUXILIARY_TORUS_PROVENANCE",
+   "kind": "Provenance",
+   "covers": "25, with 14–24 and 26",
+   "pages": 13,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": true
+  },
+  {
+   "name": "WORLD_BRANE",
+   "kind": "Main",
+   "covers": "25–26, with 17–24",
+   "pages": 24,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": true
+  },
+  {
+   "name": "WORLD_BRANE_SYMBOLS",
+   "kind": "Symbols",
+   "covers": "25–26, with 17–24",
+   "pages": 11,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": false
+  },
+  {
+   "name": "WORLD_BRANE_PROVENANCE",
+   "kind": "Provenance",
+   "covers": "25–26, with 17–24",
+   "pages": 13,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": true
+  },
+  {
+   "name": "RADION",
+   "kind": "Main",
+   "covers": "26",
+   "pages": 19,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": false
+  },
+  {
+   "name": "RADION_SYMBOLS",
+   "kind": "Symbols",
+   "covers": "26",
+   "pages": 9,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": false
+  },
+  {
+   "name": "RADION_PROVENANCE",
+   "kind": "Provenance",
+   "covers": "26",
+   "pages": 12,
+   "loose_start": 0,
+   "loose_after_0654dcd": 0,
+   "loose_now": 0,
+   "overfull_now": 0,
+   "errors_now": 0,
+   "changed_93c500f": false,
+   "changed_102f399": false
+  }
+ ],
+ "fixes": [
+  {
+   "document": "all 30 documents",
+   "section": "—",
+   "how": "Line breaking",
+   "change": "Code may break after / and _ and \\, long hashes every 8 characters; headings are set ragged right",
+   "commit": "0654dcd"
+  },
+  {
+   "document": "README",
+   "section": "12.4 The nine-channel self-coupling and Kohn–Sham theory in gravitational fields",
+   "how": "Display",
+   "change": "The definitions of Θ^K, σ_r and Θ_K",
+   "commit": "0654dcd"
+  },
+  {
+   "document": "DIRAC16COMPLEX_PROVENANCE",
+   "section": "3.4 Grassmann algebra, quantization and the canonical anticommutators",
+   "how": "Display",
+   "change": "The product and the left derivative of the Grassmann algebra",
+   "commit": "0654dcd"
+  },
+  {
+   "document": "GRAVITY_PROVENANCE",
+   "section": "2.2 The reference notebook Einstein-Lovelock-7+1-Nash.nb",
+   "how": "Code block",
+   "change": "The xAct definitions CD = LC[g], RiemannCD, RicciCD, RicciScalarCD, EinsteinCD",
+   "commit": "0654dcd"
+  },
+  {
+   "document": "STANDARD_MODEL_PROVENANCE",
+   "section": "4. Derivations",
+   "how": "Display",
+   "change": "The mixing angle in matter (MSW)",
+   "commit": "0654dcd"
+  },
+  {
+   "document": "COUPLED_SOLUTIONS_PROVENANCE",
+   "section": "4. Derivations",
+   "how": "Display",
+   "change": "The mode equation of pair creation",
+   "commit": "0654dcd"
+  },
+  {
+   "document": "COUPLED_SOLUTIONS",
+   "section": "4. The coupled field equations and the energy–momentum tensors",
+   "how": "Display",
+   "change": "The minisuperspace action and the identities of its variation",
+   "commit": "93c500f"
+  },
+  {
+   "document": "COUPLED_SOLUTIONS_PROVENANCE",
+   "section": "4. Derivations",
+   "how": "Display",
+   "change": "The comoving energy of one massless particle; the minisuperspace action and its identities",
+   "commit": "93c500f"
+  },
+  {
+   "document": "DARK_SECTOR",
+   "section": "6.1 From the solutions of regimes I and II: overproduction",
+   "how": "Display",
+   "change": "The Einstein-frame mass of a Kaluza–Klein level and its coupling to the radion, g_n = |dM_E/dφ|",
+   "commit": "93c500f"
+  },
+  {
+   "document": "DIRAC16COMPLEX",
+   "section": "6.2 Mode expansion and canonical anticommutators",
+   "how": "Display",
+   "change": "The five momenta of the exact mode sum",
+   "commit": "93c500f"
+  },
+  {
+   "document": "DIRAC16COMPLEX_PROVENANCE",
+   "section": "3.3 Real plane-wave spinors",
+   "how": "Display",
+   "change": "The orthogonal matrix U of the spinors and U^T h U",
+   "commit": "93c500f"
+  },
+  {
+   "document": "GRAVITY",
+   "section": "9. How to reproduce",
+   "how": "Reworded",
+   "change": "The generator command and its files",
+   "commit": "93c500f"
+  },
+  {
+   "document": "GRAVITY_PROVENANCE",
+   "section": "1. The task",
+   "how": "Reworded",
+   "change": "The item on the frame matrices and the spin connection",
+   "commit": "93c500f"
+  },
+  {
+   "document": "KOHN_SHAM_GRAVITY_PROVENANCE",
+   "section": "4. Derivations",
+   "how": "Display",
+   "change": "The completeness of the Θ_K and the Fierz identity",
+   "commit": "93c500f"
+  },
+  {
+   "document": "README_PROVENANCE",
+   "section": "6. The second stage: sections 7–10 of 7+1.nb",
+   "how": "Display",
+   "change": "The notation of sections 7–10",
+   "commit": "93c500f"
+  },
+  {
+   "document": "STANDARD_MODEL",
+   "section": "1. Results at a glance",
+   "how": "Reworded",
+   "change": "The electroweak scale and the tree-level masses",
+   "commit": "93c500f"
+  },
+  {
+   "document": "STANDARD_MODEL_SYMBOLS",
+   "section": "1. Conventions",
+   "how": "Reworded",
+   "change": "The matrix notation",
+   "commit": "93c500f"
+  },
+  {
+   "document": "8 documents: README, README_PROVENANCE, COUPLED_SOLUTIONS, AUXILIARY_TORUS and WORLD_BRANE, and the provenance files of the last three",
+   "section": "—",
+   "how": "Correction",
+   "change": "Every check of tools/ref_coupled.py (50) and tools/ref_torus_brane.py (38) is now counted and listed; before, 49 and 37. A ninth document, DIRAC16COMPLEX_PROVENANCE, changed only in the SHA-256 of tools/doc_stage3_common.py that it records",
+   "commit": "102f399"
+  }
+ ],
+ "programs": [
+  {
+   "program": "tools/verify_7p1_nb.py",
+   "checks": "The evaluated 7+1.nb: every check output, the printed numbers against the Python programs, the earlier sections against their backups",
+   "exit_code": 0,
+   "true": 54,
+   "false": 0,
+   "verdict": "All cross-checks passed"
+  },
+  {
+   "program": "tools/ref44.py",
+   "checks": "Rebuilds the objects of 4+4.nb",
+   "exit_code": 0,
+   "true": 10,
+   "false": 0,
+   "verdict": "All printed results True"
+  },
+  {
+   "program": "tools/ref71.py",
+   "checks": "Rebuilds the octonions and the Clifford matrices of 7+1.nb",
+   "exit_code": 0,
+   "true": 25,
+   "false": 0,
+   "verdict": "All printed results True"
+  },
+  {
+   "program": "tools/extra71.py",
+   "checks": "Further identities: boosts, rotations, the classification of the nine signatures, real solutions",
+   "exit_code": 0,
+   "true": 23,
+   "false": 0,
+   "verdict": "All printed results True"
+  },
+  {
+   "program": "tools/ref_dirac16.py",
+   "checks": "Sections 7–9: dirac16complex, Kohn–Sham, chiral Kohn–Sham",
+   "exit_code": 0,
+   "true": 90,
+   "false": 0,
+   "verdict": "All checks passed"
+  },
+  {
+   "program": "tools/ref_gravity.py",
+   "checks": "Sections 11–14: gravity",
+   "exit_code": 0,
+   "true": 101,
+   "false": 0,
+   "verdict": "All checks passed"
+  },
+  {
+   "program": "tools/ref_ks_gravity.py",
+   "checks": "Sections 15–16: Kohn–Sham theory in gravitational fields",
+   "exit_code": 0,
+   "true": 29,
+   "false": 0,
+   "verdict": "All checks passed"
+  },
+  {
+   "program": "tools/ref_sm.py",
+   "checks": "Sections 17–19: the Standard Model",
+   "exit_code": 0,
+   "true": 33,
+   "false": 0,
+   "verdict": "All checks passed"
+  },
+  {
+   "program": "tools/ref_coupled.py",
+   "checks": "Sections 20–23: the coupled field equations and their solutions",
+   "exit_code": 0,
+   "true": 50,
+   "false": 0,
+   "verdict": "All checks passed"
+  },
+  {
+   "program": "tools/ref_dark.py",
+   "checks": "Section 24: the dark sector",
+   "exit_code": 0,
+   "true": 20,
+   "false": 0,
+   "verdict": "All checks passed"
+  },
+  {
+   "program": "tools/ref_torus_brane.py",
+   "checks": "Section 25: the auxiliary torus and the world brane",
+   "exit_code": 0,
+   "true": 38,
+   "false": 0,
+   "verdict": "All checks passed"
+  },
+  {
+   "program": "tools/ref_radion.py",
+   "checks": "Section 26: the radion",
+   "exit_code": 0,
+   "true": 31,
+   "false": 0,
+   "verdict": "All checks passed"
+  }
+ ],
+ "notebook": {
+  "checks": 479,
+  "true": 479,
+  "printed": 443,
+  "frame": 36,
+  "messages": 0,
+  "inputs": 189,
+  "outputs": 554,
+  "seconds": 283.883,
+  "wolfram": "15.0.1 for Microsoft Windows (64-bit), fresh kernel",
+  "finished": "2026-10-28 08:57:47 PDT"
+ },
+ "rebuild": {
+  "commit": "102f399",
+  "tracked": 184,
+  "mdtex": 60,
+  "mdtex_same": 60,
+  "pdfs": 30,
+  "pdfs_same": 30,
+  "layout_problems": 0,
+  "other_changed": 0
+ },
+ "private_files": [
+  {
+   "file": "The radion note (PDF)",
+   "what": "A PDF printout of the author’s e-mail of 28 October 2026 on the radion",
+   "on_github": "No",
+   "how": "Listed in .git/info/exclude on the author’s computer"
+  },
+  {
+   "file": "The vielbein notes (PDF)",
+   "what": "A PDF printout of the author’s private notes on vielbeins in n dimensions",
+   "on_github": "No",
+   "how": "Listed in .git/info/exclude on the author’s computer"
+  },
+  {
+   "file": "A third private PDF",
+   "what": "Private working material of the author",
+   "on_github": "No",
+   "how": "Listed in .gitignore"
+  },
+  {
+   "file": ".gitignore",
+   "what": "The ignore rules of the repository",
+   "on_github": "No",
+   "how": "Lists itself"
+  }
+ ]
+}

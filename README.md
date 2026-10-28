@@ -1226,6 +1226,9 @@ The note’s ideas — the Kaluza–Klein ansatz, the Einstein frame, the physic
 | `tools/ref_torus_brane.py`, `tools/ref_radion.py` | independent Python checks of sections 25 and 26 |
 | `AUXILIARY_TORUS*`, `WORLD_BRANE*`, `RADION*` (`.md`, `.tex`, `.pdf`) | the documents on the auxiliary torus, the world brane and the radion, each with its symbol dictionary and its provenance record |
 | `tools/eval_log_7p1.txt` | the record of the evaluation of 7+1.nb (Wolfram version, kernel, duration, message and output cells, finish time) with the SHA-256 of the evaluated notebook; `tools/make_docs.py` copies it from build/eval_log.txt, which `tools/run_eval.wl` writes, so that the documents can be rebuilt from a fresh clone |
+| `7plus1_status_2026-10-28.xlsx` | a spreadsheet of the state of the repository at commit 102f399 (28 October 2026): the four commits of that day up to it, the 30 documents with their pages and loose lines, the rewritten paragraphs, the results of the twelve check programs and of the checks of the notebook, the comparison of a fresh clone with the commit, and the private files kept out of the repository; every total is a formula |
+| `7plus1_status_2026-10-28*` (`.md`, `.tex`, `.pdf`) | the same tables and formulas as a document, with its symbol dictionary and its provenance record |
+| `tools/status_2026-10-28.json`, `tools/make_status_xlsx.py` | the data of the spreadsheet and the program that writes it (openpyxl; LibreOffice, if installed, computes and stores the values of its formulas) |
 
 ## 18. References
 

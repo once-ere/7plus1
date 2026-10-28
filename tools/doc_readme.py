@@ -6,6 +6,7 @@ import doc_readme_stage3 as S3
 import doc_readme_stage4 as S4
 import doc_readme_stage5 as S5
 import doc_readme_stage6 as S6
+import doc_readme_stage7 as S7
 
 I8 = r'1_8'; I16 = r'1_{16}'
 
@@ -672,7 +673,8 @@ def build(D):
         ['`tools/nbparse.py`, `tools/verify_7p1_nb.py`', 'parser for .nb files; cross-check of the evaluated 7+1.nb'],
         ['`tools/docgen.py`, `tools/doc_*.py`, `tools/make_docs.py`', 'generators of the documentation (Markdown, LaTeX, PDF)'],
     ] + (S3.file_rows() if D.get('s3') else []) + (S4.file_rows() if S4.present(D.get('s3')) else [])
-      + (S5.file_rows() if S5.present(D.get('s3')) else []) + (S6.file_rows() if S6.present(D.get('s3')) else []) + [
+      + (S5.file_rows() if S5.present(D.get('s3')) else []) + (S6.file_rows() if S6.present(D.get('s3')) else [])
+      + (S7.file_rows() if S7.present() else []) + [
     ], widths=[0.45, 0.49])
 
     d.h1('%d. References' % (nf + 1))

@@ -62,8 +62,10 @@ def build(D, today, runs):
         d.code('backups/7+1_2026-10-26_before_gravity.nb\n%d bytes\nSHA-256 %s' % (D['backup'][1], D['backup'][0]), 'text')
     d.h2('2.2 The reference notebook Einstein-Lovelock-7+1-Nash.nb')
     d.p('The author’s notebook Einstein-Lovelock-7+1-Nash.nb (P. L. Nash, 2022, GNU GPL; corrected version of 27 October 2026, with its '
-        'PDF printout) shows how the Lovelock tensors are to be computed. It is the author’s file and is not part of the repository. '
-        'Taken from it, unchanged in substance:')
+        'PDF printout) shows how the Lovelock tensors are to be computed. It is the author’s file; at the author’s request it was added to the '
+        'repository on 27 October 2026 (commit 730a263), with its PDF printout Einstein-Lovelock-7+1-Nash.pdf (until 28 October 2026 this '
+        'record said that it is not part of the repository, which was no longer true after that commit). Taken from it, unchanged in '
+        'substance:')
     d.ul(['the xAct packages xCoba and xTras, the manifold `M8` with the abstract indices $a$, $b$, $c$, $d$, $f$, $i$, $j$, $k$, $l$, $m$, $n$, $p$, $q$, $r$, $s$, $y$, the '
           'chart `chartM8` with coordinate scalars `x0[]`, …, `x7[]`, and `MyArrayComponents`;',
           'the generalized Kronecker delta `kδ[lower_, upper_] := Det[Outer[delta, lower, upper]]`;',
