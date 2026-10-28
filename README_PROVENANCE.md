@@ -2086,7 +2086,7 @@ VERDICT: ALL CHECKS PASSED
 | `tools/doc_sm.py` | `d896153c39ba42bf67386bd2c8deaee4fade650bd080cf16a6bb39d84d29702c` |
 | `tools/doc_sm_provenance.py` | `28f19e04777cb9149196394fc8093fc1b67f64d0c9cc97560446b3d09e902276` |
 | `tools/doc_sm_symbols.py` | `5ea4c5ecd497f34d6269a2dd3b0aaf8090509f5273ae89c2f111a92aae600a87` |
-| `tools/doc_stage3_common.py` | `42eb0cfecbb8e4bf7a353829aa32a04ff96ec736a95afddbea72fa6d05c05075` |
+| `tools/doc_stage3_common.py` | `981c841803c00c7015e49add60ec5c55f017a2944884382e812fbd540eede2d5` |
 | `tools/doc_symbols.py` | `0d7ba32d3213da504dc935d4e9930d25e37c7294ee254d6cb3c4aeaefeee3218` |
 | `tools/doc_torus.py` | `b3045dbe9447917bd117906d3b305f088815d63e94439344a99265fb32d7e6f2` |
 | `tools/doc_torus_brane_common.py` | `43b11a04bed8af249206a4fb5686678ca0a82bf622872eb474644a6eb40bfc22` |
@@ -2342,7 +2342,7 @@ Inputs from the earlier sections: the closed forms of the Lovelock tensors of th
 
 ### 8.3 Verification of the fourth stage
 
-Sections 20–23 of 7+1.nb contain 48 checks (48 True); they are rows of section 4.2 above. The independent program `tools/ref_coupled.py` (49 boolean checks, 49 True) repeats every derivation and numerical solution with its own code; the 34 groups of numbers printed by both programs agree to a largest relative difference of 0.00032 (tolerances from $`10^{-14}`$ for exact constants to $`2\times10^{-3}`$ for quantities read off long numerical integrations); its complete output is printed in section 4.3.
+Sections 20–23 of 7+1.nb contain 48 checks (48 True); they are rows of section 4.2 above. The independent program `tools/ref_coupled.py` (50 boolean checks, 50 True) repeats every derivation and numerical solution with its own code; the 34 groups of numbers printed by both programs agree to a largest relative difference of 0.00032 (tolerances from $`10^{-14}`$ for exact constants to $`2\times10^{-3}`$ for quantities read off long numerical integrations); its complete output is printed in section 4.3.
 
 ## 9. Section 24 of 7+1.nb: dirac16complex as dark matter and dark energy
 
@@ -2378,7 +2378,7 @@ Inputs: the cosmological and inhomogeneous metrics and the curvature routine (se
 
 ### 10.3 Verification
 
-Sections 25 and 26 contain 27 and 33 checks (27 and 33 True); they are rows of section 4.2 above. The independent programs `tools/ref_torus_brane.py` (37 boolean checks, 37 True) and `tools/ref_radion.py` (31, 31 True) recompute every number with their own code; the 17 and 15 groups of numbers printed by the notebook and by them agree to a largest relative difference of $`3.8\times10^{-10}`$ and $`8.2\times10^{-11}`$; their complete outputs are printed in section 4.3. `tools/verify_7p1_nb.py` confirms that, with each new section removed, the notebook equals its backup.
+Sections 25 and 26 contain 27 and 33 checks (27 and 33 True); they are rows of section 4.2 above. The independent programs `tools/ref_torus_brane.py` (38 boolean checks, 38 True) and `tools/ref_radion.py` (31, 31 True) recompute every number with their own code; the 17 and 15 groups of numbers printed by the notebook and by them agree to a largest relative difference of $`3.8\times10^{-10}`$ and $`8.2\times10^{-11}`$; their complete outputs are printed in section 4.3. `tools/verify_7p1_nb.py` confirms that, with each new section removed, the notebook equals its backup.
 
 ## 11. Authorship
 

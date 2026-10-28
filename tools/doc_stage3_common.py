@@ -71,10 +71,17 @@ def mlist(v):
     return vals if all(x is not None for x in vals) else None
 
 def parse_ref(out):
+    """The lines 'name : value' printed by an independent program.  A check (value True or False) is split at the LAST ' : ',
+    because a few check names contain ' : ' themselves (a ratio a : b : c, a set {n in Z^4 : ...}); every other line at the first."""
     d = OrderedDict()
     for line in out.splitlines():
         if ' : ' in line:
-            k, v = line.split(' : ', 1); d[k.strip()] = v.strip()
+            s = line.rstrip()
+            if s.endswith(' : True') or s.endswith(' : False'):
+                k, v = s.rsplit(' : ', 1)
+            else:
+                k, v = line.split(' : ', 1)
+            d[k.strip()] = v.strip()
     return d
 
 def gather3(runs=None):

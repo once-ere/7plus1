@@ -756,11 +756,11 @@ $`\Gamma^{(5,3)}`$ is the split-octonion analogue of $`\Gamma^{(1,7)}`$: its qua
 
 For sections 11–19, the independent programs `tools/ref_gravity.py` (101 checks, 101 True; with its own curvature and Lovelock engine `tools/lovelock71.py`), `tools/ref_ks_gravity.py` (29 checks, 29 True) and `tools/ref_sm.py` (33 checks, 33 True) repeat every construction; the Lovelock tensors are computed in the notebook both with xAct (as in the reference notebook Einstein-Lovelock-7+1-Nash.nb) and with an independent pair-set sum, which agree exactly.
 
-For sections 20–23 the independent program `tools/ref_coupled.py` (49 checks, 49 True; numpy, scipy, sympy, mpmath, with its own closed forms from `tools/lovelock71.py`, its own quadratures and an 8th-order Runge–Kutta integrator) repeats every derivation and every numerical solution; the 34 groups of numbers printed by both programs agree to a largest relative difference of 0.00032, and `verify_7p1_nb.py` confirms that every cell and output of sections 0–19 is unchanged.
+For sections 20–23 the independent program `tools/ref_coupled.py` (50 checks, 50 True; numpy, scipy, sympy, mpmath, with its own closed forms from `tools/lovelock71.py`, its own quadratures and an 8th-order Runge–Kutta integrator) repeats every derivation and every numerical solution; the 34 groups of numbers printed by both programs agree to a largest relative difference of 0.00032, and `verify_7p1_nb.py` confirms that every cell and output of sections 0–19 is unchanged.
 
 For section 24 the independent program `tools/ref_dark.py` (20 checks, 20 True; numpy, scipy, sympy, mpmath, with its own quadratures, root finding and lattice sums, and the capture and decay results of `tools/ref_coupled.py`) repeats every number; the 29 groups of numbers printed by both programs agree to a largest relative difference of $`1.4\times10^{-7}`$, and `verify_7p1_nb.py` confirms that every cell and output of sections 0–23 is unchanged except one documented correction (section 14).
 
-For sections 25 and 26 the independent programs `tools/ref_torus_brane.py` (37 checks, 37 True) and `tools/ref_radion.py` (31 checks, 31 True; sympy, numpy, mpmath, with their own lattice sieves, curvature routines and 60-digit arithmetic) repeat every example; the 17 and 15 groups of numbers printed by the notebook and by them agree to a largest relative difference of $`3.8\times10^{-10}`$ and $`8.2\times10^{-11}`$, and `verify_7p1_nb.py` confirms that every cell and output of the earlier sections is unchanged.
+For sections 25 and 26 the independent programs `tools/ref_torus_brane.py` (38 checks, 38 True) and `tools/ref_radion.py` (31 checks, 31 True; sympy, numpy, mpmath, with their own lattice sieves, curvature routines and 60-digit arithmetic) repeat every example; the 17 and 15 groups of numbers printed by the notebook and by them agree to a largest relative difference of $`3.8\times10^{-10}`$ and $`8.2\times10^{-11}`$, and `verify_7p1_nb.py` confirms that every cell and output of the earlier sections is unchanged.
 
 ## 10. The notebook 7+1.nb
 
@@ -1079,7 +1079,7 @@ De Sitter expansion with $`H_\infty=H_0\sqrt{\Omega_\Lambda}=1.808\times10^{-18}
 \end{aligned}
 ```
 
-so the auxiliary space stays frozen; without the potential the far future would be eight-dimensional de Sitter, $`21H^2-420\alpha_2H^4+2520\alpha_3H^6=\Lambda`$, with an inflating auxiliary space. **Checks.** Sections 20–23 contain 48 checks, all True; `tools/ref_coupled.py` repeats them with 49 checks, all True.
+so the auxiliary space stays frozen; without the potential the far future would be eight-dimensional de Sitter, $`21H^2-420\alpha_2H^4+2520\alpha_3H^6=\Lambda`$, with an inflating auxiliary space. **Checks.** Sections 20–23 contain 48 checks, all True; `tools/ref_coupled.py` repeats them with 50 checks, all True.
 
 ## 14. Section 24: dirac16complex as dark matter and dark energy
 
