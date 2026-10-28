@@ -11,6 +11,9 @@ writes, in the repository root, for each NAME of the list below the files NAME.m
     STANDARD_MODEL       STANDARD_MODEL_PROVENANCE       STANDARD_MODEL_SYMBOLS           (sections 17-19)
     COUPLED_SOLUTIONS    COUPLED_SOLUTIONS_PROVENANCE    COUPLED_SOLUTIONS_SYMBOLS        (sections 20-23)
     DARK_SECTOR          DARK_SECTOR_PROVENANCE          DARK_SECTOR_SYMBOLS              (section 24)
+    AUXILIARY_TORUS      AUXILIARY_TORUS_PROVENANCE      AUXILIARY_TORUS_SYMBOLS          (the auxiliary torus; section 25 and 14-24)
+    WORLD_BRANE          WORLD_BRANE_PROVENANCE          WORLD_BRANE_SYMBOLS              (the world brane; sections 25-26 and 17-24)
+    RADION               RADION_PROVENANCE               RADION_SYMBOLS                   (the radion on the 4-torus and the 4-sphere; section 26)
 Every document is self-contained.  The LaTeX files are compiled with latexmk -xelatex inside build/docs (excluded by .gitignore);
 only the PDFs are copied back.  Every matrix, table, check list and number is computed by the doc_*.py modules or parsed from the
 evaluated 7+1.nb and from the outputs of the independent Python programs, which are run here (or, with --reuse-runs, taken from
@@ -30,12 +33,16 @@ import doc_ks_gravity, doc_ks_gravity_symbols, doc_ks_gravity_provenance
 import doc_sm, doc_sm_symbols, doc_sm_provenance
 import doc_coupled, doc_coupled_symbols, doc_coupled_provenance
 import doc_dark, doc_dark_symbols, doc_dark_provenance
+import doc_torus, doc_torus_symbols, doc_torus_provenance
+import doc_brane, doc_brane_symbols, doc_brane_provenance
+import doc_radion, doc_radion_symbols, doc_radion_provenance
 
 PROGRAMS = [('verify_7p1_nb.py', 'parses the evaluated 7+1.nb'), ('ref44.py', 'rebuilds 4+4.nb'), ('ref71.py', 'rebuilds 7+1.nb objects'),
             ('extra71.py', 'further identities'), ('ref_dirac16.py', 'independent checks of sections 7-9'),
             ('ref_gravity.py', 'independent checks of sections 11-14'), ('ref_ks_gravity.py', 'independent checks of sections 15-16'),
             ('ref_sm.py', 'independent checks of sections 17-19'), ('ref_coupled.py', 'independent checks of sections 20-23'),
-            ('ref_dark.py', 'independent checks of section 24')]
+            ('ref_dark.py', 'independent checks of section 24'), ('ref_torus_brane.py', 'independent checks of section 25'),
+            ('ref_radion.py', 'independent checks of section 26')]
 
 
 def run(cmd):
@@ -111,7 +118,16 @@ def main(argv):
                 'COUPLED_SOLUTIONS_PROVENANCE': lambda: doc_coupled_provenance.build(D3, today, runs),
                 'DARK_SECTOR': lambda: doc_dark.build(D3, today),
                 'DARK_SECTOR_SYMBOLS': lambda: doc_dark_symbols.build(D3, today),
-                'DARK_SECTOR_PROVENANCE': lambda: doc_dark_provenance.build(D3, today, runs)}
+                'DARK_SECTOR_PROVENANCE': lambda: doc_dark_provenance.build(D3, today, runs),
+                'AUXILIARY_TORUS': lambda: doc_torus.build(D3, today),
+                'AUXILIARY_TORUS_SYMBOLS': lambda: doc_torus_symbols.build(D3, today),
+                'AUXILIARY_TORUS_PROVENANCE': lambda: doc_torus_provenance.build(D3, today, runs),
+                'WORLD_BRANE': lambda: doc_brane.build(D3, today),
+                'WORLD_BRANE_SYMBOLS': lambda: doc_brane_symbols.build(D3, today),
+                'WORLD_BRANE_PROVENANCE': lambda: doc_brane_provenance.build(D3, today, runs),
+                'RADION': lambda: doc_radion.build(D3, today),
+                'RADION_SYMBOLS': lambda: doc_radion_symbols.build(D3, today),
+                'RADION_PROVENANCE': lambda: doc_radion_provenance.build(D3, today, runs)}
     docs = {k: f() for k, f in builders.items() if not only or k in only}
     report = []
     for name, d in docs.items():
@@ -127,13 +143,13 @@ def main(argv):
         logf = os.path.join(bdir, name + '.log')
         log = open(logf, encoding='utf-8', errors='replace').read() if os.path.exists(logf) else ''
         report.append((name, len(md), len(tex), p.returncode, ok, log.count('Overfull \\hbox'), log.count('Underfull \\hbox'),
-                       log.count('\n! ')))
+                       log.count('\n! '), log.count('invalid in math mode')))
     for r in report:
-        print('%-30s md %6d chars  tex %6d chars  latexmk exit %d  pdf %s  overfull %d  underfull %d  errors %d' % r)
+        print('%-30s md %6d chars  tex %6d chars  latexmk exit %d  pdf %s  overfull %d  underfull %d  errors %d  math-mode warnings %d' % r)
     print('program exit codes:', ', '.join('%s %d' % (k.split('/')[-1], v) for k, v in rc.items()))
     if D3.get('xact_tex_errors'):
         print('xAct LaTeX conversion problems:', D3['xact_tex_errors'])
-    print('checks of sections 11-24 (grav, ks, sm, cp, dk):', {k: (len(v), sum(1 for c in v if c[1] == 'True')) for k, v in D3['checks'].items()})
+    print('checks of sections 11-26 (grav, ks, sm, cp, dk, tb, rd):', {k: (len(v), sum(1 for c in v if c[1] == 'True')) for k, v in D3['checks'].items()})
     print('all checks of the notebook:', D3.get('n_checks_total'), 'all passed:', D3.get('all_passed'), 'message cells:', len(D3['messages']))
     return all(r[4] for r in report) and all(v == 0 for v in rc.values())
 

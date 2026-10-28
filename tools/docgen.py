@@ -155,14 +155,26 @@ def top_breaks(latex):
             i += 1
     return False
 
+HEXRUN = re.compile(r'[0-9a-f]{16,}')
+
+def mono_breakable(esc):
+    r"""Allow line breaks inside an escaped code span: after / and _ and \ (file names, paths), and every 8 characters of a long
+    hexadecimal string (hashes).  The spaces of the monospace font cannot stretch, so without these break points a long file name or
+    hash leaves a loose (underfull) line in running text."""
+    esc = HEXRUN.sub(lambda m: r'\allowbreak{}'.join(m.group(0)[i:i + 8] for i in range(0, len(m.group(0)), 8)), esc)
+    return (esc.replace('/', r'/\allowbreak{}').replace(r'\_', r'\_\allowbreak{}')
+               .replace(r'\textbackslash{}', r'\textbackslash{}\allowbreak{}'))
+
 def tex_inline(s, pdf=False):
-    """Inline markup -> LaTeX.  pdf=True (headings): inline mathematics gets a plain-text twin for the PDF bookmarks."""
+    """Inline markup -> LaTeX.  pdf=True (headings): inline mathematics gets a plain-text twin for the PDF bookmarks, and code spans
+    get no break points (they would end up in the bookmarks)."""
     s = sci_math(s)
     out = []
     for tok in INLINE.split(s):
         if not tok: continue
         if tok.startswith('`') and tok.endswith('`') and len(tok) > 1:
-            out.append(r'\texttt{' + tex_escape_text(tok[1:-1], 'mono') + '}')
+            esc = tex_escape_text(tok[1:-1], 'mono')
+            out.append(r'\texttt{' + (esc if pdf else mono_breakable(esc)) + '}')
         elif tok.startswith('**') and tok.endswith('**') and len(tok) > 3:
             out.append(r'\textbf{' + tex_inline(tok[2:-2], pdf) + '}')
         elif tok.startswith('$') and tok.endswith('$') and len(tok) > 1:
@@ -307,6 +319,15 @@ class Doc:
              r'\usepackage{tocloft}\setlength{\cftbeforesecskip}{0.45em}',
              r'\setlength{\parindent}{0pt}\setlength{\parskip}{0.55em}',
              r'\setlength{\emergencystretch}{8em}',
+             # headings ragged right (the article-class definitions with \raggedright added): a long heading is not stretched
+             r'\makeatletter',
+             r'\renewcommand\section{\@startsection{section}{1}{\z@}{-3.5ex \@plus -1ex \@minus -.2ex}{2.3ex \@plus.2ex}'
+             r'{\normalfont\Large\bfseries\raggedright}}',
+             r'\renewcommand\subsection{\@startsection{subsection}{2}{\z@}{-3.25ex\@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}'
+             r'{\normalfont\large\bfseries\raggedright}}',
+             r'\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}{-3.25ex\@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}'
+             r'{\normalfont\normalsize\bfseries\raggedright}}',
+             r'\makeatother',
              r'\renewcommand{\arraystretch}{1.15}',
              r'\allowdisplaybreaks',
              r'\begin{document}',

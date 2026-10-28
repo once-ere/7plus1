@@ -97,8 +97,9 @@ def build(D, today, runs):
     d.eq(r'P(\alpha\to\beta)=\delta_{\alpha\beta}-4\sum_{i>j}\mathrm{Re}\,X_{ij}\sin^2\Delta_{ij}+2\sum_{i>j}\mathrm{Im}\,X_{ij}\sin2\Delta_{ij},\qquad X_{ij}=U^*_{\alpha i}U_{\beta i}U_{\alpha j}U^*_{\beta j}.')
     d.p('(An earlier version of the notebook used $X_{ij}=U_{\\alpha i}U^*_{\\beta i}U^*_{\\alpha j}U_{\\beta j}$, the complex conjugate, which flips the sign of the '
         'CP-odd term; it was corrected, and the check compares the formula with the direct evolution for all nine $(\\alpha,\\beta)$.)')
-    d.p('**MSW angle.** Diagonalizing $\\frac{\\Delta m^2}{4E}\\begin{pmatrix}-\\cos2\\theta&\\sin2\\theta\\\\\\sin2\\theta&\\cos2\\theta\\end{pmatrix}+\\mathrm{diag}(V,0)$ gives '
-        '$\\tan2\\theta_m=\\sin2\\theta/(\\cos2\\theta-2EV/\\Delta m^2)$.')
+    d.p('**MSW angle.** Diagonalizing the two-flavour Hamiltonian in matter gives the mixing angle in matter $\\theta_m$:')
+    d.eq(r'\frac{\Delta m^2}{4E}\begin{pmatrix}-\cos2\theta&\sin2\theta\\\sin2\theta&\cos2\theta\end{pmatrix}+\mathrm{diag}(V,0)\quad\Longrightarrow\quad '
+         r'\tan2\theta_m=\frac{\sin2\theta}{\cos2\theta-2EV/\Delta m^2} .')
 
     d.h1('5. Verification')
     lg = D.get('log', {})

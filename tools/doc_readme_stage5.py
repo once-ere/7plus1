@@ -63,11 +63,11 @@ def verification_text(D3):
             % (n[2], n[3], len(cmp_), fmt(worst, 2) if worst is not None else '?'))
 
 
-def notebook_items(n_last):
+def notebook_items(n_last, with_summary=True):
     return ['**24. dirac16complex as dark matter and dark energy** — the data, cold matter in the three regimes, darkness and stability, the '
             'abundance (overproduction by the solutions, the portals after the dilution, the Kaluza–Klein tower), dark energy (Kohn–Sham matter, '
-            'condensate, Casimir energy, $w=-1$), the verdict (section 14).',
-            '**%d. Summary of all checks** of sections 1–%d.' % (n_last + 1, n_last)]
+            'condensate, Casimir energy, $w=-1$), the verdict (section 14).'] + (
+           ['**%d. Summary of all checks** of sections 1–%d.' % (n_last + 1, n_last)] if with_summary else [])
 
 
 def file_rows():
@@ -89,14 +89,15 @@ def readme_section(d, D3, secno=14):
     v = {k: nbv(D3, k) for k in ('req', 'dbeta', 'sigsi', 'sigm', 'mmax', 'over', 'bulk', 'tstar', 'yzero', 'mstar', 'tower', 'hp', 'vec',
                                  'wmin', 'cas', 'xl', 'pauli')}
     d.h1('%d. Section 24: dirac16complex as dark matter and dark energy' % secno)
-    d.p('Section 24 of 7+1.nb was appended on 27 October 2026 (the summary of all checks became section %d). It asks whether the field '
+    d.p('Section 24 of 7+1.nb was appended on 27 October 2026 (the summary of all checks became section 25%s). It asks whether the field '
         'dirac16complex can be the dark matter and the dark energy, on the basis of the solutions of sections 20–23, the couplings of the model '
         'and present data, and labels every statement DERIVED (exact consequence of the field equations), ESTIMATE (order of magnitude, '
         'assumptions stated) or OPEN. Coordinates: $x_0$ time (the octonion unit), $x_1,x_2,x_3$ ordinary space, $x_4,\\dots,x_7$ auxiliary space; '
         '$\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ is simply the squares of the octonion basis, and xAct declares the spacetime with $\\{7,1,0\\}$. '
         'Physical parameters: $M_8=10$ TeV ($\\kappa=M_8^{-6}$), $M_{\\rm Pl}=2.435\\times10^{18}$ GeV, $V_\\perp=M_{\\rm Pl}^2/M_8^6$, $m_r=10$ GeV. The '
         'section contains %d checks, of which %d are True. In this stage one cell of section 23.3 was corrected: the cold-dark-matter density '
-        'in its table read "0.265" and now reads "Omega_c = 0.264" ($0.120/0.674^2=0.26416$).' % (D3['n_last'] + 1, n[0], n[1]))
+        'in its table read "0.265" and now reads "Omega_c = 0.264" ($0.120/0.674^2=0.26416$).'
+        % ('' if D3['n_last'] + 1 == 25 else ', and is now section %d' % (D3['n_last'] + 1), n[0], n[1]))
     d.h2('%d.1 Cold matter in the three regimes (DERIVED)' % secno)
     d.p('With the homogeneous metric $ds^2=dx_0^2-a^2d\\vec x^2-b^2d\\vec y^2$, a source with comoving energy $W(a,b)$ has '
         '$\\varepsilon=W/(a^3b^4)$, $p_a=-\\partial_aW/(3a^2b^4)$, $p_b=-\\partial_bW/(4a^3b^3)$. A massive particle of dirac16complex has '
@@ -177,7 +178,7 @@ def provenance_section(d, D, D3, runs, secno=9):
     worst = max([r for *_, r in cmp_ if r is not None], default=None)
     d.h1('%d. Section 24 of 7+1.nb: dirac16complex as dark matter and dark energy' % secno)
     d.p('This section records the provenance of section 24 of 7+1.nb (appended on 27 October 2026; the summary of all checks became '
-        'section %d).' % (D3['n_last'] + 1))
+        'section 25%s).' % ('' if D3['n_last'] + 1 == 25 else ', and is now section %d' % (D3['n_last'] + 1)))
     d.h2('%d.1 The task' % secno)
     d.ol(['On the basis of the accurate approximate solutions of the coupled field equations in the three gravity regimes, analyze the validity '
           'of associating dark matter (and dark energy) with dirac16complex (summarized; the original wording is the author’s private working '

@@ -190,8 +190,9 @@ def readme_section(d, D3, secno=12):
 
     # ---------------------------------------------------------------------------------------------
     d.h2('%d.4 The nine-channel self-coupling and Kohn–Sham theory in gravitational fields (sections 15–16)' % secno)
-    d.p('With $\\Theta^K=i^{\\sigma_r}\\Gamma^{A_1}\\cdots\\Gamma^{A_r}$ for the 256 increasing multi-indices $K$ ($\\sigma_r=\\frac{r(r-1)}2\\bmod2$, '
-        '$\\Theta_K=\\eta_{A_1A_1}\\cdots\\eta_{A_rA_r}\\Theta^K$) the most general contact self-coupling has one coupling per rank,')
+    d.p('For the 256 increasing multi-indices $K=(A_1<\\dots<A_r)$ ($r=0,\\dots,8$) define')
+    d.eq(r'\Theta^K=i^{\sigma_r}\Gamma^{A_1}\cdots\Gamma^{A_r},\qquad \sigma_r=\frac{r(r-1)}2\bmod2,\qquad \Theta_K=\eta_{A_1A_1}\cdots\eta_{A_rA_r}\Theta^K;')
+    d.p('the most general contact self-coupling then has one coupling per rank,')
     d.eq(r'\mathcal L_{\rm self}=-\frac12\sum_{r=0}^{8}g_r\sum_{|K|=r}(\bar\Psi\Theta_K\Psi)(\bar\Psi\Theta^K\Psi),\qquad '
          r'\big(i\Gamma^\mu D_\mu-m\big)\Psi=\sum_rg_r\sum_{|K|=r}(\bar\Psi\Theta_K\Psi)\,\Theta^K\Psi,')
     d.p('and contains the four couplings of section 11.3 ($g_0=g_S$, $g_1=g_V$, $g_7=-g_A$, $g_8=-g_P$). The Fierz matrix '

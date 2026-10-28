@@ -1688,8 +1688,10 @@ Grid[Prepend[KeyValueMap[{#1, #2} &, checks], {Style["check", Bold], Style["resu
 
 # =====================================================================================
 # Sections 11 and later (stage 3, appended on 26 October 2026; stage 4, sections 20-23, and section 24 on dark matter and dark
-# energy, 27 October 2026) are kept in separate generator files, executed here in order.
-for _part in ('nb_part_gravity.py', 'nb_part_ks_gravity.py', 'nb_part_sm.py', 'nb_part_coupled.py', 'nb_part_dark.py'):
+# energy, 27 October 2026; section 25 on the auxiliary torus and the world brane, and section 26 on the radion, 28 October 2026) are
+# kept in separate generator files, executed here in order.
+for _part in ('nb_part_gravity.py', 'nb_part_ks_gravity.py', 'nb_part_sm.py', 'nb_part_coupled.py', 'nb_part_dark.py', 'nb_part_torus_brane.py',
+              'nb_part_radion.py'):
     _f = os.path.join(os.path.dirname(os.path.abspath(__file__)), _part)
     if os.path.exists(_f):
         exec(compile(open(_f, encoding='utf-8').read(), _part, 'exec'))

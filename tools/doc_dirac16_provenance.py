@@ -185,10 +185,11 @@ def build(D, runs):
         '$U^{\\mathsf T}h(\\vec p)U=\\mathrm{diag}(E1_8,-E1_8)$, equivalently the completeness relation')
     d.eq(r'\sum_{s=1}^{8}u_s(\vec p)\,u_s(\vec p)^{\mathsf T}+\sum_{s=1}^{8}v_s(-\vec p)\,v_s(-\vec p)^{\mathsf T}=2E\,1_{16}.')
     d.h2('3.4 Grassmann algebra, quantization and the canonical anticommutators')
-    d.p('**Decision.** The Grassmann algebra is implemented with ordered monomials `grass[{k1, …, kr}]`, the product '
-        '$\\theta_K\\theta_{K\'}=\\mathrm{sign}(\\pi)\\theta_{\\mathrm{sort}(K\\cup K\')}$ (zero if $K\\cap K\'\\neq\\emptyset$) and the left derivative '
-        '$\\partial^L(\\theta_{k_1}\\cdots\\theta_{k_r})/\\partial\\theta_{k_j}=(-1)^{j-1}\\theta_{k_1}\\cdots\\widehat{\\theta_{k_j}}\\cdots\\theta_{k_r}$, '
-        'as in Berezin. The current-conservation check uses $\\psi=\\sum_{k=1}^3\\theta_kU_k$, $\\bar\\psi=\\sum_k\\theta_{3+k}U_k^\\dagger\\Gamma^0$ with')
+    d.p('**Decision.** The Grassmann algebra is implemented with ordered monomials `grass[{k1, …, kr}]`, with the product ($\\pi$ the '
+        'permutation that sorts $K\\cup K\'$) and the left derivative, as in Berezin:')
+    d.align([r"\theta_K\theta_{K'}&=\mathrm{sign}(\pi)\,\theta_{\mathrm{sort}(K\cup K')}\qquad(\text{zero if }K\cap K'\neq\emptyset),",
+             r'\frac{\partial^L(\theta_{k_1}\cdots\theta_{k_r})}{\partial\theta_{k_j}}&=(-1)^{j-1}\,\theta_{k_1}\cdots\widehat{\theta_{k_j}}\cdots\theta_{k_r} .'])
+    d.p('The current-conservation check uses $\\psi=\\sum_{k=1}^3\\theta_kU_k$, $\\bar\\psi=\\sum_k\\theta_{3+k}U_k^\\dagger\\Gamma^0$ with')
     d.align([r'U_1&=u_1(\vec p_1)e^{-i(5x_0-\vec p_1\cdot\vec x)},\qquad U_2=v_3(\vec p_3)e^{+i(3x_0-\vec p_3\cdot\vec x)},\qquad U_3=u_5(\vec0)e^{-ix_0},',
              r'\vec p_1&=(2,2,4,0,0,0,0),\qquad \vec p_3=(0,0,0,2,2,0,0).'])
     d.p('The mode expansion and the anticommutators of the modes')
@@ -446,6 +447,7 @@ def build(D, runs):
           '$\\mu$ to $\\varpi$ after the first evaluation, and 7+1.nb was regenerated and evaluated again; the boost, the proof matrices and '
           'Euler’s Gamma function were renamed in the documents only ($\\mathcal B$, $Y$, $Z$, $\\Gamma_{\\rm E}$).'])
     d.h1('6. Authorship')
-    d.p('Notebook sections 7–10, tools and documents written by Claude (Anthropic, model claude-opus-5-5) for Nash, completed on %s, from the '
-        'task described in section 1 and the first part of 7+1.nb described in section 2.1.' % D['today'])
+    d.p('Notebook sections 7–10, tools and documents written by Claude (Anthropic, model claude-opus-5-5) for Nash, completed on 2026-10-26 '
+        '(this record was regenerated on %s), from the task described in section 1 and the first part of 7+1.nb described in section 2.1.'
+        % D['today'])
     return d

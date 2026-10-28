@@ -1,7 +1,8 @@
-"""Data for the stage-3, stage-4 and dark-sector documents (GRAVITY*, KOHN_SHAM_GRAVITY*, STANDARD_MODEL*, COUPLED_SOLUTIONS*,
-DARK_SECTOR*): parsed from the evaluated 7+1.nb (sections 11-24 and the final summary of all checks) and from the outputs of the
-independent Python programs tools/ref_gravity.py, tools/ref_ks_gravity.py, tools/ref_sm.py, tools/ref_coupled.py and tools/ref_dark.py.
-Nothing in the documents that can be computed is typed by hand."""
+"""Data for the stage-3, stage-4, dark-sector, torus, brane and radion documents (GRAVITY*, KOHN_SHAM_GRAVITY*, STANDARD_MODEL*,
+COUPLED_SOLUTIONS*, DARK_SECTOR*, AUXILIARY_TORUS*, WORLD_BRANE*, RADION*): parsed from the evaluated 7+1.nb (sections 11-26 and the final
+summary of all checks) and from the outputs of the independent Python programs tools/ref_gravity.py, tools/ref_ks_gravity.py, tools/ref_sm.py,
+tools/ref_coupled.py, tools/ref_dark.py, tools/ref_torus_brane.py and tools/ref_radion.py.  Nothing in the documents that can be computed is
+typed by hand."""
 import os, re, sys, platform
 from collections import OrderedDict
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
@@ -10,8 +11,9 @@ import nbparse as P
 from doc_common import sha256, eval_log
 
 STAGE3_SECTIONS = {'grav': ('11.', '12.', '13.', '14.'), 'ks': ('15.', '16.'), 'sm': ('17.', '18.', '19.'), 'cp': ('20.', '21.', '22.', '23.'),
-                   'dk': ('24. dirac16complex',)}
-REF = {'grav': 'ref_gravity.py', 'ks': 'ref_ks_gravity.py', 'sm': 'ref_sm.py', 'cp': 'ref_coupled.py', 'dk': 'ref_dark.py'}
+                   'dk': ('24. dirac16complex',), 'tb': ('25. The auxiliary torus',), 'rd': ('26. The radion',)}
+REF = {'grav': 'ref_gravity.py', 'ks': 'ref_ks_gravity.py', 'sm': 'ref_sm.py', 'cp': 'ref_coupled.py', 'dk': 'ref_dark.py',
+       'tb': 'ref_torus_brane.py', 'rd': 'ref_radion.py'}
 FRAME_PREFIXES = ('cosmological metric:', 'pp-wave:', 'inhomogeneous metric', 'static radial metric:')
 
 def notebook_rows(path=None):
@@ -156,8 +158,9 @@ def gather3(runs=None):
             for title, out, *rest in runs:
                 if title.startswith('tools/' + f): D['ref'][key] = (title, out, parse_ref(out))
     files = ['7+1.nb', 'tools/make_7p1_nb.py', 'tools/nb_part_gravity.py', 'tools/nb_part_ks_gravity.py', 'tools/nb_part_sm.py',
-             'tools/nb_part_coupled.py', 'tools/nb_part_dark.py', 'tools/lovelock71.py', 'tools/ref_gravity.py', 'tools/ref_ks_gravity.py',
-             'tools/ref_sm.py', 'tools/ref_coupled.py', 'tools/ref_dark.py', 'tools/ref71.py', 'tools/ref44.py']
+             'tools/nb_part_coupled.py', 'tools/nb_part_dark.py', 'tools/nb_part_torus_brane.py', 'tools/nb_part_radion.py', 'tools/lovelock71.py',
+             'tools/ref_gravity.py', 'tools/ref_ks_gravity.py', 'tools/ref_sm.py', 'tools/ref_coupled.py', 'tools/ref_dark.py', 'tools/ref_torus_brane.py',
+             'tools/ref_radion.py', 'tools/ref71.py', 'tools/ref44.py']
     D['sha'] = OrderedDict((f, sha256(os.path.join(ROOT, f))) for f in files if os.path.exists(os.path.join(ROOT, f)))
     bk = os.path.join(ROOT, 'backups', '7+1_2026-10-26_before_gravity.nb')
     D['backup'] = (sha256(bk), os.path.getsize(bk)) if os.path.exists(bk) else None

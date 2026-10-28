@@ -4,6 +4,7 @@ from doc_common import *
 import doc_readme_stage3 as S3
 import doc_readme_stage4 as S4
 import doc_readme_stage5 as S5
+import doc_readme_stage6 as S6
 
 def build(D):
     d = Doc('7+1: symbols and their definitions',
@@ -252,4 +253,6 @@ def build(D):
         S4.symbols_section(d, D['s3'], 11)
     if S5.present(D.get('s3')):
         S5.symbols_section(d, D['s3'], 12)
+    if S6.present(D.get('s3')):
+        S6.symbols_section(d, D['s3'], 13)
     return d

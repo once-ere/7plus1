@@ -25,6 +25,13 @@ Section 24 (dirac16complex as dark matter and dark energy, appended on 27 Octobe
 the title of the summary section restored, the notebook equals the backup taken before it was appended (cells and outputs, with the
 same exceptions and one documented correction: in the table of section 23.3 the cold-dark-matter density reads "Omega_c = 0.264", where
 the backup had "0.265"; 0.120/0.674^2 = 0.26416); the printed numbers of section 24 are compared with tools/ref_dark.py.
+Section 25 (the auxiliary torus and the world brane: definitions and worked examples, appended on 28 October 2026): every check is True;
+with section 25 removed and the title of the summary section restored, the notebook equals the backup taken before it was appended (cells
+and outputs; the summary counts, the private context name and measured times excepted); the printed numbers of section 25 are compared
+with tools/ref_torus_brane.py.
+Section 26 (the radion: the size of the extra space, on the 4-torus and on the 4-sphere, appended on 28 October 2026): every check is True;
+with section 26 removed and the title of the summary section restored, the notebook equals the backup taken before it was appended (cells
+and outputs, with the same exceptions); the printed numbers of section 26 are compared with tools/ref_radion.py.
 """
 import os, re, sys
 sys.setrecursionlimit(100000)
@@ -191,6 +198,14 @@ STAGE4_SECS = (STAGE4_FIRST, '21. Regime', '22. Regime', '23. Regime')
 STAGE5_FIRST = '24. dirac16complex'
 STAGE5_SECS = (STAGE5_FIRST,)
 CORRECTIONS5 = [('(Omega_c = 0.264 if it is the dark matter)', '(0.265 if it is the dark matter)')]   # (new text, text of the backup)
+# section 25 (the auxiliary torus and the world brane, 28 October 2026): it lies between section 24 and the summary, so _strip4 and _strip5
+# remove it too, and the comparisons of outputs leave it out
+STAGE6_FIRST = '25. The auxiliary torus and the world brane'
+STAGE6_SECS = (STAGE6_FIRST,)
+# section 26 (the radion, 28 October 2026): it lies between section 25 and the summary, so the earlier _strip functions remove it too, and
+# the comparisons of outputs leave it out
+STAGE7_FIRST = '26. The radion'
+STAGE7_SECS = (STAGE7_FIRST,)
 def _is_summary(t): return 'Summary of all checks' in t
 def _strip4(cl, old_title):
     """cl: list of (style, text); drop the cells of sections 20-23 and give the summary section that follows them (the final one) its
@@ -275,7 +290,7 @@ if stage3:
                 if st0 in ('Output', 'Message', 'Print'): out.append((sec, P.box_to_text(ct0)))
             return out
         import difflib
-        _o4 = _outs(bk4); _n4 = [x_ for x_ in _outs(path) if not x_[0].startswith(STAGE4_SECS + STAGE5_SECS)]
+        _o4 = _outs(bk4); _n4 = [x_ for x_ in _outs(path) if not x_[0].startswith(STAGE4_SECS + STAGE5_SECS + STAGE6_SECS + STAGE7_SECS)]
         _sm = difflib.SequenceMatcher(a=[t for q, t in _o4], b=[t for q, t in _n4], autojunk=False)
         _same = 0; _new = 0; _ok = True; _bad = []
         _num = re.compile(r'\d+\.\d*`?')
@@ -354,7 +369,7 @@ if stage4:
                 if st0 == 'Section': sec = P.box_to_text(ct0).strip('"')
                 if st0 in ('Output', 'Message', 'Print'): out.append((sec, P.box_to_text(ct0)))
             return out
-        _o5 = _outs5(bk5); _n5 = [x_ for x_ in _outs5(path) if not x_[0].startswith(STAGE4_SECS + STAGE5_SECS)]
+        _o5 = _outs5(bk5); _n5 = [x_ for x_ in _outs5(path) if not x_[0].startswith(STAGE4_SECS + STAGE5_SECS + STAGE6_SECS + STAGE7_SECS)]
         _ctx5 = lambda t: re.sub(r'Notebook\$\$[0-9$]+`', 'Notebook`', t)
         _numre5 = re.compile(r'\d+\.\d*`?')
         _bad5 = []
@@ -426,7 +441,7 @@ if stage5:
                 if st0 == 'Section': sec = P.box_to_text(ct0).strip('"')
                 if st0 in ('Output', 'Message', 'Print'): out.append((sec, P.box_to_text(ct0)))
             return out
-        _o6 = _outs6(bk6); _n6 = [x_ for x_ in _outs6(path) if not x_[0].startswith(STAGE5_SECS)]
+        _o6 = _outs6(bk6); _n6 = [x_ for x_ in _outs6(path) if not x_[0].startswith(STAGE5_SECS + STAGE6_SECS + STAGE7_SECS)]
         _ctx6 = lambda t: re.sub(r'Notebook\$\$[0-9$]+`', 'Notebook`', t)
         _numre6 = re.compile(r'\d+\.\d*`?')
         _bad6 = []; _oc6 = 0
@@ -461,6 +476,134 @@ if stage5:
     R['section 24 numbers: %d groups of printed numbers agree with tools/ref_dark.py (tolerances per group, from 1e-14 for closed forms to 1e-5 for a number read off a numerical solution)' % len(cmp5)] = not bad5
     if bad5: R['  disagreeing groups (section 24)'] = bad5
 
+# ---------------------------------------------------------------- section 25: the auxiliary torus and the world brane ----------------
+stage6 = any(s0 == 'Section' and t0.strip('"').startswith(STAGE6_FIRST) for s0, t0 in _b)
+if stage6:
+    so = [o for o, q in zip(outs, outsec) if q == '25' and chk_re.fullmatch(o.strip())]
+    R['section 25: check outputs (all True)'] = '%d (%s)' % (len(so), all(o.strip().endswith('->True') for o in so))
+    def _strip6(cl, old_title):
+        """drop the cells of section 25 and give the summary section that follows it its old title"""
+        out = []; skip = False
+        for st0, t0 in cl:
+            if st0 == 'Section':
+                tt0 = t0.strip('"')
+                if tt0.startswith(STAGE6_FIRST): skip = True
+                elif skip and _is_summary(tt0):
+                    skip = False
+                    if old_title is not None: t0 = old_title
+            if not skip: out.append((st0, t0))
+        return out
+    bk7 = os.path.join(os.path.dirname(here), 'backups', '7+1_2026-10-28_before_torus_brane.nb')
+    if os.path.exists(bk7):
+        _a7 = _cells(bk7)
+        _t7 = next((t0 for st0, t0 in reversed(_a7) if st0 == 'Section'), None)
+        _b7 = _strip6(_b, _t7)
+        R['stage 6: without section 25 (and with the old title of the summary section) the %d input and text cells equal those of the backup '
+          'taken before section 25 was appended' % len(_a7)] = (_a7 == _b7)
+        def _outs7(pth):
+            out = []; sec = ''
+            for d0, c0 in P.iter_cells(P.parse_notebook(pth)):
+                st0, ct0, op0 = P.cell_info(c0)
+                if st0 == 'Section': sec = P.box_to_text(ct0).strip('"')
+                if st0 in ('Output', 'Message', 'Print'): out.append((sec, P.box_to_text(ct0)))
+            return out
+        _o7 = _outs7(bk7); _n7 = [x_ for x_ in _outs7(path) if not x_[0].startswith(STAGE6_SECS + STAGE7_SECS)]
+        _ctx7 = lambda t: re.sub(r'Notebook\$\$[0-9$]+`', 'Notebook`', t)
+        _numre7 = re.compile(r'\d+\.\d*`?')
+        _bad7 = []
+        if len(_o7) != len(_n7): _bad7.append(('count', len(_o7), len(_n7)))
+        else:
+            for (qa, ta), (qb, tb) in zip(_o7, _n7):
+                if ta == tb: continue
+                if _ctx7(ta) == _ctx7(tb): continue
+                if _numre7.fullmatch(ta.strip()) and _numre7.fullmatch(tb.strip()): continue
+                if _is_summary(qa) and _is_summary(qb): continue
+                _bad7.append((qa[:30], ta[:80]))
+        R['stage 6: the %d outputs of sections 0-24 and of the summary equal those of the backup (summary counts and tables, the private '
+          'context name and measured times excepted)' % len(_o7)] = not _bad7
+        if _bad7: R['  stage-6 outputs that differ'] = _bad7[:10]
+    else:
+        R['stage 6: backup not present, comparison skipped'] = 'skipped'
+    import json, subprocess
+    rfile6 = os.path.join(os.path.dirname(here), 'build', 'docs', 'runs.json')
+    pyt = None
+    if os.path.exists(rfile6):
+        for t_, o_, c_ in json.load(open(rfile6, encoding='utf-8')):
+            if t_.startswith('tools/ref_torus_brane.py'): pyt = o_
+    if pyt is None:
+        pyt = subprocess.run([sys.executable, '-B', os.path.join(here, 'ref_torus_brane.py')], capture_output=True, text=True, cwd=os.path.dirname(here)).stdout
+    from doc_stage3_common import gather3
+    D6 = gather3([['tools/ref_torus_brane.py (x)', pyt, 0]])
+    import doc_torus_brane_common
+    cmp6 = doc_torus_brane_common.compare(D6)
+    bad6 = [(lab, r_, tol) for lab, a_, b_, tol, r_ in cmp6 if r_ is None or r_ > tol]
+    R['section 25 numbers: %d groups of printed numbers agree with tools/ref_torus_brane.py (integers and exact values exactly, floating-point numbers to 1e-15 ... 1e-6 per group)' % len(cmp6)] = not bad6
+    if bad6: R['  disagreeing groups (section 25)'] = bad6
+
+# ---------------------------------------------------------------- section 26: the radion on the 4-torus and on the 4-sphere ----------------
+stage7 = any(s0 == 'Section' and t0.strip('"').startswith(STAGE7_FIRST) for s0, t0 in _b)
+if stage7:
+    so = [o for o, q in zip(outs, outsec) if q == '26' and chk_re.fullmatch(o.strip())]
+    R['section 26: check outputs (all True)'] = '%d (%s)' % (len(so), all(o.strip().endswith('->True') for o in so))
+    def _strip7(cl, old_title):
+        """drop the cells of section 26 and give the summary section that follows it its old title"""
+        out = []; skip = False
+        for st0, t0 in cl:
+            if st0 == 'Section':
+                tt0 = t0.strip('"')
+                if tt0.startswith(STAGE7_FIRST): skip = True
+                elif skip and _is_summary(tt0):
+                    skip = False
+                    if old_title is not None: t0 = old_title
+            if not skip: out.append((st0, t0))
+        return out
+    bk8 = os.path.join(os.path.dirname(here), 'backups', '7+1_2026-10-28_before_radion.nb')
+    if os.path.exists(bk8):
+        _a8 = _cells(bk8)
+        _t8 = next((t0 for st0, t0 in reversed(_a8) if st0 == 'Section'), None)
+        _b8 = _strip7(_b, _t8)
+        R['stage 7: without section 26 (and with the old title of the summary section) the %d input and text cells equal those of the backup '
+          'taken before section 26 was appended' % len(_a8)] = (_a8 == _b8)
+        def _outs8(pth):
+            out = []; sec = ''
+            for d0, c0 in P.iter_cells(P.parse_notebook(pth)):
+                st0, ct0, op0 = P.cell_info(c0)
+                if st0 == 'Section': sec = P.box_to_text(ct0).strip('"')
+                if st0 in ('Output', 'Message', 'Print'): out.append((sec, P.box_to_text(ct0)))
+            return out
+        _o8 = _outs8(bk8); _n8 = [x_ for x_ in _outs8(path) if not x_[0].startswith(STAGE7_SECS)]
+        _ctx8 = lambda t: re.sub(r'Notebook\$\$[0-9$]+`', 'Notebook`', t)
+        _numre8 = re.compile(r'\d+\.\d*`?')
+        _bad8 = []
+        if len(_o8) != len(_n8): _bad8.append(('count', len(_o8), len(_n8)))
+        else:
+            for (qa, ta), (qb, tb) in zip(_o8, _n8):
+                if ta == tb: continue
+                if _ctx8(ta) == _ctx8(tb): continue
+                if _numre8.fullmatch(ta.strip()) and _numre8.fullmatch(tb.strip()): continue
+                if _is_summary(qa) and _is_summary(qb): continue
+                _bad8.append((qa[:30], ta[:80]))
+        R['stage 7: the %d outputs of sections 0-25 and of the summary equal those of the backup (summary counts and tables, the private '
+          'context name and measured times excepted)' % len(_o8)] = not _bad8
+        if _bad8: R['  stage-7 outputs that differ'] = _bad8[:10]
+    else:
+        R['stage 7: backup not present, comparison skipped'] = 'skipped'
+    import json, subprocess
+    rfile7 = os.path.join(os.path.dirname(here), 'build', 'docs', 'runs.json')
+    pyr = None
+    if os.path.exists(rfile7):
+        for t_, o_, c_ in json.load(open(rfile7, encoding='utf-8')):
+            if t_.startswith('tools/ref_radion.py'): pyr = o_
+    if pyr is None:
+        pyr = subprocess.run([sys.executable, '-B', os.path.join(here, 'ref_radion.py')], capture_output=True, text=True, cwd=os.path.dirname(here)).stdout
+    from doc_stage3_common import gather3
+    D7 = gather3([['tools/ref_radion.py (x)', pyr, 0]])
+    import doc_radion_common
+    cmp7 = doc_radion_common.compare(D7)
+    bad7 = [(lab, r_, tol) for lab, a_, b_, tol, r_ in cmp7 if r_ is None or r_ > tol]
+    R['section 26 numbers: %d groups of printed numbers agree with tools/ref_radion.py (integers and exact values exactly, floating-point numbers to 1e-15 ... 1e-9 per group)' % len(cmp7)] = not bad7
+    if bad7: R['  disagreeing groups (section 26)'] = bad7
+
 width = max(len(k) for k in R)
 for k, v in R.items(): print(f'{k:{width}s} : {v}')
 good = (R['message cells (must be 0)'] == 0 and R['check outputs'] == R['check outputs that are True'] and R['check outputs'] > 0
@@ -472,6 +615,7 @@ good = (R['message cells (must be 0)'] == 0 and R['check outputs'] == R['check o
         and all(R[k] is True or R[k] == 'skipped' for k in R if k.startswith('sections 0-6'))
         and all(R[k] is True or R[k] == 'skipped' for k in R if k.startswith('sections 0-10') or k.startswith('sections 0-20') or k.startswith('summary table')
                 or k.startswith('sections 14-19') or k.startswith('stage 4') or k.startswith('sections 20-23') or k.startswith('stage 5')
-                or k.startswith('section 24 numbers')))
+                or k.startswith('section 24 numbers') or k.startswith('stage 6') or k.startswith('section 25 numbers') or k.startswith('stage 7')
+                or k.startswith('section 26 numbers')))
 print('\nVERDICT:', 'ALL CROSS-CHECKS PASSED' if good else 'SOMETHING FAILED')
 sys.exit(0 if good else 1)

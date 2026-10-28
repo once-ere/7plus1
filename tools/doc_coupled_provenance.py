@@ -191,8 +191,8 @@ def build(D, today, runs):
     d.p('with conservation $\\varepsilon\\propto\\tau^{-3P(1+w_a)-4Q(1+w_b)}=\\tau^{-2}$; for $(w_a,w_b)=(0,\\tfrac14)$: $P=0$, $Q=\\tfrac25$, $\\mathcal C=\\tfrac{24}{25}$.')
     d.p('**The tail of pair creation.** $p_1-q_1=\\frac{1+2\\sqrt2}7-\\frac{2-3\\sqrt2}{14}=\\frac{\\sqrt2}2$ and $1-p_1=\\frac{6-2\\sqrt2}7$, so')
     d.eq(r'\frac{2(p_1-q_1)}{1-p_1}=\frac{7\sqrt2}{6-2\sqrt2}=\frac{7\sqrt2(6+2\sqrt2)}{28}=\frac{3\sqrt2+2}2 .')
-    d.p('The exponent follows from first-order adiabatic perturbation theory for the mode equation $i\\,dc/d\\tau=\\omega(\\cos\\theta\\,\\sigma_1+\\sin\\theta\\,\\sigma_2)c$, '
-        '$\\omega=K\\sqrt{\\tau^{-2p_1}+\\tau^{-2q_1}}$, $\\tan\\theta=\\tau^{p_1-q_1}$:')
+    d.p('The exponent follows from first-order adiabatic perturbation theory for the mode equation')
+    d.eq(r'i\,\frac{dc}{d\tau}=\omega\,(\cos\theta\,\sigma_1+\sin\theta\,\sigma_2)\,c,\qquad \omega=K\sqrt{\tau^{-2p_1}+\tau^{-2q_1}},\qquad \tan\theta=\tau^{p_1-q_1}:')
     d.align([r'\beta&\approx\int_0^\infty\frac{1}{2}\frac{d\theta}{d\tau}\exp\Big(2i\int_0^\tau\omega(\tau_1)\,d\tau_1\Big)d\tau,\qquad '
              r'\theta\approx\tau^{p_1-q_1},\quad \omega\approx K\tau^{-p_1}\quad(\tau\to0);',
              r'x&=K\tau^{1-p_1}:\qquad \beta\approx K^{-\frac{p_1-q_1}{1-p_1}}\,\frac{p_1-q_1}{2(1-p_1)}\int_0^\infty x^{\frac{p_1-q_1}{1-p_1}-1}e^{2ix/(1-p_1)}dx,'])

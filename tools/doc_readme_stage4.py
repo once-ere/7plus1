@@ -98,7 +98,7 @@ def readme_section(d, D3, secno=13):
         'ordinary space, $x_4,\\dots,x_7$ auxiliary space; $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ is simply the squares of the octonion basis, and '
         'xAct declares the spacetime with the signature list $\\{7,1,0\\}$ (seven space-like, one time-like dimension). A prime is $d/dx_0$; '
         '$\\kappa=8\\pi G_8=M_8^{-6}$. The sections contain %d checks, of which %d are True.' % (
-            '' if D3['n_last'] + 1 == 24 else ' (and is now section %d, after section 24 on dark matter and dark energy was appended)' % (D3['n_last'] + 1),
+            '' if D3['n_last'] + 1 == 24 else ' (and is now section %d, after sections 24–%d were appended)' % (D3['n_last'] + 1, D3['n_last']),
             n[0], n[1]))
     d.h2('%d.1 Every interaction in equation form (section 20)' % secno)
     d.p('With the Lovelock densities $L_k=2^{-k}\\delta^{\\alpha_1\\beta_1\\cdots\\alpha_k\\beta_k}_{\\gamma_1\\delta_1\\cdots\\gamma_k\\delta_k}R^{\\gamma_1\\delta_1}{}_{\\alpha_1\\beta_1}\\cdots R^{\\gamma_k\\delta_k}{}_{\\alpha_k\\beta_k}$ '

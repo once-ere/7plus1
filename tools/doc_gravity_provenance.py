@@ -71,9 +71,9 @@ def build(D, today, runs):
           ])
     d.eq(r'\mathrm{Lovelock}_k=-\frac{1}{2^{k+1}}\,R_{c_1d_1}{}^{f_1i_1}\cdots R_{c_kd_k}{}^{f_ki_k}\;\delta^{b\,c_1d_1\cdots c_kd_k}_{a\,f_1i_1\cdots f_ki_k}\quad(k=1,2,3),'
          r'\qquad \mathrm{Lovelock}_1=R_a{}^b-\tfrac12\delta_a{}^bR,')
-    d.ul(['the evaluation of components by assigning a component metric and setting `CD = LC[g]`, `RiemannCD = Riemann[CD]`, '
-          '`RicciCD = Ricci[CD]`, `RicciScalarCD = RicciScalar[CD]`, `EinsteinCD = Einstein[CD]`;',
-          'the form of the vacuum field equations and the procedure of solving them for $w_2,w_3$ (and $\\Lambda$):'])
+    d.ul(['the evaluation of components by assigning a component metric and then setting the connection and the curvature tensors,'])
+    d.code('CD = LC[g]; RiemannCD = Riemann[CD]; RicciCD = Ricci[CD];\nRicciScalarCD = RicciScalar[CD]; EinsteinCD = Einstein[CD];')
+    d.ul(['the form of the vacuum field equations and the procedure of solving them for $w_2,w_3$ (and $\\Lambda$):'])
     d.eq(r'0=-\Lambda\,\delta^\mu_\nu+H^{-2}w_1\,\mathrm{Lovelock}_1+H^{-4}w_2\,\mathrm{Lovelock}_2+H^{-6}w_3\,\mathrm{Lovelock}_3,')
     d.p('with the justification it quotes from D. Lovelock and H. Rund, *Tensors, Differential Forms, and Variational Principles* (Dover), '
         'Remark 2 after Eq. (4.38): in $n$ dimensions the most general symmetric divergence-free tensor built from the metric and its '
