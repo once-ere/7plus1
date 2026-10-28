@@ -21,6 +21,10 @@ check is True; with sections 20-23 removed and the title of the summary section 
 before they were appended (cells and outputs; the summary counts, the private context name and measured times excepted), and the
 older comparisons above are made on that reduced notebook; the printed numbers of sections 20-23 are compared with
 tools/ref_coupled.py.
+Section 24 (dirac16complex as dark matter and dark energy, appended on 27 October 2026): every check is True; with section 24 removed and
+the title of the summary section restored, the notebook equals the backup taken before it was appended (cells and outputs, with the
+same exceptions and one documented correction: in the table of section 23.3 the cold-dark-matter density reads "Omega_c = 0.264", where
+the backup had "0.265"; 0.120/0.674^2 = 0.26416); the printed numbers of section 24 are compared with tools/ref_dark.py.
 """
 import os, re, sys
 sys.setrecursionlimit(100000)
@@ -182,6 +186,11 @@ def _cells(pth):
 # section ("24. Summary of all checks (sections 1-23)") is given the title it had before ("20. Summary of all checks (sections 1-19)")
 STAGE4_FIRST = '20. The coupled field equations'
 STAGE4_SECS = (STAGE4_FIRST, '21. Regime', '22. Regime', '23. Regime')
+# section 24 (dirac16complex as dark matter and dark energy, 27 October 2026): it lies between section 23 and the summary, so _strip4
+# removes it too; the comparisons of outputs leave it out as well.  The one cell of sections 0-23 that changed with it:
+STAGE5_FIRST = '24. dirac16complex'
+STAGE5_SECS = (STAGE5_FIRST,)
+CORRECTIONS5 = [('(Omega_c = 0.264 if it is the dark matter)', '(0.265 if it is the dark matter)')]   # (new text, text of the backup)
 def _is_summary(t): return 'Summary of all checks' in t
 def _strip4(cl, old_title):
     """cl: list of (style, text); drop the cells of sections 20-23 and give the summary section that follows them (the final one) its
@@ -266,7 +275,7 @@ if stage3:
                 if st0 in ('Output', 'Message', 'Print'): out.append((sec, P.box_to_text(ct0)))
             return out
         import difflib
-        _o4 = _outs(bk4); _n4 = [x_ for x_ in _outs(path) if not x_[0].startswith(STAGE4_SECS)]
+        _o4 = _outs(bk4); _n4 = [x_ for x_ in _outs(path) if not x_[0].startswith(STAGE4_SECS + STAGE5_SECS)]
         _sm = difflib.SequenceMatcher(a=[t for q, t in _o4], b=[t for q, t in _n4], autojunk=False)
         _same = 0; _new = 0; _ok = True; _bad = []
         _num = re.compile(r'\d+\.\d*`?')
@@ -345,7 +354,7 @@ if stage4:
                 if st0 == 'Section': sec = P.box_to_text(ct0).strip('"')
                 if st0 in ('Output', 'Message', 'Print'): out.append((sec, P.box_to_text(ct0)))
             return out
-        _o5 = _outs5(bk5); _n5 = [x_ for x_ in _outs5(path) if not x_[0].startswith(STAGE4_SECS)]
+        _o5 = _outs5(bk5); _n5 = [x_ for x_ in _outs5(path) if not x_[0].startswith(STAGE4_SECS + STAGE5_SECS)]
         _ctx5 = lambda t: re.sub(r'Notebook\$\$[0-9$]+`', 'Notebook`', t)
         _numre5 = re.compile(r'\d+\.\d*`?')
         _bad5 = []
@@ -378,6 +387,80 @@ if stage4:
     R['sections 20-23: %d groups of printed numbers agree with tools/ref_coupled.py (tolerances per group, from 1e-14 for exact constants to 2e-3 for numbers read off numerical solutions)' % len(cmp4)] = not bad4
     if bad4: R['  disagreeing groups (sections 20-23)'] = bad4
 
+# ---------------------------------------------------------------- section 24: dirac16complex as dark matter and dark energy ----------------
+stage5 = any(s0 == 'Section' and t0.strip('"').startswith(STAGE5_FIRST) for s0, t0 in _b)
+if stage5:
+    so = [o for o, q in zip(outs, outsec) if q == '24' and chk_re.fullmatch(o.strip())]
+    R['section 24: check outputs (all True)'] = '%d (%s)' % (len(so), all(o.strip().endswith('->True') for o in so))
+    def _strip5(cl, old_title):
+        """drop the cells of section 24 and give the summary section that follows it its old title"""
+        out = []; skip = False
+        for st0, t0 in cl:
+            if st0 == 'Section':
+                tt0 = t0.strip('"')
+                if tt0.startswith(STAGE5_FIRST): skip = True
+                elif skip and _is_summary(tt0):
+                    skip = False
+                    if old_title is not None: t0 = old_title
+            if not skip: out.append((st0, t0))
+        return out
+    def _undo5(t):
+        n = 0
+        for new_, old_ in CORRECTIONS5:
+            if new_ in t: t = t.replace(new_, old_); n += 1
+        return t, n
+    bk6 = os.path.join(os.path.dirname(here), 'backups', '7+1_2026-10-27_before_dark.nb')
+    if os.path.exists(bk6):
+        _a6 = _cells(bk6)
+        _t6 = next((t0 for st0, t0 in reversed(_a6) if st0 == 'Section'), None)
+        _b6 = []; _nc6 = 0
+        for st0, t0 in _strip5(_b, _t6):
+            t1, n1 = _undo5(t0); _b6.append((st0, t1)); _nc6 += n1
+        R['stage 5: without section 24 (and with the old title of the summary section) the %d input and text cells equal those of the '
+          'backup taken before section 24 was appended, after undoing the %d documented correction(s) of section 23.3' % (len(_a6), _nc6)] = (
+            _a6 == _b6 and _nc6 == len(CORRECTIONS5))
+        def _outs6(pth):
+            out = []; sec = ''
+            for d0, c0 in P.iter_cells(P.parse_notebook(pth)):
+                st0, ct0, op0 = P.cell_info(c0)
+                if st0 == 'Section': sec = P.box_to_text(ct0).strip('"')
+                if st0 in ('Output', 'Message', 'Print'): out.append((sec, P.box_to_text(ct0)))
+            return out
+        _o6 = _outs6(bk6); _n6 = [x_ for x_ in _outs6(path) if not x_[0].startswith(STAGE5_SECS)]
+        _ctx6 = lambda t: re.sub(r'Notebook\$\$[0-9$]+`', 'Notebook`', t)
+        _numre6 = re.compile(r'\d+\.\d*`?')
+        _bad6 = []; _oc6 = 0
+        if len(_o6) != len(_n6): _bad6.append(('count', len(_o6), len(_n6)))
+        else:
+            for (qa, ta), (qb, tb) in zip(_o6, _n6):
+                if ta == tb: continue
+                tb1, n1 = _undo5(tb)
+                if n1 and tb1 == ta: _oc6 += 1; continue
+                if _ctx6(ta) == _ctx6(tb): continue
+                if _numre6.fullmatch(ta.strip()) and _numre6.fullmatch(tb.strip()): continue
+                if _is_summary(qa) and _is_summary(qb): continue
+                _bad6.append((qa[:30], ta[:80]))
+        R['stage 5: the %d outputs of sections 0-23 and of the summary equal those of the backup (summary counts and tables, the private '
+          'context name and measured times excepted; %d output(s) differ only by the documented correction)' % (len(_o6), _oc6)] = not _bad6
+        if _bad6: R['  stage-5 outputs that differ'] = _bad6[:10]
+    else:
+        R['stage 5: backup not present, comparison skipped'] = 'skipped'
+    import json, subprocess
+    rfile5 = os.path.join(os.path.dirname(here), 'build', 'docs', 'runs.json')
+    pyd = None
+    if os.path.exists(rfile5):
+        for t_, o_, c_ in json.load(open(rfile5, encoding='utf-8')):
+            if t_.startswith('tools/ref_dark.py'): pyd = o_
+    if pyd is None:
+        pyd = subprocess.run([sys.executable, '-B', os.path.join(here, 'ref_dark.py')], capture_output=True, text=True, cwd=os.path.dirname(here)).stdout
+    from doc_stage3_common import gather3
+    D5 = gather3([['tools/ref_dark.py (x)', pyd, 0]])
+    import doc_dark
+    cmp5 = doc_dark.compare(D5)
+    bad5 = [(lab, r_, tol) for lab, a_, b_, tol, r_ in cmp5 if r_ is None or r_ > tol]
+    R['section 24 numbers: %d groups of printed numbers agree with tools/ref_dark.py (tolerances per group, from 1e-14 for closed forms to 1e-5 for a number read off a numerical solution)' % len(cmp5)] = not bad5
+    if bad5: R['  disagreeing groups (section 24)'] = bad5
+
 width = max(len(k) for k in R)
 for k, v in R.items(): print(f'{k:{width}s} : {v}')
 good = (R['message cells (must be 0)'] == 0 and R['check outputs'] == R['check outputs that are True'] and R['check outputs'] > 0
@@ -388,6 +471,7 @@ good = (R['message cells (must be 0)'] == 0 and R['check outputs'] == R['check o
         and all(R[k] for k in R if k.startswith('section 7:') or k.startswith('section 8:') or k.startswith('sections 8-9') or k.startswith('tools/ref_dirac16'))
         and all(R[k] is True or R[k] == 'skipped' for k in R if k.startswith('sections 0-6'))
         and all(R[k] is True or R[k] == 'skipped' for k in R if k.startswith('sections 0-10') or k.startswith('sections 0-20') or k.startswith('summary table')
-                or k.startswith('sections 14-19') or k.startswith('stage 4') or k.startswith('sections 20-23')))
+                or k.startswith('sections 14-19') or k.startswith('stage 4') or k.startswith('sections 20-23') or k.startswith('stage 5')
+                or k.startswith('section 24 numbers')))
 print('\nVERDICT:', 'ALL CROSS-CHECKS PASSED' if good else 'SOMETHING FAILED')
 sys.exit(0 if good else 1)

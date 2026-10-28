@@ -60,15 +60,15 @@ def verification_text(D3):
             '`verify_7p1_nb.py` confirms that every cell and output of sections 0–19 is unchanged.' % (n[2], n[3], len(cmp_), fmt(worst, 2) if worst is not None else '?'))
 
 
-def notebook_items(n_last):
+def notebook_items(n_last, with_summary=True):
     return ['**20. The coupled field equations: every interaction** — the action term by term (the cubic Lovelock density in invariant form), '
             'the energy–momentum tensors, the homogeneous equations, the radion and the four-dimensional constants (section 13.1).',
             '**21. Regime I: the primordial Lovelock regime** — the exact vacuum curve, the cubic, Gauss–Bonnet and Einstein solutions and their '
             'accuracy, the matter-dominated cubic regime, decompactification, pair creation (section 13.2).',
             '**22. Regime II: the modern regime** — capture of the radion, its decay and the moduli problem, $g_*(T)$ and $t(T)$, the late '
             'universe and its age (section 13.3).',
-            '**23. Regime III: the far future** — de Sitter, the radion in de Sitter, the size of every interaction (section 13.4).',
-            '**%d. Summary of all checks** of sections 1–%d.' % (n_last + 1, n_last)]
+            '**23. Regime III: the far future** — de Sitter, the radion in de Sitter, the size of every interaction (section 13.4).'] + (
+           ['**%d. Summary of all checks** of sections 1–%d.' % (n_last + 1, n_last)] if with_summary else [])
 
 
 def file_rows():
@@ -94,10 +94,12 @@ def readme_section(d, D3, secno=13):
     hinf = nbv(D3, 'hinf'); radnow = nbv(D3, 'radnow'); tT = nbv(D3, 'tT')
     d.h1('%d. Sections 20–23: the coupled field equations and their solutions in the three gravity regimes' % secno)
     d.p('Sections 20–23 of 7+1.nb were appended in a fourth stage (27 October 2026); sections 0–19 are unchanged, and the summary of all checks, '
-        'formerly section 20, is now section 24. The coordinates are those of the whole project: $x_0$ time (the octonion unit), $x_1,x_2,x_3$ '
+        'formerly section 20, became section 24%s. The coordinates are those of the whole project: $x_0$ time (the octonion unit), $x_1,x_2,x_3$ '
         'ordinary space, $x_4,\\dots,x_7$ auxiliary space; $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ is simply the squares of the octonion basis, and '
         'xAct declares the spacetime with the signature list $\\{7,1,0\\}$ (seven space-like, one time-like dimension). A prime is $d/dx_0$; '
-        '$\\kappa=8\\pi G_8=M_8^{-6}$. The sections contain %d checks, of which %d are True.' % (n[0], n[1]))
+        '$\\kappa=8\\pi G_8=M_8^{-6}$. The sections contain %d checks, of which %d are True.' % (
+            '' if D3['n_last'] + 1 == 24 else ' (and is now section %d, after section 24 on dark matter and dark energy was appended)' % (D3['n_last'] + 1),
+            n[0], n[1]))
     d.h2('%d.1 Every interaction in equation form (section 20)' % secno)
     d.p('With the Lovelock densities $L_k=2^{-k}\\delta^{\\alpha_1\\beta_1\\cdots\\alpha_k\\beta_k}_{\\gamma_1\\delta_1\\cdots\\gamma_k\\delta_k}R^{\\gamma_1\\delta_1}{}_{\\alpha_1\\beta_1}\\cdots R^{\\gamma_k\\delta_k}{}_{\\alpha_k\\beta_k}$ '
         '($\\delta^{\\cdots}_{\\cdots}$ the generalized Kronecker delta), the real 16×16 Dirac matrices $\\Gamma^A$, the frame matrices '

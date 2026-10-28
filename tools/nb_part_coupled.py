@@ -657,7 +657,7 @@ Grid[{{"term of the action (section 20.1)", "regime I (primordial)", "regime II 
   {"S_1: Einstein term", "dominant for tau >> l2", "dominant (four-dimensional Friedmann equations)", "dominant"},
   {"S_2: alpha2 H^2", "dominant for 10^-3 l2 < tau < l2", N[rIIH0g^2/rIIM8^2, 3], N[(rIIIH rIIhbar)^2/rIIM8^2, 3]},
   {"S_3: alpha3 H^4", "dominant for tau < 10^-3 l2", N[10^-6 rIIH0g^4/rIIM8^4, 3], N[10^-6 (rIIIH rIIhbar)^4/rIIM8^4, 3]},
-  {"S_psi: dirac16complex (gas; matter)", "gas: first table; dominant near tau = 0", "Omega_m = 0.315 (0.265 if it is the dark matter)", "-> 0 like e^(-3 H t)"},
+  {"S_psi: dirac16complex (gas; matter)", "gas: first table; dominant near tau = 0", "Omega_m = 0.315 (Omega_c = 0.264 if it is the dark matter)", "-> 0 like e^(-3 H t)"},
   {"S_m: m/H", "<< 1 (massless gas)", ">> 1 (cold matter)", ">> 1"},
   {"S_self: g_r n^(6/7) ~ (k_phys/M8)^6 (estimate)", "< 1 below the eight-dimensional Planck scale", "negligible", "negligible"},
   {"S_U: radion displacement beta", "catches b when H ~ m_r, then oscillates", N[(3 rIIH0g^2 rIIOL + 1.5 rIIH0g^2 rIIOm)/(3 100.), 3], N[(rIIIH rIIhbar)^2/100., 3]},

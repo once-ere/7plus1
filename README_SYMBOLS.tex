@@ -439,4 +439,35 @@ S_3&=360\alpha_3H_a^2|H_b|^3(4H_a+3|H_b|),\qquad f_{\rm gas}=\frac{\kappa\vareps
 \frac\gamma{3H}&=\frac{1-16\alpha_2H^2+48\alpha_2^2H^4-48\alpha_3H^4+512\alpha_2^3H^6+192\alpha_2\alpha_3H^6-1024\alpha_2^4H^8}{(1-4\alpha_2H^2+32\alpha_2^2H^4)^2},&&(11.5) \\
 \frac{m_{\rm eff}^2}{m_r^2}&=\frac1{1-4\alpha_2H^2+32\alpha_2^2H^4}.
 \end{align*}
+\Needspace{12\baselineskip}\section*{12. Section 24 of 7+1.nb: dirac16complex as dark matter and dark energy}\addcontentsline{toc}{section}{12. Section 24 of 7+1.nb: dirac16complex as dark matter and dark energy}
+The symbols of section 24 (the Mathematica names begin with \texttt{dk}).
+
+{\footnotesize
+\begin{longtable}{>{\raggedright\arraybackslash}p{\dimexpr 0.1700\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.2200\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.3300\linewidth-2\tabcolsep\relax}>{\raggedright\arraybackslash}p{\dimexpr 0.2800\linewidth-2\tabcolsep\relax}}
+\toprule
+\textbf{symbol} & \textbf{Mathematica} & \textbf{definition} & \textbf{meaning} \\
+\midrule\endfirsthead
+\toprule
+\textbf{symbol} & \textbf{Mathematica} & \textbf{definition} & \textbf{meaning} \\
+\midrule\endhead
+\endfoot
+\bottomrule\endlastfoot
+$\chi$ & — & $\psi(x,y)=\chi(x)/\sqrt{V_\perp}$ & lightest Kaluza–Klein mode (four brane Dirac spinors) \\
+$\mu_n$, $r_4(k)$ & \texttt{rIIr4} & $2\pi|\vec n|/\ell_\perp$; $8\sigma(k)-32\sigma(k/4)$ & Kaluza–Klein mass; number of $\vec n\in\mathbb Z^4$ with $|\vec n|^2=k$ \\
+$mY$, $s_0$, $\rho_c$ & \texttt{dkYm}, \texttt{dks0}, \texttt{dkRhoc} & (12.1) & required abundance, entropy density today, critical density \\
+$c_P,c_y,c_V,c_r$ & \texttt{cPS}, \texttt{cyS}, \texttt{cVS}, \texttt{crS} & (12.2) & couplings in units of $M_8$ \\
+$\lambda_{\rm eff}$, $y_{\rm eff}$, $G_r$ & \texttt{dkLam}, \texttt{dkYeff}, \texttt{dkGr} & (12.2) & four-dimensional couplings of the lightest mode \\
+$\sigma_{\rm SI}$, $\theta$, $\mu_P$ & \texttt{dkSigSI}, \texttt{dkMuP} & (12.3) & direct-detection cross section; neutrino mixing; portal mass \\
+$S(x)$, $T_*$, $Y$ & \texttt{dkS}, \texttt{dkTstar}, \texttt{dkYfi} & (12.4) & Boltzmann factor, normalcy temperature, freeze-in yield \\
+$I_{hp}$ & \texttt{dkIhp} & (12.4) & phase-space integral of Higgs-portal pairs \\
+$p$, $w$, $\rho_{\rm Cas}$ & \texttt{dkPres}, \texttt{dkWtab}, \texttt{dkCas} & (12.5) & pressure, equation of state, Casimir energy \\*
+\end{longtable}}
+\begin{align*}
+mY&=\frac{\Omega_ch^2(\rho_c/h^2)}{s_0},\quad \frac{\rho_c}{h^2}=3\Big(100\,\frac{\rm km}{\rm s\,Mpc}\Big)^2M_{\rm Pl}^2,\quad s_0=\frac{2\pi^2}{45}\Big(2+\frac{21}4\cdot\frac4{11}\Big)T_{\rm CMB}^3,&&(12.1) \\
+\lambda_{\rm eff}&=\frac{\lambda_P}{V_\perp}=\frac{c_PM_8}{M_{\rm Pl}^2},\quad y_{\rm eff}=\frac{y}{\sqrt{V_\perp}}=\frac{c_yM_8}{M_{\rm Pl}},\quad G_r=\frac{g_r}{V_\perp}=\frac{c_r}{M_{\rm Pl}^2},&&(12.2) \\
+\sigma_{\rm SI}&=\frac{\lambda_{\rm eff}^2f_N^2m_N^2\mu^2}{\pi m_h^4},\quad \theta=\frac{\mu_P}m,\quad \mu_P=\frac{y_{\rm eff}v}{\sqrt2},&&(12.3) \\
+S(x)&=\frac2{3\pi}\int_x^\infty t^3K_1(t)dt,\quad T_*=\Big(\frac{M_8^6}{M_{\rm Pl}}\Big)^{1/5},&&(12.4) \\
+I_{hp}&=\iint_{u_1+u_2<1}u_1^3u_2^3\big(1-(u_1+u_2)^2\big)^{3/2}\big(1-(u_1-u_2)^2\big)^{1/2}du_1du_2, \\
+p&=\mu\rho-\varepsilon,\quad w=\frac p\varepsilon,\quad \rho_{\rm Cas}^{(1)}=-\frac2{\ell_\perp^4}\sum_{\vec n\ne0}\Big(\frac{m\ell_\perp}{2\pi|\vec n|}\Big)^4K_4(m\ell_\perp|\vec n|).&&(12.5)
+\end{align*}
 \end{document}

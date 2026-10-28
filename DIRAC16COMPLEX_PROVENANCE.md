@@ -469,14 +469,14 @@ $`\eta`$ gives the signs of the Clifford relation $`\Gamma_A\Gamma_B+\Gamma_B\Ga
 | program | `C:\Program Files\Wolfram Research\Wolfram\15.0.1\WolframNB.exe` |
 | $Version | 15.0.1 for Microsoft Windows (64-bit) (July 2, 2026) |
 | method | `tools/run_eval.wl`: all cells evaluated in a fresh kernel (front-end kernel configuration "Eval71"; time limit 3600 s), then `NotebookSave`; requested through `tools/watch_requests.wl` (job `eval`) |
-| finished | Tue 27 Oct 2026 19:31:35 |
-| evaluation time of the whole notebook | 271.569 s |
-| private context of the notebook | `Notebook$$59$143224` |
-| input cells / output cells / message cells | 166 / 453 / 0 |
+| finished | Tue 27 Oct 2026 20:36:01 |
+| evaluation time of the whole notebook | 263.848 s |
+| private context of the notebook | `Notebook$$67$147097` |
+| input cells / output cells / message cells | 174 / 481 / 0 |
 | checks in sections 7–9 / True | 74 / 74 |
-| checks in the whole notebook / True | 399 / 399 |
+| checks in the whole notebook / True | 419 / 419 |
 | summary of section 10 | `Length[checks]` = `203`, `failedChecks` = `{}`, `allChecksPassed` = `True` |
-| SHA-256 of the evaluated 7+1.nb (1849785 bytes) | `1314b1e09e6b6eefbd9ee5974e19d186a5e996907b2eb68ddb6f23aae85aaaa5` |
+| SHA-256 of the evaluated 7+1.nb (1940664 bytes) | `39f64ee81d35c0c9fb94188fd7f8c8e75c96ea198fbf72a5ca6b3c0027426018` |
 
 Before the final evaluation, every input cell of sections 7–9 was developed with `tools/eval_cells_log.wl`, which evaluates a generated notebook expression by expression in a fresh context, records the time, the messages and the result of every check, and stops at the first failure.
 
@@ -800,15 +800,15 @@ The numbers it computes (30-digit arithmetic). `tools/verify_7p1_nb.py`, whose o
 **tools/verify_7p1_nb.py (parses the evaluated 7+1.nb; exit code 0)**
 
 ```text
-input cells                                                                                                                                                                                                                                                                                             : 166
-output cells                                                                                                                                                                                                                                                                                            : 453
+input cells                                                                                                                                                                                                                                                                                             : 174
+output cells                                                                                                                                                                                                                                                                                            : 481
 message cells (must be 0)                                                                                                                                                                                                                                                                               : 0
-check outputs                                                                                                                                                                                                                                                                                           : 363
-check outputs that are True                                                                                                                                                                                                                                                                             : 363
-check["..."] calls in the input cells                                                                                                                                                                                                                                                                   : 363
-$Version output                                                                                                                                                                                                                                                                                         : ['{"15.0.1 for Microsoft Windows (64-bit) (July 2, 2026)","Notebook$$59$143224`"}']
+check outputs                                                                                                                                                                                                                                                                                           : 383
+check outputs that are True                                                                                                                                                                                                                                                                             : 383
+check["..."] calls in the input cells                                                                                                                                                                                                                                                                   : 383
+$Version output                                                                                                                                                                                                                                                                                         : ['{"15.0.1 for Microsoft Windows (64-bit) (July 2, 2026)","Notebook$$67$147097`"}']
 private notebook context                                                                                                                                                                                                                                                                                : True
-Length[checks]                                                                                                                                                                                                                                                                                          : 399
+Length[checks]                                                                                                                                                                                                                                                                                          : 419
 failedChecks == {}                                                                                                                                                                                                                                                                                      : True
 allChecksPassed output True                                                                                                                                                                                                                                                                             : True
 tau[A] printed == 4+4 tau[A] (python)                                                                                                                                                                                                                                                                   : True
@@ -850,6 +850,10 @@ section 23: check outputs (all True)                                            
 stage 4: without sections 20-23 (and with the old title of the summary section) the 605 input and text cells equal those of the backup taken before sections 20-23 were appended                                                                                                                        : True
 stage 4: the 387 outputs of sections 0-19 and of the summary equal those of the backup (summary counts and tables, the private context name and measured times excepted)                                                                                                                                : True
 sections 20-23: 34 groups of printed numbers agree with tools/ref_coupled.py (tolerances per group, from 1e-14 for exact constants to 2e-3 for numbers read off numerical solutions)                                                                                                                    : True
+section 24: check outputs (all True)                                                                                                                                                                                                                                                                    : 20 (True)
+stage 5: without section 24 (and with the old title of the summary section) the 732 input and text cells equal those of the backup taken before section 24 was appended, after undoing the 1 documented correction(s) of section 23.3                                                                   : True
+stage 5: the 453 outputs of sections 0-23 and of the summary equal those of the backup (summary counts and tables, the private context name and measured times excepted; 1 output(s) differ only by the documented correction)                                                                          : True
+section 24 numbers: 29 groups of printed numbers agree with tools/ref_dark.py (tolerances per group, from 1e-14 for closed forms to 1e-5 for a number read off a numerical solution)                                                                                                                    : True
 
 VERDICT: ALL CROSS-CHECKS PASSED
 ```
@@ -977,16 +981,19 @@ VERDICT: ALL CHECKS PASSED
 
 | file | SHA-256 |
 |---|---|
-| `7+1.nb` (evaluated) | `1314b1e09e6b6eefbd9ee5974e19d186a5e996907b2eb68ddb6f23aae85aaaa5` |
+| `7+1.nb` (evaluated) | `39f64ee81d35c0c9fb94188fd7f8c8e75c96ea198fbf72a5ca6b3c0027426018` |
 | `4+4.nb` | `740023233eaa0cd24ca0e2e7010094671b1d314b698114c08db94050d3e0aed5` |
 | `7+1_2026-10-26_before_dirac16complex.nb` (in backups/, workspace only) | `f7abe7279b5540e914de876dc055c199bd491b9c2d9522bf28dbc23689e237ce` |
 | `tools/cayley_dickson_formulas.py` | `bdde8c4c8199b09ef36ae4e15d5d53bc62744fc85b4c5ba52eab5516f77b5d5f` |
 | `tools/cayley_dickson_match.py` | `73f2cc584bbe1a3620c50890ffe5fb299857b04a14bc34fed2f9eaefd2e36c4e` |
 | `tools/classify_clifford.py` | `42291276f46b046183fdbb7b62be7c5cedfd695fe9da96ac256afa23580930a9` |
 | `tools/doc_common.py` | `1e37b140f8334aa813418f4a79b7d0a8e67740b2c4a3fe4d5f4e34abde690d3e` |
-| `tools/doc_coupled.py` | `7ffc2ed938d400ca7579b88f2963864dfcd55a800744502d6fcf1a64e1ed52f6` |
-| `tools/doc_coupled_provenance.py` | `0336f71a9e6a042b5c916cbef255ca829eaa087f6bd80079040a67778cd57a10` |
-| `tools/doc_coupled_symbols.py` | `849714a2b35c06c8d69464e1535cde3e60cf8866448782c5659a66424562719f` |
+| `tools/doc_coupled.py` | `fe0d9cdd4c157aaf3ab0bd386fb1a47350c3d0d9eb8e5de24411cf12b82d22c2` |
+| `tools/doc_coupled_provenance.py` | `9a6ceba936407689ac30ab70070ea397afc352ba42cef4b77d3d045aaf12e497` |
+| `tools/doc_coupled_symbols.py` | `e0557a5249c59e43087326d2d5d9f77937a38bf52845374daca4e00485981f82` |
+| `tools/doc_dark.py` | `9eea2c461cd1a7bf353c0e2aec43a22be2072acc44e54f4e6c84593c5e86f653` |
+| `tools/doc_dark_provenance.py` | `89956664f5d6992c054917d452c3e973ae8c1f36001fe83a5fb7e8c6f8f2ea14` |
+| `tools/doc_dark_symbols.py` | `ee662066ae88d927c4d85991256e845b67b3e08ea5d6ba9406bb1d421c0d3481` |
 | `tools/doc_dirac16.py` | `3f81df5fe2237843edd29116e5676679527b80e946623890e6289a1487f754f1` |
 | `tools/doc_dirac16_common.py` | `9324b4fae59e51019125ebe09157f3c8c9489560e1383a697fe6c22a3a93e208` |
 | `tools/doc_dirac16_provenance.py` | `daf12ff5757d0c4ca8857840d027907f21429e7340b2f02c3b50fbf8edb2d663` |
@@ -997,24 +1004,25 @@ VERDICT: ALL CHECKS PASSED
 | `tools/doc_ks_gravity.py` | `9aa73527f90318ee3444fcf97af41d2255a5d8fb1697d9fa0128ca671e94e51f` |
 | `tools/doc_ks_gravity_provenance.py` | `112b51528ab67acd8ed110b57c347352c602c984eae1408d7dd36e41c74fc0ea` |
 | `tools/doc_ks_gravity_symbols.py` | `2acdf7f901b9cb7c3047b6de6895d32385be37d16789df9d9124f976c6d5a515` |
-| `tools/doc_provenance.py` | `12a523b5d7ebbc2f6a064fcc4d4e5c9fde37cd8dcfcf2eaf798da4461ff86b84` |
-| `tools/doc_readme.py` | `9d876e736c37a2b40464401c68d4bccc9c01287230fbf29bb895a47ec4493756` |
+| `tools/doc_provenance.py` | `381ce86378ab4f8903fe9898373df8f850d761a17ed183e1a1f8088e2b7d1c15` |
+| `tools/doc_readme.py` | `27eb16b51bf5d119664edfc46400a200877a346e39188212e8267f0cbbfec2ba` |
 | `tools/doc_readme_stage3.py` | `9d52a48e1d9d20a19b0874f144cf5bfe5204a81a3c0f448ef44f510f48a1cf91` |
-| `tools/doc_readme_stage4.py` | `9eaaf81a92774f198f73aab99a8f4a3f4d6bccf8ff815441f8a07f6e5b76cb46` |
+| `tools/doc_readme_stage4.py` | `86bc4089deb0eaa1f7e13d9fdfcb5924541d9573bdb2a3ab577ab52584b8035f` |
+| `tools/doc_readme_stage5.py` | `a9186a213bbe4c2c39e81c899d0216bb829dc37217c3f43b5efaee1928a1b564` |
 | `tools/doc_sm.py` | `d7245d8c5f5dfd2687e987d43d9d544d0a1a46538901066e244fe0261bd427c3` |
 | `tools/doc_sm_provenance.py` | `742dec7e9ea7214a8921777a260838830c18204223b5cbb37b57962ab522d01c` |
 | `tools/doc_sm_symbols.py` | `a019dcbf5e68f3f00f41613f5c592b84eafa8b48d4023208516fd5d93b8893f8` |
-| `tools/doc_stage3_common.py` | `af753eafd8fda8b39fd52674aea080177aa53e6be18e331c4e3a0cd872c54e31` |
-| `tools/doc_symbols.py` | `86f75c43deb747dbb9c05c86a7775040a8b371a626eee1041f7283a0c8f6ac7f` |
+| `tools/doc_stage3_common.py` | `3491a5c8ae7897b402871f5015b9f48637d0d9c207a337bc4bdadc0f9405fa76` |
+| `tools/doc_symbols.py` | `e64a2e24d850890853db104198f3aef00bd5583718d19e1e64a8e424871ec038` |
 | `tools/docgen.py` | `5db6f40cb1eb10e48da5b69c3893829737c3d8d2e90edcb28311a980c1aa5fea` |
 | `tools/eval_cells_log.wl` | `833b6bd854cab253e5bb935c28f28ab50b286f409d130f433fa5dfb9b9236bbe` |
 | `tools/extra71.py` | `9935ef99cd9300f2a7d4f06d36cf7e173912ebae61b6feff448ebe0588853168` |
 | `tools/git_push.wl` | `ac05a6d0256834b48cc9fa943fa247bccc574f723e68f053d00bfba9aca2e21a` |
 | `tools/lovelock71.py` | `d93ecbd0f82adb972218d59dfe32999a4af944945ca9758607f3a633e1af95a1` |
-| `tools/make_7p1_nb.py` | `354a0210e60510499753c2cf91274850cedef502d6f705efc410c5a8bbae7b2d` |
-| `tools/make_docs.py` | `5f2fedb05c0761e6f91c23e418350bf6370ec9b9466b6111b39cd8a9b7950cca` |
-| `tools/nb_part_coupled.py` | `49c61aeb6affe14ebbcccb32d2069504b9fc035313ea2fabbd0a3392a96133f5` |
-| `tools/nb_part_dark.py` | `f3a745dd293c22c81ae44e1a1fb5aa88aeff3f5f697524ddf1d7a7a1f9901c02` |
+| `tools/make_7p1_nb.py` | `bd6ef1b2311770b6e0f361d640e727dec1beb617c6f99a0b788774d19aefe3f9` |
+| `tools/make_docs.py` | `c7061d397cdbdfc1f4a20aa0604d02f5e500adf15a2301db5aa8b474e683eb31` |
+| `tools/nb_part_coupled.py` | `e630521d64132e71afc861114f699eb06454557cf14a57ad8ec1eef96247aae0` |
+| `tools/nb_part_dark.py` | `10ad8fb8ae25fa07bbee758c653995acd4e2c80733059a8b3648bd1593e46db0` |
 | `tools/nb_part_gravity.py` | `c4caf2ad5c932e8f603341edade5f4b98fa784feb05906c051eab7c884cd68f8` |
 | `tools/nb_part_ks_gravity.py` | `a656c0ad040b4576b75b17e029545109e531c8e656ad99bfdb5cba946e967772` |
 | `tools/nb_part_sm.py` | `43e92beed57453a4b57931de6d603ac6c218efba6e4005133b69b8054a975c5b` |
@@ -1024,13 +1032,13 @@ VERDICT: ALL CHECKS PASSED
 | `tools/ref44.py` | `ab100c3ebcc055fbe59c132a02f80ecb17630e934e99d59f88e919ec8064faf5` |
 | `tools/ref71.py` | `1a7a06eb0add3f459611776dc9c474a5bb959d947a9db949db4612b1ab9434e0` |
 | `tools/ref_coupled.py` | `695dbd9375753653472d9c37502f0067c4a64fe01a64ba8c05e8b2c5da85aa58` |
-| `tools/ref_dark.py` | `36de56fe4ebdf86bd38c927b0c274fccce7cab9b4948d0db73a333f75fea0b37` |
+| `tools/ref_dark.py` | `1600e6b57ab0383b4f2b664e2796d3864c9afa77a9ed59f007f66e1139453ff5` |
 | `tools/ref_dirac16.py` | `32e8c50de1c480bc4ef50d254d04a9aaa0e56b486198edf0355905c0dda25674` |
 | `tools/ref_gravity.py` | `f07cf8adaff585af89c87d19532f1aaa7db606ad88ae90483b2d1f41341edf36` |
 | `tools/ref_ks_gravity.py` | `b6488ef24b1c16aacd8ff6cf6a5a1ba3f316e082449ad97480022d1a2638327f` |
 | `tools/ref_sm.py` | `f3f80806893f42bbf166e1f1de896ffd611dbfe847685da8e3ee367e9cde6aba` |
 | `tools/run_eval.wl` | `85ba54f18a8362a69c991e66a207230dd001ba18e52639fc1edf7cac761aac30` |
-| `tools/verify_7p1_nb.py` | `86558818090d65cb821115647a762b4dd2d915a8be13213254811c0eba232e8e` |
+| `tools/verify_7p1_nb.py` | `cb36356d5f8d22d1f0b74ce015e8add1566eff5c353c4a082439265a8f328d01` |
 | `tools/watch_requests.wl` | `d9ceedb0b45ac3cf9b4dd8519ac164953f2c80e5188b1557fe20ef5107ae352d` |
 
 ## 5. Process and environment

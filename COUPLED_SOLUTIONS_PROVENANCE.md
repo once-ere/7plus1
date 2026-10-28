@@ -287,7 +287,7 @@ the equilibrium is the root of the 44 equation at $`H_b=H_b'=0`$, $`3m_r^2\beta_
 
 ## 5. Verification
 
-**Evaluation of 7+1.nb**: Wolfram 15.0.1 for Microsoft Windows (64-bit) (July 2, 2026), a fresh kernel (front-end kernel configuration Eval71); finished Tue 27 Oct 2026 19:31:35; 271.569 s; message cells 0; output cells 453. The checks of sections 20–23:
+**Evaluation of 7+1.nb**: Wolfram 15.0.1 for Microsoft Windows (64-bit) (July 2, 2026), a fresh kernel (front-end kernel configuration Eval71); finished Tue 27 Oct 2026 20:36:01; 263.848 s; message cells 0; output cells 481. The checks of sections 20–23:
 
 | # | check | result | section |
 |---|---|---|---|
@@ -436,17 +436,19 @@ the equilibrium is the root of the 44 equation at $`H_b=H_b'=0`$, $`3m_r^2\beta_
 **SHA-256 of the files** (at the time this document was generated):
 
 ```text
-7+1.nb                             1314b1e09e6b6eefbd9ee5974e19d186a5e996907b2eb68ddb6f23aae85aaaa5
-tools/make_7p1_nb.py               354a0210e60510499753c2cf91274850cedef502d6f705efc410c5a8bbae7b2d
+7+1.nb                             39f64ee81d35c0c9fb94188fd7f8c8e75c96ea198fbf72a5ca6b3c0027426018
+tools/make_7p1_nb.py               bd6ef1b2311770b6e0f361d640e727dec1beb617c6f99a0b788774d19aefe3f9
 tools/nb_part_gravity.py           c4caf2ad5c932e8f603341edade5f4b98fa784feb05906c051eab7c884cd68f8
 tools/nb_part_ks_gravity.py        a656c0ad040b4576b75b17e029545109e531c8e656ad99bfdb5cba946e967772
 tools/nb_part_sm.py                43e92beed57453a4b57931de6d603ac6c218efba6e4005133b69b8054a975c5b
-tools/nb_part_coupled.py           49c61aeb6affe14ebbcccb32d2069504b9fc035313ea2fabbd0a3392a96133f5
+tools/nb_part_coupled.py           e630521d64132e71afc861114f699eb06454557cf14a57ad8ec1eef96247aae0
+tools/nb_part_dark.py              10ad8fb8ae25fa07bbee758c653995acd4e2c80733059a8b3648bd1593e46db0
 tools/lovelock71.py                d93ecbd0f82adb972218d59dfe32999a4af944945ca9758607f3a633e1af95a1
 tools/ref_gravity.py               f07cf8adaff585af89c87d19532f1aaa7db606ad88ae90483b2d1f41341edf36
 tools/ref_ks_gravity.py            b6488ef24b1c16aacd8ff6cf6a5a1ba3f316e082449ad97480022d1a2638327f
 tools/ref_sm.py                    f3f80806893f42bbf166e1f1de896ffd611dbfe847685da8e3ee367e9cde6aba
 tools/ref_coupled.py               695dbd9375753653472d9c37502f0067c4a64fe01a64ba8c05e8b2c5da85aa58
+tools/ref_dark.py                  1600e6b57ab0383b4f2b664e2796d3864c9afa77a9ed59f007f66e1139453ff5
 tools/ref71.py                     1a7a06eb0add3f459611776dc9c474a5bb959d947a9db949db4612b1ab9434e0
 tools/ref44.py                     ab100c3ebcc055fbe59c132a02f80ecb17630e934e99d59f88e919ec8064faf5
 ```
