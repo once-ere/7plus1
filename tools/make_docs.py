@@ -9,6 +9,7 @@ writes, in the repository root, for each NAME of the list below the files NAME.m
     GRAVITY              GRAVITY_PROVENANCE              GRAVITY_SYMBOLS                  (sections 11-14)
     KOHN_SHAM_GRAVITY    KOHN_SHAM_GRAVITY_PROVENANCE    KOHN_SHAM_GRAVITY_SYMBOLS        (sections 15-16)
     STANDARD_MODEL       STANDARD_MODEL_PROVENANCE       STANDARD_MODEL_SYMBOLS           (sections 17-19)
+    COUPLED_SOLUTIONS    COUPLED_SOLUTIONS_PROVENANCE    COUPLED_SOLUTIONS_SYMBOLS        (sections 20-23)
 Every document is self-contained.  The LaTeX files are compiled with latexmk -xelatex inside build/docs (excluded by .gitignore);
 only the PDFs are copied back.  Every matrix, table, check list and number is computed by the doc_*.py modules or parsed from the
 evaluated 7+1.nb and from the outputs of the independent Python programs, which are run here (or, with --reuse-runs, taken from
@@ -26,11 +27,12 @@ import doc_dirac16, doc_dirac16_symbols, doc_dirac16_provenance
 import doc_gravity, doc_gravity_symbols, doc_gravity_provenance
 import doc_ks_gravity, doc_ks_gravity_symbols, doc_ks_gravity_provenance
 import doc_sm, doc_sm_symbols, doc_sm_provenance
+import doc_coupled, doc_coupled_symbols, doc_coupled_provenance
 
 PROGRAMS = [('verify_7p1_nb.py', 'parses the evaluated 7+1.nb'), ('ref44.py', 'rebuilds 4+4.nb'), ('ref71.py', 'rebuilds 7+1.nb objects'),
             ('extra71.py', 'further identities'), ('ref_dirac16.py', 'independent checks of sections 7-9'),
             ('ref_gravity.py', 'independent checks of sections 11-14'), ('ref_ks_gravity.py', 'independent checks of sections 15-16'),
-            ('ref_sm.py', 'independent checks of sections 17-19')]
+            ('ref_sm.py', 'independent checks of sections 17-19'), ('ref_coupled.py', 'independent checks of sections 20-23')]
 
 
 def run(cmd):
@@ -61,8 +63,14 @@ def main(argv):
     if reuse and os.path.exists(rfile):
         runs = json.load(open(rfile, encoding='utf-8'))
     elif reuse_refs and os.path.exists(rfile):
-        # the independent programs do not read the notebook: keep their saved outputs, run only verify_7p1_nb.py again
+        # the independent programs do not read the notebook: keep their saved outputs (running those that have none yet), and run
+        # verify_7p1_nb.py again
         runs = [r for r in json.load(open(rfile, encoding='utf-8')) if not r[0].startswith('tools/' + PROGRAMS[0][0])]
+        have = set(r[0].split(' ')[0] for r in runs)
+        for f, what in PROGRAMS[1:]:
+            if 'tools/' + f not in have:
+                out, rc = run([sys.executable, '-B', 'tools/' + f])
+                runs.append(['tools/%s (%s; exit code %d)' % (f, what, rc), out, rc])
         json.dump(runs, open(rfile, 'w', encoding='utf-8'))
         f, what = PROGRAMS[0]
         out, rc = run([sys.executable, '-B', 'tools/' + f])
@@ -94,7 +102,10 @@ def main(argv):
                 'KOHN_SHAM_GRAVITY_PROVENANCE': lambda: doc_ks_gravity_provenance.build(D3, today, runs),
                 'STANDARD_MODEL': lambda: doc_sm.build(D3, today),
                 'STANDARD_MODEL_SYMBOLS': lambda: doc_sm_symbols.build(D3, today),
-                'STANDARD_MODEL_PROVENANCE': lambda: doc_sm_provenance.build(D3, today, runs)}
+                'STANDARD_MODEL_PROVENANCE': lambda: doc_sm_provenance.build(D3, today, runs),
+                'COUPLED_SOLUTIONS': lambda: doc_coupled.build(D3, today),
+                'COUPLED_SOLUTIONS_SYMBOLS': lambda: doc_coupled_symbols.build(D3, today),
+                'COUPLED_SOLUTIONS_PROVENANCE': lambda: doc_coupled_provenance.build(D3, today, runs)}
     docs = {k: f() for k, f in builders.items() if not only or k in only}
     report = []
     for name, d in docs.items():
@@ -116,7 +127,7 @@ def main(argv):
     print('program exit codes:', ', '.join('%s %d' % (k.split('/')[-1], v) for k, v in rc.items()))
     if D3.get('xact_tex_errors'):
         print('xAct LaTeX conversion problems:', D3['xact_tex_errors'])
-    print('checks of sections 11-19 (grav, ks, sm):', {k: (len(v), sum(1 for c in v if c[1] == 'True')) for k, v in D3['checks'].items()})
+    print('checks of sections 11-23 (grav, ks, sm, cp):', {k: (len(v), sum(1 for c in v if c[1] == 'True')) for k, v in D3['checks'].items()})
     print('all checks of the notebook:', D3.get('n_checks_total'), 'all passed:', D3.get('all_passed'), 'message cells:', len(D3['messages']))
     return all(r[4] for r in report) and all(v == 0 for v in rc.values())
 

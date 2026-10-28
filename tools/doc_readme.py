@@ -3,6 +3,7 @@ import sympy as sp
 from docgen import Doc, pmat
 from doc_common import *
 import doc_readme_stage3 as S3
+import doc_readme_stage4 as S4
 
 I8 = r'1_8'; I16 = r'1_{16}'
 
@@ -23,7 +24,8 @@ def build(D):
             'test everything; (v) in sections 7–10 of the notebook, the Dirac equation of the 16-component quantized fermion field '
             'dirac16complex with these real Dirac matrices, its chiral form as two coupled 8-component equations, and the 16-component '
             'and chiral Kohn–Sham theories of that field coupled to itself (section 11)%s. All %d checks of the notebook are True.'
-            % (S3.abstract_text(D['s3']) if D.get('s3') else '', len(all_checks(D))))
+            % ((S3.abstract_text(D['s3']) if D.get('s3') else '') + (S4.abstract_text(D['s3']) if S4.present(D.get('s3')) else ''),
+               len(all_checks(D))))
 
     # ------------------------------------------------------------------------------------------------
     d.h1('1. Results at a glance')
@@ -64,6 +66,8 @@ def build(D):
         '16-component Kohn–Sham theory and a chiral (8+8-component) Kohn–Sham theory with a complex Kohn–Sham mass.')
     if D.get('s3'):
         S3.results_paragraph(d, D['s3'])
+    if S4.present(D.get('s3')):
+        S4.results_paragraph(d, D['s3'])
     d.p('**Verification.** The notebook 7+1.nb contains %d checks; evaluated in %s it returns True for every one of them, '
         'with %d message cells, in %s s. Independent Python programs reproduce every matrix, table and number that the notebook '
         'prints (section 9).' % (len(all_checks(D)), nbinfo['version'], nbinfo['messages'], log.get('seconds', '?')))
@@ -158,7 +162,7 @@ def build(D):
         ['$\\vartheta$', '`Uθ`', 'angle of a chiral rotation $e^{i\\vartheta\\chi}$'],
         ['$k_F$, $m^*$, $\\rho$, $E/A$, $E_F$', '`kF0`, `gap7`, `rho7`, `eps7`, `fermi7`', 'uniform matter: Fermi momentum, effective mass, density $j^0$, energy per particle, Fermi energy'],
         ['$\\Lambda_{\\rm c}$, $g$, $g_c$', '`Λc`, `gNJL`, `gcrit`', 'momentum cutoff of the Dirac sea; $g=g_S=g_P$; critical coupling $-90\\pi^4/\\Lambda_{\\rm c}^6$'],
-    ] + (S3.notation_rows() if D.get('s3') else []), widths=[0.17, 0.20, 0.57])
+    ] + (S3.notation_rows() if D.get('s3') else []) + (S4.notation_rows() if S4.present(D.get('s3')) else []), widths=[0.17, 0.20, 0.57])
 
     # ------------------------------------------------------------------------------------------------
     d.h1('4. The two definitions, and four corrections')
@@ -500,10 +504,10 @@ def build(D):
     d.p('**In Mathematica.** 7+1.nb was evaluated in %s by `tools/run_eval.wl` (all cells evaluated in a fresh kernel, then saved), '
         'in the private context `%s`. It contains %d input cells and %d checks `check["name", test]`: %d print their result where '
         'they stand, and %d are made by the function `frameChecks` of section 13.1 (nine checks for each of four metrics) and printed '
-        'by the summary table of section 20. All %d returned True, the summary cells printed `failedChecks = {}` and '
+        'by the summary table of section %d. All %d returned True, the summary cells printed `failedChecks = {}` and '
         '`allChecksPassed = True`, there were %d message cells, and the evaluation took %s s.'
         % (nbinfo['version'], nbinfo['context'], nbinfo['inputs'], len(allc), len(nbinfo['checks']), len(allc) - len(nbinfo['checks']),
-           sum(1 for c in allc if c[1] == 'True'), nbinfo['messages'], log.get('seconds', '?')))
+           (D['s3']['n_last'] + 1) if D.get('s3') else 20, sum(1 for c in allc if c[1] == 'True'), nbinfo['messages'], log.get('seconds', '?')))
     from collections import OrderedDict
     by = OrderedDict()
     for name, res, sec, sub in allc:
@@ -520,6 +524,8 @@ def build(D):
         '(section 2).' % len(D['ref_bool']))
     if D.get('s3'):
         d.p(S3.verification_text(D['s3']))
+    if S4.present(D.get('s3')):
+        d.p(S4.verification_text(D['s3']))
 
     # ------------------------------------------------------------------------------------------------
     d.h1('10. The notebook 7+1.nb')
@@ -542,7 +548,8 @@ def build(D):
           'Kohn–Sham equations, exchange (Wick), Fierz, uniform matter (section 11.3, 11.5).',
           '**9. The chiral Kohn–Sham theory (8 + 8 components)** — chiral densities, chiral Kohn–Sham equations, chiral symmetry, the '
           'chiral vacuum with the Dirac sea (section 11.4–11.5).',
-          '**10. Summary of all checks** of sections 1–9.'] + (S3.notebook_items(D['s3']['n_last']) if D.get('s3') else []))
+          '**10. Summary of all checks** of sections 1–9.'] + (S3.notebook_items(D['s3']['n_last'], not S4.present(D['s3'])) if D.get('s3') else [])
+         + (S4.notebook_items(D['s3']['n_last']) if S4.present(D.get('s3')) else []))
     d.p('To re-evaluate: open 7+1.nb in Wolfram 15.0.1, start from a fresh kernel (Evaluation ▸ Quit Kernel ▸ Local, if the kernel has '
         'been used: the tensor packages xAct of section 12 keep their definitions in the kernel) and choose Evaluation ▸ Evaluate Notebook '
         '%s; or run `Get["D:/Developer/github/7+1/tools/run_eval.wl"]` from any notebook, which evaluates 7+1.nb in place '
@@ -628,7 +635,9 @@ def build(D):
 
     if D.get('s3'):
         S3.readme_section(d, D['s3'], 12)
-    nf = 13 if D.get('s3') else 12
+    if S4.present(D.get('s3')):
+        S4.readme_section(d, D['s3'], 13)
+    nf = (14 if S4.present(D.get('s3')) else 13) if D.get('s3') else 12
     d.h1('%d. Files in this repository' % nf)
     d.table(['path', 'content'], [
         ['`7+1.nb`', 'the new notebook, evaluated, with all outputs'],
@@ -644,7 +653,7 @@ def build(D):
         ['`tools/cayley_dickson_formulas.py`, `tools/cayley_dickson_match.py`', 'tests of Cayley–Dickson formulas against the tables'],
         ['`tools/nbparse.py`, `tools/verify_7p1_nb.py`', 'parser for .nb files; cross-check of the evaluated 7+1.nb'],
         ['`tools/docgen.py`, `tools/doc_*.py`, `tools/make_docs.py`', 'generators of the documentation (Markdown, LaTeX, PDF)'],
-    ] + (S3.file_rows() if D.get('s3') else []) + [
+    ] + (S3.file_rows() if D.get('s3') else []) + (S4.file_rows() if S4.present(D.get('s3')) else []) + [
     ], widths=[0.45, 0.49])
 
     d.h1('%d. References' % (nf + 1))
@@ -663,5 +672,5 @@ def build(D):
           'J. D. Walecka, Ann. Phys. 83 (1974) 491; N. M. Hugenholtz and L. Van Hove, Physica 24 (1958) 363 — saturation of uniform '
           'matter, and $E/A=E_F$ at saturation (section 11.5).',
           'Y. Nambu and G. Jona-Lasinio, Phys. Rev. 122 (1961) 345 — spontaneous chiral symmetry breaking by contact couplings with a cutoff '
-          '(section 11.5).'] + (S3.references() if D.get('s3') else []))
+          '(section 11.5).'] + (S3.references() if D.get('s3') else []) + (S4.references() if S4.present(D.get('s3')) else []))
     return d

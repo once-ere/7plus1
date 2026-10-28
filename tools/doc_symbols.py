@@ -2,6 +2,7 @@
 from docgen import Doc, pmat
 from doc_common import *
 import doc_readme_stage3 as S3
+import doc_readme_stage4 as S4
 
 def build(D):
     d = Doc('7+1: symbols and their definitions',
@@ -246,4 +247,6 @@ def build(D):
         '+\\frac{g_V}2:j^Aj_A:+\\frac{g_A}2:j_5^Aj_{5A}:\\big]d^7x$ (normal ordered); $\\min_{\\Psi\\to n}$ runs over the states with densities $n$.')
     if D.get('s3'):
         S3.symbols_section(d, D['s3'], 10)
+    if S4.present(D.get('s3')):
+        S4.symbols_section(d, D['s3'], 11)
     return d

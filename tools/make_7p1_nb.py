@@ -1687,8 +1687,9 @@ Grid[Prepend[KeyValueMap[{#1, #2} &, checks], {Style["check", Bold], Style["resu
 ''')
 
 # =====================================================================================
-# Sections 11 and later (stage 3, appended on 26 October 2026) are kept in separate generator files, executed here in order.
-for _part in ('nb_part_gravity.py', 'nb_part_ks_gravity.py', 'nb_part_sm.py'):
+# Sections 11 and later (stage 3, appended on 26 October 2026; stage 4, 27 October 2026) are kept in separate generator files,
+# executed here in order.
+for _part in ('nb_part_gravity.py', 'nb_part_ks_gravity.py', 'nb_part_sm.py', 'nb_part_coupled.py'):
     _f = os.path.join(os.path.dirname(os.path.abspath(__file__)), _part)
     if os.path.exists(_f):
         exec(compile(open(_f, encoding='utf-8').read(), _part, 'exec'))

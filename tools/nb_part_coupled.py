@@ -14,7 +14,7 @@ text([('About sections 20–23. ', B),
       'gravity on the brane is four-dimensional Einstein gravity), and the FAR FUTURE (section 23: de Sitter expansion of ordinary '
       'space). In each regime the solution is given in closed form (exact where possible, asymptotic otherwise), and every closed '
       'form is compared with a high-accuracy numerical solution of the full equations; the size of every interaction in every regime '
-      'is listed in section 23.4.'])
+      'is listed in section 23.3.'])
 text([('Conventions (as in sections 11–19). ', B),
       'ħ = c = 1; coordinates X = {x0, …, x7}: x0 is time (the unit e0 = 1 of the octonions), x1, x2, x3 ordinary space, x4 … x7 '
       'the four auxiliary space-like coordinates. η17 = diag(+1, −1, …, −1) is simply the squares of the octonion basis (e0² = +1, '
@@ -99,16 +99,16 @@ text('which gives: the stabilizing potential (W = a³b⁴ U): ε = U, pa = −U,
      '−(1/(2κ)) ∫ n a³b⁴ Σ α_k L_k − ∫ n W (with the identities of section 12.6) gives exactly the three cosmological field equations')
 text('      Σ_k α_k E^(k)0_0 = κ ε,    Σ_k α_k E^(k)1_1 = −κ pa,    Σ_k α_k E^(k)4_4 = −κ pb.')
 inp(r'''
-feW = Function[{aa, bb}, wW[aa, bb]];
+feW = Function[{aa, rIIIbb}, wW[aa, rIIIbb]];
 feStress[W_] := Simplify[{W[aS, bS]/(aS^3 bS^4), -D[W[aS, bS], aS]/(3 aS^2 bS^4), -D[W[aS, bS], bS]/(4 aS^3 bS^3)}];
 check["stabilizing potential: W = a^3 b^4 U(b) gives eps = U, pa = -U, pb = -U - (b/4) U'(b)",
-  Simplify[feStress[Function[{aa, bb}, aa^3 bb^4 uPot[bb]]] - {uPot[bS], -uPot[bS], -uPot[bS] - bS uPot'[bS]/4}] === {0, 0, 0}]
+  Simplify[feStress[Function[{aa, rIIIbb}, aa^3 rIIIbb^4 uPot[rIIIbb]]] - {uPot[bS], -uPot[bS], -uPot[bS] - bS uPot'[bS]/4}] === {0, 0, 0}]
 check["brane tension smeared over the torus (V_perp = b^4 Lc^4): eps = f_W/V_perp, pa = -f_W/V_perp, pb = 0",
-  Simplify[feStress[Function[{aa, bb}, aa^3 fWb/lcT^4]] - {fWb/(bS^4 lcT^4), -fWb/(bS^4 lcT^4), 0}] === {0, 0, 0}]
+  Simplify[feStress[Function[{aa, rIIIbb}, aa^3 fWb/lcT^4]] - {fWb/(bS^4 lcT^4), -fWb/(bS^4 lcT^4), 0}] === {0, 0, 0}]
 check["brane fluid rho_4 = N a^(-3(1+w)), smeared: eps = rho_4/V_perp, pa = w eps, pb = 0",
-  Simplify[feStress[Function[{aa, bb}, aa^3 nW aa^(-3 (1 + wW0))/lcT^4]] - {nW aS^(-3 (1 + wW0))/(bS^4 lcT^4), wW0 nW aS^(-3 (1 + wW0))/(bS^4 lcT^4), 0}] === {0, 0, 0}]
+  Simplify[feStress[Function[{aa, rIIIbb}, aa^3 nW aa^(-3 (1 + wW0))/lcT^4]] - {nW aS^(-3 (1 + wW0))/(bS^4 lcT^4), wW0 nW aS^(-3 (1 + wW0))/(bS^4 lcT^4), 0}] === {0, 0, 0}]
 check["massless dirac16complex particle (comoving momentum (k_a, k_b)): eps V = omega, pa V = k_a^2/(3 a^2 omega), pb V = k_b^2/(4 b^2 omega)",
-  With[{st = feStress[Function[{aa, bb}, Sqrt[kaP^2/aa^2 + kbP^2/bb^2]]], om = Sqrt[kaP^2/aS^2 + kbP^2/bS^2]},
+  With[{st = feStress[Function[{aa, rIIIbb}, Sqrt[kaP^2/aa^2 + kbP^2/rIIIbb^2]]], om = Sqrt[kaP^2/aS^2 + kbP^2/bS^2]},
    Simplify[st aS^3 bS^4 - {om, kaP^2/(3 aS^2 om), kbP^2/(4 bS^2 om)}, aS > 0 && bS > 0 && kaP > 0 && kbP > 0] === {0, 0, 0}]]
 consW = With[{e = wW[a3[x0], b4[x0]]/(a3[x0]^3 b4[x0]^4), pa = -(Derivative[1, 0][wW][a3[x0], b4[x0]])/(3 a3[x0]^2 b4[x0]^4),
      pb = -(Derivative[0, 1][wW][a3[x0], b4[x0]])/(4 a3[x0]^3 b4[x0]^3)},
@@ -117,7 +117,7 @@ check["every such source is conserved: eps' + 3Ha(eps + pa) + 4Hb(eps + pb) == 0
 feELn = -(1/(2 kapS)) (-2 aS^3 bS^4 s00) - wW[aS, bS]; feELa = -(1/(2 kapS)) (-6 aS^2 bS^4 s11) - D[wW[aS, bS], aS];
 feELb = -(1/(2 kapS)) (-8 aS^3 bS^3 s44) - D[wW[aS, bS], bS];
 check["minisuperspace: EL_n == (a^3 b^4/kappa)(S00 - kappa eps), EL_a == (3 a^2 b^4/kappa)(S11 + kappa pa), EL_b == (4 a^3 b^3/kappa)(S44 + kappa pb) with S = Sum alpha_k E^(k) (identities of section 12.6)",
-  With[{st = feStress[Function[{aa, bb}, wW[aa, bb]]]},
+  With[{st = feStress[Function[{aa, rIIIbb}, wW[aa, rIIIbb]]]},
    Simplify[{feELn - aS^3 bS^4/kapS (s00 - kapS st[[1]]), feELa - 3 aS^2 bS^4/kapS (s11 + kapS st[[2]]), feELb - 4 aS^3 bS^3/kapS (s44 + kapS st[[3]])}] === {0, 0, 0}]]
 ''')
 
@@ -166,7 +166,7 @@ section('21. Regime I: the primordial Lovelock regime (near x0 = 0)')
 text('Units: the Gauss–Bonnet length ℓ2 = √α_2 = 1 (time and length in units of ℓ2, Hubble rates in units of 1/ℓ2), so that the '
      'only parameter of the vacuum equations is ξ = α_3/α_2². This section uses ξ = 10⁻⁶, which separates the three Lovelock regimes '
      'clearly; the crossover times scale as stated below. τ = x0 − x_s is the time since the singularity x_s. Λ is negligible in '
-     'this regime (Λ ℓ2² ≈ (H0/M8)² ≈ 10⁻⁹², section 23.4) and set to 0. If ℓ2 = 1/M8 with M8 = 10 TeV, the unit of time is '
+     'this regime (Λ ℓ2² ≈ (H0/M8)² ≈ 10⁻⁹², section 23.3) and set to 0. If ℓ2 = 1/M8 with M8 = 10 TeV, the unit of time is '
      'ℓ2 = 6.6 × 10⁻²⁹ s.')
 
 subsection('21.1 The exact vacuum solution: an algebraic curve and one quadrature')
@@ -234,7 +234,7 @@ rIser = Expand[Expand[rIc /. {Ha -> 1/tS + cA0 + cA1 tS + cA2 tS^2, Hb -> -Sqrt[
 rIco = Table[Simplify[Coefficient[rIser[[c]], tS, n], alf[2] > 0 && alf[3] > 0], {c, 3}, {n, 0, 3}];
 rIs1 = First[Solve[{rIco[[1, 3]] == 0, rIco[[3, 2]] == 0}, {ch1, cA0}]];
 rIs2 = First[Solve[{(rIco[[1, 4]] /. rIs1) == 0, (rIco[[3, 3]] /. rIs1) == 0}, {ch2, cA1}]];
-rIsame[e1_, e2_] := AllTrue[{{1, 10^-6}, {7/3, 2/5}, {1/2, 3}}, Abs[N[(e1 - e2) /. {alf[2] -> #[[1]], alf[3] -> #[[2]]}, 40]] < 10^-30 &];
+rIsame[e1_, e2_] := AllTrue[{{1, 10^-6}, {7/3, 2/5}, {1/2, 3}}, RootReduce[Together[(e1 - e2) /. {alf[2] -> #[[1]], alf[3] -> #[[2]]}]] === 0 &];      (* exact *)
 check["cubic regime: Ha = 1/tau + A0 + A1 tau, Hb = h0 + h1 tau + h2 tau^2 solves the 00, 11, 44 equations through order tau^-1 (11: checked, not used)",
   AllTrue[rIco[[All, 1]], # === 0 &] && Simplify[rIco[[1, 2]]] === 0 && Simplify[rIco[[2, 2]]] === 0 &&
   rIsame[rIco[[2, 3]] /. rIs1, 0] && rIsame[(rIco[[2, 4]] /. rIs1) /. rIs2, 0]]
@@ -265,7 +265,7 @@ rIrhs[sg_?NumericQ, yy_?VectorQ] := With[{ha = Exp[-sg]}, With[{dha = rIdHa[ha, 
 rItau0 = 10^-8; rIHa0 = 1/rItau0 + rIcub[[4]] + rIcub[[5]] rItau0; rIHb0 = rIcub[[1]] + rIcub[[2]] rItau0 + rIcub[[3]] rItau0^2;
 check["cubic-series data at tau = 10^-8 satisfy the vacuum constraint to < 10^-12 (relative to 48 Ha^3 |Hb|)",
   Abs[(rIc[[1]] /. {alf[2] -> 1, alf[3] -> rIxi, Ha -> rIHa0, Hb -> rIHb0})]/(48 rIHa0^3 Abs[rIHb0]) < 10^-12]
-rIvacY = NDSolveValue[{yV'[sV] == rIrhs[sV, yV[sV]], yV[-Log[rIHa0]] == {rIHb0, rItau0}}, yV, {sV, -Log[rIHa0], -Log[10^-4]},
+rIvacY = NDSolveValue[{rIyV'[sV] == rIrhs[sV, rIyV[sV]], rIyV[-Log[rIHa0]] == {rIHb0, rItau0}}, rIyV, {sV, -Log[rIHa0], -Log[10^-4]},
     Method -> {"ExplicitRungeKutta", "DifferenceOrder" -> 8}, PrecisionGoal -> 13, AccuracyGoal -> 40, MaxSteps -> 10^6, InterpolationOrder -> All];
 rIvacAt[h_] := rIvacY[-Log[h]];          (* {Hb, tau} on the vacuum solution at Ha = h *)
 rIdHdu[u_, xi_] := With[{x = rIX[u, xi]}, -(rIpEf'[u] + x rIpGf'[u] + xi x^2 rIpCf'[u])/(rIpGf[u] + 2 xi x rIpCf[u])/(2 Sqrt[x])];
@@ -297,7 +297,7 @@ ListLogLogPlot[{rIacc[[All, {2, 3}]], rIacc[[All, {2, 4}]], rIacc[[All, {2, 5}]]
 
 subsection('21.3 Coupled to dirac16complex: the matter-dominated cubic regime and decompactification')
 text('Now couple the gravity of section 21.2 to a gas of dirac16complex particles. In the primordial regime the mass and the '
-     'self-couplings are negligible (m ≪ Ha, g_r ρ^(6/7) ≪ 1, section 23.4), so the Kohn–Sham matter of section 16 reduces to a '
+     'self-couplings are negligible (m ≪ Ha and g_r n^(6/7) ≪ 1 with n the number density of the gas, i.e. (k_phys/M8)^6 ≪ 1 for g_r ≈ M8⁻⁶; section 23.3), so the Kohn–Sham matter of section 16 reduces to a '
      'massless collisionless gas with an isotropic comoving momentum distribution (normalized so that a = b = 1 at Ha = 1, where its '
      'energy density is κε = 10⁻⁶ × 3Ha²): with the weight cos²θ sin³θ of the seven-dimensional momentum sphere,')
 text('      κε = C (a³b⁴)⁻¹ ⟨√(cos²θ/a² + sin²θ/b²)⟩,   κ pa = C (a³b⁴)⁻¹ ⟨cos²θ/(3a² ω)⟩,   κ pb = C (a³b⁴)⁻¹ ⟨sin²θ/(4b² ω)⟩.')
@@ -305,7 +305,11 @@ text([('Matter-dominated cubic regime. ', B),
       'Near τ = 0 any fluid with pa = w_a ε (w_a < 1) wins over the vacuum terms. With b finite and Ha = p/τ the leading 44 '
       'equation is p³(p − 1)(648α_3 h² − 12α_2) = 0, so Hb → h* = −√(α_2/(54α_3)) (not h0), and the 11 and 00 equations give'])
 text('      p = 1/(1 + w_a),   κ ε τ³ → (64/3) p³ α_2 |h*|,   α_2E^(2) : α_3E^(3) : κε → 9/4 : −5/4 : 1.')
-text('For the gas (and for brane radiation) w_a → 1/3 as a/b → 0: a ∝ τ^(3/4). Moving forward in time the gas fraction decreases '
+text('For the gas (and for brane radiation) w_a → 1/3 as a/b → 0: a ∝ τ^(3/4). The GAS FRACTION is κε divided by the sum of the sizes '
+     'of all terms of the 00 equation, S_1 + S_2 + S_3 + κε, where the size of a curvature term is the sum of the absolute values of '
+     'its monomials in Ha and Hb: S_1 = 3(Ha² + 4Ha|Hb| + 2Hb²), S_2 = 12α_2|Hb|(4Ha³ + 18Ha²|Hb| + 12Ha Hb² + |Hb|³), '
+     'S_3 = 360α_3 Ha²|Hb|³(4Ha + 3|Hb|) (in a Kasner regime the monomials of the dominant term cancel each other, so its net value '
+     'would hide it). Moving forward in time the gas fraction decreases '
      'in the cubic regime (ε ∝ τ⁻⁴ against τ⁻³) and in the Gauss–Bonnet regime (ε ∝ τ^(−4(p2+q2)) against τ⁻⁴), so the vacuum '
      'regimes of section 21.2 follow; in the Einstein regime it grows like τ^(2 − 3p1 − 5q1) = τ^1.160 (the auxiliary momenta are '
      'blue-shifted, pb → ε/4, pa → 0).')
@@ -324,20 +328,22 @@ rIC00[ha_, hb_] := rIc[[1]] /. {alf[2] -> 1, alf[3] -> rIxi, Ha -> ha, Hb -> hb}
 rIlinM[ha_, hb_] := {{Coefficient[rIc[[2]], dHa], Coefficient[rIc[[2]], dHb]}, {Coefficient[rIc[[3]], dHa], Coefficient[rIc[[3]], dHb]}} /. {alf[2] -> 1, alf[3] -> rIxi, Ha -> ha, Hb -> hb};
 rIlinB[ha_, hb_] := ({rIc[[2]], rIc[[3]]} /. {dHa -> 0, dHb -> 0}) /. {alf[2] -> 1, alf[3] -> rIxi, Ha -> ha, Hb -> hb};
 rIlinMf = Function[{ha, hb}, Evaluate[rIlinM[ha, hb]]]; rIlinBf = Function[{ha, hb}, Evaluate[rIlinB[ha, hb]]];
+rIsolve2[m_, v_] := {v[[1]] m[[2, 2]] - v[[2]] m[[1, 2]], m[[1, 1]] v[[2]] - m[[2, 1]] v[[1]]}/(m[[1, 1]] m[[2, 2]] - m[[1, 2]] m[[2, 1]]);   (* 2x2 Cramer rule *)
 rIgasD[ha_?NumericQ, hb_?NumericQ, la_?NumericQ, lb_?NumericQ, cg_] := Module[{g = rIgas[la, lb]},
-   LinearSolve[rIlinMf[ha, hb], -rIlinBf[ha, hb] - cg {g[[2]], g[[3]]}]];
+   rIsolve2[rIlinMf[ha, hb], -rIlinBf[ha, hb] - cg {g[[2]], g[[3]]}]];
 rIgasRhs[sg_?NumericQ, yy_?VectorQ, cg_] := Module[{ha = Exp[-sg], d, dx},
    d = rIgasD[ha, yy[[1]], yy[[2]], yy[[3]], cg]; dx = -ha/d[[1]]; {d[[2]] dx, ha dx, yy[[1]] dx, dx}];
 rICg = 10^-6 3; {rIhbVac1, rIx1} = rIvacAt[1];
 rIhb1 = Hb /. FindRoot[rIC00[1, Hb] == rICg, {Hb, rIhbVac1}, WorkingPrecision -> 20];
-rIcpl[smax_] := NDSolveValue[{yC'[sV] == rIgasRhs[sV, yC[sV], rICg], yC[0] == N[{rIhb1, 0, 0, rIx1}]}, yC, {sV, 0, smax},
+rIcpl[smax_] := NDSolveValue[{rIyC'[sV] == rIgasRhs[sV, rIyC[sV], rICg], rIyC[0] == N[{rIhb1, 0, 0, rIx1}]}, rIyC, {sV, 0, smax},
     Method -> {"ExplicitRungeKutta", "DifferenceOrder" -> 8}, PrecisionGoal -> 12, AccuracyGoal -> 30, MaxSteps -> 10^6, InterpolationOrder -> All];
 rIcplB = rIcpl[-Log[10^16]]; rIcplF = rIcpl[-Log[10^-14]];
 rIxs = rIcplB[-Log[10^16]][[4]] - 3/4 10^-16;
-rIstate[h_] := Module[{sol = If[h >= 1, rIcplB, rIcplF], hb, la, lb, x, g, d, e1, e2, e3},
-   {hb, la, lb, x} = sol[-Log[h]]; g = rIgas[la, lb]; d = rIgasD[h, hb, la, lb, rICg];
-   e1 = 3 (h^2 + 4 h hb + 2 hb^2); e2 = -12 hb (4 h^3 + 18 h^2 hb + 12 h hb^2 + hb^3); e3 = 360 rIxi h^2 hb^3 (4 h + 3 hb);
-   <|"Hb" -> hb, "tau" -> x - rIxs, "peff" -> -h^2/d[[1]], "keps" -> rICg g[[1]], "E2" -> e2, "E3" -> e3, "frac" -> rICg g[[1]]/(Abs[e1] + Abs[e2] + Abs[e3] + 3 h^2),
+rIstate[h_] := Module[{sol = If[h >= 1, rIcplB, rIcplF], hb, la, lb, x, g, d, e2, e3, sz, hm},
+   {hb, la, lb, x} = sol[-Log[h]]; g = rIgas[la, lb]; d = rIgasD[h, hb, la, lb, rICg]; hm = Abs[hb];
+   e2 = -12 hb (4 h^3 + 18 h^2 hb + 12 h hb^2 + hb^3); e3 = 360 rIxi h^2 hb^3 (4 h + 3 hb);
+   sz = {3 (h^2 + 4 h hm + 2 hm^2), 12 hm (4 h^3 + 18 h^2 hm + 12 h hm^2 + hm^3), 360 rIxi h^2 hm^3 (4 h + 3 hm), rICg g[[1]]};   (* sizes S1, S2, S3, kappa eps *)
+   <|"Hb" -> hb, "tau" -> x - rIxs, "peff" -> -h^2/d[[1]], "keps" -> rICg g[[1]], "E2" -> e2, "E3" -> e3, "S" -> sz, "frac" -> sz[[4]]/Total[sz],
      "pa/e" -> g[[2]]/g[[1]], "pb/e" -> g[[3]]/g[[1]]|>];
 rIhStar = -1/Sqrt[54 rIxi];
 rInear = rIstate[10^15];
@@ -357,13 +363,13 @@ rIfl[wa_, wb_] := Solve[{(3 (pP^2 + 4 pP qQ + 2 qQ^2)) == cC, (3 pP^2 + 8 pP qQ 
 check["Einstein + fluid power laws a ~ tau^P, b ~ tau^Q: (wa, wb) = (0, 1/4) -> (0, 2/5); (1/3, 0) -> (1/2, 0); (1/7, 1/7) -> (1/4, 1/4) (tau^2 E^(1) from EKas of section 14.1)",
   Expand[(EKas[[1]] /. {pK -> pP, qK -> qQ}) - {3 (pP^2 + 4 pP qQ + 2 qQ^2), 3 pP^2 + 8 pP qQ - 2 pP + 10 qQ^2 - 4 qQ, 3 (2 pP^2 + 3 pP qQ - pP + 2 qQ^2 - qQ)}] === {0, 0, 0} &&
   rIfl[0, 1/4] == {{pP -> 0, qQ -> 2/5, cC -> 24/25}} && rIfl[1/3, 0] == {{pP -> 1/2, qQ -> 0, cC -> 3/4}} && rIfl[1/7, 1/7] == {{pP -> 1/4, qQ -> 1/4, cC -> 21/16}}]
-rIlead = {Coefficient[Expand[(rIc[[1]] /. {Ha -> pw/tS, Hb -> hh, dHa -> -pw/tS^2, dHb -> 0}) tS^3], tS, 0],
-   Coefficient[Expand[(rIc[[2]] /. {Ha -> pw/tS, Hb -> hh, dHa -> -pw/tS^2, dHb -> 0}) tS^3], tS, 0],
-   Coefficient[Expand[(rIc[[3]] /. {Ha -> pw/tS, Hb -> hh, dHa -> -pw/tS^2, dHb -> 0}) tS^4], tS, 0]};
+rIlead = {Coefficient[Expand[(rIc[[1]] /. {Ha -> pw/tS, Hb -> rIIIhh, dHa -> -pw/tS^2, dHb -> 0}) tS^3], tS, 0],
+   Coefficient[Expand[(rIc[[2]] /. {Ha -> pw/tS, Hb -> rIIIhh, dHa -> -pw/tS^2, dHb -> 0}) tS^3], tS, 0],
+   Coefficient[Expand[(rIc[[3]] /. {Ha -> pw/tS, Hb -> rIIIhh, dHa -> -pw/tS^2, dHb -> 0}) tS^4], tS, 0]};
 check["matter-dominated cubic regime (any fluid, b finite): leading 44 term p^3 (p - 1)(648 alpha3 h^2 - 12 alpha2); with h^2 = alpha2/(54 alpha3): p = 1/(1 + w_a) and kappa eps tau^3 = (64/3) p^3 alpha2 |h|",
-  Expand[rIlead[[3]] - pw^3 (pw - 1) (648 alf[3] hh^2 - 12 alf[2])] === 0 &&
-  (Select[pw /. Solve[(rIlead[[2]] + wA rIlead[[1]] /. hh -> -Sqrt[alf[2]/(54 alf[3])]) == 0, pw], # =!= 0 &] // Simplify) == {1/(1 + wA)} &&
-  Simplify[(rIlead[[1]] /. hh -> -Sqrt[alf[2]/(54 alf[3])]) - 64/3 pw^3 alf[2] Sqrt[alf[2]/(54 alf[3])], alf[2] > 0 && alf[3] > 0] === 0]
+  Expand[rIlead[[3]] - pw^3 (pw - 1) (648 alf[3] rIIIhh^2 - 12 alf[2])] === 0 &&
+  (Select[pw /. Solve[(rIlead[[2]] + wA rIlead[[1]] /. rIIIhh -> -Sqrt[alf[2]/(54 alf[3])]) == 0, pw], # =!= 0 &] // Simplify) == {1/(1 + wA)} &&
+  Simplify[(rIlead[[1]] /. rIIIhh -> -Sqrt[alf[2]/(54 alf[3])]) - 64/3 pw^3 alf[2] Sqrt[alf[2]/(54 alf[3])], alf[2] > 0 && alf[3] > 0] === 0]
 {"near the singularity (Ha = 10^15): p_eff, Hb, kappa eps tau^3, alpha2 E2/(kappa eps), alpha3 E3/(kappa eps)" -> {rInear["peff"], rInear["Hb"], rInear["keps"] rInear["tau"]^3, rInear["E2"]/rInear["keps"], rInear["E3"]/rInear["keps"]},
  "(p_eff, gas fraction) at Ha = 3 10^5, 30, 10^-2" -> ({#["peff"], #["frac"]} & /@ rIplat), "late (Ha = 10^-14): tau Ha, tau Hb, pa/eps, pb/eps" -> {rIlate["tau"] 10^-14, rIlate["tau"] rIlate["Hb"], rIlate["pa/e"], rIlate["pb/e"]},
  "Einstein-regime growth exponent: numerical, 2 - 3 p1 - 5 q1" -> {rIgrow, N[2 - 3 rIp1 - 5 rIq1]}}
@@ -396,4 +402,268 @@ check["Einstein-Kasner pair creation: F(1) == 0.0107493 (section 14.3) and the t
 rIbrane = (Pi^2 106.75/30) (10.^4)^4/(3 (2.435 10^18)^2 (10.^4)^2);
 check["brane plasma at T = M8, H = M8: fraction (Pi^2 g*/30) M8^4/(3 M_Pl^2 M8^2) < 10^-27", rIbrane < 10^-27]
 {"F(1), F(8), F(16)" -> rIFk, "tail exponent (K = 8 .. 16), -(3 Sqrt[2] + 2)/2" -> {rItail, N[-(3 Sqrt[2] + 2)/2]}, "brane fraction at T = H = M8" -> rIbrane}
+''')
+
+# =====================================================================================
+section('22. Regime II: the modern regime (a stabilized auxiliary space, four-dimensional gravity on the brane)')
+subsection('22.1 The stabilizing potential catches the auxiliary space: radion oscillations')
+text('Section 21.3 showed that the auxiliary space must be held. Add the stabilizing potential U(b) = (K_U/2) (ln(b/b0))² '
+     '(U_0 = 0, κK_U = 12 m_r², m_r = 10⁻³/ℓ2) to the coupled solution of section 21.3 at Ha = 10⁻² (Einstein–Kasner regime, τ ≈ 57), '
+     'with b0 where the Kasner contraction would arrive at τ = 1/m_r. The equations are integrated in x0 (Ha now oscillates). '
+     'When the expansion rate falls below m_r the radion β = ln(b/b0) is caught and oscillates about 0; its energy then behaves '
+     'like four-dimensional matter, and the exact solution of β″ + (2/τ)β′ + m_r²β = 0 (the radion equation of section 20.3 in a '
+     'matter-dominated universe, H_E = 2/(3τ)) is the accurate approximate solution')
+text('      β ≈ A sin(m_r τ + ϑ)/(m_r (τ − τ_E)),   H_E = Ha + 2Hb ≈ 2/(3(τ − τ_E)),   corrections O(1/(m_r τ))   (amplitude A, phase ϑ).')
+text('The dirac16complex gas (frozen auxiliary momenta = Kaluza–Klein masses) is then also four-dimensional matter: its share of the '
+     'energy stays constant, and the radion carries the rest (99%): this is the cosmological moduli problem of the minimal model.')
+inp(r'''
+rIIm = 1/1000;
+{rIIhb0, rIIla0, rIIlb0, rIIx0} = rIcplF[-Log[1/100]]; rIItau0 = rIIx0 - rIxs;
+rIIlnb0 = rIIlb0 + rIq1 Log[1/(rIIm rIItau0)];
+rIIrhs[tt_?NumericQ, yy_?VectorQ] := Module[{ha, hb, la, lb, g, bet, kU, d}, {ha, hb, la, lb} = yy; g = rIgas[la, lb]; bet = lb - rIIlnb0; kU = 6 rIIm^2 bet^2;
+   d = rIsolve2[rIlinMf[ha, hb], -rIlinBf[ha, hb] - {rICg g[[2]] - kU, rICg g[[3]] - kU - 3 rIIm^2 bet}]; {d[[1]], d[[2]], ha, hb}];
+rIIha0 = 1/100;
+rIIhbC = Hb /. FindRoot[rIC00[rIIha0, Hb] == rICg rIgas[rIIla0, rIIlb0][[1]] + 6 rIIm^2 (rIIlb0 - rIIlnb0)^2, {Hb, rIIhb0}];
+rIIcap = NDSolveValue[{rIIyK'[tt] == rIIrhs[tt, rIIyK[tt]], rIIyK[rIItau0] == N[{rIIha0, rIIhbC, rIIla0, rIIlb0}]}, rIIyK, {tt, rIItau0, 3 10^5},
+    Method -> {"ExplicitRungeKutta", "DifferenceOrder" -> 8, "StiffnessTest" -> False}, PrecisionGoal -> 11, AccuracyGoal -> 16, MaxSteps -> 10^7, MaxStepSize -> 50];
+rIIHEavg[t1_] := {Mean[Table[rIIcap[tt][[1]] + 2 rIIcap[tt][[2]], {tt, t1, t1 + 2 Pi/rIIm, 2 Pi/rIIm/2000}]], t1 + Pi/rIIm};
+rIItE = With[{h = rIIHEavg[2.9 10^5]}, h[[2]] - 2/(3 h[[1]])];          (* H_E = 2/(3 (tau - tau_E)) over the last period *)
+rIIdata = Table[{tt, rIIcap[tt][[4]] - rIIlnb0}, {tt, 10^5, 3 10^5, 50}];
+rIIcs = LeastSquares[Table[{Sin[rIIm d[[1]]], Cos[rIIm d[[1]]]}, {d, rIIdata}], Table[d[[2]] rIIm (d[[1]] - rIItE), {d, rIIdata}]];
+rIIfit = {rIIaF -> Norm[rIIcs], rIIphF -> ArcTan[rIIcs[[1]], rIIcs[[2]]], rIItEF -> rIItE};
+rIIres = Max[Abs[rIIdata[[All, 2]] - ((rIIaF Sin[rIIm # + rIIphF]/(rIIm (# - rIItEF))) & /@ rIIdata[[All, 1]] /. rIIfit)]]/Max[Abs[rIIdata[[All, 2]]]];
+rIIHE[t1_] := With[{h = rIIHEavg[t1]}, h[[1]] (h[[2]] - rIItE)];
+rIIfr[tt_] := With[{y = rIIcap[tt]}, rICg rIgas[y[[3]], y[[4]]][[1]]/(3 (y[[1]] + 2 y[[2]])^2)];
+rIIheVals = {rIIHE[10^5], rIIHE[2 10^5]}; rIIfrVals = {rIIfr[10^5], rIIfr[3 10^5]};
+check["capture: the radion oscillates like a four-dimensional massive field in a matter-dominated universe: with tau_E from <H_E> = 2/(3 (tau - tau_E)) over the last period, beta = A sin(m_r tau + vartheta)/(m_r (tau - tau_E)) to 2 10^-2, <H_E>(tau - tau_E) = 2/3 to 10^-2 at tau = 10^5 and 2 10^5, the gas share constant to 2 10^-2",
+  rIIres < 2 10^-2 && AllTrue[rIIheVals, Abs[# - 2/3] < 10^-2 &] && Abs[rIIfrVals[[2]]/rIIfrVals[[1]] - 1] < 2 10^-2]
+{"start tau, beta(start)" -> {rIItau0, rIIlb0 - rIIlnb0}, "fit A, vartheta, tau_E; max residual/amplitude" -> {rIIaF, rIIphF, rIItEF, rIIres} /. rIIfit,
+ "<H_E>(tau - tau_E) at tau = 10^5, 2 10^5" -> rIIheVals, "gas share at tau = 10^5, 3 10^5" -> rIIfrVals, "radion share 1 - gas share" -> 1 - rIIfrVals[[2]]}
+''')
+inp(r'''
+Plot[{rIIcap[tt][[4]] - rIIlnb0, (rIIaF Sin[rIIm tt + rIIphF]/(rIIm (tt - rIItEF))) /. rIIfit}, {tt, 2 10^4, 10^5}, PlotPoints -> 400, Frame -> True,
+ FrameLabel -> {"tau (units l2)", "beta = ln(b/b0)"}, PlotLegends -> {"coupled field equations (numerical)", "A sin(m_r tau + vartheta)/(m_r (tau - tau_E))"}, ImageSize -> 600]
+''')
+
+subsection('22.2 Radion decay, the moduli problem and the Kaluza–Klein channels')
+text('In physical units (M8 = 10 TeV, reduced M_Pl = 2.435 × 10¹⁸ GeV, V⊥ = M_Pl²/M8⁶) the radion couples to the brane fields through '
+     'L = (φ/(√3 M_Pl)) T^μ_μ (section 20.3). For a fermion of mass m_f (N_c colours) and, through the trace anomaly '
+     'T^μ_μ ⊃ −(b_QCD α_s/(8π)) G^a_μν G^aμν (b_QCD = 11 − 2n_f/3, the first coefficient of the QCD beta function), for two gluons:')
+text('      Γ(φ → f f̄) = N_c m_f² m_r (1 − 4m_f²/m_r²)^(3/2)/(24π M_Pl²),   Γ(φ → gg) = b_QCD² α_s² m_r³/(96π³ M_Pl²).')
+text('For m_r = 10 GeV (b, c, τ, μ pairs and gluons, α_s = 0.18, n_f = 5) the brane channels give Γ_brane ≈ 4.6 × 10⁻³⁷ GeV, a lifetime '
+     'of 1.4 × 10¹² s, and would reheat the brane only to T_RH = [Γ_brane M_Pl/√(π² g*/90)]^(1/2) ≈ 10⁻⁹ GeV (g* = 10.75), far below the '
+     '4 MeV that nucleosynthesis needs.')
+text([('Decay into the bulk. ', B),
+      'The radion also couples to every Kaluza–Klein mode of the bulk fields. A mode of dirac16complex with Kaluza–Klein momentum '
+      'μ_n = 2π|n|/ℓ⊥ (n in Z⁴, ℓ⊥ = V⊥^(1/4) the size of the auxiliary torus) has, in the four-dimensional Einstein frame '
+      '(h = e^(−4β) g_E), the mass M_E = e^(−2β) (m² + μ_n² e^(−2β))^(1/2); it therefore couples to φ = √12 M_Pl β with '
+      'g_n = (2M_n + μ_n²/M_n)/(√12 M_Pl), M_n = (m² + μ_n²)^(1/2). For m ≪ μ_n each Kaluza–Klein level (four brane Dirac spinors) gives'])
+text('      Γ_n = 4 g_n² m_r (1 − 4M_n²/m_r²)^(3/2)/(8π) = 3 μ_n² m_r (1 − 4μ_n²/m_r²)^(3/2)/(8π M_Pl²),')
+text('and the sum over the 1.17 × 10¹³ momenta with 2μ_n < m_r, done shell by shell with the number r_4(k) = 8σ(k) − 32σ(k/4) of '
+     'lattice vectors with |n|² = k (σ the divisor sum, σ(k/4) = 0 unless 4 divides k), agrees with its continuum limit')
+text('      Γ_bulk = Σ_n Γ_n ≈ (3 m_r/(8π M_Pl²)) (V⊥/(8π²)) (m_r/2)⁶ B(3, 5/2)/2 ≈ 6.0 × 10⁻²⁴ GeV   (lifetime 0.11 s):')
+text('thirteen orders of magnitude faster than the brane channels (the Kaluza–Klein gravitons add channels of the same strength; for '
+     'm > m_r/2 the dirac16complex channels close). The radion decays into the BULK: its energy goes to Kaluza–Klein modes, which return '
+     'it to the brane only through couplings suppressed by the volume (a Kaluza–Klein graviton of mass M decays into brane fields at a '
+     'rate of order M³/M_Pl²). This is the cosmological moduli problem of the minimal model in the form it takes with large extra '
+     'dimensions. The minimal model therefore needs the radion and bulk energy left at the end of regime I to be removed before '
+     'nucleosynthesis (for example by a later period of inflation on the brane, not part of the model); sections 22.3–22.4 start after '
+     'such a reheating, below the normalcy temperature T* ≈ (M8⁶/M_Pl)^(1/5) ≈ 13 GeV.')
+inp(r'''
+rIIMPl = 2.435 10^18; rIIM8 = 10.^4; rIIVp = rIIMPl^2/rIIM8^6; rIIhbar = 6.582119569 10^-25;
+rIIgff[mphi_, mf_, nc_] := If[4 mf^2 < mphi^2, nc mf^2 mphi (1 - 4 mf^2/mphi^2)^(3/2)/(24 Pi rIIMPl^2), 0];
+rIIggg[mphi_, as_, nf_] := (11 - 2 nf/3)^2 as^2 mphi^3/(96 Pi^3 rIIMPl^2);
+rIIgam = rIIgff[10., 4.183, 3] + rIIgff[10., 1.273, 3] + rIIgff[10., 1.77693, 1] + rIIgff[10., 0.1056583755, 1] + rIIggg[10., 0.18, 5];
+rIITRH = Sqrt[rIIgam rIIMPl/Sqrt[Pi^2 10.75/90]];
+rIINKK = rIIVp (Pi^2/2) (10./2)^4/(2 Pi)^4;
+check["through brane fields alone a 10 GeV radion would decay far too late: T_RH < 10^-6 GeV (nucleosynthesis needs 4 10^-3 GeV); 10^13 Kaluza-Klein channels below m_r/2",
+  rIITRH < 10^-6 && 10^13 < rIINKK < 2 10^13]
+rIIkmax = Floor[(10. rIIVp^(1/4)/(4 Pi))^2];                        (* |n|^2 = k <= kmax  <=>  2 mu_n < m_r *)
+rIIsig = DivisorSigma[1, Range[rIIkmax]];
+rIIr4 = 8 rIIsig; rIIr4[[4 ;; ;; 4]] -= 32 rIIsig[[1 ;; Floor[rIIkmax/4]]];       (* r_4(k) = 8 sigma(k) - 32 sigma(k/4) *)
+rIImuK = 2 Pi Sqrt[N[Range[rIIkmax]]]/rIIVp^(1/4);
+rIIgBulk = 3 10./(8 Pi rIIMPl^2) Total[rIIr4 rIImuK^2 (1 - 4 rIImuK^2/100.)^(3/2)];
+rIIgBulkC = 3 10./(8 Pi rIIMPl^2) rIIVp/(8 Pi^2) 5.^6 Beta[3, 5/2]/2;
+check["the number of lattice vectors with |n|^2 = k is r_4(k) = 8 sigma(k) - 32 sigma(k/4) (direct count for k <= 60)",
+  With[{nn = Total[Tuples[Range[-8, 8], 4]^2, {2}]}, Table[Count[nn, kk], {kk, 60}]] == rIIr4[[1 ;; 60]]]
+check["the radion decays into the bulk: the lattice sum over the Kaluza-Klein modes of dirac16complex (m << m_r/2) equals its continuum limit to 10^-6, the number of momenta to 10^-5, and Gamma_bulk/Gamma_brane > 10^12",
+  Abs[rIIgBulk/rIIgBulkC - 1] < 10^-6 && Abs[Total[rIIr4]/rIINKK - 1] < 10^-5 && rIIgBulk/rIIgam > 10^12]
+{"Gamma (GeV), lifetime (s), T_RH (GeV)" -> {rIIgam, rIIhbar/rIIgam, rIITRH}, "Kaluza-Klein momenta below m_r/2" -> rIINKK,
+ "radion into bulk dirac16complex pairs (m << m_r/2): Gamma_bulk lattice, continuum (GeV), lifetime (s), Gamma_bulk/Gamma_brane" -> {rIIgBulk, rIIgBulkC, rIIhbar/rIIgBulk, rIIgBulk/rIIgam},
+ "V_perp (GeV^-4), l_perp (m), 2 Pi/l_perp (GeV)" -> {rIIVp, rIIVp^(1/4) 1.973269804 10^-16, 2 Pi/rIIVp^(1/4)}, "normalcy temperature (M8^6/M_Pl)^(1/5) (GeV)" -> (rIIM8^6/rIIMPl)^(1/5)}
+''')
+
+subsection('22.3 The Standard Model plasma on the brane: g*(T), g*s(T) and the time–temperature relation')
+text('With b static the brane obeys the Friedmann equations of section 20.3, 3 M_Pl² Ha² = ρ_4 + M_Pl² Λ4 and '
+     'Ha′ = −(ρ_4 + p_4)/(2M_Pl²). In the radiation era ρ_4 = (π²/30) g*(T) T⁴ and the entropy s = (2π²/45) g*s(T) T³ is conserved, '
+     's a³ = constant, so that')
+text('      Ha = (π² g*/90)^(1/2) T²/M_Pl,     ln a = −ln T − (1/3) ln g*s(T) + const,     t(T) = t(T1) + ∫ d(ln a)/Ha '
+     '= t(T1) + ∫_T^T1 (dT′/T′) [1 + (1/3) d ln g*s/d ln T′]/Ha(T′),')
+text('evaluated on 481 points equally spaced in ln T from T1 = 10 GeV (where t(T1) = 1/(2Ha)) to 10 keV; on each step 1/Ha is taken '
+     'exponential in ln T (exact when g* is constant), so a step adds Δ(ln a) (1/H_(i+1) − 1/H_i)/ln(H_i/H_(i+1)); halving the grid '
+     'changes t by less than 10⁻⁵.')
+text('g* and g*s are computed here for ideal gases of all Standard Model particles with their masses (PDG values of section 17), '
+     'with the series for each species i (x = m_i/T; +: bosons, −: fermions with alternating signs):')
+text('      ρ_i = (g_i T⁴/(2π²)) Σ_{n≥1} (±1)^(n+1) [3(nx)² K_2(nx) + (nx)³ K_1(nx)]/n⁴,   p_i = (g_i T⁴/(2π²)) Σ_{n≥1} (±1)^(n+1) (nx)² K_2(nx)/n⁴,')
+text('s_i = (ρ_i + p_i)/T. The QCD crossover is modelled by the switch S(T) = (1 + tanh((T − 0.160 GeV)/0.030 GeV))/2 between quarks '
+     'and gluons and the lightest hadrons (π, K, η, ρ, ω, K*, η′, nucleons); this model differs from the lattice equation of state by '
+     'up to about 10% near the crossover. The neutrinos decouple while e± are relativistic: T_ν = T (g_γe(T)/(11/2))^(1/3), and '
+     'their density is scaled by N_eff/3 = 3.044/3. (The Python check tools/ref_coupled.py integrates the momentum integrals instead '
+     'of summing the series.)')
+inp(r'''
+rIIsp = {{2, 0., -1, "always"}, {6, 80.3692, -1, "always"}, {3, 91.1880, -1, "always"}, {1, 125.20, -1, "always"}, {4, 0.51099895 10^-3, 1, "always"},
+   {4, 0.1056583755, 1, "always"}, {4, 1.77693, 1, "always"}, {6, 0., 1, "nu"}, {16, 0., -1, "qgp"}, {12, 2.16 10^-3, 1, "qgp"}, {12, 4.70 10^-3, 1, "qgp"},
+   {12, 93.5 10^-3, 1, "qgp"}, {12, 1.2730, 1, "qgp"}, {12, 4.183, 1, "qgp"}, {12, 172.56, 1, "qgp"}, {2, 0.13957039, -1, "hadron"}, {1, 0.1349768, -1, "hadron"},
+   {2, 0.493677, -1, "hadron"}, {2, 0.497611, -1, "hadron"}, {1, 0.547862, -1, "hadron"}, {9, 0.77526, -1, "hadron"}, {3, 0.78266, -1, "hadron"},
+   {12, 0.8955, -1, "hadron"}, {1, 0.95778, -1, "hadron"}, {4, 0.93827209, 1, "hadron"}, {4, 0.93956542, 1, "hadron"}};
+rIInn = N[Range[400]];
+rIIrs[t_, g_, m_, st_] := Module[{x = m/t, c, k2, k1},
+   If[x > 60, Return[{0., 0.}]];
+   c = If[st == 1, (-1.)^(rIInn + 1), 1. + 0 rIInn];
+   If[x == 0, Return[With[{r = g t^4 6 Total[c/rIInn^4]/(2 Pi^2)}, {r, 4 r/(3 t)}]]];
+   k2 = BesselK[2, rIInn x]; k1 = BesselK[1, rIInn x];
+   With[{r = g t^4 Total[c (3 (rIInn x)^2 k2 + (rIInn x)^3 k1)/rIInn^4]/(2 Pi^2), p = g t^4 Total[c (rIInn x)^2 k2/rIInn^4]/(2 Pi^2)}, {r, (r + p)/t}]];
+rIIS[t_] := (1 + Tanh[(t - 0.160)/0.030])/2;
+rIIgge[t_] := (rIIrs[t, 2, 0., -1][[2]] + rIIrs[t, 4, 0.51099895 10^-3, 1][[2]]) 45/(2 Pi^2 t^3);
+rIIgstars[t_?NumericQ] := Module[{tot = {0., 0.}, tn, w},
+   Do[Which[sp[[4]] == "nu", tn = t Min[1, (rIIgge[t]/5.5)^(1/3)]; tot += 3.044/3 rIIrs[tn, sp[[1]], 0., 1],
+      True, w = Switch[sp[[4]], "qgp", rIIS[t], "hadron", 1 - rIIS[t], _, 1]; tot += w rIIrs[t, sp[[1]], sp[[2]], sp[[3]]]], {sp, rIIsp}];
+   {tot[[1]] 30/(Pi^2 t^4), tot[[2]] 45/(2 Pi^2 t^3)}];
+rIIgtab = rIIgstars /@ {1000., 10., 1., 0.3, 0.1, 0.01, 0.001, 10.^-4, 10.^-6};
+check["g* limits: 106.75 above the electroweak scale (to 0.1), 10.75 near 3 MeV (to 0.1), 2 + (21/4)(4/11)^(4/3)(3.044/3) = 3.3855 after e+e- annihilation (to 10^-3)",
+  Abs[rIIgtab[[1, 1]] - 106.75] < 0.1 && Abs[rIIgstars[0.003][[1]] - 10.75] < 0.1 && Abs[rIIgtab[[9, 1]] - (2 + 21/4 (4/11)^(4/3) 3.044/3)] < 10^-3]
+rIIlnT = Table[Log[10.] - i (Log[10.] - Log[10.^-5])/480, {i, 0, 480}];
+rIIgg = rIIgstars[Exp[#]] & /@ rIIlnT;
+rIIHg = MapThread[Sqrt[Pi^2 #2[[1]]/90] Exp[2 #1]/rIIMPl &, {rIIlnT, rIIgg}];
+rIIlna = -rIIlnT - Log[rIIgg[[All, 2]]]/3;
+rIItg = Join[{0.}, Accumulate[Differences[rIIlna] (1/Rest[rIIHg] - 1/Most[rIIHg])/Log[Most[rIIHg]/Rest[rIIHg]]]] + 1/(2 rIIHg[[1]]);   (* 1/Ha exponential in ln T on each step *)
+rIIidx[t_] := Round[(Log[10.] - Log[t])/((Log[10.] - Log[10.^-5])/480)] + 1;
+rIItvals = rIItg[[rIIidx[#]]] & /@ {1., 0.1, 0.01, 0.001, 10.^-4, 10.^-5};
+rIItgHalf = With[{la = rIIlna[[1 ;; -1 ;; 2]], hg = rIIHg[[1 ;; -1 ;; 2]]}, Join[{0.}, Accumulate[Differences[la] (1/Rest[hg] - 1/Most[hg])/Log[Most[hg]/Rest[hg]]]] + 1/(2 hg[[1]])];
+check["the time-temperature quadrature is converged: halving the grid changes t(10 keV) by less than 10^-5", Abs[Last[rIItgHalf]/Last[rIItg] - 1] < 10^-5]
+check["radiation era: t(1 MeV) = 0.74 s within 5% (1/(2 Ha) with g* = 10.75)", Abs[rIItvals[[4]] rIIhbar/0.74 - 1] < 0.05]
+{"g*, g*s at 1 TeV, 10 GeV, 1 GeV, 300 MeV, 100 MeV, 10 MeV, 1 MeV, 100 keV, 1 keV" -> rIIgtab, "t(T) in s at 1 GeV, 100 MeV, 10 MeV, 1 MeV, 100 keV, 10 keV" -> rIItvals rIIhbar,
+ "1/(2 Ha(T)) / t(T)" -> (1/(2 rIIHg[[rIIidx[#]]]) & /@ {1., 0.1, 0.01, 0.001, 10.^-4, 10.^-5})/rIItvals}
+''')
+inp(r'''
+ListLogLinearPlot[Transpose[{Exp[rIIlnT], #}] & /@ Transpose[rIIgg], Joined -> True, PlotLegends -> {"g*(T)", "g*s(T)"}, Frame -> True,
+ FrameLabel -> {"T (GeV)", "relativistic degrees of freedom"}, ImageSize -> 600]
+''')
+
+subsection('22.4 The late universe: an accurate analytic solution, the age, and the radion today')
+text('Below about 1 MeV the brane contains photons and three neutrino species (Ω_r from T_CMB = 2.7255 K and N_eff = 3.044), matter '
+     '(Ω_m = 0.315, of which the cold dark matter would be dirac16complex if it is the dark matter) and Λ4 (Ω_Λ = 1 − Ω_m − Ω_r), with '
+     'H0 = 67.4 km/s/Mpc (Planck 2018). The Friedmann equation Ha = H0 (Ω_r a⁻⁴ + Ω_m a⁻³ + Ω_Λ)^(1/2) has two exact solutions for two '
+     'components:')
+text('      t_rm(a) = (2/(3H0 Ω_m²)) [(Ω_m a − 2Ω_r) (Ω_r + Ω_m a)^(1/2) + 2Ω_r^(3/2)]   (radiation + matter),')
+text('      t_mΛ(a) = (2/(3H0 Ω_Λ^(1/2))) arcsinh((Ω_Λ/Ω_m)^(1/2) a^(3/2))   (matter + Λ),')
+text('and the composite t(a) = t_rm(a) + t_mΛ(a) − t_m(a), t_m = (2/(3H0 Ω_m^(1/2))) a^(3/2), is accurate to 2.2 × 10⁻⁴ at every '
+     'time (the error is the product of the small radiation and Λ corrections). The age is 13.79 Gyr. During this regime the radion '
+     'sits at β_eq = [Λ4 + κ f_W/V⊥ + (κ/2)(ε − 3pa) + κ pb − 12α_2 Ha²(Ha′ + Ha²)]/(3 m_r²) (section 20.3) — of order H0²/m_r² ≈ 10⁻⁸⁶ '
+     'without brane tension, f_W/(3 M_Pl² m_r²) ≈ 6 × 10⁻²⁴ with f_W = M8⁴ (m_r = 10 GeV) — so G4 = G8/V⊥ does not change; the '
+     'Gauss–Bonnet and cubic corrections are α_2 H0² ≈ 2 × 10⁻⁹² and α_3 H0⁴ ≈ 4 × 10⁻¹⁹⁰ (α_2 = 1/M8², α_3 = 10⁻⁶/M8⁴).')
+inp(r'''
+rIImpc = 3.0856775814913673 10^19; rIIgyr = 3.15576 10^16; rIIH0s = 67.4/rIImpc; rIIH0g = rIIH0s rIIhbar;
+rIIrhoc = 3 rIIH0g^2 rIIMPl^2; rIITcmb = 2.7255 8.617333262 10^-14;
+rIIOg = (Pi^2/15) rIITcmb^4/rIIrhoc; rIIOr = rIIOg (1 + 7/8 (4/11)^(4/3) 3.044); rIIOm = 0.315; rIIOL = 1 - rIIOm - rIIOr;
+rIIH[a_] := rIIH0s Sqrt[rIIOr/a^4 + rIIOm/a^3 + rIIOL];
+rIIage = NIntegrate[1/(a rIIH[a]), {a, 0, 1}, PrecisionGoal -> 12, MaxRecursion -> 30]/rIIgyr;
+check["age of the universe from the brane Friedmann equation: 13.79 Gyr (Planck 2018: 13.787 +- 0.020)", Abs[rIIage - 13.79] < 0.02]
+rIIt[a_] := NIntegrate[1/(xa rIIH[xa]), {xa, 0, a}, PrecisionGoal -> 12, MaxRecursion -> 30];
+rIItrm[a_] := 2/(3 rIIH0s rIIOm^2) ((rIIOm a - 2 rIIOr) Sqrt[rIIOr + rIIOm a] + 2 rIIOr^(3/2));
+rIItmL[a_] := 2/(3 rIIH0s Sqrt[rIIOL]) ArcSinh[Sqrt[rIIOL/rIIOm] a^(3/2)]; rIItm[a_] := 2/(3 rIIH0s Sqrt[rIIOm]) a^(3/2);
+rIIcomp = Table[Abs[(rIItrm[a] + rIItmL[a] - rIItm[a])/rIIt[a] - 1], {a, 10^Range[-8, 0.5, 0.25]}];
+check["composite analytic solution t(a) = t_rm(a) + t_mLambda(a) - t_m(a) accurate to < 3 10^-4 for 10^-8 <= a <= 10^0.5", Max[rIIcomp] < 3 10^-4]
+{"Omega_r, Omega_Lambda, z_eq, age (Gyr)" -> {rIIOr, rIIOL, rIIOm/rIIOr - 1, rIIage}, "max error of the composite solution" -> Max[rIIcomp],
+ "radion displacement today (m_r = 10 GeV): Lambda4 + matter, tension f_W = M8^4" -> {(3 rIIH0g^2 rIIOL + 1.5 rIIH0g^2 rIIOm)/(3 100.), (rIIM8^4/rIIMPl^2)/(3 100.)},
+ "alpha2 H0^2, alpha3 H0^4" -> {rIIH0g^2/rIIM8^2, 10^-6 rIIH0g^4/rIIM8^4}}
+''')
+
+# =====================================================================================
+section('23. Regime III: the far future')
+subsection('23.1 The de Sitter attractor')
+text('Once matter has diluted, Λ4 dominates and ordinary space approaches de Sitter expansion with H∞ = H0 Ω_Λ^(1/2) '
+     '(1.81 × 10⁻¹⁸ s⁻¹, Gibbons–Hawking temperature H∞/(2π) ≈ 2.2 × 10⁻³⁰ K). For matter + Λ the solution is exact,')
+text('      a(t) = (Ω_m/Ω_Λ)^(1/3) sinh^(2/3)(3H∞t/2),   Ha(t) = H∞ coth(3H∞t/2) → H∞ + 2H∞ e^(−3H∞t),')
+text('and it agrees with the full solution (radiation included) to 10⁻⁴ already at a = 3. Pairs of dirac16complex are created with the '
+     'Fermi–Dirac occupation 1/(e^(2πM/H∞) + 1) of section 14.5; 2πM/H∞ ≈ 5 × 10³³ for M = 1 eV, so none are.')
+inp(r'''
+rIIIH = rIIH0s Sqrt[rIIOL];
+check["far future: Ha(t) = H_inf Coth[3 H_inf t/2] agrees with the full brane solution at a = 3 and a = 10 to 10^-4",
+  AllTrue[{3, 10}, Abs[rIIIH Coth[3/2 rIIIH rIIt[#]]/rIIH[#] - 1] < 10^-4 &]]
+{"H_inf (1/s, GeV), T_GH (K)" -> {rIIIH, rIIIH rIIhbar, rIIIH rIIhbar/(2 Pi)/(8.617333262 10^-14)}, "2 Pi M/H_inf for M = 1 eV, 1 GeV" -> {2 Pi 10^-9/(rIIIH rIIhbar), 2 Pi/(rIIIH rIIhbar)}}
+''')
+
+subsection('23.2 The radion in de Sitter: Gauss–Bonnet corrections and relaxation')
+text('Linearize the full Einstein–Lovelock equations (with U = (K_U/2)β², κK_U = 12m_r²) around Ha = H, Hb = 0, β = β_eq, eliminating '
+     'δHa with the constraint. The radion obeys β″ + γ β′ + m_eff² (β − β_eq) = 0 with (for β_eq → 0)')
+text('      γ/(3H) = (1 − 16α_2H² + 48α_2²H⁴ − 48α_3H⁴ + 512α_2³H⁶ + 192α_2α_3H⁶ − 1024α_2⁴H⁸)/(1 − 4α_2H² + 32α_2²H⁴)²,')
+text('      m_eff²/m_r² = 1/(1 − 4α_2H² + 32α_2²H⁴),     3 m_r² β_eq = 3H² − 12α_2H⁴ (+ O(β_eq²)).')
+text('For α_2 = α_3 = 0: γ = 3H and m_eff = m_r. The radion is stable and relaxes to its shifted equilibrium. A numerical test in '
+     'units ℓ2 = 1 (Λ = 3 × 10⁻⁴, m_r = 0.1, ξ = 10⁻⁶, start 0.05 above equilibrium) reaches the equilibrium (β_eq, H_eq) of the two '
+     'algebraic equations 3H² = Λ + 6m_r²β² and 3m_r²β = 3H² − 12H⁴ to 10⁻⁶. In the physical far future α_2H∞² ≈ 10⁻⁹² and '
+     'β_eq ≈ H∞²/m_r²: the auxiliary space is frozen forever.')
+text('Without the stabilizing potential the far future would instead be eight-dimensional de Sitter, a = b = e^(Hx0), an exact vacuum '
+     'solution when 21H² − 420α_2H⁴ + 2520α_3H⁶ = Λ: the auxiliary space would inflate and G4 ∝ b⁻⁴ would fall like e^(−4Hx0), '
+     'which experiments exclude (|Ġ/G| is less than a few percent of H0).')
+inp(r'''
+rIIIeqC = (feTot[1] /. {Ha -> haV, Hb -> hbV}) - 6 m2V beV^2;
+rIIIsl = First[Solve[{(feTot[2] /. {Ha -> haV, Hb -> hbV}) == 6 m2V beV^2, (feTot[5] /. {Ha -> haV, Hb -> hbV}) == 6 m2V beV^2 + 3 m2V beV}, {dHa, dHb}]];
+rIIIFb = dHb /. rIIIsl;
+rIIIbg = {haV -> hS, hbV -> 0, beV -> bqV, lamb -> (lamb /. First[Solve[(rIIIeqC /. {haV -> hS, hbV -> 0, beV -> bqV}) == 0, lamb]])};
+rIIIcd = D[rIIIeqC, #] /. rIIIbg & /@ {haV, hbV, beV}; rIIIfd = D[rIIIFb, #] /. rIIIbg & /@ {haV, hbV, beV};
+rIIIgam = Simplify[-(rIIIfd[[2]] - rIIIfd[[1]] rIIIcd[[2]]/rIIIcd[[1]])]; rIIImeff = Simplify[-(rIIIfd[[3]] - rIIIfd[[1]] rIIIcd[[3]]/rIIIcd[[1]])];
+check["radion in de Sitter: gamma/(3H) and m_eff^2/m_r^2 as in the text (beta_eq -> 0); gamma = 3H and m_eff^2 = m_r^2 for alpha2 = alpha3 = 0",
+  Simplify[(rIIIgam /. bqV -> 0)/(3 hS) - (1 - 16 alf[2] hS^2 + 48 alf[2]^2 hS^4 - 48 alf[3] hS^4 + 512 alf[2]^3 hS^6 + 192 alf[2] alf[3] hS^6 - 1024 alf[2]^4 hS^8)/(1 - 4 alf[2] hS^2 + 32 alf[2]^2 hS^4)^2] === 0 &&
+  Simplify[(rIIImeff /. bqV -> 0)/m2V - 1/(1 - 4 alf[2] hS^2 + 32 alf[2]^2 hS^4)] === 0 &&
+  Simplify[rIIIgam /. {bqV -> 0, alf[2] -> 0, alf[3] -> 0}] === 3 hS && Simplify[rIIImeff /. {bqV -> 0, alf[2] -> 0, alf[3] -> 0}] === m2V]
+check["radion equilibrium in de Sitter: 3 m_r^2 beta_eq == 3 H^2 - 12 alpha2 H^4 + O(beta_eq^2)",
+  Simplify[(bqV /. Solve[Normal[Series[rIIIFb /. rIIIbg, {bqV, 0, 1}]] == 0, bqV][[1]]) - (3 hS^2 - 12 alf[2] hS^4)/(3 m2V)] === 0]
+rIIIlam = 3 10^-4; rIIImr = 1/10;
+rIIIrhs[tt_?NumericQ, yy_?VectorQ] := Module[{ha, hb, la, lb, kU, d}, {ha, hb, la, lb} = yy; kU = 6 rIIImr^2 lb^2;
+   d = rIsolve2[rIlinMf[ha, hb], -rIlinBf[ha, hb] + {rIIIlam + kU, rIIIlam + kU + 3 rIIImr^2 lb}]; {d[[1]], d[[2]], ha, hb}];
+rIIIeqs = FindRoot[{3 rIIIhh^2 == rIIIlam + 6 rIIImr^2 rIIIbb^2, 3 rIIImr^2 rIIIbb == 3 rIIIhh^2 - 12 rIIIhh^4}, {{rIIIbb, 1/100}, {rIIIhh, 1/100}}, WorkingPrecision -> 30];
+rIIIb0 = (rIIIbb /. rIIIeqs) + 1/20;
+rIIIds = NDSolveValue[{rIIIyD'[tt] == rIIIrhs[tt, rIIIyD[tt]], rIIIyD[0] == N[{Sqrt[(rIIIlam + 6 rIIImr^2 rIIIb0^2)/3], 0, 0, rIIIb0}]}, rIIIyD, {tt, 0, 3000},
+    Method -> {"ExplicitRungeKutta", "DifferenceOrder" -> 8, "StiffnessTest" -> False}, PrecisionGoal -> 11, AccuracyGoal -> 14, MaxSteps -> 10^7, MaxStepSize -> 1];
+check["the radion relaxes to the equilibrium of the two algebraic equations: beta(3000) to 10^-6, Ha(3000) to 10^-8 (relative)",
+  Abs[rIIIds[3000][[4]]/(rIIIbb /. rIIIeqs) - 1] < 10^-6 && Abs[rIIIds[3000][[1]]/(rIIIhh /. rIIIeqs) - 1] < 10^-8]
+rIIIds8 = Expand[feTot[1] /. {Ha -> h8, Hb -> h8}];
+check["eight-dimensional de Sitter (no stabilizer): all three equations read 21 H^2 - 420 alpha2 H^4 + 2520 alpha3 H^6 == Lambda",
+  Expand[rIIIds8 - (21 h8^2 - 420 alf[2] h8^4 + 2520 alf[3] h8^6 - lamb)] === 0 &&
+  AllTrue[{feTot[2], feTot[5]}, Expand[(# /. {Ha -> h8, Hb -> h8, dHa -> 0, dHb -> 0}) - rIIIds8] === 0 &]]
+{"gamma/(3H), m_eff^2/m_r^2 (beta_eq -> 0)" -> {Factor[(rIIIgam /. bqV -> 0)/(3 hS)], Factor[(rIIImeff /. bqV -> 0)/m2V]},
+ "de Sitter test: beta(3000), Ha(3000), beta_eq, H_eq" -> {rIIIds[3000][[4]], rIIIds[3000][[1]], rIIIbb /. rIIIeqs, rIIIhh /. rIIIeqs}}
+''')
+
+subsection('23.3 The size of every interaction in the three regimes')
+text('The first table gives, at four points of the coupled primordial solution of section 21.3, the share of each term of the 00 '
+     'equation: its size (S_1, S_2, S_3 of section 21.3 for the Einstein, Gauss–Bonnet and cubic terms, κε for the dirac16complex gas) '
+     'divided by the sum of the four sizes. The second table collects, for each term of the action of section 20.1, its weight in the '
+     'field equations of each regime, computed in sections 21–23 (M8 = 10 TeV, α_2 = 1/M8², α_3 = 10⁻⁶/M8⁴, m_r = 10 GeV, f_W = M8⁴; '
+     '"estimate" marks an order-of-magnitude statement).')
+inp(r'''
+rIIIshare[h_] := With[{sz = rIstate[h]["S"]}, sz/Total[sz]];
+rIIIbudget = {{"regime I: cubic (Ha = 3 10^5)", Sequence @@ rIIIshare[3 10^5]}, {"regime I: Gauss-Bonnet (Ha = 30)", Sequence @@ rIIIshare[30]},
+   {"regime I: Einstein (Ha = 10^-2)", Sequence @@ rIIIshare[10^-2]}, {"regime I: near the singularity (Ha = 10^15)", Sequence @@ rIIIshare[10^15]}};
+check["the shares of the four terms of the 00 equation: Einstein > 0.99 at Ha = 10^-2, Gauss-Bonnet > 0.9 at Ha = 30, Gauss-Bonnet and cubic about 1/2 each at Ha = 3 10^5, gas > 0.1 at Ha = 10^15",
+  rIIIbudget[[3, 2]] > 0.99 && rIIIbudget[[2, 3]] > 0.9 && Abs[rIIIbudget[[1, 3]] - 1/2] < 0.01 && Abs[rIIIbudget[[1, 4]] - 1/2] < 0.01 && rIIIbudget[[4, 5]] > 0.1]
+Grid[Prepend[Map[If[NumberQ[#], NumberForm[#, 4], #] &, rIIIbudget, {2}], {"", "Einstein S_1", "Gauss-Bonnet S_2", "cubic S_3", "dirac16complex gas"}], Frame -> All]
+{"shares (Einstein, Gauss-Bonnet, cubic, gas) at Ha = 3 10^5, 30, 10^-2, 10^15" -> rIIIbudget[[All, 2 ;; 5]]}
+''')
+inp(r'''
+Grid[{{"term of the action (section 20.1)", "regime I (primordial)", "regime II (today)", "regime III (far future)"},
+  {"S_0: Lambda4/(3 H^2)", "~ 10^-92 (Lambda l2^2)", N[rIIOL, 4], "-> 1"},
+  {"S_1: Einstein term", "dominant for tau >> l2", "dominant (four-dimensional Friedmann equations)", "dominant"},
+  {"S_2: alpha2 H^2", "dominant for 10^-3 l2 < tau < l2", N[rIIH0g^2/rIIM8^2, 3], N[(rIIIH rIIhbar)^2/rIIM8^2, 3]},
+  {"S_3: alpha3 H^4", "dominant for tau < 10^-3 l2", N[10^-6 rIIH0g^4/rIIM8^4, 3], N[10^-6 (rIIIH rIIhbar)^4/rIIM8^4, 3]},
+  {"S_psi: dirac16complex (gas; matter)", "gas: first table; dominant near tau = 0", "Omega_m = 0.315 (0.265 if it is the dark matter)", "-> 0 like e^(-3 H t)"},
+  {"S_m: m/H", "<< 1 (massless gas)", ">> 1 (cold matter)", ">> 1"},
+  {"S_self: g_r n^(6/7) ~ (k_phys/M8)^6 (estimate)", "< 1 below the eight-dimensional Planck scale", "negligible", "negligible"},
+  {"S_U: radion displacement beta", "catches b when H ~ m_r, then oscillates", N[(3 rIIH0g^2 rIIOL + 1.5 rIIH0g^2 rIIOm)/(3 100.), 3], N[(rIIIH rIIhbar)^2/100., 3]},
+  {"S_f: brane tension kappa f_W/(3 H^2 V_perp)", N[rIIM8^2/(3 rIIMPl^2), 3], "part of Lambda4", "part of Lambda4"},
+  {"S_SM: brane plasma", N[rIbrane, 3], N[rIIOr, 3], "-> 0 like e^(-4 H t)"},
+  {"S_P: portals (estimate)", "negligible (on the brane)", "production of dirac16complex (freeze-in)", "negligible"},
+  {"L_phiW: radion-brane coupling", "radion not yet caught", Row[{"reheating, T_RH = ", NumberForm[rIITRH, 3], " GeV (m_r = 10 GeV)"}], "-"},
+  {"pair creation 2 Pi M/H (M = 1 eV)", "order 1 (Planckian times)", N[2 Pi 10^-9/rIIH0g, 3], N[2 Pi 10^-9/(rIIIH rIIhbar), 3]}}, Frame -> All]
 ''')

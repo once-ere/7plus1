@@ -16,6 +16,11 @@ for the cells of that explanation (each changed or added cell states that diag(+
 octonion basis, or contains the xAct signature list {7, 1, 0}); no cell of a backup is missing; the printed numbers of
 sections 14-19 are compared with tools/ref_gravity.py, tools/ref_ks_gravity.py and tools/ref_sm.py (their outputs are
 computed by running them, or read from build/docs/runs.json when it exists).
+Sections 20-23 (the coupled field equations and their solutions in the three gravity regimes, appended on 27 October 2026): every
+check is True; with sections 20-23 removed and the title of the summary section restored, the notebook equals the backup taken
+before they were appended (cells and outputs; the summary counts, the private context name and measured times excepted), and the
+older comparisons above are made on that reduced notebook; the printed numbers of sections 20-23 are compared with
+tools/ref_coupled.py.
 """
 import os, re, sys
 sys.setrecursionlimit(100000)
@@ -173,6 +178,24 @@ def _cells(pth):
         st0, ct0, op0 = P.cell_info(c0)
         if st0 not in ('Output', 'Message', 'Print'): out.append((st0, P.box_to_text(ct0)))
     return out
+# sections 20-23 (stage 4, 27 October 2026) are removed before the comparisons with the older backups, and the title of the summary
+# section ("24. Summary of all checks (sections 1-23)") is given the title it had before ("20. Summary of all checks (sections 1-19)")
+STAGE4_FIRST = '20. The coupled field equations'
+STAGE4_SECS = (STAGE4_FIRST, '21. Regime', '22. Regime', '23. Regime')
+def _is_summary(t): return 'Summary of all checks' in t
+def _strip4(cl, old_title):
+    """cl: list of (style, text); drop the cells of sections 20-23 and give the summary section that follows them (the final one) its
+    old title; the earlier summary sections (6 and 10) are left alone"""
+    out = []; skip = False
+    for st0, t0 in cl:
+        if st0 == 'Section':
+            tt0 = t0.strip('"')
+            if tt0.startswith(STAGE4_FIRST): skip = True
+            elif skip and _is_summary(tt0):
+                skip = False
+                if old_title is not None: t0 = old_title
+        if not skip: out.append((st0, t0))
+    return out
 # the signature explanation of 27 October 2026 (the author's request): every cell it changed or added says that
 # diag(+1,-1,...,-1) is simply the squares of the octonion basis, or contains the xAct signature list {7, 1, 0}
 SIG_MARKERS = ('squares of the octonion basis', '{7, 1, 0}')
@@ -225,7 +248,8 @@ if stage3:
     bk4 = os.path.join(os.path.dirname(here), 'backups', '7+1_2026-10-27_before_signature.nb')
     if os.path.exists(bk4):
         _a4 = _cells(bk4)
-        _ok, _eq, _ch, _ad = _compare_sig(_a4, _b)
+        _t4 = next((t0 for st0, t0 in reversed(_a4) if st0 == 'Section'), None)
+        _ok, _eq, _ch, _ad = _compare_sig(_a4, _strip4(_b, _t4))
         R['sections 0-20: the %d input and text cells of the backup taken before the signature explanation are all present, %d '
           'unchanged, %d changed and %d added by that explanation' % (len(_a4), _eq, _ch, _ad)] = _ok
     else:
@@ -242,7 +266,7 @@ if stage3:
                 if st0 in ('Output', 'Message', 'Print'): out.append((sec, P.box_to_text(ct0)))
             return out
         import difflib
-        _o4 = _outs(bk4); _n4 = _outs(path)
+        _o4 = _outs(bk4); _n4 = [x_ for x_ in _outs(path) if not x_[0].startswith(STAGE4_SECS)]
         _sm = difflib.SequenceMatcher(a=[t for q, t in _o4], b=[t for q, t in _n4], autojunk=False)
         _same = 0; _new = 0; _ok = True; _bad = []
         _num = re.compile(r'\d+\.\d*`?')
@@ -301,6 +325,59 @@ if stage3:
     if bad:
         R['  disagreeing groups'] = bad
 
+# ---------------- sections 20-23: the coupled field equations and their solutions in the three gravity regimes ----------------
+stage4 = any(q in ('21', '22', '23') for q in outsec)      # before stage 4 the last section (the summary) was section 20
+if stage4:
+    for sec in ('20', '21', '22', '23'):
+        so = [o for o, q in zip(outs, outsec) if q == sec and chk_re.fullmatch(o.strip())]
+        R['section %s: check outputs (all True)' % sec] = '%d (%s)' % (len(so), all(o.strip().endswith('->True') for o in so))
+    bk5 = os.path.join(os.path.dirname(here), 'backups', '7+1_2026-10-27_before_coupled.nb')
+    if os.path.exists(bk5):
+        _a5 = _cells(bk5)
+        _t5 = next((t0 for st0, t0 in reversed(_a5) if st0 == 'Section'), None)
+        _b5 = _strip4(_b, _t5)
+        R['stage 4: without sections 20-23 (and with the old title of the summary section) the %d input and text cells equal those of '
+          'the backup taken before sections 20-23 were appended' % len(_a5)] = (_a5 == _b5)
+        def _outs5(pth):
+            out = []; sec = ''
+            for d0, c0 in P.iter_cells(P.parse_notebook(pth)):
+                st0, ct0, op0 = P.cell_info(c0)
+                if st0 == 'Section': sec = P.box_to_text(ct0).strip('"')
+                if st0 in ('Output', 'Message', 'Print'): out.append((sec, P.box_to_text(ct0)))
+            return out
+        _o5 = _outs5(bk5); _n5 = [x_ for x_ in _outs5(path) if not x_[0].startswith(STAGE4_SECS)]
+        _ctx5 = lambda t: re.sub(r'Notebook\$\$[0-9$]+`', 'Notebook`', t)
+        _numre5 = re.compile(r'\d+\.\d*`?')
+        _bad5 = []
+        if len(_o5) != len(_n5): _bad5.append(('count', len(_o5), len(_n5)))
+        else:
+            for (qa, ta), (qb, tb) in zip(_o5, _n5):
+                if ta == tb: continue
+                if _ctx5(ta) == _ctx5(tb): continue
+                if _numre5.fullmatch(ta.strip()) and _numre5.fullmatch(tb.strip()): continue
+                if _is_summary(qa) and _is_summary(qb): continue
+                _bad5.append((qa[:30], ta[:80]))
+        R['stage 4: the %d outputs of sections 0-19 and of the summary equal those of the backup (summary counts and tables, the private '
+          'context name and measured times excepted)' % len(_o5)] = not _bad5
+        if _bad5: R['  stage-4 outputs that differ'] = _bad5[:10]
+    else:
+        R['stage 4: backup not present, comparison skipped'] = 'skipped'
+    import json, subprocess
+    rfile4 = os.path.join(os.path.dirname(here), 'build', 'docs', 'runs.json')
+    pyc = None
+    if os.path.exists(rfile4):
+        for t_, o_, c_ in json.load(open(rfile4, encoding='utf-8')):
+            if t_.startswith('tools/ref_coupled.py'): pyc = o_
+    if pyc is None:
+        pyc = subprocess.run([sys.executable, '-B', os.path.join(here, 'ref_coupled.py')], capture_output=True, text=True, cwd=os.path.dirname(here)).stdout
+    from doc_stage3_common import gather3
+    D4 = gather3([['tools/ref_coupled.py (x)', pyc, 0]])
+    import doc_coupled
+    cmp4 = doc_coupled.compare(D4)
+    bad4 = [(lab, r_, tol) for lab, a_, b_, tol, r_ in cmp4 if r_ is None or r_ > tol]
+    R['sections 20-23: %d groups of printed numbers agree with tools/ref_coupled.py (tolerances per group, from 1e-14 for exact constants to 2e-3 for numbers read off numerical solutions)' % len(cmp4)] = not bad4
+    if bad4: R['  disagreeing groups (sections 20-23)'] = bad4
+
 width = max(len(k) for k in R)
 for k, v in R.items(): print(f'{k:{width}s} : {v}')
 good = (R['message cells (must be 0)'] == 0 and R['check outputs'] == R['check outputs that are True'] and R['check outputs'] > 0
@@ -311,6 +388,6 @@ good = (R['message cells (must be 0)'] == 0 and R['check outputs'] == R['check o
         and all(R[k] for k in R if k.startswith('section 7:') or k.startswith('section 8:') or k.startswith('sections 8-9') or k.startswith('tools/ref_dirac16'))
         and all(R[k] is True or R[k] == 'skipped' for k in R if k.startswith('sections 0-6'))
         and all(R[k] is True or R[k] == 'skipped' for k in R if k.startswith('sections 0-10') or k.startswith('sections 0-20') or k.startswith('summary table')
-                or k.startswith('sections 14-19')))
+                or k.startswith('sections 14-19') or k.startswith('stage 4') or k.startswith('sections 20-23')))
 print('\nVERDICT:', 'ALL CROSS-CHECKS PASSED' if good else 'SOMETHING FAILED')
 sys.exit(0 if good else 1)

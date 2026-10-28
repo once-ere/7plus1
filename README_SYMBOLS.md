@@ -346,3 +346,40 @@ S_{\rm EL}&=-\tfrac1{2\kappa}\int d^8X\sqrt{|g|}\sum_k\alpha_kL_k,\quad S_\Psi=\
 \end{aligned}
 ```
 
+## 11. Sections 20–23 of 7+1.nb: the coupled field equations and their solutions
+
+The symbols of the fourth stage (sections 20–23 of 7+1.nb). A prime is $`d/dx_0`$; $`\tau=x_0-x_s`$ is the time since the singularity; regime I uses units $`\ell_2=\sqrt{\alpha_2}=1`$.
+
+| symbol | Mathematica | definition | meaning |
+|---|---|---|---|
+| $`L_2`$, $`L_3`$ | `feL3coef` | (11.1) | Gauss–Bonnet and cubic Lovelock densities |
+| $`\alpha_k`$, $`\Lambda`$, $`\kappa`$ | `alf[k]`, `lamb`, `kapS` | $`\alpha_0=2\Lambda`$, $`\alpha_1=1`$, $`\kappa=8\pi G_8`$ | Lovelock couplings, bulk cosmological constant |
+| $`\ell_2`$, $`\xi`$ | `rIxi` | $`\ell_2=\sqrt{\alpha_2}`$, $`\xi=\alpha_3/\alpha_2^2`$ | Gauss–Bonnet length, cubic ratio |
+| $`\varepsilon`$, $`p_a`$, $`p_b`$, $`W(a,b)`$ | `epsM`, `paM`, `pbM`, `wW` | (11.2) | energy density, pressures, comoving energy |
+| $`U(b)`$, $`U_0`$, $`K_U`$, $`b_0`$ | `uPot`, `u0B`, `kU` | $`U_0+\frac{K_U}2\ln^2(b/b_0)`$ | stabilizing potential |
+| $`\beta`$, $`m_r`$, $`\phi`$ | `betR`, `rIIm` | $`\ln(b/b_0)`$, $`m_r^2=\kappa K_U/12`$, $`\phi=\sqrt{12}M_{\rm Pl}\beta`$ | radion, its mass, canonical radion |
+| $`f_W`$, $`V_\perp`$, $`G_4`$, $`\Lambda_4`$ | `fWb`, `vPerpS` | $`V_\perp=b^4L_c^4`$, $`8\pi G_4=\kappa/V_\perp`$, $`\Lambda_4=\Lambda+\kappa U_0+\kappa f_W/V_\perp`$ | brane tension and four-dimensional constants |
+| $`u`$, $`X`$, $`P_E,P_G,P_C`$ | `uS`, `xS`, `rIpE`, `rIpG`, `rIpC` | (11.3) | vacuum curve of regime I |
+| $`p_1,q_1,p_2,q_2`$ | `rIp1`, `rIq1`, `rIp2`, `rIq2` | (11.3) | Kasner exponents of the Einstein and Gauss–Bonnet regimes |
+| $`h_0`$, $`h_*`$ | `rIcub[[1]]`, `rIhStar` | $`-\sqrt{\alpha_2/(30\alpha_3)}`$, $`-\sqrt{\alpha_2/(54\alpha_3)}`$ | auxiliary contraction rates near $`\tau=0`$ (vacuum, matter) |
+| $`p_{\rm eff}`$ | `rIpeff` | $`-H_a^2/H_a'`$ | effective Kasner exponent |
+| $`S_1,S_2,S_3`$, $`f_{\rm gas}`$ | `rIstate[h]["S"]`, `["frac"]` | (11.4) | sizes of the curvature terms; gas fraction |
+| $`A`$, $`\vartheta`$, $`\tau_E`$ | `rIIaF`, `rIIphF`, `rIItEF` | $`\beta\approx A\sin(m_r\tau+\vartheta)/(m_r(\tau-\tau_E))`$ | radion oscillation after capture |
+| $`g_*`$, $`g_{*s}`$, $`t(T)`$ | `rIIgstars`, `rIItg` | $`\rho=\frac{\pi^2}{30}g_*T^4`$, $`s=\frac{2\pi^2}{45}g_{*s}T^3`$ | brane plasma |
+| $`H_\infty`$, $`\gamma`$, $`m_{\rm eff}`$ | `rIIIH`, `rIIIgam`, `rIIImeff` | $`H_0\Omega_\Lambda^{1/2}`$; (11.5) | de Sitter rate; radion friction and mass |
+
+```math
+\begin{aligned}
+L_2&=R^2-4R_{\mu\nu}R^{\mu\nu}+R_{\mu\nu\rho\sigma}R^{\mu\nu\rho\sigma},&&(11.1) \\
+L_3&=\frac18\delta^{\alpha_1\beta_1\alpha_2\beta_2\alpha_3\beta_3}_{\gamma_1\delta_1\gamma_2\delta_2\gamma_3\delta_3}R^{\gamma_1\delta_1}{}_{\alpha_1\beta_1}R^{\gamma_2\delta_2}{}_{\alpha_2\beta_2}R^{\gamma_3\delta_3}{}_{\alpha_3\beta_3}, \\
+\varepsilon&=\frac W{a^3b^4},\quad p_a=-\frac{\partial_aW}{3a^2b^4},\quad p_b=-\frac{\partial_bW}{4a^3b^3},&&(11.2) \\
+ds^2&=dx_0^2-a^2d\vec x^2-b^2d\vec y^2, \\
+P_E&=3(2u^2+4u+1),\quad P_G=-12u(u^3+12u^2+18u+4),\quad P_C=360u^3(3u+4),&&(11.3) \\
+u&=\frac{H_b}{H_a},\quad X=H_a^2,\quad p_1=\frac{1+2\sqrt2}7,\quad q_1=\frac{2-3\sqrt2}{14},\quad p_2=\frac3{3+4u_2},\quad q_2=u_2p_2, \\
+S_1&=3(H_a^2+4H_a|H_b|+2H_b^2),\qquad S_2=12\alpha_2|H_b|(4H_a^3+18H_a^2|H_b|+12H_aH_b^2+|H_b|^3),&&(11.4) \\
+S_3&=360\alpha_3H_a^2|H_b|^3(4H_a+3|H_b|),\qquad f_{\rm gas}=\frac{\kappa\varepsilon}{S_1+S_2+S_3+\kappa\varepsilon}, \\
+\frac\gamma{3H}&=\frac{1-16\alpha_2H^2+48\alpha_2^2H^4-48\alpha_3H^4+512\alpha_2^3H^6+192\alpha_2\alpha_3H^6-1024\alpha_2^4H^8}{(1-4\alpha_2H^2+32\alpha_2^2H^4)^2},&&(11.5) \\
+\frac{m_{\rm eff}^2}{m_r^2}&=\frac1{1-4\alpha_2H^2+32\alpha_2^2H^4}.
+\end{aligned}
+```
+

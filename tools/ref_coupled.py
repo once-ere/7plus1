@@ -318,8 +318,12 @@ def coupled_at(H):
     Am = np.array(f_A(H, hb, 1.0, XI), dtype=float); Bm = np.array(f_B(H, hb, 1.0, XI, 0.0), dtype=float).reshape(2) + Cg*np.array([pa, pb])
     d = np.linalg.solve(Am, -Bm)
     E1v = 3*(H**2 + 4*H*hb + 2*hb**2); E2v = -12*hb*(4*H**3 + 18*H**2*hb + 12*H*hb**2 + hb**3); E3v = 360*XI*H**2*hb**3*(4*H + 3*hb)
+    # sizes of the terms of the 00 equation: the sum of the absolute values of the monomials of each curvature term (in a Kasner
+    # regime the monomials of the dominant term cancel each other), and kappa eps for the gas
+    hm = abs(hb)
+    S = (3*(H**2 + 4*H*hm + 2*hm**2), 12*hm*(4*H**3 + 18*H**2*hm + 12*H*hm**2 + hm**3), 360*XI*H**2*hm**3*(4*H + 3*hm), Cg*e)
     return dict(Ha=H, Hb=hb, la=la, lb=lb, tau=x0 - x_sing, peff=-H**2/d[0], keps=Cg*e, E1=E1v, E2=E2v, E3=E3v, pa_e=pa/e, pb_e=pb/e,
-                frac=Cg*e/(abs(E1v) + abs(E2v) + abs(E3v) + 3*H**2))
+                S=S, frac=S[3]/sum(S))
 hstar = -1/math.sqrt(54*XI)
 near = coupled_at(1e15)
 R['NUM coupled, near the singularity (Ha = 1e15): p_eff, Hb, kappa eps tau^3, alpha2 E2/(kappa eps), alpha3 E3/(kappa eps)'] = (
@@ -330,7 +334,11 @@ R['matter-dominated cubic regime: p_eff -> 3/4, Hb -> -sqrt(alpha2/(54 alpha3)),
 plateau = {}
 for name, H in (('cubic (vacuum)', 3e5), ('Gauss-Bonnet', 30.0), ('Einstein', 1e-2)):
     c = coupled_at(H); plateau[name] = (c['peff'], c['frac'])
-R['NUM coupled: (p_eff, matter fraction) at Ha = 3e5 (vacuum cubic), 30 (Gauss-Bonnet), 1e-2 (Einstein)'] = tuple(plateau[k] for k in ('cubic (vacuum)', 'Gauss-Bonnet', 'Einstein'))
+R['NUM coupled: (p_eff, gas fraction kappa eps/(S1 + S2 + S3 + kappa eps)) at Ha = 3e5 (vacuum cubic), 30 (Gauss-Bonnet), 1e-2 (Einstein)'] = tuple(plateau[k] for k in ('cubic (vacuum)', 'Gauss-Bonnet', 'Einstein'))
+shares = [tuple(v/sum(coupled_at(H)['S']) for v in coupled_at(H)['S']) for H in (3e5, 30.0, 1e-2, 1e15)]
+R['NUM shares (Einstein S1, Gauss-Bonnet S2, cubic S3, gas kappa eps) of the 00 equation at Ha = 3e5, 30, 1e-2, 1e15'] = tuple(shares)
+R['shares: Einstein > 0.99 at Ha = 1e-2, Gauss-Bonnet > 0.9 at Ha = 30, Gauss-Bonnet and cubic about 1/2 each at Ha = 3e5 (to 1e-2), gas > 0.1 at Ha = 1e15'] = (
+    shares[2][0] > 0.99 and shares[1][1] > 0.9 and abs(shares[0][1] - 0.5) < 1e-2 and abs(shares[0][2] - 0.5) < 1e-2 and shares[3][3] > 0.1)
 R['coupled: where the gas is a small fraction, the effective exponents are those of the vacuum solution (1, p2, p1 within 1e-2)'] = (
     abs(plateau['cubic (vacuum)'][0] - 1) < 1e-2 and abs(plateau['Gauss-Bonnet'][0] - float(p2)) < 1e-2 and abs(plateau['Einstein'][0] - float(p1)) < 1e-2)
 late = coupled_at(1e-14)
@@ -392,7 +400,6 @@ R['the Standard Model plasma on the brane (T <= M8) is gravitationally negligibl
 
 
 # ======================================================================= C. regime II begins: the stabilizing potential catches the auxiliary space
-from scipy.optimize import least_squares
 MR = 1e-3                                                         # radion mass m_r in units 1/l2 (m_r^2 = kappa K/12)
 st0 = coupled_at(1e-2)                                            # the coupled solution of section B2 in the Einstein regime
 tau_c0, la_c0, lb_c0 = st0['tau'], st0['la'], st0['lb']
@@ -411,17 +418,21 @@ e0c = gas(la_c0, lb_c0)[0]
 hb_c0 = brentq(lambda hb: f_C(st0['Ha'], hb, 1.0, XI, 0.0) - Cg*e0c - 6*MR**2*bet0**2, st0['Hb']*1.5, st0['Hb']*0.5)
 cap = solve_ivp(rhs_cap, [tau_c0, 3e5], [st0['Ha'], hb_c0, la_c0, lb_c0], method='DOP853', rtol=1e-11, atol=1e-16, dense_output=True, max_step=50.0)
 R['NUM capture: start tau, beta(start) = ln(b/b0), m_r'] = (tau_c0, bet0, MR)
-taus_f = np.linspace(1e5, 3e5, 4001)
-bet_f = np.array([cap.sol(x)[3] - lnb0 for x in taus_f])
-fitc = least_squares(lambda pv: pv[0]*np.sin(MR*taus_f + pv[1])/(MR*(taus_f - pv[2])) - bet_f, [-0.46, -1.0, 0.0])
-A_c, ph_c, tE_c = fitc.x
-res_c = np.max(np.abs(fitc.fun))/np.max(np.abs(bet_f))
-HEavg = []
-for x in (1e5, 2e5):
+# tau_E from the averaged Einstein-frame expansion rate over the last period, H_E = 2/(3 (tau - tau_E)); then A, phi by linear least squares
+def HE_avg(x):
     xs_ = np.linspace(x, x + 2*np.pi/MR, 2001)
-    HEavg.append(np.mean([cap.sol(z)[0] + 2*cap.sol(z)[1] for z in xs_])*(np.mean(xs_) - tE_c))
+    return np.mean([cap.sol(z)[0] + 2*cap.sol(z)[1] for z in xs_]), x + np.pi/MR
+he_last, tm_last = HE_avg(2.9e5)
+tE_c = tm_last - 2/(3*he_last)
+taus_f = np.arange(1e5, 3e5 + 1, 50.0)
+bet_f = np.array([cap.sol(x)[3] - lnb0 for x in taus_f])
+Mfit = np.column_stack([np.sin(MR*taus_f), np.cos(MR*taus_f)])
+cfit, *_ = np.linalg.lstsq(Mfit, bet_f*MR*(taus_f - tE_c), rcond=None)
+A_c, ph_c = math.hypot(cfit[0], cfit[1]), math.atan2(cfit[1], cfit[0])
+res_c = np.max(np.abs(A_c*np.sin(MR*taus_f + ph_c)/(MR*(taus_f - tE_c)) - bet_f))/np.max(np.abs(bet_f))
+HEavg = [HE_avg(x)[0]*(HE_avg(x)[1] - tE_c) for x in (1e5, 2e5)]
 gas_frac_late = [Cg*gas(cap.sol(x)[2], cap.sol(x)[3])[0]/(3*(cap.sol(x)[0] + 2*cap.sol(x)[1])**2) for x in (1e5, 3e5)]
-R['NUM after capture: beta = A sin(m_r tau + phi)/(m_r (tau - tau_E)) fitted on 1e5 <= tau <= 3e5: A, phi, tau_E, max residual/amplitude'] = (A_c, ph_c, tE_c, res_c)
+R['NUM after capture: tau_E from <H_E> over the period after tau = 2.9e5, then beta = A sin(m_r tau + vartheta)/(m_r (tau - tau_E)) fitted on 1e5 <= tau <= 3e5: A, vartheta, tau_E, max residual/amplitude'] = (A_c, ph_c, tE_c, res_c)
 R['NUM after capture: <H_E>(tau - tau_E) over one period at tau = 1e5, 2e5 (H_E = Ha + 2Hb, four-dimensional matter domination: 2/3)'] = tuple(HEavg)
 R['NUM after capture: gas fraction kappa eps/(3 H_E^2) at tau = 1e5 and 3e5 (constant: both are four-dimensional matter)'] = tuple(gas_frac_late)
 R['capture: the radion oscillates as a four-dimensional massive field in a matter-dominated universe: j0 form to 2e-2, <H_E>(tau - tau_E) -> 2/3 to 1e-2, the gas fraction stays constant to 2e-2'] = (
@@ -446,10 +457,34 @@ Gam_r = gam_ff(mphi, 4.183, 3) + gam_ff(mphi, 1.273, 3) + gam_ff(mphi, 1.77693, 
 gst_RH = 10.75
 T_RH = (Gam_r*MPl/math.sqrt(math.pi**2*gst_RH/90))**0.5
 R['NUM radion of mass 10 GeV (M8 = 10 TeV): decay rate into brane fields (b, c, tau, mu pairs and two gluons) in GeV, lifetime in s, reheating temperature in GeV'] = (Gam_r, hbar_s/Gam_r, T_RH)
-R['a radion of 10 GeV decays far too late (T_RH < 1 keV < 4 MeV needed by nucleosynthesis): the moduli problem of the minimal model'] = T_RH < 1e-6
+R['through brane fields alone a radion of 10 GeV would decay far too late (T_RH < 1 keV < 4 MeV needed by nucleosynthesis): the moduli problem of the minimal model'] = T_RH < 1e-6
 # Kaluza-Klein states of dirac16complex below m_r/2 (bulk decay channels): N = 8 V_perp (pi^2/2) (m_r/2)^4/(2 pi)^4 per spin state ...
 N_KK = Vperp*(math.pi**2/2)*(mphi/2)**4/(2*math.pi)**4
 R['NUM number of Kaluza-Klein momenta of the auxiliary torus with |q| < m_r/2 (m_r = 10 GeV): V_perp (pi^2/2)(m_r/2)^4/(2 pi)^4'] = N_KK
+# the radion also decays into the bulk: a Kaluza-Klein mode of dirac16complex with momentum mu_n = 2 pi |n|/l_perp has the Einstein-frame
+# mass M_E = exp(-2 beta) sqrt(m^2 + mu_n^2 exp(-2 beta)), so g_n = (2 M_n + mu_n^2/M_n)/(sqrt(12) M_Pl); for m << mu_n each level (four
+# brane Dirac spinors) gives Gamma_n = 3 mu_n^2 m_r (1 - 4 mu_n^2/m_r^2)^(3/2)/(8 pi M_Pl^2).  Lattice sum over n in Z^4 shell by shell,
+# r_4(k) = 8 sigma(k) - 32 sigma(k/4) lattice vectors with |n|^2 = k (Jacobi), and its continuum limit.
+lp_GeV = Vperp**0.25
+kmax = int((mphi*lp_GeV/(4*math.pi))**2)
+sig = np.zeros(kmax + 1)
+for dd in range(1, kmax + 1):
+    sig[dd::dd] += dd
+kk_ = np.arange(1, kmax + 1)
+r4 = 8*sig[1:] - np.where(kk_ % 4 == 0, 32*sig[kk_//4], 0.0)
+# direct count of the lattice vectors for k <= 60 (check of Jacobi's formula)
+cnt = [0]*61
+for v in itertools.product(range(-8, 9), repeat=4):
+    q2 = v[0]**2 + v[1]**2 + v[2]**2 + v[3]**2
+    if 1 <= q2 <= 60: cnt[q2] += 1
+R["Jacobi's four-square formula r_4(k) = 8 sigma(k) - 32 sigma(k/4) equals the direct count of lattice vectors for 1 <= k <= 60"] = all(cnt[k] == int(r4[k - 1]) for k in range(1, 61))
+mu_k = 2*math.pi*np.sqrt(kk_)/lp_GeV
+G_bulk = 3*mphi/(8*math.pi*MPl**2)*float(np.sum(r4*mu_k**2*(1 - 4*mu_k**2/mphi**2)**1.5))
+from scipy.special import beta as Beta_fn
+G_bulkC = 3*mphi/(8*math.pi*MPl**2)*Vperp/(8*math.pi**2)*(mphi/2)**6*Beta_fn(3, 2.5)/2
+R['NUM radion into bulk dirac16complex pairs (m << m_r/2): Gamma_bulk lattice, continuum (GeV), lifetime (s), Gamma_bulk/Gamma_brane'] = (G_bulk, G_bulkC, hbar_s/G_bulk, G_bulk/Gam_r)
+R['the radion decays into the bulk: lattice sum = continuum limit to 1e-6, number of momenta = N_KK to 1e-5, Gamma_bulk/Gamma_brane > 1e12'] = (
+    abs(G_bulk/G_bulkC - 1) < 1e-6 and abs(float(np.sum(r4))/N_KK - 1) < 1e-5 and G_bulk/Gam_r > 1e12)
 
 # ======================================================================= D. regime II: the modern universe on the brane (physical units)
 GeV_per_K = 8.617333262e-14
@@ -495,27 +530,29 @@ def gstars(T):
         rho += r; s += ss
     return rho*30/(math.pi**2*T**4), s*45/(2*math.pi**2*T**3)
 gtab = {T: gstars(T) for T in (1e3, 10.0, 1.0, 0.3, 0.1, 0.01, 1e-3, 1e-4, 1e-6)}
-R['NUM g*(T), g*s(T) at T = 1 TeV, 10 GeV, 1 GeV, 300 MeV, 100 MeV, 10 MeV, 1 MeV, 100 keV, 1 keV'] = tuple((round(v[0], 4), round(v[1], 4)) for v in gtab.values())
+R['NUM g*(T), g*s(T) at T = 1 TeV, 10 GeV, 1 GeV, 300 MeV, 100 MeV, 10 MeV, 1 MeV, 100 keV, 1 keV'] = tuple((v[0], v[1]) for v in gtab.values())
 R['g* limits: 106.75 above the electroweak scale (to 0.1), 10.75 near 3 MeV (to 0.1), and after e+e- annihilation 2 + (21/4)(4/11)^(4/3)(N_eff/3) = 3.3855 (to 1e-3)'] = (
     abs(gtab[1e3][0] - 106.75) < 0.1 and abs(gstars(3e-3)[0] - 10.75) < 0.1 and abs(gtab[1e-6][0] - (2 + 21/4*(4/11)**(4/3)*NEFF/3)) < 1e-3)
-# time-temperature relation in the radiation era: t(T) = Int_T^Tmax (1 + (1/3) dln g*s/dln T) dT'/(T' H)
-lnT = np.linspace(math.log(10.0), math.log(1e-5), 241)
+# time-temperature relation in the radiation era: entropy conservation g*s T^3 a^3 = const gives ln a = -ln T - (1/3) ln g*s(T) + const,
+# and t(T) = t(10 GeV) + Int d(ln a)/Ha(T); on each step of a uniform grid of 481 points in ln T (10 GeV ... 10 keV) 1/Ha is taken
+# exponential in ln T (exact for constant g*): the step adds Delta(ln a) (1/H_(i+1) - 1/H_i)/ln(H_i/H_(i+1))
+lnT = np.linspace(math.log(10.0), math.log(1e-5), 481)
 G_ = np.array([gstars(math.exp(x)) for x in lnT])
-from scipy.interpolate import CubicSpline
-spl_g = CubicSpline(-lnT, np.log(G_[:, 0])); spl_gs = CubicSpline(-lnT, np.log(G_[:, 1]))
-def H_rad(T):
-    return math.sqrt(math.pi**2*math.exp(spl_g(-math.log(T)))/90)*T**2/MPl
-def dt_dlnT(lT):
-    T = math.exp(lT); dlgs = spl_gs(-lT, 1)            # d ln g*s / d(-ln T)
-    return (1 - dlgs/3)/H_rad(T)
+def H_of(lt, gst): return math.sqrt(math.pi**2*gst/90)*math.exp(2*lt)/MPl
+Hgrid = np.array([H_of(lt, g[0]) for lt, g in zip(lnT, G_)])
+lna = -lnT - np.log(G_[:, 1])/3
+def tsteps(la_, H_):
+    return np.concatenate([[0.0], np.cumsum(np.diff(la_)*(1/H_[1:] - 1/H_[:-1])/np.log(H_[:-1]/H_[1:]))]) + 1/(2*H_[0])
+tgrid = tsteps(lna, Hgrid)
 T_start = 10.0
-t0_rad = 1/(2*H_rad(T_start))                            # t at T = 10 GeV (radiation domination with g*(10 GeV) before)
-t_of_T = {}
-for Tq in (1.0, 0.1, 1e-2, 1e-3, 1e-4, 1e-5):
-    t_of_T[Tq] = t0_rad + quad(lambda lT: dt_dlnT(lT), math.log(Tq), math.log(T_start), limit=400)[0]
-t_inst = {Tq: 1/(2*H_rad(Tq)) for Tq in t_of_T}
+t_of_T = {Tq: tgrid[int(round((math.log(T_start) - math.log(Tq))/(lnT[0] - lnT[1])))] for Tq in (1.0, 0.1, 1e-2, 1e-3, 1e-4, 1e-5)}
+t_inst = {Tq: 1/(2*Hgrid[int(round((math.log(T_start) - math.log(Tq))/(lnT[0] - lnT[1])))]) for Tq in t_of_T}
+# accuracy: the same sum on every second point
+t_half = tsteps(lna[::2], Hgrid[::2])
 R['NUM radiation era: t(T) in s (entropy conservation with g*(T), g*s(T)) at T = 1 GeV, 100 MeV, 10 MeV, 1 MeV, 100 keV, 10 keV'] = tuple(t_of_T[T]*hbar_s for T in sorted(t_of_T, reverse=True))
 R['NUM radiation era: ratio of the instantaneous approximation t = 1/(2H(T)) to t(T)'] = tuple(t_inst[T]/t_of_T[T] for T in sorted(t_of_T, reverse=True))
+R['NUM radiation era: relative change of t(10 keV) when the grid is halved (error estimate)'] = abs(t_half[-1]/tgrid[-1] - 1)
+R['radiation era: the t(T) quadrature is converged (halving the grid changes t(10 keV) by < 1e-5)'] = abs(t_half[-1]/tgrid[-1] - 1) < 1e-5
 R['radiation era: t(1 MeV) = 0.74 s within 5% (standard value 1/(2H) with g* = 10.75)'] = abs(t_of_T[1e-3]*hbar_s/0.74 - 1) < 0.05
 # the late universe: Planck 2018 (TT,TE,EE+lowE+lensing): H0 = 67.4 km/s/Mpc, Omega_m = 0.315; radiation from T_CMB = 2.7255 K and N_eff = 3.044
 mpc_km = 3.0856775814913673e19; gyr_s = 3.15576e16
@@ -537,8 +574,8 @@ def t_mL(av):       # matter + Lambda, exact
     return 2/(3*H0s*math.sqrt(Om_L))*math.asinh(math.sqrt(Om_L/Om_m)*av**1.5)
 def t_m(av): return 2/(3*H0s*math.sqrt(Om_m))*av**1.5
 def t_comp(av): return t_rm(av) + t_mL(av) - t_m(av)
-errs = [abs(t_comp(av)/t_exact(av) - 1) for av in np.logspace(-8, 0.5, 60)]
-R['NUM composite solution t(a) = t_rm(a) + t_mL(a) - t_m(a): maximal relative error for 1e-8 <= a <= 3.16'] = max(errs)
+errs = [abs(t_comp(av)/t_exact(av) - 1) for av in 10**np.arange(-8, 0.5001, 0.25)]
+R['NUM composite solution t(a) = t_rm(a) + t_mL(a) - t_m(a): maximal relative error for a = 10^(-8), 10^(-7.75), ..., 10^0.5'] = max(errs)
 R['the composite analytic solution (exact radiation+matter, exact matter+Lambda, minus their common matter part) is accurate to < 3e-4 at all times'] = max(errs) < 3e-4
 # the radion today: beta_eq = [Lambda4 + kappa f/V_perp + (kappa/2)(eps - 3pa) + kappa pb - 12 alpha2 H^2 (H' + H^2)]/(3 m_r^2)
 Lam4 = 3*H0g**2*Om_L

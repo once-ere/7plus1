@@ -72,7 +72,7 @@ def verification_text(D3):
             % (c['grav'][2], c['grav'][3], c['ks'][2], c['ks'][3], c['sm'][2], c['sm'][3]))
 
 
-def notebook_items(n_last):
+def notebook_items(n_last, with_summary=True):
     return ['**11. Gravity on the 7+1 spacetime** — the curvature engine, the cosmological metric, symmetries and the Bianchi identity '
             '(section 12.1).',
             '**12. The Lovelock tensors** — Lovelock’s theorem, the generalized Kronecker delta, xAct (as in Einstein-Lovelock-7+1-Nash.nb), the '
@@ -87,8 +87,8 @@ def notebook_items(n_last):
             '**17. The Standard Model on the world brane** — fields, anomalies, Lagrangian, electroweak breaking, masses and mixing, cosmology '
             '(section 12.5).',
             '**18. dirac16complex at the brane** — four brane Dirac spinors, Kaluza–Klein masses, portals, coupled field equations (section 12.6).',
-            '**19. Neutrino flavour** — vacuum, matter, the Sun, supernovae, the relic background, effects of dirac16complex (section 12.6).',
-            '**%d. Summary of all checks** of sections 1–%d.' % (n_last + 1, n_last)]
+            '**19. Neutrino flavour** — vacuum, matter, the Sun, supernovae, the relic background, effects of dirac16complex (section 12.6).'] + (
+           ['**%d. Summary of all checks** of sections 1–%d.' % (n_last + 1, n_last)] if with_summary else [])
 
 
 def file_rows():
@@ -118,8 +118,8 @@ def readme_section(d, D3, secno=12):
     c = counts(D3)
     nm = D3['nums']
     d.h1('%d. Sections 11–19: gravity, the self-coupled dirac16complex in gravitational fields, and the Standard Model' % secno)
-    d.p('Sections 11–19 of 7+1.nb (and the summary section 20) were appended in a third stage; sections 0–10 are unchanged, except for the '
-        'explanation of the signature added on 27 October 2026 (section 2). They rebuild the '
+    d.p('Sections 11–19 of 7+1.nb (and the summary of all checks, then section 20%s) were appended in a third stage; sections 0–10 are '
+        'unchanged, except for the explanation of the signature added on 27 October 2026 (section 2). They rebuild the '
         'ideas of the repository Dirac_claude on the 7+1 spacetime of this project — ONE time coordinate $x_0$ and SEVEN space coordinates '
         '$x_1,\\dots,x_7$ ($x_1,x_2,x_3$ ordinary space, $x_4,\\dots,x_7$ auxiliary space); the 4+4 metric of Dirac_claude is not used. Here '
         '$\\Gamma_A=\\Gamma^{(1,7)}_A$, $\\Gamma^A=\\eta_{(1,7)}^{AA}\\Gamma_A$, $\\eta=\\eta^{(1,7)}=\\mathrm{diag}(+1,-1,\\dots,-1)$ — simply the '
@@ -127,8 +127,9 @@ def readme_section(d, D3, secno=12):
         'same spacetime, as the reference notebook does, with the signature list $\\{7,1,0\\}$: seven space-like dimensions, one '
         'time-like dimension, none degenerate) —, $\\chi=i\\Gamma_0\\Gamma_1\\cdots\\Gamma_7$, '
         '$\\Psi$ is the field dirac16complex and $\\bar\\Psi=\\Psi^\\dagger\\Gamma_0$; a prime is $d/dx_0$. The sections contain %d, %d and %d checks '
-        '(gravity, Kohn–Sham, Standard Model), of which %d, %d and %d are True.' % (c['grav'][0], c['ks'][0], c['sm'][0],
-                                                                              c['grav'][1], c['ks'][1], c['sm'][1]))
+        '(gravity, Kohn–Sham, Standard Model), of which %d, %d and %d are True.' % (
+            ', now section %d' % (D3['n_last'] + 1) if D3.get('n_last', 19) != 19 else '', c['grav'][0], c['ks'][0], c['sm'][0],
+            c['grav'][1], c['ks'][1], c['sm'][1]))
 
     # ---------------------------------------------------------------------------------------------
     d.h2('%d.1 Curvature and the Lovelock tensors (sections 11–12)' % secno)
@@ -309,8 +310,9 @@ def symbols_section(d, D3, secno=10):
 # =====================================================================================================================
 def provenance_section(d, D, D3, runs3, secno=7):
     c = counts(D3)
-    d.h1('%d. The third stage: sections 11–20 of 7+1.nb' % secno)
-    d.p('This section records the provenance of the gravity, Kohn–Sham and Standard Model sections (11–19) and of the final summary (20). '
+    d.h1('%d. The third stage: sections 11–19 of 7+1.nb' % secno)
+    d.p(('This section records the provenance of the gravity, Kohn–Sham and Standard Model sections (11–19) and of the final summary (then '
+         'section 20%s). ' % (', now section %d' % (D3['n_last'] + 1) if D3.get('n_last', 19) != 19 else '')) +
         'Notation: $\\Gamma_A=\\Gamma^{(1,7)}_A$, $\\Gamma^A=\\eta_{(1,7)}^{AA}\\Gamma_A$, $\\eta=\\mathrm{diag}(+1,-1,\\dots,-1)$ (simply the squares '
         'of the octonion basis, $\\eta_{AB}=\\mathrm{Re}(e_Ae_B)$), $\\Psi$ the field dirac16complex.')
     d.h2('%d.1 The task' % secno)
