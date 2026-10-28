@@ -478,7 +478,8 @@ def build(D, today):
             [[str(i + 1), '`' + k.replace('`', "'") + '`', v] for i, (k, v) in enumerate([(k, v) for k, v in ref.items() if v in ('True', 'False')])],
             widths=[0.06, 0.82, 0.12], small=True)
     d.h1('9. How to reproduce')
-    d.ol(['`python3 tools/make_7p1_nb.py` writes 7+1.nb (unevaluated) from tools/make_7p1_nb.py and tools/nb_part_*.py.',
+    d.ol(['`python3 tools/make_7p1_nb.py` writes the unevaluated 7+1.nb; its cells are defined in `tools/make_7p1_nb.py` and in the '
+          'generator parts `tools/nb_part_*.py`.',
           'Evaluate 7+1.nb in a fresh kernel of Wolfram 15.0.1 (Evaluation ▸ Quit Kernel, then Evaluation ▸ Evaluate Notebook; or `Get["D:/Developer/github/7+1/tools/run_eval.wl"]`) and save it; the last section summarizes all checks.',
           '`python3 tools/ref_gravity.py` repeats the checks of this document independently (exit code 0 if all pass).',
           '`python3 tools/make_docs.py` regenerates this document, its symbol dictionary and its provenance record.'])

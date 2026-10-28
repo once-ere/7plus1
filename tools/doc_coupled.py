@@ -310,8 +310,12 @@ def build(D, today):
              ['brane fluid, $\\rho_4\\propto a^{-3(1+w)}$', '$a^3\\rho_4/L_c^4$', '$\\rho_4/V_\\perp$', '$w\\,\\varepsilon$', '$0$'],
              ['one massless dirac16complex particle', '$\\omega=\\sqrt{k_a^2/a^2+k_b^2/b^2}$', '$\\omega/(a^3b^4)$',
               '$k_a^2/(3a^2\\omega\\,a^3b^4)$', '$k_b^2/(4b^2\\omega\\,a^3b^4)$']], widths=[0.27, 0.22, 0.13, 0.19, 0.19], small=True)
-    d.p('The minisuperspace variation of $S=-\\frac1{2\\kappa}\\int n\\,a^3b^4\\sum_k\\alpha_kL_k\\,dx_0-\\int nW\\,dx_0$ (with the identities '
-        '$\\mathrm{EL}_n(na^3b^4L_k)=-2a^3b^4E^{(k)0}{}_0$, $\\mathrm{EL}_a=-6a^2b^4E^{(k)1}{}_1$, $\\mathrm{EL}_b=-8a^3b^3E^{(k)4}{}_4$ at $n=1$) gives exactly')
+    d.p('The minisuperspace action and the identities that its variation uses ($\\mathrm{EL}_q$ is the Euler–Lagrange expression for the '
+        'variable $q$, evaluated at $n=1$) are')
+    d.align([r'S&=-\frac1{2\kappa}\int n\,a^3b^4\sum_k\alpha_kL_k\,dx_0-\int nW\,dx_0,',
+             r'\mathrm{EL}_n(na^3b^4L_k)&=-2a^3b^4E^{(k)0}{}_0,\qquad \mathrm{EL}_a(na^3b^4L_k)=-6a^2b^4E^{(k)1}{}_1,',
+             r'\mathrm{EL}_b(na^3b^4L_k)&=-8a^3b^3E^{(k)4}{}_4,'])
+    d.p('and the variation gives exactly')
     d.eq(r'\sum_k\alpha_kE^{(k)0}{}_0=\kappa\varepsilon,\qquad \sum_k\alpha_kE^{(k)1}{}_1=-\kappa p_a,\qquad \sum_k\alpha_kE^{(k)4}{}_4=-\kappa p_b .')
     d.p('The dirac16complex gas used in the primordial regime is a sum of such particles: a collisionless gas with an isotropic comoving '
         'momentum distribution (the massless limit of the Kohn–Sham matter, valid while $m\\ll H_a$ and the self-couplings are negligible); '

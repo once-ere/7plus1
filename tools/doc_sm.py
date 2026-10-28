@@ -92,8 +92,8 @@ def build(D, today):
     dv = g('DUNE vacuum P(mu->e), P(mubar->ebar), P(mu->mu)'); dm = g('DUNE matter P(mu->e), P(mubar->ebar)')
     d.ul(['**Field content.** Gauge group $SU(3)_C\\times SU(2)_L\\times U(1)_Y$, three generations including right-handed neutrinos, '
           'one Higgs doublet; all gauge anomalies cancel in every generation (section 3).',
-          '**Electroweak scale.** $v=(\\sqrt2G_F)^{-1/2}=%s$ GeV; tree-level $m_W=gv/2$, $m_Z=\\sqrt{g^2+g\'^2}\\,v/2$, $m_H^2=2\\lambda v^2$ '
-          '(section 5).' % fmt(v, 10),
+          '**Electroweak scale.** $v=(\\sqrt2G_F)^{-1/2}=%s$ GeV. At tree level the masses are $m_W=gv/2$, $m_Z=\\sqrt{g^2+g\'^2}\\,v/2$ '
+          'and $m_H^2=2\\lambda v^2$ (section 5).' % fmt(v, 10),
           '**Mixing.** CKM matrix with the Jarlskog invariant $J=%s$; PMNS matrix from NuFit-6.0 (section 6).' % fmt(J, 4),
           '**Cosmology on the brane.** The brane Friedmann equation gives the age %s Gyr (section 7).' % fmt(age, 5),
           '**dirac16complex at the brane** is four brane Dirac spinors; a mode with auxiliary momentum $\\vec q$ has the Kaluza–Klein '

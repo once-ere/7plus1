@@ -148,7 +148,23 @@ an algebraic identity, checked exactly on four random integer tensors $`R_{abcd}
 \varepsilon=\frac{W}{a^3b^4},\qquad p_a=-\frac{\partial_aW}{3a^2b^4},\qquad p_b=-\frac{\partial_bW}{4a^3b^3},\qquad \frac{d}{dx_0}\frac{W}{a^3b^4}=-3H_a(\varepsilon+p_a)-4H_b(\varepsilon+p_b),
 ```
 
-the last identity being the chain rule $`W'=\partial_aW\,a'+\partial_bW\,b'`$. For one massless particle $`W=\omega=\sqrt{k_a^2/a^2+k_b^2/b^2}`$, whence $`\partial_aW=-k_a^2/(a^3\omega)`$ and $`\partial_bW=-k_b^2/(b^3\omega)`$. The minisuperspace action $`-\frac1{2\kappa}\int na^3b^4\sum_k\alpha_kL_k\,dx_0-\int nW\,dx_0`$ with the identities $`\mathrm{EL}_n(na^3b^4L_k)=-2a^3b^4E^{(k)0}{}_0`$, $`\mathrm{EL}_a(na^3b^4L_k)=-6a^2b^4E^{(k)1}{}_1`$, $`\mathrm{EL}_b(na^3b^4L_k)=-8a^3b^3E^{(k)4}{}_4`$ (at $`n=1`$) then gives
+the last identity being the chain rule $`W'=\partial_aW\,a'+\partial_bW\,b'`$. For one massless particle
+
+```math
+W=\omega=\sqrt{k_a^2/a^2+k_b^2/b^2},\qquad \partial_aW=-\frac{k_a^2}{a^3\omega},\qquad \partial_bW=-\frac{k_b^2}{b^3\omega}.
+```
+
+The minisuperspace action and the identities of its variation ($`\mathrm{EL}_q`$ is the Euler–Lagrange expression for the variable $`q`$, evaluated at $`n=1`$) are
+
+```math
+\begin{aligned}
+S&=-\frac1{2\kappa}\int na^3b^4\sum_k\alpha_kL_k\,dx_0-\int nW\,dx_0, \\
+\mathrm{EL}_n(na^3b^4L_k)&=-2a^3b^4E^{(k)0}{}_0,\qquad \mathrm{EL}_a(na^3b^4L_k)=-6a^2b^4E^{(k)1}{}_1, \\
+\mathrm{EL}_b(na^3b^4L_k)&=-8a^3b^3E^{(k)4}{}_4;
+\end{aligned}
+```
+
+the variation then gives
 
 ```math
 \mathrm{EL}_n=\frac{a^3b^4}\kappa\big(S_{00}-\kappa\varepsilon\big),\qquad \mathrm{EL}_a=\frac{3a^2b^4}\kappa\big(S_{11}+\kappa p_a\big),\qquad \mathrm{EL}_b=\frac{4a^3b^3}\kappa\big(S_{44}+\kappa p_b\big),\qquad S_{cc}=\sum_k\alpha_kE^{(k)c}{}_c .

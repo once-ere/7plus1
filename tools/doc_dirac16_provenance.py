@@ -180,9 +180,10 @@ def build(D, runs):
              r'u_s^{\mathsf T}u_r&=\frac{E^2\delta_{sr}+e_s^{\mathsf T}MM^{\mathsf T}e_r}{E}=2E\,\delta_{sr},\qquad v_s^{\mathsf T}v_r=2E\,\delta_{sr}.'])
     d.p('**Decision (normalization).** $u^{\\mathsf T}u=2E$, the usual covariant normalization, so that $\\sum_su_s\\bar u_s=\\not p+m$ and '
         '$\\sum_sv_s\\bar v_s=\\not p-m$ with $\\not p=E\\Gamma_0+p^i\\Gamma_i$. The example $\\vec p=(2,2,4,0,0,0,0)$, $m=1$, $E=5$ was chosen '
-        'because $E$ is an integer, so $\\sqrt5\\,u_s$ has integer entries. The real orthogonal matrix '
-        '$U=\\frac1{\\sqrt{2E}}\\big(u_1(\\vec p),\\dots,u_8(\\vec p),v_1(-\\vec p),\\dots,v_8(-\\vec p)\\big)$ satisfies '
-        '$U^{\\mathsf T}h(\\vec p)U=\\mathrm{diag}(E1_8,-E1_8)$, equivalently the completeness relation')
+        'because $E$ is an integer, so $\\sqrt5\\,u_s$ has integer entries. The real orthogonal matrix')
+    d.eq(r'U=\frac1{\sqrt{2E}}\big(u_1(\vec p),\dots,u_8(\vec p),v_1(-\vec p),\dots,v_8(-\vec p)\big)\qquad\text{satisfies}\qquad '
+         r'U^{\mathsf T}h(\vec p)\,U=\mathrm{diag}(E1_8,-E1_8),')
+    d.p('equivalently the completeness relation')
     d.eq(r'\sum_{s=1}^{8}u_s(\vec p)\,u_s(\vec p)^{\mathsf T}+\sum_{s=1}^{8}v_s(-\vec p)\,v_s(-\vec p)^{\mathsf T}=2E\,1_{16}.')
     d.h2('3.4 Grassmann algebra, quantization and the canonical anticommutators')
     d.p('**Decision.** The Grassmann algebra is implemented with ordered monomials `grass[{k1, …, kr}]`, with the product ($\\pi$ the '

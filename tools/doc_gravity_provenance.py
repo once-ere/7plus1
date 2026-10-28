@@ -29,7 +29,7 @@ def build(D, today, runs):
           'coordinates and a definite warped metric, and rebuild them on the 7+1 spacetime of this project: ONE time-like coordinate '
           '$x_0$ and SEVEN space-like coordinates $x_1,\\dots,x_7$. The 4+4 metric of Dirac_claude is not used.',
           'Einstein and Lovelock tensors of 7+1 spacetime.',
-          'Generalized frame matrices, a non-trivial canonical spin connection that couples gravity to dirac16complex, and a total '
+          'Generalized frame matrices; a non-trivial canonical spin connection, which couples dirac16complex to gravity; and a total '
           'covariant derivative under which the frame matrices are constant.',
           'Kohn–Sham theory of dirac16complex in gravitational fields (primordial near $x_0=0$, modern, far future), its self-coupling, '
           'and the totality of the Standard Model (sections 15–19 of 7+1.nb; this record covers sections 11–14).',

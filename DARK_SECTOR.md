@@ -264,7 +264,13 @@ O=\frac{f}{1-f}\,\frac{T_{\rm RH}}{\frac43mY}=1.510\times10^{7}\,\frac{T_{\rm RH
 \Gamma(\phi\to f\bar f)=\frac{N_cm_f^2m_r}{24\pi M_{\rm Pl}^2}\Big(1-\frac{4m_f^2}{m_r^2}\Big)^{3/2},\qquad \Gamma(\phi\to gg)=\frac{b_{\rm QCD}^2\alpha_s^2m_r^3}{96\pi^3M_{\rm Pl}^2}\quad(b_{\rm QCD}=11-\tfrac23n_f),
 ```
 
-and into Kaluza–Klein pairs of dirac16complex (in the Einstein frame a level has the mass $`M_E=e^{-2\beta}\sqrt{m^2+\mu_n^2e^{-2\beta}}`$, hence the coupling $`g_n=(2M_n+\mu_n^2/M_n)/(\sqrt{12}M_{\rm Pl})`$ to $`\phi`$; four brane spinors per level, $`m\ll\mu_n`$):
+and into Kaluza–Klein pairs of dirac16complex. In the Einstein frame a level has the mass $`M_E(\beta)`$ below, with $`M_n=M_E(0)`$, and hence the coupling $`g_n`$ to $`\phi=\sqrt{12}M_{\rm Pl}\beta`$:
+
+```math
+M_E(\beta)=e^{-2\beta}\sqrt{m^2+\mu_n^2e^{-2\beta}},\qquad g_n=\Big|\frac{dM_E}{d\phi}\Big|_{\beta=0}=\frac{2M_n+\mu_n^2/M_n}{\sqrt{12}\,M_{\rm Pl}};
+```
+
+with four brane spinors per level and $`m\ll\mu_n`$ the widths are
 
 ```math
 \begin{aligned}

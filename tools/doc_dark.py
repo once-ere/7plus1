@@ -350,8 +350,10 @@ def build(D, today):
     d.p('**Radion decay.** The radion decays into brane fields through $(\\phi/(\\sqrt3M_{\\rm Pl}))T^\\mu{}_\\mu$,')
     d.eq(r'\Gamma(\phi\to f\bar f)=\frac{N_cm_f^2m_r}{24\pi M_{\rm Pl}^2}\Big(1-\frac{4m_f^2}{m_r^2}\Big)^{3/2},\qquad '
          r'\Gamma(\phi\to gg)=\frac{b_{\rm QCD}^2\alpha_s^2m_r^3}{96\pi^3M_{\rm Pl}^2}\quad(b_{\rm QCD}=11-\tfrac23n_f),')
-    d.p('and into Kaluza–Klein pairs of dirac16complex (in the Einstein frame a level has the mass $M_E=e^{-2\\beta}\\sqrt{m^2+\\mu_n^2e^{-2\\beta}}$, hence the '
-        'coupling $g_n=(2M_n+\\mu_n^2/M_n)/(\\sqrt{12}M_{\\rm Pl})$ to $\\phi$; four brane spinors per level, $m\\ll\\mu_n$):')
+    d.p('and into Kaluza–Klein pairs of dirac16complex. In the Einstein frame a level has the mass $M_E(\\beta)$ below, with $M_n=M_E(0)$, and '
+        'hence the coupling $g_n$ to $\\phi=\\sqrt{12}M_{\\rm Pl}\\beta$:')
+    d.eq(r'M_E(\beta)=e^{-2\beta}\sqrt{m^2+\mu_n^2e^{-2\beta}},\qquad g_n=\Big|\frac{dM_E}{d\phi}\Big|_{\beta=0}=\frac{2M_n+\mu_n^2/M_n}{\sqrt{12}\,M_{\rm Pl}};')
+    d.p('with four brane spinors per level and $m\\ll\\mu_n$ the widths are')
     d.align([r'\Gamma_n&=\frac{3\mu_n^2m_r}{8\pi M_{\rm Pl}^2}\Big(1-\frac{4\mu_n^2}{m_r^2}\Big)^{3/2},\qquad '
              r'\Gamma_{\rm bulk}=\sum_n\Gamma_n\approx\frac{3m_r}{8\pi M_{\rm Pl}^2}\,\frac{V_\perp}{8\pi^2}\Big(\frac{m_r}2\Big)^6\frac{B(3,\frac52)}2,'])
     d.p('$B$ the Euler beta function. With $m_r=10$ GeV: $\\Gamma_{\\rm brane}=%s$ GeV, $\\Gamma_{\\rm bulk}=%s$ GeV — the radion does NOT become brane '

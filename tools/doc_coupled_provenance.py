@@ -136,10 +136,14 @@ def build(D, today, runs):
         '$S_m=-\\int nW\\,dx_0$ (per unit coordinate volume). With $\\sqrt{|g|}=na^3b^4$ and $\\delta S_m=\\tfrac12\\int\\sqrt{|g|}T_{\\mu\\nu}\\delta g^{\\mu\\nu}$:')
     d.eq(r'\varepsilon=\frac{W}{a^3b^4},\qquad p_a=-\frac{\partial_aW}{3a^2b^4},\qquad p_b=-\frac{\partial_bW}{4a^3b^3},\qquad '
          r"\frac{d}{dx_0}\frac{W}{a^3b^4}=-3H_a(\varepsilon+p_a)-4H_b(\varepsilon+p_b),")
-    d.p('the last identity being the chain rule $W\'=\\partial_aW\\,a\'+\\partial_bW\\,b\'$. For one massless particle $W=\\omega=\\sqrt{k_a^2/a^2+k_b^2/b^2}$, '
-        'whence $\\partial_aW=-k_a^2/(a^3\\omega)$ and $\\partial_bW=-k_b^2/(b^3\\omega)$. The minisuperspace action '
-        '$-\\frac1{2\\kappa}\\int na^3b^4\\sum_k\\alpha_kL_k\\,dx_0-\\int nW\\,dx_0$ with the identities $\\mathrm{EL}_n(na^3b^4L_k)=-2a^3b^4E^{(k)0}{}_0$, '
-        '$\\mathrm{EL}_a(na^3b^4L_k)=-6a^2b^4E^{(k)1}{}_1$, $\\mathrm{EL}_b(na^3b^4L_k)=-8a^3b^3E^{(k)4}{}_4$ (at $n=1$) then gives')
+    d.p('the last identity being the chain rule $W\'=\\partial_aW\\,a\'+\\partial_bW\\,b\'$. For one massless particle')
+    d.eq(r'W=\omega=\sqrt{k_a^2/a^2+k_b^2/b^2},\qquad \partial_aW=-\frac{k_a^2}{a^3\omega},\qquad \partial_bW=-\frac{k_b^2}{b^3\omega}.')
+    d.p('The minisuperspace action and the identities of its variation ($\\mathrm{EL}_q$ is the Euler–Lagrange expression for the variable $q$, '
+        'evaluated at $n=1$) are')
+    d.align([r'S&=-\frac1{2\kappa}\int na^3b^4\sum_k\alpha_kL_k\,dx_0-\int nW\,dx_0,',
+             r'\mathrm{EL}_n(na^3b^4L_k)&=-2a^3b^4E^{(k)0}{}_0,\qquad \mathrm{EL}_a(na^3b^4L_k)=-6a^2b^4E^{(k)1}{}_1,',
+             r'\mathrm{EL}_b(na^3b^4L_k)&=-8a^3b^3E^{(k)4}{}_4;'])
+    d.p('the variation then gives')
     d.eq(r'\mathrm{EL}_n=\frac{a^3b^4}\kappa\big(S_{00}-\kappa\varepsilon\big),\qquad \mathrm{EL}_a=\frac{3a^2b^4}\kappa\big(S_{11}+\kappa p_a\big),\qquad '
          r'\mathrm{EL}_b=\frac{4a^3b^3}\kappa\big(S_{44}+\kappa p_b\big),\qquad S_{cc}=\sum_k\alpha_kE^{(k)c}{}_c .')
     d.p('**The radion equation.** With $\\alpha_2=\\alpha_3=0$ the 11 and 44 equations are linear in $H_a\',H_b\'$; solving for $H_b\'$ and replacing '

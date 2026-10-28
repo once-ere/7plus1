@@ -353,7 +353,13 @@ $`b_s(\vec p)`$ annihilates a particle and $`d_s^\dagger(\vec p)`$ creates an an
 \end{aligned}
 ```
 
-7+1.nb sums the mode algebra exactly for the symmetric set of five momenta $`\pm(2,2,4,0,0,0,0)`$, $`\pm(0,0,0,2,2,0,0)`$, $`\vec 0`$ ($`m=1`$, $`E=5,5,3,3,1`$) with symbolic $`\vec x,\vec y`$, and obtains $`\delta_{ab}\frac1V\sum_{\vec p}e^{i\vec p\cdot(\vec x-\vec y)}`$. Because $`U^{\mathsf T}hU=\mathrm{diag}(E,-E)`$, the normal-ordered Hamiltonian and charge are
+7+1.nb sums the mode algebra exactly, with symbolic $`\vec x,\vec y`$ and $`m=1`$, for the symmetric set of five momenta
+
+```math
+\vec p\in\big\{\pm(2,2,4,0,0,0,0),\ \pm(0,0,0,2,2,0,0),\ \vec 0\big\}\qquad(E=5,5,3,3,1),
+```
+
+and obtains $`\delta_{ab}\frac1V\sum_{\vec p}e^{i\vec p\cdot(\vec x-\vec y)}`$. Because $`U^{\mathsf T}hU=\mathrm{diag}(E,-E)`$, the normal-ordered Hamiltonian and charge are
 
 ```math
 H=\int:\psi^\dagger h\,\psi:\,d^7x=\sum_{\vec p,s}E\,\big(b_s^\dagger b_s+d_s^\dagger d_s\big),\qquad Q=\int:\psi^\dagger\psi:\,d^7x=\sum_{\vec p,s}\big(b_s^\dagger b_s-d_s^\dagger d_s\big):

@@ -31,7 +31,8 @@ def build(D, today):
           'squares of the basis $e_0=1,e_1,e_2,e_3$ of the quaternion subalgebra $\\mathbb H$ of the octonions.',
           'Signature: the bulk has one time-like and seven space-like dimensions (in xAct the list $\\{7,1,0\\}$), the brane one time-like '
           'and three space-like dimensions (in the same counting $\\{3,1,0\\}$).',
-          'Matrices: $1_n$ identity, $^\\dagger$ conjugate transpose, $^*$ complex conjugate, $\\otimes$ Kronecker product (`KroneckerProduct`).'])
+          'Matrices: $1_n$ is the $n\\times n$ identity, $M^\\dagger$ the conjugate transpose, $M^*$ the complex conjugate and $A\\otimes B$ the '
+          'Kronecker product (in Mathematica `KroneckerProduct[A, B]`).'])
     signature_block(d, eta=r'\eta', eta71=r'\eta_{71}', gam=r'\Gamma')
 
     d.h1('2. Spacetime, brane and gauge fields')

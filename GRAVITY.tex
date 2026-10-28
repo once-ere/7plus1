@@ -713,7 +713,7 @@ The Python program’s boolean checks:
 \end{longtable}}
 \Needspace{12\baselineskip}\section*{9. How to reproduce}\addcontentsline{toc}{section}{9. How to reproduce}
 \begin{enumerate}
-\item \texttt{python3 tools/\allowbreak{}make\_\allowbreak{}7p1\_\allowbreak{}nb.py} writes 7+1.nb (unevaluated) from tools/make\_7p1\_nb.py and tools/nb\_part\_*.py.
+\item \texttt{python3 tools/\allowbreak{}make\_\allowbreak{}7p1\_\allowbreak{}nb.py} writes the unevaluated 7+1.nb; its cells are defined in \texttt{tools/\allowbreak{}make\_\allowbreak{}7p1\_\allowbreak{}nb.py} and in the generator parts \texttt{tools/\allowbreak{}nb\_\allowbreak{}part\_\allowbreak{}*.py}.
 \item Evaluate 7+1.nb in a fresh kernel of Wolfram 15.0.1 (Evaluation \texorpdfstring{\ensuremath{\triangleright}}{▸} Quit Kernel, then Evaluation \texorpdfstring{\ensuremath{\triangleright}}{▸} Evaluate Notebook; or \texttt{Get["D:/\allowbreak{}Developer/\allowbreak{}github/\allowbreak{}7+1/\allowbreak{}tools/\allowbreak{}run\_\allowbreak{}eval.wl"]}) and save it; the last section summarizes all checks.
 \item \texttt{python3 tools/\allowbreak{}ref\_\allowbreak{}gravity.py} repeats the checks of this document independently (exit code 0 if all pass).
 \item \texttt{python3 tools/\allowbreak{}make\_\allowbreak{}docs.py} regenerates this document, its symbol dictionary and its provenance record.

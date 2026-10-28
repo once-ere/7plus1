@@ -277,10 +277,10 @@ def build(D, runs):
           'and `tools/doc_readme_stage6.py`.'] if S6.present(D.get('s3')) else []))
     # ------------------------------------------------------------------------------------------------
     d.h1('6. The second stage: sections 7–10 of 7+1.nb')
-    d.p('This section records the provenance of the Dirac equation and the Kohn–Sham theories of the field dirac16complex '
-        '(sections 7–10 of 7+1.nb). Notation: $\\Gamma_A=\\Gamma^{(1,7)}_A$, '
-        '$\\Gamma^{A}=\\eta_{(1,7)}^{AA}\\Gamma_A$, $\\Gamma^0=\\Gamma_0$, $\\chi=\\chi^{(1,7)}=i\\Gamma^{(1,7)}_8$, $\\Psi$ the field dirac16complex, '
-        '$\\bar\\Psi=\\Psi^\\dagger\\Gamma^0$, $\\vec x=(x_1,\\dots,x_7)$, $\\vec p=(p^1,\\dots,p^7)$.')
+    d.p('This section records the provenance of sections 7–10 of 7+1.nb: the Dirac equation and the Kohn–Sham theories of the field '
+        'dirac16complex. Notation ($\\Psi$ is the field dirac16complex):')
+    d.eq(r'\Gamma_A=\Gamma^{(1,7)}_A,\qquad \Gamma^{A}=\eta_{(1,7)}^{AA}\Gamma_A,\qquad \Gamma^0=\Gamma_0,\qquad \chi=\chi^{(1,7)}=i\Gamma^{(1,7)}_8,'
+         r'\\ \bar\Psi=\Psi^\dagger\Gamma^0,\qquad \vec x=(x_1,\dots,x_7),\qquad \vec p=(p^1,\dots,p^7).')
     d.h2('6.1 The task')
     d.ol(['Back up 7+1.nb and append to it; the first part stays unchanged.',
           'A checked Dirac equation on the real 7+1 spacetime for a 16-component quantized fermion field named dirac16complex whose '

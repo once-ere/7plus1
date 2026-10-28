@@ -182,7 +182,13 @@ u_s^{\mathsf T}u_r&=\frac{E^2\delta_{sr}+e_s^{\mathsf T}MM^{\mathsf T}e_r}{E}=2E
 \end{aligned}
 ```
 
-**Decision (normalization).** $`u^{\mathsf T}u=2E`$, the usual covariant normalization, so that $`\sum_su_s\bar u_s=\not p+m`$ and $`\sum_sv_s\bar v_s=\not p-m`$ with $`\not p=E\Gamma_0+p^i\Gamma_i`$. The example $`\vec p=(2,2,4,0,0,0,0)`$, $`m=1`$, $`E=5`$ was chosen because $`E`$ is an integer, so $`\sqrt5\,u_s`$ has integer entries. The real orthogonal matrix $`U=\frac1{\sqrt{2E}}\big(u_1(\vec p),\dots,u_8(\vec p),v_1(-\vec p),\dots,v_8(-\vec p)\big)`$ satisfies $`U^{\mathsf T}h(\vec p)U=\mathrm{diag}(E1_8,-E1_8)`$, equivalently the completeness relation
+**Decision (normalization).** $`u^{\mathsf T}u=2E`$, the usual covariant normalization, so that $`\sum_su_s\bar u_s=\not p+m`$ and $`\sum_sv_s\bar v_s=\not p-m`$ with $`\not p=E\Gamma_0+p^i\Gamma_i`$. The example $`\vec p=(2,2,4,0,0,0,0)`$, $`m=1`$, $`E=5`$ was chosen because $`E`$ is an integer, so $`\sqrt5\,u_s`$ has integer entries. The real orthogonal matrix
+
+```math
+U=\frac1{\sqrt{2E}}\big(u_1(\vec p),\dots,u_8(\vec p),v_1(-\vec p),\dots,v_8(-\vec p)\big)\qquad\text{satisfies}\qquad U^{\mathsf T}h(\vec p)\,U=\mathrm{diag}(E1_8,-E1_8),
+```
+
+equivalently the completeness relation
 
 ```math
 \sum_{s=1}^{8}u_s(\vec p)\,u_s(\vec p)^{\mathsf T}+\sum_{s=1}^{8}v_s(-\vec p)\,v_s(-\vec p)^{\mathsf T}=2E\,1_{16}.
@@ -1008,23 +1014,23 @@ VERDICT: ALL CHECKS PASSED
 | `tools/doc_brane_provenance.py` | `41d2de4c4d3c955362ad7f483813785b7c686a24782ae34a135983c405d3afe6` |
 | `tools/doc_brane_symbols.py` | `31ecfae00a2dc04933b0e05759057f4dcaccee64238b3272eeedb9301edb85ef` |
 | `tools/doc_common.py` | `51995b299ba2aa0947fcbfd593486cb9f2cd724d15f7a43035f7a47f8ade454c` |
-| `tools/doc_coupled.py` | `fe0d9cdd4c157aaf3ab0bd386fb1a47350c3d0d9eb8e5de24411cf12b82d22c2` |
-| `tools/doc_coupled_provenance.py` | `0f01ab62fd2a1e5cb61ae470b62e9b6ca4a821498948fe9668b87bea86a209a5` |
+| `tools/doc_coupled.py` | `1c43ad4564093f14040ce792b69635ef287c055b26ae540cbba7e40d806c49dd` |
+| `tools/doc_coupled_provenance.py` | `b41808d1447e12422940203d9301ae42324826915bbf96974b8d6bb9793fa972` |
 | `tools/doc_coupled_symbols.py` | `e0557a5249c59e43087326d2d5d9f77937a38bf52845374daca4e00485981f82` |
-| `tools/doc_dark.py` | `9eea2c461cd1a7bf353c0e2aec43a22be2072acc44e54f4e6c84593c5e86f653` |
+| `tools/doc_dark.py` | `cd2606f5caacad55ae77213abbe33ab2fc89ee33c2049a8d44b05b5b2606bf9e` |
 | `tools/doc_dark_provenance.py` | `89956664f5d6992c054917d452c3e973ae8c1f36001fe83a5fb7e8c6f8f2ea14` |
 | `tools/doc_dark_symbols.py` | `ee662066ae88d927c4d85991256e845b67b3e08ea5d6ba9406bb1d421c0d3481` |
-| `tools/doc_dirac16.py` | `3f81df5fe2237843edd29116e5676679527b80e946623890e6289a1487f754f1` |
+| `tools/doc_dirac16.py` | `62811d8c383ce299894858cc57fe3cd7800889213f77e83d1aa161f6af206070` |
 | `tools/doc_dirac16_common.py` | `9324b4fae59e51019125ebe09157f3c8c9489560e1383a697fe6c22a3a93e208` |
-| `tools/doc_dirac16_provenance.py` | `44c34a3744e77fe48a775df5b6232a34a18ebbe7ad0f0233c6b5c21997be1db9` |
+| `tools/doc_dirac16_provenance.py` | `762f8594ea24910bfb402e408b80e589014c0ebc5aea26be5f5a2193db0c32b2` |
 | `tools/doc_dirac16_symbols.py` | `69224cd370206759e31abd225fc556630455d6d99226db0bc46068eae9b27db0` |
-| `tools/doc_gravity.py` | `184c7aa38742a2057449a98037a8521842fc81072613611c228c63c17083af0c` |
-| `tools/doc_gravity_provenance.py` | `dc2d5f43bc123698f7104a97327ff44401b4207a3855a91ba06a10ae1c28ec12` |
+| `tools/doc_gravity.py` | `50d7c83e0232bb23b479fc8acca1100a8239d7818562fece3307b1b7701ee93a` |
+| `tools/doc_gravity_provenance.py` | `d8fa481a4e99d914d965bed1729d4eaf7a4d0269e3ab7637ce672916347c0e3f` |
 | `tools/doc_gravity_symbols.py` | `fcff3b16ea23fa62fe205e66310552f7d3e119c619c150379e67bd17150b5d22` |
 | `tools/doc_ks_gravity.py` | `9aa73527f90318ee3444fcf97af41d2255a5d8fb1697d9fa0128ca671e94e51f` |
-| `tools/doc_ks_gravity_provenance.py` | `112b51528ab67acd8ed110b57c347352c602c984eae1408d7dd36e41c74fc0ea` |
+| `tools/doc_ks_gravity_provenance.py` | `ae71f9e811bd427732ea9d4fb25ddf3e7c216df26a2f91ff6b9d407a264efd16` |
 | `tools/doc_ks_gravity_symbols.py` | `2acdf7f901b9cb7c3047b6de6895d32385be37d16789df9d9124f976c6d5a515` |
-| `tools/doc_provenance.py` | `3d4996c9d45061a46955e1f0c7a55dd222e5c171135134df45e07c5af6c4e54d` |
+| `tools/doc_provenance.py` | `0f08da7de89c4cfc449cf5d2a53a8a5c947a6ebfd18db3502ec0ea9922d1b7ef` |
 | `tools/doc_radion.py` | `824278aa067f49622dcca21d5bf19dc1ec870b01c87d2b2d1363e716408f2cb1` |
 | `tools/doc_radion_common.py` | `7f4200a47fc921d2f537af7e9819ecd19a7fbc4761335b0c980220a99b114068` |
 | `tools/doc_radion_provenance.py` | `5c4d61561df76ea6113cf9131ad081de6ac7aae82a591817e7acd670c5cf3f52` |
@@ -1034,9 +1040,9 @@ VERDICT: ALL CHECKS PASSED
 | `tools/doc_readme_stage4.py` | `bd40d0bd0fdc2fb9b50b453bcce7805d91c543cd594ad92fd4beb22e76d5765f` |
 | `tools/doc_readme_stage5.py` | `ed2c3a23635cca879421303281b3a5194fb2b21c49329b8573e6d43ecf55f1d4` |
 | `tools/doc_readme_stage6.py` | `8877f8822fb22d9621686aaab68f215b7faedb02dc7ad31ed20d165e162c90af` |
-| `tools/doc_sm.py` | `d7245d8c5f5dfd2687e987d43d9d544d0a1a46538901066e244fe0261bd427c3` |
+| `tools/doc_sm.py` | `d896153c39ba42bf67386bd2c8deaee4fade650bd080cf16a6bb39d84d29702c` |
 | `tools/doc_sm_provenance.py` | `28f19e04777cb9149196394fc8093fc1b67f64d0c9cc97560446b3d09e902276` |
-| `tools/doc_sm_symbols.py` | `a019dcbf5e68f3f00f41613f5c592b84eafa8b48d4023208516fd5d93b8893f8` |
+| `tools/doc_sm_symbols.py` | `5ea4c5ecd497f34d6269a2dd3b0aaf8090509f5273ae89c2f111a92aae600a87` |
 | `tools/doc_stage3_common.py` | `42eb0cfecbb8e4bf7a353829aa32a04ff96ec736a95afddbea72fa6d05c05075` |
 | `tools/doc_symbols.py` | `0d7ba32d3213da504dc935d4e9930d25e37c7294ee254d6cb3c4aeaefeee3218` |
 | `tools/doc_torus.py` | `b3045dbe9447917bd117906d3b305f088815d63e94439344a99265fb32d7e6f2` |

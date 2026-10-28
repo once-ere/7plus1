@@ -277,9 +277,10 @@ def sec6(d, D):
     d.align([r'\big\lbrace\psi_a(x_0,\vec x),\psi_b^\dagger(x_0,\vec y)\big\rbrace&=\delta_{ab}\,\frac1V\sum_{\vec p}e^{i\vec p\cdot(\vec x-\vec y)}'
              r'=\delta_{ab}\,\delta^7(\vec x-\vec y),',
              r'\big\lbrace\psi_a(x_0,\vec x),\psi_b(x_0,\vec y)\big\rbrace&=0\qquad(\psi\text{ contains only }b\text{ and }d^\dagger).'])
-    d.p('7+1.nb sums the mode algebra exactly for the symmetric set of five momenta $\\pm(2,2,4,0,0,0,0)$, $\\pm(0,0,0,2,2,0,0)$, '
-        '$\\vec 0$ ($m=1$, $E=5,5,3,3,1$) with symbolic $\\vec x,\\vec y$, and obtains $\\delta_{ab}\\frac1V\\sum_{\\vec p}e^{i\\vec p\\cdot(\\vec x-\\vec y)}$. '
-        'Because $U^{\\mathsf T}hU=\\mathrm{diag}(E,-E)$, the normal-ordered Hamiltonian and charge are')
+    d.p('7+1.nb sums the mode algebra exactly, with symbolic $\\vec x,\\vec y$ and $m=1$, for the symmetric set of five momenta')
+    d.eq(r'\vec p\in\big\{\pm(2,2,4,0,0,0,0),\ \pm(0,0,0,2,2,0,0),\ \vec 0\big\}\qquad(E=5,5,3,3,1),')
+    d.p('and obtains $\\delta_{ab}\\frac1V\\sum_{\\vec p}e^{i\\vec p\\cdot(\\vec x-\\vec y)}$. Because $U^{\\mathsf T}hU=\\mathrm{diag}(E,-E)$, the '
+        'normal-ordered Hamiltonian and charge are')
     d.eq(r'H=\int:\psi^\dagger h\,\psi:\,d^7x=\sum_{\vec p,s}E\,\big(b_s^\dagger b_s+d_s^\dagger d_s\big),\qquad '
          r'Q=\int:\psi^\dagger\psi:\,d^7x=\sum_{\vec p,s}\big(b_s^\dagger b_s-d_s^\dagger d_s\big):')
     d.p('particles and antiparticles have the same positive energy $E=\\sqrt{m^2+\\vec p^{\\,2}}$ and opposite charge.')

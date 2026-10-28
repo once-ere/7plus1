@@ -78,9 +78,12 @@ def build(D, today, runs):
         '\\Gamma^{A_r\\dagger}\\cdots\\Gamma^{A_1\\dagger}\\Gamma_0=\\Gamma_0\\Gamma^{A_r}\\cdots\\Gamma^{A_1}=(-1)^{r(r-1)/2}\\Gamma_0\\Gamma^{A_1}\\cdots\\Gamma^{A_r}$ '
         '(distinct indices anticommute). Multiplying by $i^{\\sigma_r}$ with $\\sigma_r=\\frac{r(r-1)}2\\bmod2$ compensates the sign: '
         '$(i^{\\sigma_r})^*(-1)^{r(r-1)/2}=i^{\\sigma_r}$.')
-    d.p('**Fierz matrix.** Completeness, $\\sum_K(\\Theta_K)_{cd}(\\Theta^K)_{ab}=16\\delta_{ad}\\delta_{bc}$, gives '
-        '$\\sum_{K\\in r}(a\\Theta_Kb)(c\\Theta^Kd)=\\sum_JC_{rJ}(a\\Theta_Jd)(c\\Theta^Jb)$ with $C_{rJ}=\\frac1{256}\\sum_{K\\in r}\\mathrm{tr}(\\Theta_K\\Theta_J\\Theta^K\\Theta^J)$. '
-        'Moving $\\Gamma^{A}$ through a product of $s$ distinct $\\Gamma$’s gives $(-1)^s$ if $A$ is not among them and $(-1)^{s-1}$ if it is; for '
+    d.p('**Fierz matrix.** The completeness of the 256 matrices $\\Theta_K$,')
+    d.eq(r'\sum_K(\Theta_K)_{cd}(\Theta^K)_{ab}=16\,\delta_{ad}\delta_{bc},')
+    d.p('gives the Fierz identity')
+    d.eq(r'\sum_{K\in r}(a\Theta_Kb)(c\Theta^Kd)=\sum_JC_{rJ}\,(a\Theta_Jd)(c\Theta^Jb),\qquad '
+         r'C_{rJ}=\frac1{256}\sum_{K\in r}\mathrm{tr}\big(\Theta_K\Theta_J\Theta^K\Theta^J\big).')
+    d.p('Moving $\\Gamma^{A}$ through a product of $s$ distinct $\\Gamma$’s gives $(-1)^s$ if $A$ is not among them and $(-1)^{s-1}$ if it is; for '
         '$K$ of rank $r$ sharing $l$ indices with $J$ the sign is $(-1)^{rs-l}$, and there are $\\binom sl\\binom{8-s}{r-l}$ such $K$:')
     d.eq(r'F_{rs}=\frac{16}{256}\sum_l(-1)^{rs-l}\binom{s}{l}\binom{8-s}{r-l}=\frac1{16}\sum_l(-1)^{rs-l}\binom{s}{l}\binom{8-s}{r-l}.')
     d.p('**Densities of uniform matter.** A 16-component field has 8 positive-energy states per momentum, so $\\rho=8\\int\\frac{d^7k}{(2\\pi)^7}$ '
