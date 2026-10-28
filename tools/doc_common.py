@@ -60,14 +60,43 @@ def parse_evaluated_notebook(path=None):
     return dict(inputs=inputs, outputs=len(outs), messages=msgs, checks=checks, version=ver, context=ctx,
                 commutant_time=comm_time, W=W, path=path)
 
-def eval_log():
-    p = os.path.join(ROOT, 'build', 'eval_log.txt')
+EVAL_LOG = os.path.join(ROOT, 'build', 'eval_log.txt')          # written by tools/run_eval.wl; build/ is excluded by .gitignore
+EVAL_LOG_COPY = os.path.join(HERE, 'eval_log_7p1.txt')           # the copy that is part of the repository
+
+def _parse_log(txt):
     d = {}
-    if os.path.exists(p):
-        for line in open(p, encoding='utf-8', errors='replace'):
-            if ':' in line:
-                k, v = line.split(':', 1); d[k.strip()] = v.strip()
+    for line in txt.splitlines():
+        if ':' in line:
+            k, v = line.split(':', 1); d[k.strip()] = v.strip()
     return d
+
+def eval_log(nbinfo=None):
+    """The record of the last evaluation of 7+1.nb (Wolfram version, kernel, duration, message and output cells, finish time).
+    tools/run_eval.wl writes it to build/eval_log.txt, which .gitignore excludes; a copy, with the SHA-256 of the evaluated notebook
+    added, is kept in tools/eval_log_7p1.txt, which is part of the repository, so that the documents can be rebuilt from a fresh
+    clone.  A record is used only if it belongs to the notebook on disk: build/eval_log.txt must give the notebook's numbers of
+    output and message cells (checked when nbinfo, the result of parse_evaluated_notebook, is given), the copy its SHA-256."""
+    nb = os.path.join(ROOT, '7+1.nb')
+    sha = sha256(nb) if os.path.exists(nb) else ''
+    if os.path.exists(EVAL_LOG):
+        txt = open(EVAL_LOG, encoding='utf-8', errors='replace').read()
+        d = _parse_log(txt)
+        if nbinfo is not None and (d.get('output cells') != str(nbinfo['outputs']) or d.get('message cells') != str(nbinfo['messages'])):
+            print('warning: build/eval_log.txt (%s output cells, %s message cells) does not belong to 7+1.nb (%d, %d); not used'
+                  % (d.get('output cells'), d.get('message cells'), nbinfo['outputs'], nbinfo['messages']))
+            return {}
+        copy = txt.rstrip('\n') + '\nnotebook SHA-256: ' + sha + '\n'
+        old = open(EVAL_LOG_COPY, encoding='utf-8', errors='replace').read() if os.path.exists(EVAL_LOG_COPY) else None
+        if old != copy:
+            with open(EVAL_LOG_COPY, 'w', encoding='utf-8', newline='\n') as f: f.write(copy)
+        d['notebook SHA-256'] = sha
+        return d
+    if os.path.exists(EVAL_LOG_COPY):
+        d = _parse_log(open(EVAL_LOG_COPY, encoding='utf-8', errors='replace').read())
+        if d.get('notebook SHA-256') == sha:
+            return d
+        print('warning: tools/eval_log_7p1.txt belongs to another 7+1.nb (SHA-256 %s); not used' % d.get('notebook SHA-256'))
+    return {}
 
 def all_checks(D):
     """Every check of 7+1.nb, in the order of the summary table of its last section: the cells check["name", test] that print
@@ -162,7 +191,7 @@ def gather():
     D['split_table'] = table_cells(CS, '\\varepsilon', 1, '$\\cdot$')
     D['xy'], D['a'], D['b'] = eight_square()
     D['nb'] = parse_evaluated_notebook()
-    D['log'] = eval_log()
+    D['log'] = eval_log(D['nb'])
     D['sha'] = {name: sha256(os.path.join(ROOT, name)) for name in ['7+1.nb', '4+4.nb']}
     D['sha_tools'] = {name: sha256(os.path.join(HERE, name)) for name in sorted(os.listdir(HERE))
                       if os.path.isfile(os.path.join(HERE, name)) and (name.endswith('.py') or name.endswith('.wl'))}

@@ -1,0 +1,10 @@
+target: D:\Developer\github\7+1\7+1.nb
+version: 15.0.1 for Microsoft Windows (64-bit) (July 2, 2026)
+kernel: a fresh kernel (front-end kernel configuration Eval71)
+seconds: 283.883
+message cells: 0
+output cells: 554
+completed: True
+open copies closed first: 0
+finished: Wed 28 Oct 2026 08:57:47
+notebook SHA-256: 41d252f9852f210c228f45e1ac956d2d7ef26faeb0062a5880280e1aae0effc7

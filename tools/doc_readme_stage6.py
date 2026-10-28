@@ -71,6 +71,9 @@ def file_rows():
         ['`tools/ref_torus_brane.py`, `tools/ref_radion.py`', 'independent Python checks of sections 25 and 26'],
         ['`AUXILIARY_TORUS*`, `WORLD_BRANE*`, `RADION*` (`.md`, `.tex`, `.pdf`)', 'the documents on the auxiliary torus, the world brane and the radion, '
          'each with its symbol dictionary and its provenance record'],
+        ['`tools/eval_log_7p1.txt`', 'the record of the evaluation of 7+1.nb (Wolfram version, kernel, duration, message and output cells, finish '
+         'time) with the SHA-256 of the evaluated notebook; `tools/make_docs.py` copies it from build/eval_log.txt, which `tools/run_eval.wl` writes, '
+         'so that the documents can be rebuilt from a fresh clone'],
     ]
 
 
@@ -203,7 +206,10 @@ def provenance_section(d, D, D3, runs, secno=10):
         'portals (24). The note was read from the author’s PDF (not part of the repository). Decisions: the brane at $\\vec y=0$, not dynamical; the '
         'sphere compared at the same volume $V_\\perp$; the warped comparison in five dimensions; all printed numbers computed, never typed; the '
         'Higgs–radion numbers in 60-digit arithmetic. Before each section was appended the evaluated notebook was copied to '
-        '`backups/7+1_2026-10-28_before_torus_brane.nb` and `backups/7+1_2026-10-28_before_radion.nb` (excluded by .gitignore).')
+        '`backups/7+1_2026-10-28_before_torus_brane.nb` and `backups/7+1_2026-10-28_before_radion.nb` (excluded by .gitignore). The record '
+        'of the evaluation, which `tools/run_eval.wl` writes to build/eval_log.txt (excluded by .gitignore), is now also kept, with the SHA-256 '
+        'of the evaluated notebook, in `tools/eval_log_7p1.txt`, so that the documents rebuilt from a fresh clone are identical to the '
+        'committed ones.')
     d.h2('%d.3 Verification' % secno)
     d.p('Sections 25 and 26 contain %d and %d checks (%d and %d True); they are rows of section 4.2 above. The independent programs '
         '`tools/ref_torus_brane.py` (%d boolean checks, %d True) and `tools/ref_radion.py` (%d, %d True) recompute every number with their own code; '

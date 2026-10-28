@@ -1225,6 +1225,7 @@ The note’s ideas — the Kaluza–Klein ansatz, the Einstein frame, the physic
 | `tools/nb_part_torus_brane.py`, `tools/nb_part_radion.py` | generator parts of sections 25 and 26 of 7+1.nb (executed by `make_7p1_nb.py`) |
 | `tools/ref_torus_brane.py`, `tools/ref_radion.py` | independent Python checks of sections 25 and 26 |
 | `AUXILIARY_TORUS*`, `WORLD_BRANE*`, `RADION*` (`.md`, `.tex`, `.pdf`) | the documents on the auxiliary torus, the world brane and the radion, each with its symbol dictionary and its provenance record |
+| `tools/eval_log_7p1.txt` | the record of the evaluation of 7+1.nb (Wolfram version, kernel, duration, message and output cells, finish time) with the SHA-256 of the evaluated notebook; `tools/make_docs.py` copies it from build/eval_log.txt, which `tools/run_eval.wl` writes, so that the documents can be rebuilt from a fresh clone |
 
 ## 18. References
 
