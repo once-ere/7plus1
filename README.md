@@ -1,5 +1,9 @@
 # 7+1: the octonions and the Clifford algebra of 7+1 spacetime
 
+This notebook is distributed as free software under the GNU General Public License.They are distributed in the hope that they will  be useful,but WITHOUT ANY WARRANTY;without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU GPL for more details.
+
+Please  cite  this  work  and this web page if you use it.
+
 *A real realization of the octonions, and a real 16×16 realization of the Clifford algebra of 7+1 spacetime, built from — and mirroring — the split octonions and the 16×16 Dirac matrices of the notebook 4+4.nb*
 
 Repository: github.com/once-ere/7plus1 — prepared for Nash  
